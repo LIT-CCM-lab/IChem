@@ -1,0 +1,1 @@
+/projects/shared/users/cjacquemard/Programmation/IChem/distrib/IChem_5-2-10 -name ipa -logf ints.txt -type MER ints /projects/shared/users/cjacquemard/Programmation/IChem/test/dataset/protlig/2rh1/site.mol2 /projects/shared/users/cjacquemard/Programmation/IChem/test/dataset/protlig/2rh1/ligand.mol2

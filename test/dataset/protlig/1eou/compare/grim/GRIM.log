@@ -1,0 +1,15 @@
+#############
+#############
+SCORE	0.554782
+SumCl	0.0294983
+RMSD	0.258424
+LIG	2
+CENT	2
+PROT	2
+MATCH	Ref Ints Point		Comp Ints Point	Pair	Weight	distance 
+MATCH	CA   |3    |GLL   5-Z	CA   |9    |GLL   5-Z	0.299	3.23271
+MATCH	CA   |5    |GLL   5-Z	CA   |10   |GLL   5-Z	0.299	4.32794
+MATCH	CA   |11   |GLP   5-Z	CA   |18   |GLP   5-Z	0.299	0.473445
+MATCH	CA   |13   |GLP   5-Z	CA   |25   |GLP   5-Z	0.299	3.05001
+MATCH	CA   |19   |GLC   5-Z	CA   |40   |GLC   5-Z	0.299	0.708636
+MATCH	CA   |21   |GLC   5-Z	CA   |43   |GLC   5-Z	0.299	3.30389

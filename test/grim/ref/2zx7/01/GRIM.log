@@ -1,0 +1,41 @@
+#############
+#############
+SCORE	0.864568
+SumCl	0.162904
+RMSD	0.141794
+LIG	9
+CENT	12
+PROT	11
+MATCH	Ref Ints Point		Comp Ints Point	Pair	Weight	distance|| Reference Protein 		|| Reference Ligand 		|| Comparaison Protein 		|| Comparaison Ligand 
+MATCH	N    |1    |SEL   1-Z	N    |5    |SEL   1-Z	0.834	50.6903	|| NE1  |107  |TRP  67-B	||	OAD  |1    |ZX7   0-B	|| NE2  |132  |HIS 129-XX	||	OAC  |21   |ZXD   0-XX
+MATCH	CA   |3    |GLL   5-Z	CA   |6    |GLL   5-Z	0.299	51.8319	|| CD2  |70   |TYR  64-B	||	CAW  |5    |ZX7   0-B	|| CD2  |51   |TYR  64-XX	||	CAJ  |23   |ZXD   0-XX
+MATCH	N    |4    |SEL   1-Z	N    |8    |SEL   1-Z	0.834	53.8826	|| NE1  |107  |TRP  67-B	||	OAE  |7    |ZX7   0-B	|| NE1  |88   |TRP  67-XX	||	OAD  |25   |ZXD   0-XX
+MATCH	O    |5    |ALL   2-Z	O    |7    |ALL   2-Z	0.93	53.8826	|| OE1  |92   |GLU  66-B	||	OAE  |7    |ZX7   0-B	|| OE2  |74   |GLU  66-XX	||	OAD  |25   |ZXD   0-XX
+MATCH	CA   |6    |GLL   5-Z	CA   |9    |GLL   5-Z	0.299	50.6784	|| CE2  |74   |TYR  64-B	||	CAU  |9    |ZX7   0-B	|| CD1  |271  |PHE 290-XX	||	CAK  |27   |ZXD   0-XX
+MATCH	O    |7    |ALL   2-Z	O    |11   |ALL   2-Z	0.93	49.9771	|| OD1  |208  |ASP 224-B	||	OAC  |11   |ZX7   0-B	|| OD1  |189  |ASP 224-XX	||	OAE  |29   |ZXD   0-XX
+MATCH	N    |8    |SEL   1-Z	N    |10   |SEL   1-Z	0.834	49.9771	|| NE2  |37   |HIS  34-B	||	OAC  |11   |ZX7   0-B	|| NE2  |114  |HIS 128-XX	||	OAE  |29   |ZXD   0-XX
+MATCH	O    |10   |ALL   2-Z	O    |3    |ALL   2-Z	0.93	46.2966	|| OE2  |301  |GLU 266-B	||	NAM  |19   |ZX7   0-B	|| OD1  |189  |ASP 224-XX	||	NAG  |13   |ZXD   0-XX
+MATCH	OD1  |11   |ASL   4-Z	OD1  |4    |ASL   4-Z	0.993	46.2966	|| OE2  |301  |GLU 266-B	||	NAM  |19   |ZX7   0-B	|| OD1  |189  |ASP 224-XX	||	NAG  |13   |ZXD   0-XX
+MATCH	N    |16   |SEP   1-Z	N    |20   |SEP   1-Z	0.834	56.0684	|| NE1  |107  |TRP  67-B	||	OAD  |1    |ZX7   0-B	|| NE1  |88   |TRP  67-XX	||	OAC  |21   |ZXD   0-XX
+MATCH	N    |17   |SEP   1-Z	N    |19   |SEP   1-Z	0.834	50.2798	|| NE2  |151  |HIS 129-B	||	OAD  |1    |ZX7   0-B	|| NE2  |132  |HIS 129-XX	||	OAC  |21   |ZXD   0-XX
+MATCH	O    |21   |ALP   2-Z	O    |22   |ALP   2-Z	0.93	58.0002	|| OE1  |92   |GLU  66-B	||	OAE  |7    |ZX7   0-B	|| OE2  |74   |GLU  66-XX	||	OAD  |25   |ZXD   0-XX
+MATCH	O    |22   |ALP   2-Z	O    |16   |ALP   2-Z	0.93	43.8151	|| OD1  |208  |ASP 224-B	||	OAC  |11   |ZX7   0-B	|| OD1  |189  |ASP 224-XX	||	NAG  |13   |ZXD   0-XX
+MATCH	N    |23   |SEP   1-Z	N    |25   |SEP   1-Z	0.834	51.6268	|| NE2  |37   |HIS  34-B	||	OAC  |11   |ZX7   0-B	|| NE2  |37   |HIS  34-XX	||	OAE  |29   |ZXD   0-XX
+MATCH	N    |25   |SEP   1-Z	N    |24   |SEP   1-Z	0.834	53.1893	|| NE2  |133  |HIS 128-B	||	OAC  |11   |ZX7   0-B	|| NE2  |114  |HIS 128-XX	||	OAE  |29   |ZXD   0-XX
+MATCH	CA   |26   |GLP   5-Z	CA   |13   |GLP   5-Z	0.299	43.9864	|| CE2  |17   |PHE  32-B	||	CAA  |15   |ZX7   0-B	|| CE2  |17   |PHE  32-XX	||	CAB  |7    |ZXD   0-XX
+MATCH	CA   |27   |GLP   5-Z	CA   |15   |GLP   5-Z	0.299	38.0708	|| CH2  |196  |TRP 222-B	||	CAA  |15   |ZX7   0-B	|| CH2  |177  |TRP 222-XX	||	CAB  |7    |ZXD   0-XX
+MATCH	OD1  |32   |ASP   4-Z	OD1  |18   |ASP   4-Z	0.993	39.9442	|| OD2  |209  |ASP 224-B	||	NAM  |19   |ZX7   0-B	|| OD2  |190  |ASP 224-XX	||	NAG  |13   |ZXD   0-XX
+MATCH	OD1  |33   |ASP   4-Z	OD1  |17   |ASP   4-Z	0.993	43.8151	|| OD1  |208  |ASP 224-B	||	NAM  |19   |ZX7   0-B	|| OD1  |189  |ASP 224-XX	||	NAG  |13   |ZXD   0-XX
+MATCH	CA   |36   |GLP   5-Z	CA   |23   |GLP   5-Z	0.299	55.0351	|| CD1  |356  |PHE 290-B	||	CAU  |9    |ZX7   0-B	|| CD1  |271  |PHE 290-XX	||	CAK  |27   |ZXD   0-XX
+MATCH	N    |39   |SEC   1-Z	N    |35   |SEC   1-Z	0.834	53.3791	|| NE1  |107  |TRP  67-B	||	OAD  |1    |ZX7   0-B	|| NE1  |88   |TRP  67-XX	||	OAC  |21   |ZXD   0-XX
+MATCH	N    |40   |SEC   1-Z	N    |34   |SEC   1-Z	0.834	50.4329	|| NE2  |151  |HIS 129-B	||	OAD  |1    |ZX7   0-B	|| NE2  |132  |HIS 129-XX	||	OAC  |21   |ZXD   0-XX
+MATCH	CA   |42   |GLC   5-Z	CA   |36   |GLC   5-Z	0.299	54.5434	|| CD2  |70   |TYR  64-B	||	CAW  |5    |ZX7   0-B	|| CD2  |51   |TYR  64-XX	||	CAJ  |23   |ZXD   0-XX
+MATCH	N    |44   |SEC   1-Z	N    |38   |SEC   1-Z	0.834	54.9566	|| NE1  |107  |TRP  67-B	||	OAE  |7    |ZX7   0-B	|| NE1  |88   |TRP  67-XX	||	OAD  |25   |ZXD   0-XX
+MATCH	O    |45   |ALC   2-Z	O    |37   |ALC   2-Z	0.93	55.9395	|| OE1  |92   |GLU  66-B	||	OAE  |7    |ZX7   0-B	|| OE2  |74   |GLU  66-XX	||	OAD  |25   |ZXD   0-XX
+MATCH	O    |47   |ALC   2-Z	O    |42   |ALC   2-Z	0.93	46.896	|| OD1  |208  |ASP 224-B	||	OAC  |11   |ZX7   0-B	|| OD1  |189  |ASP 224-XX	||	OAE  |29   |ZXD   0-XX
+MATCH	N    |48   |SEC   1-Z	N    |41   |SEC   1-Z	0.834	50.7793	|| NE2  |37   |HIS  34-B	||	OAC  |11   |ZX7   0-B	|| NE2  |37   |HIS  34-XX	||	OAE  |29   |ZXD   0-XX
+MATCH	N    |50   |SEC   1-Z	N    |40   |SEC   1-Z	0.834	51.5558	|| NE2  |133  |HIS 128-B	||	OAC  |11   |ZX7   0-B	|| NE2  |114  |HIS 128-XX	||	OAE  |29   |ZXD   0-XX
+MATCH	OD1  |57   |ASC   4-Z	OD1  |33   |ASC   4-Z	0.993	43.107	|| OD2  |209  |ASP 224-B	||	NAM  |19   |ZX7   0-B	|| OD2  |190  |ASP 224-XX	||	NAG  |13   |ZXD   0-XX
+MATCH	O    |58   |ALC   2-Z	O    |31   |ALC   2-Z	0.93	45.0074	|| OD1  |208  |ASP 224-B	||	NAM  |19   |ZX7   0-B	|| OD1  |189  |ASP 224-XX	||	NAG  |13   |ZXD   0-XX
+MATCH	OD1  |59   |ASC   4-Z	OD1  |32   |ASC   4-Z	0.993	45.0074	|| OD1  |208  |ASP 224-B	||	NAM  |19   |ZX7   0-B	|| OD1  |189  |ASP 224-XX	||	NAG  |13   |ZXD   0-XX
+MATCH	CA   |63   |GLC   5-Z	CA   |39   |GLC   5-Z	0.299	52.9954	|| CD1  |356  |PHE 290-B	||	CAU  |9    |ZX7   0-B	|| CD1  |271  |PHE 290-XX	||	CAK  |27   |ZXD   0-XX

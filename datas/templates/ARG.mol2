@@ -1,0 +1,73 @@
+#	Name:			builder_protein
+#	Creating user name:	gilims
+#	Creation time:		Tue Dec  4 14:51:43 2012
+
+#	Modifying user name:	gilims
+#	Modification time:	Tue Dec  4 14:51:43 2012
+
+@<TRIPOS>MOLECULE
+ARG
+   27    26     1     0     0
+BIOPOLYMER
+NO_CHARGES
+
+
+@<TRIPOS>DICT
+BIOPOLYMER macromol
+@<TRIPOS>ATOM
+      1 CA          1.9334    1.0138    1.7072 C.3       1 ARG1        0.0000 BACKBONE|DICT|DIRECT
+      2 C           3.4344    1.0138    1.7072 C.2       1 ARG1        0.0000 BACKBONE|DICT|DIRECT
+      3 CB          1.4303    0.3968    3.0137 C.3       1 ARG1        0.0000 DICT
+      4 CG         -0.0987    0.3979    3.0676 C.3       1 ARG1        0.0000 DICT
+      5 CD         -0.6017   -0.2191    4.3743 C.3       1 ARG1        0.0000 DICT
+      6 NE         -2.0813   -0.2068    4.4032 N.pl3     1 ARG1        0.0000 DICT
+      7 CZ         -2.8224   -0.6837    5.4261 C.cat     1 ARG1        0.0000 DICT
+      8 NH2        -4.1606   -0.6362    5.3763 N.pl3     1 ARG1        0.0000 DICT
+      9 NH1        -2.1995   -1.2051    6.4917 N.pl3     1 ARG1        0.0000 DICT
+     10 OXT         4.1014    1.6321    2.6830 O.3       1 ARG1        1.0000 DICT
+     11 N           1.4475    0.2712    0.5353 N.3       1 ARG1        0.0000 BACKBONE|DICT|DIRECT
+     12 O1          4.0494    0.4436    0.8074 O.2       1 ARG1        0.0000 DICT
+     13 HA          1.5785    2.0409    1.6223 H         1 ARG1        1.0000 BACKBONE|DICT|DIRECT
+     14 HB3         1.7870   -0.6310    3.0802 H         1 ARG1        1.0000 DICT
+     15 HB2         1.8321    0.9667    3.8515 H         1 ARG1        1.0000 DICT
+     16 HG3        -0.4545    1.4260    3.0005 H         1 ARG1        1.0000 DICT
+     17 HG2        -0.4827   -0.1667    2.2180 H         1 ARG1        1.0000 DICT
+     18 HD3        -0.2540   -1.2496    4.4465 H         1 ARG1        1.0000 DICT
+     19 HD2        -0.2087    0.3480    5.2180 H         1 ARG1        1.0000 DICT
+     20 HE         -2.5396    0.1934    3.5846 H         1 ARG1        1.0000 DICT|ESSENTIAL
+     21 HH11       -1.1804   -1.2373    6.5215 H         1 ARG1        1.0000 DICT|ESSENTIAL
+     22 HH12       -2.7444   -1.5698    7.2731 H         1 ARG1        1.0000 DICT|ESSENTIAL
+     23 HH21       -4.6269   -0.2378    4.5614 H         1 ARG1        1.0000 DICT|ESSENTIAL
+     24 HH22       -4.7130   -0.9988    6.1535 H         1 ARG1        1.0000 DICT|ESSENTIAL
+     25 H2          5.0438    1.5341    2.5283 H         1 ARG1        1.0000 DICT|ESSENTIAL
+     26 HN2         0.4277    0.2950    0.5264 H         1 ARG1        1.0000 DICT|ESSENTIAL
+     27 HN1         1.7972    0.7033   -0.3198 H         1 ARG1        1.0000 DICT|ESSENTIAL
+@<TRIPOS>BOND
+     1    1   11 1    BACKBONE|DICT|INTERRES
+     2    1    3 1    DICT
+     3    1    2 1    BACKBONE|DICT|INTERRES
+     4    2   10 1    DICT
+     5    3    4 1    DICT
+     6    4    5 1    DICT
+     7    5    6 1    DICT
+     8    6    7 ar   DICT
+     9    7    8 ar   DICT
+    10    7    9 ar   DICT
+    11    2   12 2    DICT
+    12   11   26 1    DICT
+    13    9   21 1    DICT
+    14    9   22 1    DICT
+    15    1   13 1    BACKBONE|DICT
+    16    3   14 1    DICT
+    17    3   15 1    DICT
+    18    4   16 1    DICT
+    19    4   17 1    DICT
+    20    5   18 1    DICT
+    21    5   19 1    DICT
+    22    6   20 1    DICT
+    23   10   25 1    DICT
+    24    8   23 1    DICT
+    25    8   24 1    DICT
+    26   11   27 1    DICT
+@<TRIPOS>SUBSTRUCTURE
+     1 ARG1        1 RESIDUE           4 A     ARG     0 ROOT|DICT 

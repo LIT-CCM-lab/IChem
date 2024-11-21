@@ -1,0 +1,5 @@
+2010405	MoleReader::READ_MOL2	No ATOM Block found
+TRACE : 
+  ||--> MoleReader::READ_MOL2 
+  ||--> MoleReader::loadNextMolecule 
+

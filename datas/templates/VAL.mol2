@@ -1,0 +1,57 @@
+#	Name:			<unnamed>
+#	Creating user name:	gilims
+#	Creation time:		Tue Dec  4 15:15:24 2012
+
+#	Modifying user name:	gilims
+#	Modification time:	Tue Dec  4 15:15:24 2012
+
+@<TRIPOS>MOLECULE
+VAL
+   19    18     1     0     0
+PROTEIN
+NO_CHARGES
+
+
+@<TRIPOS>DICT
+PROTEIN protein
+@<TRIPOS>ATOM
+      1 CA         -0.1495    0.2986    0.0000 C.3       1 VAL1        0.0000 BACKBONE|DICT|DIRECT
+      2 N          -0.6298    1.6699    0.0000 N.am      1 VAL1        0.0000 BACKBONE|DICT|DIRECT
+      3 CB         -0.4622   -0.3653   -1.3425 C.3       1 VAL1        0.0000 DICT
+      4 C           1.3421    0.2851    0.3406 C.2       1 VAL1        0.0000 BACKBONE|DICT|DIRECT
+      5 O           2.1279    1.0024   -0.2766 O.2       1 VAL1        0.0000 BACKBONE|DICT|DIRECT
+      6 CG2        -1.9583   -0.2937   -1.6544 C.3       1 VAL1        0.0000 DICT
+      7 CG1         0.0345   -1.8123   -1.3674 C.3       1 VAL1        0.0000 DICT
+      8 OXT         1.7229   -0.5327    1.3231 O.3       1 VAL1        1.0000 CAP|DICT
+      9 HNCAP      -1.6248    1.8942    0.0000 H         1 VAL1        1.0000 CAP|DICT
+     10 H           0.0620    2.4195    0.0000 H         1 VAL1        1.0000 BACKBONE|DICT|ESSENTIAL|DIRECT
+     11 HA         -0.6955   -0.2387    0.7755 H         1 VAL1        1.0000 BACKBONE|DICT|DIRECT
+     12 HB          0.0832    0.2100   -2.0906 H         1 VAL1        1.0000 DICT
+     13 HG23       -2.1440   -0.7746   -2.6147 H         1 VAL1        1.0000 DICT
+     14 HG22       -2.5244   -0.8137   -0.8817 H         1 VAL1        1.0000 DICT
+     15 HG21       -2.2811    0.7468   -1.6912 H         1 VAL1        1.0000 DICT
+     16 HG13       -0.2043   -2.2529   -2.3354 H         1 VAL1        1.0000 DICT
+     17 HG12        1.1146   -1.8370   -1.2229 H         1 VAL1        1.0000 DICT
+     18 HG11       -0.4432   -2.3831   -0.5712 H         1 VAL1        1.0000 DICT
+     19 HOCAP       2.5430   -0.2067    1.7010 H         1 VAL1        1.0000 CAP|DICT
+@<TRIPOS>BOND
+     1    1    2 1    BACKBONE|DICT
+     2    1    3 1    DICT
+     3    1    4 1    BACKBONE|DICT
+     4    4    5 2    BACKBONE|DICT
+     5    4    8 1    CAP|DICT
+     6    3    6 1    DICT
+     7    3    7 1    DICT
+     8    2    9 1    CAP|DICT
+     9    2   10 1    BACKBONE|DICT
+    10    1   11 1    BACKBONE|DICT
+    11    3   12 1    DICT
+    12    6   13 1    DICT
+    13    6   14 1    DICT
+    14    6   15 1    DICT
+    15    7   16 1    DICT
+    16    7   17 1    DICT
+    17    7   18 1    DICT
+    18    8   19 1    CAP|DICT
+@<TRIPOS>SUBSTRUCTURE
+     1 VAL1        1 RESIDUE           1 A     VAL     0 ROOT|DICT 

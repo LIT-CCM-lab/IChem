@@ -1,0 +1,1 @@
+/projects/shared/users/cjacquemard/Programmation/IChem/build/release/IChem IFP /projects/shared/users/cjacquemard/Programmation/IChem/test/dataset/protlig/1eou/site.mol2 /projects/shared/users/cjacquemard/Programmation/IChem/test/dataset/protlig/1eou/ligand.mol2

@@ -1,0 +1,6 @@
+2020601	MoleReader::readMOL2Atom	Unexpected end of atom block. Expecting 30 atoms. Found 21 atoms
+
+TRACE : 
+  ||--> MoleReader::readMOL2Atom 
+  ||--> MoleReader::loadNextMolecule 
+

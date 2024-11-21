@@ -1,0 +1,68 @@
+#	Name:			<unnamed>
+#	Creating user name:	gilims
+#	Creation time:		Tue Dec  4 15:15:39 2012
+
+#	Modifying user name:	gilims
+#	Modification time:	Tue Dec  4 15:15:39 2012
+
+@<TRIPOS>MOLECULE
+TYR
+   24    24     1     0     0
+PROTEIN
+NO_CHARGES
+
+
+@<TRIPOS>DICT
+PROTEIN protein
+@<TRIPOS>ATOM
+      1 CA         -0.1496    0.2987    0.0000 C.3       1 TYR1        0.0000 BACKBONE|DICT|DIRECT
+      2 N          -0.6298    1.6700    0.0000 N.am      1 TYR1        0.0000 BACKBONE|DICT|DIRECT
+      3 CB          1.3405    0.2595   -0.3859 C.3       1 TYR1        0.0000 DICT
+      4 C          -0.3984   -0.3242    1.3751 C.2       1 TYR1        0.0000 BACKBONE|DICT|DIRECT
+      5 O          -0.5478    0.3911    2.3646 O.2       1 TYR1        0.0000 BACKBONE|DICT|DIRECT
+      6 CG          1.6471    0.7990   -1.7762 C.ar      1 TYR1        0.0000 DICT
+      7 CD1         2.1057    2.1261   -1.9438 C.ar      1 TYR1        0.0000 DICT
+      8 CD2         1.4679   -0.0262   -2.9101 C.ar      1 TYR1        0.0000 DICT
+      9 CE1         2.3854    2.6225   -3.2347 C.ar      1 TYR1        0.0000 DICT
+     10 CE2         1.7477    0.4700   -4.2009 C.ar      1 TYR1        0.0000 DICT
+     11 CZ          2.2073    1.7946   -4.3649 C.ar      1 TYR1        0.0000 DICT
+     12 OH          2.4781    2.2708   -5.6161 O.3       1 TYR1        0.0000 DICT
+     13 OXT        -0.4530   -1.6870    1.4373 O.3       1 TYR1        1.0000 CAP|DICT
+     14 HNCAP      -1.6233    1.8458    0.0464 H         1 TYR1        1.0000 CAP|DICT
+     15 HA         -0.7256   -0.2638   -0.7367 H         1 TYR1        1.0000 BACKBONE|DICT|DIRECT
+     16 H           0.0317    2.4317   -0.0493 H         1 TYR1        1.0000 BACKBONE|DICT|ESSENTIAL|DIRECT
+     17 HB2         1.6876   -0.7749   -0.3468 H         1 TYR1        1.0000 DICT
+     18 HB3         1.9162    0.8172    0.3562 H         1 TYR1        1.0000 DICT
+     19 HD1         2.2433    2.7672   -1.0849 H         1 TYR1        1.0000 DICT
+     20 HD2         1.1151   -1.0410   -2.7931 H         1 TYR1        1.0000 DICT
+     21 HE1         2.7360    3.6380   -3.3535 H         1 TYR1        1.0000 DICT
+     22 HE2         1.6086   -0.1684   -5.0620 H         1 TYR1        1.0000 DICT
+     23 HH          2.7852    3.1805   -5.6224 H         1 TYR1        1.0000 DICT|ESSENTIAL
+     24 HOCAP      -0.6138   -2.0188    2.3237 H         1 TYR1        1.0000 CAP|DICT
+@<TRIPOS>BOND
+     1    1    2 1    BACKBONE|DICT
+     2    1    3 1    DICT
+     3    1    4 1    BACKBONE|DICT
+     4    4    5 2    BACKBONE|DICT
+     5    4   13 1    CAP|DICT
+     6    3    6 1    DICT
+     7    6    7 ar   DICT
+     8    6    8 ar   DICT
+     9    8   10 ar   DICT
+    10   10   11 ar   DICT
+    11   11   12 1    DICT
+    12   11    9 ar   DICT
+    13    9    7 ar   DICT
+    14    2   14 1    CAP|DICT
+    15    1   15 1    BACKBONE|DICT
+    16    2   16 1    BACKBONE|DICT
+    17    3   17 1    DICT
+    18    3   18 1    DICT
+    19    7   19 1    DICT
+    20    8   20 1    DICT
+    21    9   21 1    DICT
+    22   10   22 1    DICT
+    23   12   23 1    DICT
+    24   13   24 1    CAP|DICT
+@<TRIPOS>SUBSTRUCTURE
+     1 TYR1        1 RESIDUE           1 A     TYR     0 ROOT|DICT 

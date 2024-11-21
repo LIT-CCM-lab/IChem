@@ -1,0 +1,22 @@
+{
+	"module": "bsa",
+
+	"input_dir": "../dataset/protlig",
+	"subdirs": ["1eou", "2rh1", "2zx7", "3gbb", "4d3j"],
+
+	"commands": [
+		{
+			"id": "01",
+			"cmd": "{ichem} utils bsa {protein} {ligand}",
+			"in_files": {
+				"protein": "prepared.mol2",
+				"ligand": "ligand.mol2"
+			},
+			"out_files": [
+				"cmd.sh",
+				"log.out",
+				"log.err"
+			]
+		}
+	]
+}

@@ -1,0 +1,51 @@
+frag
++-->| 1eou
+    +-->| 01
+        +->| Input files
+        +->| Production command
+        +->| Test command
+        +->| Same number of files
+        +->| Missing expected files
+        +->| Extra files
+        +->| Ref files in comp dir
+        +->| File difference
++-->| 2rh1
+    +-->| 01
+        +->| Input files
+        +->| Production command
+        +->| Test command
+        +->| Same number of files
+        +->| Missing expected files
+        +->| Extra files
+        +->| Ref files in comp dir
+        +->| File difference
++-->| 2zx7
+    +-->| 01
+        +->| Input files
+        +->| Production command
+        +->| Test command
+        +->| Same number of files
+        +->| Missing expected files
+        +->| Extra files
+        +->| Ref files in comp dir
+        +->| File difference
++-->| 3gbb
+    +-->| 01
+        +->| Input files
+        +->| Production command
+        +->| Test command
+        +->| Same number of files
+        +->| Missing expected files
+        +->| Extra files
+        +->| Ref files in comp dir
+        +->| File difference
++-->| 4d3j
+    +-->| 01
+        +->| Input files
+        +->| Production command
+        +->| Test command
+        +->| Same number of files
+        +->| Missing expected files
+        +->| Extra files
+        +->| Ref files in comp dir
+        +->| File difference

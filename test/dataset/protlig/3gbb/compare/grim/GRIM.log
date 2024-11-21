@@ -1,0 +1,22 @@
+#############
+#############
+SCORE	0.610298
+SumCl	0.0598971
+RMSD	0.555111
+LIG	4
+CENT	5
+PROT	4
+MATCH	Ref Ints Point		Comp Ints Point	Pair	Weight	distance 
+MATCH	N    |1    |SEL   1-Z	N    |2    |SEL   1-Z	0.834	21.9497
+MATCH	NZ   |6    |LYL   3-Z	NZ   |6    |LYL   3-Z	0.966	21.9497
+MATCH	CA   |9    |GLL   5-Z	CA   |10   |GLL   5-Z	0.299	22.9173
+MATCH	CA   |13   |GLL   5-Z	CA   |8    |GLL   5-Z	0.299	23.4956
+MATCH	O    |24   |ALP   2-Z	O    |18   |ALP   2-Z	0.93	19.7054
+MATCH	OD1  |26   |ASP   4-Z	OD1  |21   |ASP   4-Z	0.993	19.7054
+MATCH	OD1  |27   |ASP   4-Z	OD1  |22   |ASP   4-Z	0.993	19.7466
+MATCH	CA   |34   |GLP   5-Z	CA   |25   |GLP   5-Z	0.299	29.9256
+MATCH	O    |47   |ALC   2-Z	O    |36   |ALC   2-Z	0.93	19.8109
+MATCH	OD1  |50   |ASC   4-Z	OD1  |40   |ASC   4-Z	0.993	19.8109
+MATCH	OD1  |51   |ASC   4-Z	OD1  |41   |ASC   4-Z	0.993	19.9005
+MATCH	CA   |52   |GLC   5-Z	CA   |46   |GLC   5-Z	0.299	23.4562
+MATCH	CA   |58   |GLC   5-Z	CA   |44   |GLC   5-Z	0.299	27.7996

@@ -1,0 +1,75 @@
+#	Name:			<unnamed>
+#	Creating user name:	gilims
+#	Creation time:		Tue Dec  4 15:15:06 2012
+
+#	Modifying user name:	gilims
+#	Modification time:	Tue Dec  4 15:15:06 2012
+
+@<TRIPOS>MOLECULE
+TRP
+   27    28     1     0     0
+PROTEIN
+NO_CHARGES
+
+
+@<TRIPOS>DICT
+PROTEIN protein
+@<TRIPOS>ATOM
+      1 CA         -0.1496    0.2987    0.0000 C.3       1 TRP1        0.0000 BACKBONE|DICT|DIRECT
+      2 N          -0.6298    1.6701    0.0000 N.am      1 TRP1        0.0000 BACKBONE|DICT|DIRECT
+      3 CB         -0.2571   -0.3004   -1.4037 C.3       1 TRP1        0.0000 DICT
+      4 C           1.2744    0.2616    0.5584 C.2       1 TRP1        0.0000 BACKBONE|DICT|DIRECT
+      5 O           2.2409    0.2456   -0.2021 O.2       1 TRP1        0.0000 BACKBONE|DICT|DIRECT
+      6 CG         -1.6823   -0.3333   -1.9588 C.2       1 TRP1        0.0000 DICT
+      7 CD1        -2.5070    0.7003   -2.1771 C.2       1 TRP1        0.0000 DICT
+      8 CD2        -2.4219   -1.5059   -2.3601 C.ar      1 TRP1        0.0000 DICT
+      9 CE3        -2.0522   -2.8624   -2.3499 C.ar      1 TRP1        0.0000 DICT
+     10 CE2        -3.6655   -1.1026   -2.8022 C.ar      1 TRP1        0.0000 DICT
+     11 NE1        -3.7188    0.2815   -2.6873 N.pl3     1 TRP1        0.0000 DICT
+     12 CZ3        -3.0374   -3.7405   -2.8174 C.ar      1 TRP1        0.0000 DICT
+     13 CZ2        -4.6399   -1.9941   -3.2670 C.ar      1 TRP1        0.0000 DICT
+     14 CH2        -4.2938   -3.3506   -3.2658 C.ar      1 TRP1        0.0000 DICT
+     15 OXT         1.3950    0.2480    1.8869 O.3       1 TRP1        1.0000 CAP|DICT
+     16 HNCAP      -1.6249    1.8942    0.0000 H         1 TRP1        1.0000 CAP|DICT
+     17 H           0.0618    2.4198    0.0000 H         1 TRP1        1.0000 BACKBONE|DICT|ESSENTIAL|DIRECT
+     18 HA         -0.8043   -0.2712    0.6592 H         1 TRP1        1.0000 BACKBONE|DICT|DIRECT
+     19 HB3         0.3672    0.3013   -2.0641 H         1 TRP1        1.0000 DICT
+     20 HB2         0.1471   -1.3116   -1.3573 H         1 TRP1        1.0000 DICT
+     21 HD1        -2.3278    1.7513   -2.0048 H         1 TRP1        1.0000 DICT
+     22 HE3        -1.0955   -3.2487   -2.0174 H         1 TRP1        1.0000 DICT
+     23 HE1        -4.4453    0.9645   -2.9017 H         1 TRP1        1.0000 DICT|ESSENTIAL
+     24 HZ3        -2.8434   -4.8067   -2.8466 H         1 TRP1        1.0000 DICT
+     25 HZ2        -5.6184   -1.6848   -3.6158 H         1 TRP1        1.0000 DICT
+     26 HH2        -5.0009   -4.0955   -3.6125 H         1 TRP1        1.0000 DICT
+     27 HOCAP       2.2565    0.5975    2.1261 H         1 TRP1        1.0000 CAP|DICT
+@<TRIPOS>BOND
+     1    1    2 1    BACKBONE|DICT
+     2    1    3 1    DICT
+     3    1    4 1    BACKBONE|DICT
+     4    4    5 2    BACKBONE|DICT
+     5    4   15 1    CAP|DICT
+     6    3    6 1    DICT
+     7    6    7 2    DICT
+     8    6    8 1    DICT
+     9    8    9 ar   DICT
+    10    8   10 ar   DICT
+    11   10   13 ar   DICT
+    12   10   11 1    DICT
+    13   11    7 1    DICT
+    14   13   14 ar   DICT
+    15   14   12 ar   DICT
+    16   12    9 ar   DICT
+    17    2   16 1    CAP|DICT
+    18    2   17 1    BACKBONE|DICT
+    19    1   18 1    BACKBONE|DICT
+    20    3   19 1    DICT
+    21    3   20 1    DICT
+    22    7   21 1    DICT
+    23    9   22 1    DICT
+    24   11   23 1    DICT
+    25   12   24 1    DICT
+    26   13   25 1    DICT
+    27   14   26 1    DICT
+    28   15   27 1    CAP|DICT
+@<TRIPOS>SUBSTRUCTURE
+     1 TRP1        1 RESIDUE           1 A     TRP     0 ROOT|DICT 

@@ -1,0 +1,59 @@
+#	Name:			builder_protein
+#	Creating user name:	gilims
+#	Creation time:		Tue Dec  4 14:57:56 2012
+
+#	Modifying user name:	gilims
+#	Modification time:	Tue Dec  4 14:57:56 2012
+
+@<TRIPOS>MOLECULE
+GLN
+   20    19     1     0     0
+BIOPOLYMER
+NO_CHARGES
+
+
+@<TRIPOS>DICT
+BIOPOLYMER macromol
+@<TRIPOS>ATOM
+      1 CA          0.5927    0.5746    1.0561 C.3       1 GLN1        0.0000 BACKBONE|DICT|DIRECT
+      2 C           2.0937    0.5746    1.0561 C.2       1 GLN1        0.0000 BACKBONE|DICT|DIRECT
+      3 CB          0.0444    0.0144    2.3700 C.3       1 GLN1        0.0000 DICT
+      4 CG         -1.4847    0.0637    2.3915 C.3       1 GLN1        0.0000 DICT
+      5 CD         -2.0329   -0.4966    3.7055 C.2       1 GLN1        0.0000 DICT
+      6 NE2        -1.0933   -0.9072    4.5522 N.am      1 GLN1        0.0000 DICT
+      7 OE1        -3.2299   -0.5521    3.9352 O.2       1 GLN1        0.0000 DICT
+      8 OXT         2.7607    1.2114    2.0200 O.3       1 GLN1        1.0000 DICT
+      9 N           0.1068   -0.1903   -0.1014 N.3       1 GLN1        0.0000 BACKBONE|DICT|DIRECT
+     10 HA          0.2378    1.5976    0.9322 H         1 GLN1        1.0000 BACKBONE|DICT|DIRECT
+     11 O1          2.7087   -0.0126    0.1674 O.2       1 GLN1        0.0000 DICT
+     12 HB3         0.3676   -1.0212    2.4755 H         1 GLN1        1.0000 DICT
+     13 HB2         0.4467    0.5977    3.1981 H         1 GLN1        1.0000 DICT
+     14 HG3        -1.8069    1.0995    2.2854 H         1 GLN1        1.0000 DICT
+     15 HG2        -1.8688   -0.5153    1.5516 H         1 GLN1        1.0000 DICT
+     16 HE21       -0.1086   -0.8322    4.2970 H         1 GLN1        1.0000 DICT|ESSENTIAL
+     17 HE22       -1.3573   -1.2974    5.4570 H         1 GLN1        1.0000 DICT|ESSENTIAL
+     18 H2          3.7031    1.1105    1.8672 H         1 GLN1        1.0000 DICT|ESSENTIAL
+     19 HN2        -0.9114   -0.1356   -0.1318 H         1 GLN1        1.0000 DICT|ESSENTIAL
+     20 HN1         0.4864    0.2032   -0.9624 H         1 GLN1        1.0000 DICT|ESSENTIAL
+@<TRIPOS>BOND
+     1    1    9 1    BACKBONE|DICT|INTERRES
+     2    1    3 1    DICT
+     3    1    2 1    BACKBONE|DICT|INTERRES
+     4    2    8 1    DICT
+     5    3    4 1    DICT
+     6    4    5 1    DICT
+     7    5    6 am   DICT
+     8    5    7 2    DICT
+     9    2   11 2    DICT
+    10    1   10 1    BACKBONE|DICT
+    11    9   19 1    DICT
+    12    3   12 1    DICT
+    13    3   13 1    DICT
+    14    4   14 1    DICT
+    15    4   15 1    DICT
+    16    6   16 1    DICT
+    17    6   17 1    DICT
+    18    8   18 1    DICT
+    19    9   20 1    DICT
+@<TRIPOS>SUBSTRUCTURE
+     1 GLN1        1 RESIDUE           4 A     GLN     0 ROOT|DICT 

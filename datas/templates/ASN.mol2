@@ -1,0 +1,53 @@
+#	Name:			builder_protein
+#	Creating user name:	gilims
+#	Creation time:		Tue Dec  4 14:52:05 2012
+
+#	Modifying user name:	gilims
+#	Modification time:	Tue Dec  4 14:52:05 2012
+
+@<TRIPOS>MOLECULE
+ASN
+   17    16     1     0     0
+BIOPOLYMER
+NO_CHARGES
+
+
+@<TRIPOS>DICT
+BIOPOLYMER macromol
+@<TRIPOS>ATOM
+      1 CA          0.3826    0.0993    0.7728 C.3       1 ASN1        0.0000 BACKBONE|DICT|DIRECT
+      2 C           1.8836    0.0993    0.7728 C.2       1 ASN1        0.0000 BACKBONE|DICT|DIRECT
+      3 CB         -0.0902   -0.5843    2.0574 C.3       1 ASN1        0.0000 DICT
+      4 CG         -1.6182   -0.6249    2.1264 C.2       1 ASN1        0.0000 DICT
+      5 ND2        -2.1241   -1.8530    2.1932 N.am      1 ASN1        0.0000 DICT
+      6 OD1        -2.2928    0.3915    2.1197 O.2       1 ASN1        0.0000 DICT
+      7 OXT         2.5506    0.6941    1.7632 O.3       1 ASN1        1.0000 DICT
+      8 N          -0.1033   -0.6150   -0.4165 N.3       1 ASN1        0.0000 BACKBONE|DICT|DIRECT
+      9 O1          2.4986   -0.4491   -0.1403 O.2       1 ASN1        0.0000 DICT
+     10 HA          0.0277    1.1293    0.7372 H         1 ASN1        1.0000 BACKBONE|DICT|DIRECT
+     11 HB3         0.2932   -1.6044    2.0771 H         1 ASN1        1.0000 DICT
+     12 HB2         0.3063   -0.0395    2.9141 H         1 ASN1        1.0000 DICT
+     13 HD21       -1.5022   -2.6614    2.1948 H         1 ASN1        1.0000 DICT|ESSENTIAL
+     14 HD22       -3.1341   -1.9865    2.2428 H         1 ASN1        1.0000 DICT|ESSENTIAL
+     15 H2          3.4930    0.5998    1.6062 H         1 ASN1        1.0000 DICT|ESSENTIAL
+     16 HN2        -1.1234   -0.6171   -0.4090 H         1 ASN1        1.0000 DICT|ESSENTIAL
+     17 HN1         0.2216   -0.1450   -1.2614 H         1 ASN1        1.0000 DICT|ESSENTIAL
+@<TRIPOS>BOND
+     1    1    8 1    BACKBONE|DICT|INTERRES
+     2    1    3 1    DICT
+     3    1    2 1    BACKBONE|DICT|INTERRES
+     4    2    7 1    DICT
+     5    3    4 1    DICT
+     6    4    5 am   DICT
+     7    4    6 2    DICT
+     8    2    9 2    DICT
+     9    8   16 1    DICT
+    10    1   10 1    BACKBONE|DICT
+    11    3   11 1    DICT
+    12    3   12 1    DICT
+    13    5   13 1    DICT
+    14    5   14 1    DICT
+    15    7   15 1    DICT
+    16    8   17 1    DICT
+@<TRIPOS>SUBSTRUCTURE
+     1 ASN1        1 RESIDUE           4 A     ASN     0 ROOT|DICT 

@@ -1,0 +1,1 @@
+/projects/shared/users/cjacquemard/Programmation/IChem/distrib/IChem_5-2-10 utils bsa /home/neddaoudi/Desktop/test-to-delete/ichem/test/dataset/protlig/1eou/prepared.mol2 /home/neddaoudi/Desktop/test-to-delete/ichem/test/dataset/protlig/1eou/ligand.mol2

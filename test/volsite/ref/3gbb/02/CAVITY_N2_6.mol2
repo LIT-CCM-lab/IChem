@@ -1,0 +1,23 @@
+#    Name: CAVITY_N2_6.mol2
+#    Modification time : Tue Aug  2 10:39:46 2022
+
+@<TRIPOS>MOLECULE
+CAVITY_N2_6.mol2
+    3     0     3     0     0
+PROTEIN
+NO_CHARGES
+
+
+@<TRIPOS>DICT
+PROTEIN macromol
+@<TRIPOS>ATOM
+      1 OG         -5.3500   48.4700   -1.7500 O.3       1 SER1        0.0000 
+      2 OD1        -3.6000   48.4700   -2.9400 O.co2     2 ASP3        0.0000 
+      3 CA         -3.9300   48.9100   -1.5500 C.3       3 GLY6        0.0000 
+@<TRIPOS>BOND
+@<TRIPOS>SUBSTRUCTURE
+     1 SER1        1 GROUP        1 X    SER  0     ROOT SER X 0
+     2 ASP3        2 GROUP        1 X    ASP  0     **** ASP X 2
+     3 GLY6        3 GROUP        1 X    GLY  0     **** GLY X 5
+@<TRIPOS>SET
+

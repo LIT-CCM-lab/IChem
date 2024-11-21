@@ -1,0 +1,28 @@
+{
+	"module": "detectppi",
+
+	"input_dir": "../dataset/protlig",
+	"subdirs": ["4nn6"],
+
+	"commands": [
+		{
+			"id": "01",
+			"cmd": "{ichem} detectppi dppi {pdb}",
+			"in_files": {
+				"pdb": "original.pdb"
+			},
+			"out_files": [
+				"dppi_prot_[A-Z]_[A-Z].mol2",
+				"dppi_ints_[A-Z]_[A-Z].mol2",
+				"dppi_interaction_[A-Z]_[A-Z].ints",
+				"descriptor.sre",
+				"VolSite_Stat.csv",
+				"CAVITY_all_N[0-9]+_ALL.mol2",
+				"Usefull_Site.cav",
+				"cmd.sh",
+				"log.out",
+				"log.err"
+			]
+		}
+	]
+}

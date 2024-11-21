@@ -1,0 +1,17 @@
+@<TRIPOS>MOLECULE
+CMO
+   2    1    0    0    0
+SMALL
+NO_CHARGES
+
+
+@<TRIPOS>ATOM
+   1 C1             0.0000     0.0000     0.0000 C.1     
+   2 O2             0.0000     1.0035     0.0000 Du      
+@<TRIPOS>BOND
+   1    1    2 3
+
+
+
+
+

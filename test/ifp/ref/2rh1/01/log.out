@@ -1,0 +1,22 @@
+HBond_LIG         	|OD1  |78   |ASP 113-A	|O17  |1    |CAU   0-XX	|0	|2.60795	|134.667
+HBond_PROT        	|ND2  |421  |ASN 312-A	|O17  |1    |CAU   0-XX	|1	|2.76961	|159.236
+Hydrophobic       	|CZ   |349  |PHE 289-A	|C16  |2    |CAU   0-XX	|3	|3.74597	|/
+Ionic_LIG         	|OD2  |79   |ASP 113-A	|N19  |4    |CAU   0-XX	|4	|2.94042	|/
+Ionic_LIG         	|OD1  |78   |ASP 113-A	|N19  |4    |CAU   0-XX	|5	|3.60381	|/
+Hydrophobic       	|CZ3  |46   |TRP 109-A	|C21  |6    |CAU   0-XX	|6	|4.43435	|/
+Hydrophobic       	|CG2  |64   |THR 110-A	|C21  |6    |CAU   0-XX	|7	|4.42961	|/
+Hydrophobic       	|CB   |163  |PHE 193-A	|C21  |6    |CAU   0-XX	|8	|4.07199	|/
+Hydrophobic       	|CH2  |47   |TRP 109-A	|C22  |7    |CAU   0-XX	|9	|3.72321	|/
+Hydrophobic       	|CZ   |438  |TYR 316-A	|C22  |7    |CAU   0-XX	|10	|4.46257	|/
+Hydrophobic       	|CG2  |125  |VAL 117-A	|C15  |8    |CAU   0-XX	|11	| 4.0788	|/
+Hydrophobic       	|CE2  |348  |PHE 289-A	|C15  |8    |CAU   0-XX	|13	| 4.0318	|/
+HBond_LIG         	|OG   |248  |SER 203-A	|N7   |16   |CAU   0-XX	|23	|3.31671	|127.808
+Hydrophobic       	|CG2  |185  |THR 195-A	|C1   |20   |CAU   0-XX	|24	|4.32061	|/
+Hydrophobic       	|CZ3  |327  |TRP 286-A	|C16  |2    |CAU   0-XX	|25	|4.05558	|/
+Hydrophobic       	|CG1  |124  |VAL 117-A	|C12  |11   |CAU   0-XX	|28	|3.98025	|/
+Hydrophobic       	|CG1  |89   |VAL 114-A	|C11  |12   |CAU   0-XX	|29	|3.83646	|/
+Hydrophobic       	|CB   |288  |SER 207-A	|C10  |13   |CAU   0-XX	|30	|3.68825	|/
+Hydrophobic       	|CG2  |90   |VAL 114-A	|C13  |10   |CAU   0-XX	|31	|3.81147	|/
+
+|A  M82|A  V86|A W109|A T110|A D113|A V114|A L115|A V117|A T118|A C191|A F193|A T195|A Y199|A A200|A I201|A S203|A S204|A I205|A S207|A F208|A W286|A F289|A F290|A N293|A Y308|A N312|A Y316
+000000000000001000000100000000001011000000000000010000000000000000000010000001000000000000000000000000000000010000000000000000100000000000001000000100000000000000000000000000000010001000000

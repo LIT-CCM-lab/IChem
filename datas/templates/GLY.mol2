@@ -1,0 +1,39 @@
+#	Name:			<unnamed>
+#	Creating user name:	gilims
+#	Creation time:		Tue Dec  4 15:09:54 2012
+
+#	Modifying user name:	gilims
+#	Modification time:	Tue Dec  4 15:09:54 2012
+
+@<TRIPOS>MOLECULE
+GLY
+   10     9     1     0     0
+BIOPOLYMER
+NO_CHARGES
+
+
+@<TRIPOS>DICT
+BIOPOLYMER macromol
+@<TRIPOS>ATOM
+      1 CA         -0.1496    0.2986    0.0000 C.3       1 GLY1        0.0000 BACKBONE|DICT|DIRECT
+      2 N          -0.6298    1.6699    0.0000 N.am      1 GLY1        0.0000 BACKBONE|DICT|DIRECT
+      3 C          -0.5585   -0.3804    1.3087 C.2       1 GLY1        0.0000 BACKBONE|DICT|DIRECT
+      4 O           0.2439   -0.4797    2.2357 O.2       1 GLY1        0.0000 BACKBONE|DICT|DIRECT
+      5 OXT        -1.8075   -0.8444    1.3761 O.3       1 GLY1        1.0000 CAP|DICT
+      6 HNCAP      -1.6248    1.8942    0.0000 H         1 GLY1        1.0000 CAP|DICT
+      7 HA2        -0.5895   -0.2465   -0.8352 H         1 GLY1        1.0000 BACKBONE|DICT|DIRECT
+      8 HA3         0.9355    0.2876   -0.1012 H         1 GLY1        1.0000 DICT
+      9 H           0.0620    2.4195    0.0000 H         1 GLY1        1.0000 BACKBONE|DICT|ESSENTIAL|DIRECT
+     10 HOCAP      -2.0735   -0.8933    2.2972 H         1 GLY1        1.0000 CAP|DICT
+@<TRIPOS>BOND
+     1    1    2 1    BACKBONE|DICT
+     2    1    3 1    BACKBONE|DICT
+     3    3    4 2    BACKBONE|DICT
+     4    3    5 1    CAP|DICT
+     5    2    6 1    CAP|DICT
+     6    1    7 1    BACKBONE|DICT
+     7    1    8 1    DICT
+     8    2    9 1    BACKBONE|DICT
+     9    5   10 1    CAP|DICT
+@<TRIPOS>SUBSTRUCTURE
+     1 GLY1        1 RESIDUE           4 A     GLY     0 ROOT|DICT 

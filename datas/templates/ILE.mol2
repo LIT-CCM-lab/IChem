@@ -1,0 +1,63 @@
+#	Name:			<unnamed>
+#	Creating user name:	gilims
+#	Creation time:		Tue Dec  4 15:12:21 2012
+
+#	Modifying user name:	gilims
+#	Modification time:	Tue Dec  4 15:12:21 2012
+
+@<TRIPOS>MOLECULE
+ILE
+   22    21     1     0     0
+PROTEIN
+NO_CHARGES
+
+
+@<TRIPOS>DICT
+PROTEIN protein
+@<TRIPOS>ATOM
+      1 CA         -0.1495    0.2986    0.0000 C.3       1 ILE1        0.0000 BACKBONE|DICT|DIRECT
+      2 N          -0.6298    1.6699    0.0000 N.am      1 ILE1        0.0000 BACKBONE|DICT|DIRECT
+      3 CB          0.5111   -0.0377   -1.3384 C.3       1 ILE1        0.0000 DICT
+      4 C           0.7641    0.0827    1.2081 C.2       1 ILE1        0.0000 BACKBONE|DICT|DIRECT
+      5 O           1.8357    0.6805    1.2928 O.2       1 ILE1        0.0000 BACKBONE|DICT|DIRECT
+      6 CG2         1.1357   -1.4340   -1.3062 C.3       1 ILE1        0.0000 DICT
+      7 CG1        -0.4793    0.1208   -2.4939 C.3       1 ILE1        0.0000 DICT
+      8 CD1         0.1815   -0.2155   -3.8324 C.3       1 ILE1        0.0000 DICT
+      9 OXT         0.3338   -0.7725    2.1372 O.3       1 ILE1        1.0000 CAP|DICT
+     10 HNCAP      -1.6248    1.8941    0.0000 H         1 ILE1        1.0000 CAP|DICT
+     11 H           0.0619    2.4195    0.0000 H         1 ILE1        1.0000 BACKBONE|DICT|ESSENTIAL|DIRECT
+     12 HA         -1.0290   -0.3371    0.1020 H         1 ILE1        1.0000 BACKBONE|DICT|DIRECT
+     13 HB          1.3102    0.6948   -1.4528 H         1 ILE1        1.0000 DICT
+     14 HG23        1.5956   -1.6396   -2.2728 H         1 ILE1        1.0000 DICT
+     15 HG22        1.9011   -1.4812   -0.5317 H         1 ILE1        1.0000 DICT
+     16 HG21        0.3692   -2.1794   -1.0934 H         1 ILE1        1.0000 DICT
+     17 HG13       -1.3205   -0.5536   -2.3340 H         1 ILE1        1.0000 DICT
+     18 HG12       -0.8451    1.1474   -2.5076 H         1 ILE1        1.0000 DICT
+     19 HD13       -0.5506   -0.0923   -4.6304 H         1 ILE1        1.0000 DICT
+     20 HD12        1.0196    0.4575   -4.0126 H         1 ILE1        1.0000 DICT
+     21 HD11        0.5472   -1.2422   -3.8189 H         1 ILE1        1.0000 DICT
+     22 HOCAP       0.7509   -0.5594    2.9752 H         1 ILE1        1.0000 CAP|DICT
+@<TRIPOS>BOND
+     1    1    2 1    BACKBONE|DICT
+     2    1    3 1    DICT
+     3    1    4 1    BACKBONE|DICT
+     4    4    5 2    BACKBONE|DICT
+     5    4    9 1    CAP|DICT
+     6    3    6 1    DICT
+     7    3    7 1    DICT
+     8    7    8 1    DICT
+     9    2   10 1    CAP|DICT
+    10    2   11 1    BACKBONE|DICT
+    11    1   12 1    BACKBONE|DICT
+    12    3   13 1    DICT
+    13    6   14 1    DICT
+    14    6   15 1    DICT
+    15    6   16 1    DICT
+    16    7   17 1    DICT
+    17    7   18 1    DICT
+    18    8   19 1    DICT
+    19    8   20 1    DICT
+    20    8   21 1    DICT
+    21    9   22 1    CAP|DICT
+@<TRIPOS>SUBSTRUCTURE
+     1 ILE1        1 RESIDUE           1 A     ILE     0 ROOT|DICT 

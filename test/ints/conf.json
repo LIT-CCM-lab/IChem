@@ -1,0 +1,52 @@
+{
+	"module": "ints",
+
+	"input_dir": "../dataset/protlig",
+	"subdirs": ["1eou", "2rh1", "2zx7", "3gbb", "4d3j"],
+
+	"commands": [
+		{
+			"id": "01",
+			"cmd": "{ichem} -name ipa -logf ints.txt -type MER ints {site} {ligand}",
+			"in_files": {
+				"ligand": "ligand.mol2",
+				"site": "site.mol2"
+			},
+			"out_files": [
+				"ints.txt",
+				"ipa_INTS_M.mol2",
+				"cmd.sh",
+				"log.out",
+				"log.err"
+			]
+		},
+		{
+			"id": "02",
+			"cmd": "{ichem} -fgps STD ints {site} {ligand} full.fgp",
+			"in_files": {
+				"ligand": "ligand.mol2",
+				"site": "site.mol2"
+			},
+			"out_files": [
+				"full.fgp",
+				"cmd.sh",
+				"log.out",
+				"log.err"
+			]
+		},
+		{
+			"id": "03",
+			"cmd": "{ichem} --small -fgps STD ints {site} {ligand} small.fgp",
+			"in_files": {
+				"ligand": "ligand.mol2",
+				"site": "site.mol2"
+			},
+			"out_files": [
+				"small.fgp",
+				"cmd.sh",
+				"log.out",
+				"log.err"
+			]
+		}
+	]
+}

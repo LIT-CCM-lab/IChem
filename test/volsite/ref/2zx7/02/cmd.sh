@@ -1,0 +1,1 @@
+/projects/shared/users/cjacquemard/Programmation/IChem/distrib/IChem_5-2-10 volsite /projects/shared/users/cjacquemard/Programmation/IChem/test/dataset/protlig/2zx7/prepared.mol2 /projects/shared/users/cjacquemard/Programmation/IChem/test/dataset/protlig/2zx7/ligand.mol2

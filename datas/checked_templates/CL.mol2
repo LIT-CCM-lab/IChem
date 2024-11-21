@@ -1,0 +1,23 @@
+#	Name:			CL
+#	Creating user name:	installer
+#	Creation time:		Fri Oct 12 10:11:06 2012
+
+
+#	Modifying user name:	installer
+#	Modification time:	Fri Oct 12 10:11:06 2012
+
+@<TRIPOS>MOLECULE
+CL
+   1    0    0    0    0
+SMALL
+NO_CHARGES
+
+
+@<TRIPOS>ATOM
+   1 Cl1            0.0000     0.0000     0.0000 Cl      
+@<TRIPOS>BOND
+
+
+
+
+

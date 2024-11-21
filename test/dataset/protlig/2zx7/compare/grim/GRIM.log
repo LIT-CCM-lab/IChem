@@ -1,0 +1,41 @@
+#############
+#############
+SCORE	0.864568
+SumCl	0.162904
+RMSD	0.141793
+LIG	9
+CENT	12
+PROT	11
+MATCH	Ref Ints Point		Comp Ints Point	Pair	Weight	distance 
+MATCH	N    |1    |SEL   1-Z	N    |1    |SEL   1-Z	0.834	50.6903
+MATCH	N    |2    |SEL   1-Z	N    |2    |SEL   1-Z	0.834	53.8826
+MATCH	N    |3    |SEL   1-Z	N    |3    |SEL   1-Z	0.834	49.9771
+MATCH	O    |4    |ALL   2-Z	O    |5    |ALL   2-Z	0.93	53.8826
+MATCH	O    |5    |ALL   2-Z	O    |6    |ALL   2-Z	0.93	49.9771
+MATCH	O    |6    |ALL   2-Z	O    |4    |ALL   2-Z	0.93	46.2966
+MATCH	OD1  |8    |ASL   4-Z	OD1  |7    |ASL   4-Z	0.993	46.2966
+MATCH	CA   |10   |GLL   5-Z	CA   |10   |GLL   5-Z	0.299	51.8319
+MATCH	CA   |11   |GLL   5-Z	CA   |11   |GLL   5-Z	0.299	50.6784
+MATCH	N    |16   |SEP   1-Z	N    |13   |SEP   1-Z	0.834	56.0684
+MATCH	N    |17   |SEP   1-Z	N    |12   |SEP   1-Z	0.834	50.2798
+MATCH	N    |18   |SEP   1-Z	N    |15   |SEP   1-Z	0.834	51.6268
+MATCH	N    |19   |SEP   1-Z	N    |14   |SEP   1-Z	0.834	53.1893
+MATCH	O    |20   |ALP   2-Z	O    |17   |ALP   2-Z	0.93	58.0002
+MATCH	O    |21   |ALP   2-Z	O    |16   |ALP   2-Z	0.93	43.8151
+MATCH	OD1  |26   |ASP   4-Z	OD1  |19   |ASP   4-Z	0.993	39.9442
+MATCH	OD1  |27   |ASP   4-Z	OD1  |18   |ASP   4-Z	0.993	43.8151
+MATCH	CA   |31   |GLP   5-Z	CA   |21   |GLP   5-Z	0.299	43.9864
+MATCH	CA   |32   |GLP   5-Z	CA   |23   |GLP   5-Z	0.299	38.0708
+MATCH	CA   |36   |GLP   5-Z	CA   |25   |GLP   5-Z	0.299	55.0351
+MATCH	N    |39   |SEC   1-Z	N    |28   |SEC   1-Z	0.834	53.3796
+MATCH	N    |40   |SEC   1-Z	N    |27   |SEC   1-Z	0.834	50.433
+MATCH	N    |41   |SEC   1-Z	N    |29   |SEC   1-Z	0.834	54.9568
+MATCH	N    |42   |SEC   1-Z	N    |31   |SEC   1-Z	0.834	50.7793
+MATCH	N    |43   |SEC   1-Z	N    |30   |SEC   1-Z	0.834	51.5556
+MATCH	O    |44   |ALC   2-Z	O    |33   |ALC   2-Z	0.93	55.9403
+MATCH	O    |45   |ALC   2-Z	O    |34   |ALC   2-Z	0.93	46.8959
+MATCH	O    |48   |ALC   2-Z	O    |32   |ALC   2-Z	0.93	45.0075
+MATCH	OD1  |52   |ASC   4-Z	OD1  |36   |ASC   4-Z	0.993	43.1073
+MATCH	OD1  |53   |ASC   4-Z	OD1  |35   |ASC   4-Z	0.993	45.0075
+MATCH	CA   |55   |GLC   5-Z	CA   |41   |GLC   5-Z	0.299	54.5434
+MATCH	CA   |63   |GLC   5-Z	CA   |42   |GLC   5-Z	0.299	52.9955

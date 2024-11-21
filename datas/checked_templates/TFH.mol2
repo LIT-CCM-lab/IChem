@@ -1,0 +1,17 @@
+@<TRIPOS>MOLECULE
+TFH
+   2    1    0    0    0
+SMALL
+NO_CHARGES
+
+
+@<TRIPOS>ATOM
+   1 N1             0.0000     0.0000     0.0000 N.1     
+   2 N2             0.0000     1.0335     0.0000 N.1     
+@<TRIPOS>BOND
+   1    1    2 3
+
+
+
+
+

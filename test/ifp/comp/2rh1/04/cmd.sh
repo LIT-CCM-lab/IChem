@@ -1,0 +1,1 @@
+/projects/shared/users/cjacquemard/Programmation/IChem/build/release/IChem --extended IFP /projects/shared/users/cjacquemard/Programmation/IChem/test/dataset/protlig/2rh1/site.mol2 /projects/shared/users/cjacquemard/Programmation/IChem/test/dataset/protlig/2rh1/ligand.mol2 /projects/shared/users/cjacquemard/Programmation/IChem/test/dataset/protlig/2rh1/redocked_01.mol2

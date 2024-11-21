@@ -1,0 +1,17 @@
+@<TRIPOS>MOLECULE
+SX
+   2    1    0    0    0
+SMALL
+NO_CHARGES
+
+
+@<TRIPOS>ATOM
+   1 O1             0.0000     0.0000     0.0000 O.2     
+   2 S2             0.0000     1.4035     0.0000 S.2     
+@<TRIPOS>BOND
+   1    1    2 2
+
+
+
+
+

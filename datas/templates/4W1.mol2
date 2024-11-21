@@ -1,0 +1,45 @@
+#	Name:			4W1
+#	Creating user name:	drognan
+#	Creation time:		Wed Sep  5 12:09:46 2018
+
+
+#	Modifying user name:	drognan
+#	Modification time:	Wed Sep  5 12:09:46 2018
+
+@<TRIPOS>MOLECULE
+4W1
+  11   12    0    0    0
+SMALL
+NO_CHARGES
+
+
+@<TRIPOS>ATOM
+   1 C1            -0.0164     1.3567     0.0095 C.ar    
+   2 C2             1.1691     2.0796     0.0021 C.ar    
+   3 C3             2.3777     1.4249    -0.0134 C.ar    
+   4 C4             2.4201     0.0270    -0.0213 C.ar    
+   5 C5             1.2285    -0.7030    -0.0133 C.ar    
+   6 C6             0.0021    -0.0041     0.0020 C.ar    
+   7 C7             1.4726    -2.1363    -0.0234 C.2     
+   8 C8             2.7445    -2.4825    -0.0379 C.2     
+   9 S9             3.7904    -1.0757    -0.0407 S.3     
+  10 C10            0.3566    -3.1489    -0.0173 C.3     
+  11 O11            0.9091    -4.4668    -0.0299 O.3     
+@<TRIPOS>BOND
+   1    1    6 ar
+   2    1    2 ar
+   3    2    3 ar
+   4    3    4 ar
+   5    4    9 1
+   6    4    5 ar
+   7    5    6 ar
+   8    5    7 1
+   9    7    8 2
+  10    7   10 1
+  11    8    9 1
+  12   10   11 1
+
+
+
+
+

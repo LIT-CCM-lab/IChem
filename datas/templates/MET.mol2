@@ -1,0 +1,59 @@
+#	Name:			<unnamed>
+#	Creating user name:	gilims
+#	Creation time:		Tue Dec  4 15:13:08 2012
+
+#	Modifying user name:	gilims
+#	Modification time:	Tue Dec  4 15:13:14 2012
+
+@<TRIPOS>MOLECULE
+MET
+   20    19     1     0     0
+PROTEIN
+NO_CHARGES
+
+
+@<TRIPOS>DICT
+PROTEIN protein
+@<TRIPOS>ATOM
+      1 CA         -0.1393    0.3141    0.0262 C.3       1 MET1        0.0000 BACKBONE|DICT|DIRECT
+      2 N          -0.6195    1.6854    0.0262 N.am      1 MET1        0.0000 BACKBONE|DICT|DIRECT
+      3 CB          0.5610   -0.0049   -1.2962 C.3       1 MET1        0.0000 DICT
+      4 C           0.8429    0.1223    1.1835 C.2       1 MET1        0.0000 BACKBONE|DICT|DIRECT
+      5 O           2.0300   -0.1098    0.9604 O.2       1 MET1        0.0000 BACKBONE|DICT|DIRECT
+      6 CG         -0.3947    0.1675   -2.4783 C.3       1 MET1        0.0000 DICT
+      7 SD         -1.8158   -0.9501   -2.2971 S.3       1 MET1        0.0000 DICT
+      8 CE         -0.9573   -2.5513   -2.2765 C.3       1 MET1        0.0000 DICT
+      9 OXT         0.3408    0.2206    2.4156 O.3       1 MET1        1.0000 CAP|DICT
+     10 HNCAP      -1.6145    1.9096    0.0262 H         1 MET1        1.0000 CAP|DICT
+     11 H           0.0722    2.4350    0.0262 H         1 MET1        1.0000 BACKBONE|DICT|ESSENTIAL|DIRECT
+     12 HA         -0.9864   -0.3577    0.1646 H         1 MET1        1.0000 BACKBONE|DICT|DIRECT
+     13 HB3         1.4061    0.6720   -1.4214 H         1 MET1        1.0000 DICT
+     14 HB2         0.9295   -1.0301   -1.2626 H         1 MET1        1.0000 DICT
+     15 HG3        -0.7537    1.1962   -2.5075 H         1 MET1        1.0000 DICT
+     16 HG2         0.1336   -0.0504   -3.4064 H         1 MET1        1.0000 DICT
+     17 HE3        -1.6939   -3.3476   -2.1702 H         1 MET1        1.0000 DICT
+     18 HE2        -0.4133   -2.6935   -3.2103 H         1 MET1        1.0000 DICT
+     19 HE1        -0.2518   -2.5843   -1.4463 H         1 MET1        1.0000 DICT
+     20 HOCAP       1.0452    0.4609    3.0219 H         1 MET1        1.0000 CAP|DICT
+@<TRIPOS>BOND
+     1    1    2 1    BACKBONE|DICT
+     2    1    3 1    DICT
+     3    1    4 1    BACKBONE|DICT
+     4    4    5 2    BACKBONE|DICT
+     5    4    9 1    CAP|DICT
+     6    3    6 1    DICT
+     7    6    7 1    DICT
+     8    7    8 1    DICT
+     9    2   10 1    CAP|DICT
+    10    2   11 1    BACKBONE|DICT
+    11    1   12 1    BACKBONE|DICT
+    12    3   13 1    DICT
+    13    3   14 1    DICT
+    14    6   15 1    DICT
+    15    6   16 1    DICT
+    16    8   17 1    DICT
+    17    8   18 1    DICT
+    18    8   19 1    DICT
+    19    9   20 1    CAP|DICT
+@<TRIPOS>SUBSTRUCTURE
+     1 MET1        1 RESIDUE           1 A     MET     0 ROOT|DICT 

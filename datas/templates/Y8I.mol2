@@ -1,0 +1,40 @@
+#	Name:			Y8I
+#	Creating user name:	drognan
+#	Creation time:		Wed Sep  5 12:09:46 2018
+
+
+#	Modifying user name:	drognan
+#	Modification time:	Wed Sep  5 12:09:46 2018
+
+@<TRIPOS>MOLECULE
+Y8I
+   9    9    0    0    0
+SMALL
+NO_CHARGES
+
+
+@<TRIPOS>ATOM
+   1 C1            -0.0167     1.3789     0.0096 C.ar    
+   2 C2             1.1697     2.0874     0.0021 C.ar    
+   3 C3             2.3802     1.4110    -0.0131 C.ar    
+   4 C4             2.3973     0.0228    -0.0208 C.ar    
+   5 C5             1.2084    -0.6816    -0.0132 C.ar    
+   6 C6             0.0021    -0.0041     0.0020 C.ar    
+   7 Br7           -1.6234    -0.9704     0.0123 Br      
+   8 Br8            4.0459    -0.9032    -0.0421 Br      
+   9 O9             3.5483     2.1061    -0.0210 O.3     
+@<TRIPOS>BOND
+   1    1    6 ar
+   2    1    2 ar
+   3    2    3 ar
+   4    3    4 ar
+   5    3    9 1
+   6    4    5 ar
+   7    4    8 1
+   8    5    6 ar
+   9    6    7 1
+
+
+
+
+
