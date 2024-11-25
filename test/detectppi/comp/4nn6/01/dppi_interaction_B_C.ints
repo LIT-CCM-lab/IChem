@@ -1,8 +1,0 @@
-HBond_PROT        	|NH2  |5912 |ARG 180-C	|O    |2806 |ALA 143-B	|0	|2.43914	|154.412
-Hydrophobic       	|CG2  |5706 |THR 164-C	|CG   |3449 |PHE 184-B	|2	|4.16215	|/
-HBond_PROT        	|NH2  |2772 |ARG 140-B	|OE2  |5569 |GLU 153-C	|3	|3.12904	|135.042
-Hydrophobic       	|CB   |3448 |PHE 184-B	|CB   |5704 |THR 164-C	|4	|4.48224	|/
-HBond_PROT        	|NZ   |3100 |LYS 162-B	|O    |5717 |SER 165-C	|6	|2.82974	|120.355
-Aromatic_Face/Face	|DuAr |NULL |HIS 151-C	|DuAr |NULL |HIS 151-C	|7	|      0	|/
-Aromatic_Face/Face	|DuAr |NULL |HIS 151-C	|DuAr |NULL |HIS 151-C	|8	|      0	|/
-Hydrophobic       	|CG2  |5706 |THR 164-C	|CG2  |5706 |THR 164-C	|9	|3.42443	|/

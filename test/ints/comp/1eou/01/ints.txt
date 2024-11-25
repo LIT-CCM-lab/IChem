@@ -1,8 +1,0 @@
-Metal_Acceptor    	|ZN   |372  | ZN 300-A1	|N1   |2    |SMS   0-A	|0	|2.13174	|/
-HBond_LIG         	|OG1  |284  |THR 198-A1	|N1   |2    |SMS   0-A	|1	|2.50711	|121.317
-HBond_PROT        	|N    |276  |THR 198-A1	|O9   |6    |SMS   0-A	|2	|2.93323	|157.128
-Hydrophobic       	|CG2  |171  |VAL 121-A1	|C1   |8    |SMS   0-A	|3	|4.27818	|/
-Hydrophobic       	|CD2  |272  |LEU 197-A1	|C1   |8    |SMS   0-A	|4	|4.28642	|/
-Hydrophobic       	|CB   |296  |THR 199-A1	|C3   |12   |SMS   0-A	|5	|4.41439	|/
-Hydrophobic       	|CZ   |193  |PHE 130-A1	|C6   |18   |SMS   0-A	|6	| 4.3674	|/
-Hydrophobic       	|CG2  |300  |THR 199-A1	|C9   |29   |SMS   0-A	|7	|  3.945	|/

@@ -1,1 +1,0 @@
-/projects/shared/users/cjacquemard/Programmation/IChem/build/release/IChem -fgps STD ints /projects/shared/users/cjacquemard/Programmation/IChem/test/dataset/protlig/2zx7/site.mol2 /projects/shared/users/cjacquemard/Programmation/IChem/test/dataset/protlig/2zx7/ligand.mol2 full.fgp

@@ -1,1 +1,0 @@
-/projects/shared/users/cjacquemard/Programmation/IChem/build/release/IChem -name ipa -logf ints.txt -type MER ints /projects/shared/users/cjacquemard/Programmation/IChem/test/dataset/protlig/3gbb/site.mol2 /projects/shared/users/cjacquemard/Programmation/IChem/test/dataset/protlig/3gbb/ligand.mol2

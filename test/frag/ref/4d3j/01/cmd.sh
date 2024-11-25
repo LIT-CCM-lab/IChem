@@ -1,1 +1,0 @@
-/projects/shared/users/cjacquemard/Programmation/IChem/distrib/IChem_5-2-10 utils frag /projects/shared/users/cjacquemard/Programmation/IChem/test/dataset/protlig/4d3j/prepared.mol2 /projects/shared/users/cjacquemard/Programmation/IChem/test/dataset/protlig/4d3j/ligand.mol2

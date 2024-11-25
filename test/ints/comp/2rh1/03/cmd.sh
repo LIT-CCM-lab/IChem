@@ -1,1 +1,0 @@
-/projects/shared/users/cjacquemard/Programmation/IChem/build/release/IChem --small -fgps STD ints /projects/shared/users/cjacquemard/Programmation/IChem/test/dataset/protlig/2rh1/site.mol2 /projects/shared/users/cjacquemard/Programmation/IChem/test/dataset/protlig/2rh1/ligand.mol2 small.fgp
