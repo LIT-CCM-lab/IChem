@@ -5,4 +5,4 @@ test/
 .vscode/
 
 # Ignore build-test
-# build-test/
+build-test/
