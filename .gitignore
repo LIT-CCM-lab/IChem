@@ -1,8 +1,8 @@
 # Ignore test repository
-test/
+# test/
 
 # Ignore vscode conf
 .vscode/
 
 # Ignore build-test
-build-test/
+# build-test/

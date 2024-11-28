@@ -120,7 +120,7 @@ try
     ///////// CHECKING  ////////
     ////////////////////////////
     
-    // check later 
+    // Delete for the issue 
     // if (NbrAt==1000000) {
     //     EOFile=true;
     //     throw MoleExcept(2010404,
