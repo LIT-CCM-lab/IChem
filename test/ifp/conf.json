@@ -1,0 +1,63 @@
+{
+	"module": "IFP",
+
+	"input_dir": "../dataset/protlig",
+	"subdirs": ["1eou", "2rh1", "2zx7", "3gbb", "4d3j"],
+
+	"commands": [
+		{
+			"id": "01",
+			"cmd": "{ichem} IFP {site} {ligand}",
+			"in_files": {
+				"site": "site.mol2",
+				"ligand": "ligand.mol2"
+			},
+			"out_files": [
+				"cmd.sh",
+				"log.out",
+				"log.err"
+			]
+		},
+		{
+			"id": "02",
+			"cmd": "{ichem} --extended IFP {site} {ligand}",
+			"in_files": {
+				"site": "site.mol2",
+				"ligand": "ligand.mol2"
+			},
+			"out_files": [
+				"cmd.sh",
+				"log.out",
+				"log.err"
+			]
+		},
+		{
+			"id": "03",
+			"cmd": "{ichem} IFP {site} {ligand} {docked}",
+			"in_files": {
+				"site": "site.mol2",
+				"ligand": "ligand.mol2",
+				"docked": "redocked_01.mol2"
+			},
+			"out_files": [
+				"cmd.sh",
+				"log.out",
+				"log.err"
+			]
+		},
+		{
+			"id": "04",
+			"cmd": "{ichem} --extended IFP {site} {ligand} {docked}",
+			"in_files": {
+				"site": "site.mol2",
+				"ligand": "ligand.mol2",
+				"docked": "redocked_01.mol2"
+			},
+			"out_files": [
+				"cmd.sh",
+				"log.out",
+				"log.err"
+			]
+		}
+	]
+}

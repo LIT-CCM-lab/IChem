@@ -1,0 +1,27 @@
+{
+	"module": "realign",
+
+	"input_dir": "../dataset/protlig",
+	"subdirs": ["1eou", "2rh1", "2zx7", "3gbb", "4d3j"],
+
+	"commands": [
+		{
+			"id": "01",
+			"cmd": "{ichem} --wMob realign {grim} {ints} {ligand} {protein}",
+			"in_files": {
+				"grim": "compare/grim/GRIM_ints.mol2",
+				"ints": "compare/ints.mol2",
+				"ligand": "compare/ligand.mol2",
+				"protein": "compare/site.mol2"
+			},
+			"out_files": [
+				"rot_ligand.mol2",
+				"rot_site.mol2",
+				"rot_ints.mol2",
+				"cmd.sh",
+				"log.out",
+				"log.err"
+			]
+		}
+	]
+}

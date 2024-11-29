@@ -1,0 +1,26 @@
+#    Name: dppi
+#    Modification time : Wed Jul 27 12:52:47 2022
+
+@<TRIPOS>MOLECULE
+dppi
+    8     0     3     0     0
+SMALL
+NO_CHARGES
+
+
+@<TRIPOS>ATOM
+      1 N          31.1485   35.4685   38.8850 N.am      1 SEC1        0.0000 
+      2 N          27.6280   32.0200   35.7195 N.am      1 SEC1        0.0000 
+      3 N          25.4045   23.7840   16.0510 N.am      1 SEC1        0.0000 
+      4 CA         26.7450   26.6945   18.4260 C.3       2 GLC5        0.0000 
+      5 CA         26.2960   26.2580   19.7530 C.3       2 GLC5        0.0000 
+      6 CA         26.3560   26.5475   19.0520 C.3       2 GLC5        0.0000 
+      7 CZ         28.4750   26.0998   27.4582 C.ar      3 PHC6        0.0000 
+      8 CZ         28.4750   26.0998   27.4582 C.ar      3 PHC6        0.0000 
+@<TRIPOS>BOND
+@<TRIPOS>SUBSTRUCTURE
+     1 SEC1        1 GROUP        1 Z    SEC  0     ROOT SEC Z 0
+     2 GLC5        4 GROUP        1 Z    GLC  0     **** GLC Z 4
+     3 PHC6        7 GROUP        1 Z    PHC  0     **** PHC Z 6
+@<TRIPOS>SET
+

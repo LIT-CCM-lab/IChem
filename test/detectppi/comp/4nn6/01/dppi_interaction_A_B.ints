@@ -1,0 +1,50 @@
+Hydrophobic       	|CG1  |2255 |ILE 102-B	|CG1  |167  |ILE  33-A	|1	|4.47368	|/
+HBond_PROT        	|ND2  |3873 |ASN 211-B	|OD1  |219  |ASN  36-A	|7	| 2.7815	|159.855
+Hydrophobic       	|CE1  |3038 |TYR 159-B	|CB   |231  |ILE  37-A	|8	| 4.3487	|/
+Hydrophobic       	|CE2  |3901 |TYR 213-B	|CG1  |232  |ILE  37-A	|9	|4.26584	|/
+Hydrophobic       	|CZ   |3923 |PHE 214-B	|CD1  |234  |ILE  37-A	|15	|4.34932	|/
+HBond_PROT        	|OH   |3041 |TYR 159-B	|OD1  |307  |ASP  41-A	|17	|2.62868	|141.248
+Hydrophobic       	|CD2  |1893 |LEU  78-B	|CD   |873  |ARG  88-A	|20	|4.01854	|/
+Hydrophobic       	|CD2  |2219 |LEU 100-B	|CA   |892  |ARG  89-A	|21	| 3.9517	|/
+Hydrophobic       	|CD1  |2257 |ILE 102-B	|CA   |892  |ARG  89-A	|22	|3.98151	|/
+Hydrophobic       	|CD2  |2219 |LEU 100-B	|CB   |895  |ARG  89-A	|23	|4.29424	|/
+Hydrophobic       	|CD1  |2257 |ILE 102-B	|CG   |896  |ARG  89-A	|27	|3.95256	|/
+Hydrophobic       	|CD1  |2257 |ILE 102-B	|CD   |897  |ARG  89-A	|28	|4.46243	|/
+Hydrophobic       	|CG2  |2256 |ILE 102-B	|CB   |949  |GLU  92-A	|29	|4.46609	|/
+Hydrophobic       	|CG2  |829  |THR  85-A	|CG   |1891 |LEU  78-B	|32	|4.48991	|/
+Hydrophobic       	|CG2  |829  |THR  85-A	|CD2  |1893 |LEU  78-B	|34	| 3.9003	|/
+HBond_PROT        	|NH2  |901  |ARG  89-A	|O    |2195 |PHE  99-B	|37	|2.73924	|139.772
+HBond_PROT        	|NE   |898  |ARG  89-A	|O    |2215 |LEU 100-B	|38	|2.84701	|146.626
+Hydrophobic       	|CG   |950  |GLU  92-A	|CB   |2254 |ILE 102-B	|42	|4.49037	|/
+Hydrophobic       	|CG2  |168  |ILE  33-A	|CG1  |2255 |ILE 102-B	|43	|3.83353	|/
+Hydrophobic       	|CD1  |234  |ILE  37-A	|CD1  |2257 |ILE 102-B	|48	| 4.4148	|/
+Hydrophobic       	|CB   |289  |HIS  40-A	|CD1  |3036 |TYR 159-B	|50	|4.29791	|/
+Hydrophobic       	|CG2  |233  |ILE  37-A	|CD1  |3036 |TYR 159-B	|51	| 4.3746	|/
+HBond_PROT        	|NH1  |900  |ARG  89-A	|OH   |3041 |TYR 159-B	|54	|3.32062	|136.934
+HBond_PROT        	|ND2  |220  |ASN  36-A	|OD1  |3886 |ASP 212-B	|55	|3.49543	|158.383
+Hydrophobic       	|CB   |217  |ASN  36-A	|CG   |3897 |TYR 213-B	|57	|4.29618	|/
+Hydrophobic       	|CB   |217  |ASN  36-A	|CD2  |3899 |TYR 213-B	|59	|4.14145	|/
+Hydrophobic       	|CD1  |234  |ILE  37-A	|CD2  |3899 |TYR 213-B	|60	| 4.3743	|/
+Hydrophobic       	|CG1  |167  |ILE  33-A	|CZ   |3902 |TYR 213-B	|63	|4.13012	|/
+Hydrophobic       	|CD1  |234  |ILE  37-A	|CZ   |3902 |TYR 213-B	|64	|4.03453	|/
+Hydrophobic       	|CB   |217  |ASN  36-A	|CD2  |3920 |PHE 214-B	|65	|4.34921	|/
+Hydrophobic       	|CG1  |232  |ILE  37-A	|CE2  |3922 |PHE 214-B	|67	|4.45625	|/
+Hydrophobic       	|CB   |144  |LYS  32-A	|CD1  |3898 |TYR 213-B	|69	|4.09856	|/
+Hydrophobic       	|CE1  |3900 |TYR 213-B	|CE1  |3900 |TYR 213-B	|70	|3.82561	|/
+Hydrophobic       	|CG2  |168  |ILE  33-A	|CG2  |168  |ILE  33-A	|71	|3.33858	|/
+Hydrophobic       	|CD1  |169  |ILE  33-A	|CD1  |169  |ILE  33-A	|72	|4.10622	|/
+Hydrophobic       	|CB   |217  |ASN  36-A	|CB   |217  |ASN  36-A	|73	|4.02872	|/
+Hydrophobic       	|CE2  |3922 |PHE 214-B	|CE2  |3922 |PHE 214-B	|74	|3.89161	|/
+Hydrophobic       	|CG1  |232  |ILE  37-A	|CZ   |3923 |PHE 214-B	|75	|4.00716	|/
+Hydrophobic       	|CE1  |3038 |TYR 159-B	|CE1  |3038 |TYR 159-B	|76	|3.82173	|/
+Hydrophobic       	|CD1  |234  |ILE  37-A	|CD1  |234  |ILE  37-A	|77	|3.76849	|/
+Hydrophobic       	|CG1  |2255 |ILE 102-B	|CG1  |2255 |ILE 102-B	|78	|3.91634	|/
+Hydrophobic       	|CD1  |234  |ILE  37-A	|CD1  |234  |ILE  37-A	|79	|3.56288	|/
+Hydrophobic       	|CB   |289  |HIS  40-A	|CB   |289  |HIS  40-A	|80	|4.08546	|/
+Hydrophobic       	|CD1  |1892 |LEU  78-B	|CD1  |1892 |LEU  78-B	|81	|3.78022	|/
+Hydrophobic       	|CD2  |1893 |LEU  78-B	|CD2  |1893 |LEU  78-B	|82	|3.95509	|/
+Hydrophobic       	|CB   |895  |ARG  89-A	|CD1  |2257 |ILE 102-B	|83	|3.68902	|/
+Hydrophobic       	|CD2  |1893 |LEU  78-B	|CD2  |1893 |LEU  78-B	|84	|4.45427	|/
+Hydrophobic       	|CG   |896  |ARG  89-A	|CG   |896  |ARG  89-A	|85	|3.45835	|/
+Hydrophobic       	|CG   |950  |GLU  92-A	|CD1  |2218 |LEU 100-B	|86	|4.32775	|/
+Hydrophobic       	|CG   |950  |GLU  92-A	|CG   |950  |GLU  92-A	|87	|3.98086	|/

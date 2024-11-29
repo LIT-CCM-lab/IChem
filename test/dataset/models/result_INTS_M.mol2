@@ -1,0 +1,23 @@
+#    Name: result
+#    Modification time : Mon Nov 18 10:22:57 2024
+
+@<TRIPOS>MOLECULE
+result
+    5     0     3     0     0
+SMALL
+NO_CHARGES
+
+
+@<TRIPOS>ATOM
+      1 CA         10.0200   12.3810   24.7020 C.3       1 GLL5       -1.0118 
+      2 CA          9.4130   11.2410   24.1460 C.3       1 GLL5       -0.8750 
+      3 CA          8.6460   10.1740   27.3980 C.3       2 GLP5        0.0000 
+      4 CA          9.1535   11.5793   26.0720 C.3       3 GLC5        0.0000 
+      5 CA          8.6983   10.7240   25.6555 C.3       3 GLC5        0.0000 
+@<TRIPOS>BOND
+@<TRIPOS>SUBSTRUCTURE
+     1 GLL5        1 GROUP        1 Z    GLL  0     ROOT GLL Z 4
+     2 GLP5        3 GROUP        1 Z    GLP  0     **** GLP Z 11
+     3 GLC5        4 GROUP        1 Z    GLC  0     **** GLC Z 18
+@<TRIPOS>SET
+

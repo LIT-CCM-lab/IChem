@@ -1,0 +1,17 @@
+Hydrophobic       	|CD1  |299  |ILE 218-A1	|C01  |1    |XFN   0-A	|0	|4.24967	|/
+HBond_LIG         	|NE2  |209  |HIS 128-A1	|N02  |4    |XFN   0-A	|1	|3.10062	|124.769
+Hydrophobic       	|CD   |450  |ARG 247-A1	|C03  |7    |XFN   0-A	|2	|4.47283	|/
+Hydrophobic       	|CZ3  |536  |TRP 329-A1	|C07  |13   |XFN   0-A	|3	| 3.3257	|/
+Hydrophobic       	|CD1  |299  |ILE 218-A1	|C08  |16   |XFN   0-A	|4	|4.15582	|/
+HBond_LIG         	|OE1  |436  |GLU 243-A1	|N12  |23   |XFN   0-A	|5	|2.73922	|167.132
+HBond_LIG         	|OE2  |437  |GLU 243-A1	|N12  |23   |XFN   0-A	|6	|3.47223	|131.237
+Hydrophobic       	|CG   |259  |PRO 216-A1	|C16  |29   |XFN   0-A	|9	|4.13223	|/
+HBond_LIG         	|O    |366  |TRP 238-A1	|N17  |31   |XFN   0-A	|10	|2.95635	|151.441
+HBond_LIG         	|OE2  |437  |GLU 243-A1	|N17  |31   |XFN   0-A	|11	|2.77641	|172.624
+Hydrophobic       	|CE1  |334  |PHE 235-A1	|C18  |34   |XFN   0-A	|13	|3.61258	|/
+Hydrophobic       	|CD   |450  |ARG 247-A1	|C34  |38   |XFN   0-A	|14	| 4.0547	|/
+Hydrophobic       	|CH2  |538  |TRP 329-A1	|C34  |38   |XFN   0-A	|15	|4.10841	|/
+Hydrophobic       	|CZ2  |534  |TRP 329-A1	|C42  |53   |XFN   0-A	|16	|4.03409	|/
+Pi/Cation         	|CZ   |455  |ARG 247-A1	|DuAr |0    |UNK1001-XX	|17	|3.83281	|166.992
+Aromatic_Face/Face	|DuAr |NULL |TRP 329-A1	|DuAr |NULL |XFN   0-A	|18	|3.81436	|/
+Hydrophobic       	|CG1  |292  |ILE 218-A1	|C14  |26   |XFN   0-A	|20	|3.86108	|/

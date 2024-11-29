@@ -1,0 +1,22 @@
+#############
+#############
+SCORE	0.610301
+SumCl	0.0598971
+RMSD	0.555078
+LIG	4
+CENT	5
+PROT	4
+MATCH	Ref Ints Point		Comp Ints Point	Pair	Weight	distance|| Reference Protein 		|| Reference Ligand 		|| Comparaison Protein 		|| Comparaison Ligand 
+MATCH	N    |1    |SEL   1-Z	N    |6    |SEL   1-Z	0.834	21.9497	|| NH2  |126  |ARG  95-A	||	O    |1    |MS8   0-A	|| NH2  |123  |ARG  95-XX	||	O2   |15   |Q7E   0-XX
+MATCH	NZ   |2    |LYL   3-Z	NZ   |5    |LYL   3-Z	0.966	21.9497	|| CZ   |122  |ARG  95-A	||	O    |1    |MS8   0-A	|| CZ   |122  |ARG  95-XX	||	O2   |15   |Q7E   0-XX
+MATCH	CA   |7    |GLL   5-Z	CA   |10   |GLL   5-Z	0.299	22.9173	|| CD2  |49   |TYR  61-A	||	CB   |10   |MS8   0-A	|| CE2  |53   |TYR  61-XX	||	C1   |16   |Q7E   0-XX
+MATCH	CA   |13   |GLL   5-Z	CA   |8    |GLL   5-Z	0.299	23.4956	|| CG   |10   |GLU  13-A	||	CAH  |25   |MS8   0-A	|| CG   |262  |GLU 190-XX	||	C11  |27   |Q7E   0-XX
+MATCH	O    |23   |ALP   2-Z	O    |12   |ALP   2-Z	0.93	19.7054	|| OE1  |235  |GLU 190-A	||	N    |6    |MS8   0-A	|| OE1  |266  |GLU 190-XX	||	N1   |1    |Q7E   0-XX
+MATCH	OD1  |24   |ASP   4-Z	OD1  |13   |ASP   4-Z	0.993	19.7054	|| OE1  |235  |GLU 190-A	||	N    |6    |MS8   0-A	|| OE1  |266  |GLU 190-XX	||	N1   |1    |Q7E   0-XX
+MATCH	OD1  |25   |ASP   4-Z	OD1  |15   |ASP   4-Z	0.993	19.7466	|| OE2  |236  |GLU 190-A	||	N    |6    |MS8   0-A	|| OE2  |267  |GLU 190-XX	||	N1   |1    |Q7E   0-XX
+MATCH	CA   |34   |GLP   5-Z	CA   |25   |GLP   5-Z	0.299	29.9256	|| CB   |200  |SER 173-A	||	CAG  |31   |MS8   0-A	|| CB   |193  |SER 173-XX	||	C9   |25   |Q7E   0-XX
+MATCH	O    |47   |ALC   2-Z	O    |29   |ALC   2-Z	0.93	19.8104	|| OE1  |235  |GLU 190-A	||	N    |6    |MS8   0-A	|| OE1  |266  |GLU 190-XX	||	N1   |1    |Q7E   0-XX
+MATCH	OD1  |48   |ASC   4-Z	OD1  |30   |ASC   4-Z	0.993	19.8104	|| OE1  |235  |GLU 190-A	||	N    |6    |MS8   0-A	|| OE1  |266  |GLU 190-XX	||	N1   |1    |Q7E   0-XX
+MATCH	OD1  |49   |ASC   4-Z	OD1  |32   |ASC   4-Z	0.993	19.9003	|| OE2  |236  |GLU 190-A	||	N    |6    |MS8   0-A	|| OE2  |267  |GLU 190-XX	||	N1   |1    |Q7E   0-XX
+MATCH	CA   |50   |GLC   5-Z	CA   |46   |GLC   5-Z	0.299	23.4561	|| CD2  |49   |TYR  61-A	||	CB   |10   |MS8   0-A	|| CE2  |53   |TYR  61-XX	||	C1   |16   |Q7E   0-XX
+MATCH	CA   |58   |GLC   5-Z	CA   |44   |GLC   5-Z	0.299	27.7993	|| CB   |200  |SER 173-A	||	CAG  |31   |MS8   0-A	|| CB   |193  |SER 173-XX	||	C9   |25   |Q7E   0-XX

@@ -1,0 +1,19 @@
+#############
+#############
+SCORE	0.607278
+SumCl	0.0335136
+RMSD	0.346572
+LIG	3
+CENT	2
+PROT	5
+MATCH	Ref Ints Point		Comp Ints Point	Pair	Weight	distance|| Reference Protein 		|| Reference Ligand 		|| Comparaison Protein 		|| Comparaison Ligand 
+MATCH	CA   |3    |GLL   5-Z	CA   |5    |GLL   5-Z	0.299	55.0048	|| CZ   |349  |PHE 289-A	||	C16  |2    |CAU   0-XX	|| CE2  |272  |PHE 289-A	||	C14  |24   |TIM   0-A
+MATCH	OD1  |4    |ASL   4-Z	OD1  |9    |ASL   4-Z	0.993	57.5451	|| OD2  |79   |ASP 113-A	||	N19  |4    |CAU   0-XX	|| OD2  |67   |ASP 113-A	||	N17  |31   |TIM   0-A
+MATCH	CA   |7    |GLL   5-Z	CA   |4    |GLL   5-Z	0.299	53.6891	|| CG2  |125  |VAL 117-A	||	C15  |8    |CAU   0-XX	|| CG2  |96   |VAL 117-A	||	C13  |21   |TIM   0-A
+MATCH	CA   |16   |GLP   5-Z	CA   |29   |GLP   5-Z	0.299	54.8972	|| CZ   |349  |PHE 289-A	||	C16  |2    |CAU   0-XX	|| CZ   |274  |PHE 289-A	||	C21  |43   |TIM   0-A
+MATCH	OD1  |17   |ASP   4-Z	OD1  |23   |ASP   4-Z	0.993	58.1914	|| OD2  |79   |ASP 113-A	||	N19  |4    |CAU   0-XX	|| OD2  |67   |ASP 113-A	||	N17  |31   |TIM   0-A
+MATCH	CA   |20   |GLP   5-Z	CA   |27   |GLP   5-Z	0.299	60.5608	|| CG2  |64   |THR 110-A	||	C21  |6    |CAU   0-XX	|| CG2  |52   |THR 110-A	||	C20  |39   |TIM   0-A
+MATCH	CA   |25   |GLP   5-Z	CA   |19   |GLP   5-Z	0.299	53.6792	|| CE2  |348  |PHE 289-A	||	C15  |8    |CAU   0-XX	|| CE2  |272  |PHE 289-A	||	C14  |24   |TIM   0-A
+MATCH	CA   |32   |GLP   5-Z	CA   |18   |GLP   5-Z	0.299	55.6867	|| CG2  |90   |VAL 114-A	||	C13  |10   |CAU   0-XX	|| CG2  |80   |VAL 114-A	||	C13  |21   |TIM   0-A
+MATCH	N    |34   |SEC   1-Z	N    |41   |SEC   1-Z	0.834	56.0234	|| ND2  |421  |ASN 312-A	||	O17  |1    |CAU   0-XX	|| ND2  |342  |ASN 312-A	||	O15  |26   |TIM   0-A
+MATCH	OD1  |37   |ASC   4-Z	OD1  |43   |ASC   4-Z	0.993	57.4854	|| OD1  |78   |ASP 113-A	||	N19  |4    |CAU   0-XX	|| OD2  |67   |ASP 113-A	||	N17  |31   |TIM   0-A

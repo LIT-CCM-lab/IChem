@@ -1,0 +1,22 @@
+#############
+#############
+SCORE	0.649784
+SumCl	0.147467
+RMSD	0.250752
+LIG	3
+CENT	5
+PROT	5
+MATCH	Ref Ints Point		Comp Ints Point	Pair	Weight	distance|| Reference Protein 		|| Reference Ligand 		|| Comparaison Protein 		|| Comparaison Ligand 
+MATCH	O    |6    |ALL   2-Z	O    |1    |ALL   2-Z	0.93	0.559223	|| OE1  |436  |GLU 243-A1	||	N12  |23   |XFN   0-A	|| OE1  |438  |GLU 243-A1	||	N01  |1    |TUE   0-A
+MATCH	CA   |7    |GLL   5-Z	CA   |3    |GLL   5-Z	0.299	0.761357	|| CG   |259  |PRO 216-A1	||	C16  |29   |XFN   0-A	|| CG   |268  |PRO 216-A1	||	C03  |7    |TUE   0-A
+MATCH	O    |8    |ALL   2-Z	O    |2    |ALL   2-Z	0.93	0.36295	|| O    |366  |TRP 238-A1	||	N17  |31   |XFN   0-A	|| O    |368  |TRP 238-A1	||	N02  |4    |TUE   0-A
+MATCH	CA   |14   |GLP   5-Z	CA   |11   |GLP   5-Z	0.299	1.22275	|| CD1  |299  |ILE 218-A1	||	C01  |1    |XFN   0-A	|| CG1  |282  |ILE 218-A1	||	C11  |20   |TUE   0-A
+MATCH	O    |18   |ALP   2-Z	O    |7    |ALP   2-Z	0.93	0.469017	|| OE1  |436  |GLU 243-A1	||	N12  |23   |XFN   0-A	|| OE1  |438  |GLU 243-A1	||	N01  |1    |TUE   0-A
+MATCH	O    |19   |ALP   2-Z	O    |9    |ALP   2-Z	0.93	0.194219	|| OE2  |437  |GLU 243-A1	||	N12  |23   |XFN   0-A	|| OE2  |439  |GLU 243-A1	||	N02  |4    |TUE   0-A
+MATCH	CA   |20   |GLP   5-Z	CA   |10   |GLP   5-Z	0.299	0.291522	|| CG   |259  |PRO 216-A1	||	C16  |29   |XFN   0-A	|| CG   |268  |PRO 216-A1	||	C03  |7    |TUE   0-A
+MATCH	O    |21   |ALP   2-Z	O    |8    |ALP   2-Z	0.93	0.325265	|| O    |366  |TRP 238-A1	||	N17  |31   |XFN   0-A	|| O    |368  |TRP 238-A1	||	N02  |4    |TUE   0-A
+MATCH	CA   |27   |GLC   5-Z	CA   |17   |GLC   5-Z	0.299	2.29863	|| CD1  |299  |ILE 218-A1	||	C01  |1    |XFN   0-A	|| CG1  |282  |ILE 218-A1	||	C11  |20   |TUE   0-A
+MATCH	O    |32   |ALC   2-Z	O    |13   |ALC   2-Z	0.93	0.498515	|| OE1  |436  |GLU 243-A1	||	N12  |23   |XFN   0-A	|| OE1  |438  |GLU 243-A1	||	N01  |1    |TUE   0-A
+MATCH	CA   |34   |GLC   5-Z	CA   |16   |GLC   5-Z	0.299	0.508875	|| CG   |259  |PRO 216-A1	||	C16  |29   |XFN   0-A	|| CG   |268  |PRO 216-A1	||	C03  |7    |TUE   0-A
+MATCH	O    |35   |ALC   2-Z	O    |14   |ALC   2-Z	0.93	0.265454	|| O    |366  |TRP 238-A1	||	N17  |31   |XFN   0-A	|| O    |368  |TRP 238-A1	||	N02  |4    |TUE   0-A
+MATCH	O    |36   |ALC   2-Z	O    |15   |ALC   2-Z	0.93	0.260834	|| OE2  |437  |GLU 243-A1	||	N17  |31   |XFN   0-A	|| OE2  |439  |GLU 243-A1	||	N02  |4    |TUE   0-A

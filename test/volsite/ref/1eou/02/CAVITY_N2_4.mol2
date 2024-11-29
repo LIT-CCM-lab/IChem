@@ -1,0 +1,17 @@
+#    Name: CAVITY_N2_4.mol2
+#    Modification time : Fri Jul 22 15:36:19 2022
+
+@<TRIPOS>MOLECULE
+CAVITY_N2_4.mol2
+    0     0     0     0     0
+PROTEIN
+NO_CHARGES
+
+
+@<TRIPOS>DICT
+PROTEIN macromol
+@<TRIPOS>ATOM
+@<TRIPOS>BOND
+@<TRIPOS>SUBSTRUCTURE
+@<TRIPOS>SET
+
