@@ -23,10 +23,20 @@ stdout_handler.setFormatter("%(asctime)s | %(levelname)8s | %(message)s")
 # Add both handlers to the logger
 logger.addHandler(stdout_handler)
 
-ICHEM_PROD = "/projects/shared/users/cjacquemard/Programmation/IChem/distrib/IChem_5-2-10"
-ICHEM_TEST = "/projects/shared/users/cjacquemard/Programmation/IChem/build/release/IChem"
+BASE_DIRECTORY = Path.cwd()
+ICHEM_PROD_PATH = BASE_DIRECTORY / "../distrib/IChem_original_project"
+ICHEM_TEST_PATH = BASE_DIRECTORY / "../build/IChem" 
 
-# TODO: Check if IChem paths exist
+if not os.path.exists(ICHEM_PROD_PATH):
+    sys.exit(f"Path error for executable ICHEM_PROD_PATH at {ICHEM_PROD_PATH}")
+if not os.path.exists(ICHEM_TEST_PATH):
+    sys.exit(f"Path error for executable ICHEM_TEST_PATH at {ICHEM_TEST_PATH}")
+
+
+ICHEM_PROD = ICHEM_PROD_PATH
+ICHEM_TEST = ICHEM_TEST_PATH
+
+
 
 SCRIPT_FILEPATH = os.path.realpath(__file__)
 TEST_DIRPATH = Path(os.path.dirname(SCRIPT_FILEPATH))
