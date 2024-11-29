@@ -52,7 +52,8 @@ namespace ICMole
                        const Coords& center,
                        const unsigned int& int_type,
                        const double& dist,
-                       const double& angl = 0)
+                      //  const double& angl = 0)
+                      const double& angl= -100000)
     : point(p),
       Prot_Ref(protein != nullptr ? protein : nullptr),
       Lig_Ref(ligand != nullptr ? ligand : nullptr),   
@@ -310,18 +311,24 @@ public:
               * @param interResult : Detected interactions are score here
               * @param wMerge : Merge hydrophobic interactions
               */
-             void calcInteractions(Molecule&     ligand,
-                                  InterResults& interResult,
-                                  bool          wMerge=true,
-                                  bool          oldh=true,
-                                  bool mono_prop=false, 
-                                  bool displayProperties = false,
-                                  bool out_lig=false,
-                                  bool stdout=false
-                                  ) const; //bool displayProperties = false
+            //  void calcInteractions(Molecule&     ligand,
+            //                       InterResults& interResult,
+            //                       bool          wMerge=true,
+            //                       bool          oldh=true,
+            //                       bool mono_prop=false, 
+            //                       bool displayProperties = false,
+            //                       bool out_lig=false,
+            //                       bool stdout=false
+            //                       ) const; //bool displayProperties = false
+
+            void calcInteractions(Molecule&     ligand,
+                                   InterResults& interResult,
+                                   bool          wMerge=true,
+                                   bool          oldh=true, bool mono_prop=false, bool out_lig=false, bool stdout=false) const;
+
 
                 
-            void displayAtomProperties(ICMole::Molecule& ligand, Atom& atomL, std::string molecule_name) const;
+            // void displayAtomProperties(ICMole::Molecule& ligand, Atom& atomL, std::string molecule_name) const;
 
 
              /**

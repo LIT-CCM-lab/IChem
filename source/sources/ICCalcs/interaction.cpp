@@ -60,7 +60,7 @@ throw(ICMole::MoleExcept):complex(cp),grid(complex.genGrid(4.5))
                          "No protein found in complex");
 
     setStdRules();
-}
+} 
 
 
 void Interactions::setStdRules()
@@ -69,15 +69,15 @@ void Interactions::setStdRules()
     Dist_Hyd     = 4.5;
     Dist_Ionic   = 4.0;
     Dist_Metal   = 2.8;
-    // Dist_Arom    = 4.0; // Changed to 5.0
-    Dist_Arom    = 5.0;
+    Dist_Arom    = 4.0; // Changed to 5.0
+    // Dist_Arom    = 5.0;
     dist_H       = 2.5;
     dist_Hyd     = 3.2;
     dist_Ionic   = 2.5;
     dist_Metal   = 1.8;
     dist_Arom    = 3.2;
-    // Dist_PiCation= 4.0; // Changed to 5.0
-    Dist_PiCation= 5.0;
+    Dist_PiCation= 4.0; // Changed to 5.0
+    // Dist_PiCation= 5.0;
     Dist_WHBond  = 2.8;
     Angl_H       = M_PI;
     AngT_H       = M_PI/3;
@@ -100,17 +100,18 @@ struct resbest {
     unsigned short id;} ;
 
 
-void Interactions::displayAtomProperties(Molecule& ligand, Atom& atom, string molecule_name) const {
+// void Interactions::displayAtomProperties(Molecule& ligand, Atom& atom, string molecule_name) const {
 
-        cout <<"LIGAND ATOM \t"<<atom.getIdentifier() 
-        << "\t MOL2T: " << atom.getMOL2Type() 
-        << "\t props : "<< atom.props.toString()
-        << "\t charge: " << atom.getFormalCharge() << endl;
-}  
+//         cout <<"LIGAND ATOM \t"<<atom.getIdentifier() 
+//         << "\t MOL2T: " << atom.getMOL2Type() 
+//         << "\t props : "<< atom.props.toString()
+//         << "\t charge: " << atom.getFormalCharge() << endl;
+// }  
 
 
 
-void Interactions::calcInteractions(Molecule& ligand, InterResults& interResult, bool wMerge, bool oldh, bool mono_prop, bool displayProperties, bool out_lig, bool stdoutt) const // , bool displayProperties
+// void Interactions::calcInteractions(Molecule& ligand, InterResults& interResult, bool wMerge, bool oldh, bool mono_prop, bool displayProperties, bool out_lig, bool stdoutt) const // , bool displayProperties
+void Interactions::calcInteractions( Molecule& ligand, InterResults& interResult, bool wMerge, bool oldh, bool mono_prop, bool out_lig, bool stdout) const
 {
     BoxList boxlist;
     double dist,angle;
@@ -140,7 +141,7 @@ void Interactions::calcInteractions(Molecule& ligand, InterResults& interResult,
 
     ofstream ofs;
     if (out_lig) {
-        if (stdoutt) {
+        if (stdout) {
             cout << ">>># "+ligand.getName()+".ints #<<<" << endl;
             cout  << "#" <<  ligand.getName()<< endl;
         } else {
@@ -151,9 +152,9 @@ void Interactions::calcInteractions(Molecule& ligand, InterResults& interResult,
     }
 
     string molecule_name = ligand.getName();
-    if(displayProperties) {
-        cout << "\n\n\t\t Molecule's name: " << molecule_name << "\n\n";
-    }
+    // if(displayProperties) {
+    //     cout << "\n\n\t\t Molecule's name: " << molecule_name << "\n\n";
+    // }
 
     for (ItCAtom itLA = ligand.firstAtom(); itLA != ligand.lastAtom();++itLA)
     {
@@ -163,9 +164,9 @@ void Interactions::calcInteractions(Molecule& ligand, InterResults& interResult,
 
     // if(globalConfigOptions.displayProperties) {
     //     displayAtomProperties(ligand, atomL, molecule_name);
-        if(displayProperties) {
-            displayAtomProperties(ligand, atomL, molecule_name);
-        }
+        // if(displayProperties) {
+        //     displayAtomProperties(ligand, atomL, molecule_name);
+        // }
 
     // }
 
@@ -186,7 +187,7 @@ void Interactions::calcInteractions(Molecule& ligand, InterResults& interResult,
 
         // out ligand possible link
         if (out_lig) {
-            if (stdoutt) {
+            if (stdout) {
                 cout  << atomL.getIdentifier() ;
             } else {
                 ofs  << atomL.getIdentifier() ;
@@ -788,7 +789,7 @@ void Interactions::calcInteractions(Molecule& ligand, InterResults& interResult,
 #endif
         }
         if (out_lig) {
-            if (stdoutt) {
+            if (stdout) {
                 cout << "\t| " << nbused << " | " << atomL.props.toString() << endl; ;
             } else {
                 ofs << "\t| " << nbused << " | " << atomL.props.toString() << endl; ;
@@ -1646,6 +1647,7 @@ void Interactions::calcInteractionsppi(InterResults& interResult, bool wMerge, b
     }
 }
 
+
 /*
     Merge close proximity interactions within a molecule for optimization purposes.
     It looks for hydrophobic interactions between atoms in the molecule and combine them if they are close
@@ -1654,82 +1656,85 @@ void Interactions::mergeInteractions(InterResults& interResult) const
 {
     int NInter;
     Coords new_center;
-    Atom *new_atmP = nullptr;
-    Atom *new_atmL = nullptr;
-    bool modif = true; 
-    double dist;
-
-    while (modif) {
+    Atom *new_atmP, *new_atmL;
+    bool modif = true ; double dist;
+    
+    while (modif)
+    {
+        //        cout << interResult.listInters.max_size() << endl;
         modif = false;
-
         // tmp vector for new interpoints
         std::vector<InterPoint> new_interpoints;
+        for (size_t inter_i=0; inter_i < interResult.listInters.size();++inter_i)
+        {
+            InterPoint &intPi = interResult.listInters.at(inter_i);
+            //            cout << interResult.listInters.size()  << " work on : " << intPi.point << endl;
 
-        for (size_t inter_i=0; inter_i < interResult.listInters.size(); ++inter_i) {
+            if (intPi.interaction != InterType::HYDROPHOBIC
+                    ||  intPi.merged_to != -1) continue;
 
-            InterPoint &intPi = interResult.listInters[inter_i]; // at.() not efficient here
+            const size_t sizeList=interResult.listInters.size();
 
-            if (intPi.interaction != InterType::HYDROPHOBIC || intPi.merged_to != -1) {
-                continue;
-            }
+            for (size_t inter_j=inter_i+1; inter_j < sizeList;++inter_j)
+            {
+                InterPoint &intPj = interResult.listInters.at(inter_j);
 
-            for (size_t inter_j=inter_i+1; inter_j < interResult.listInters.size(); ++inter_j) {
-                InterPoint &intPj = interResult.listInters[inter_j];
-
-                if (intPj.interaction != InterType::HYDROPHOBIC ||  intPj.merged_to != -1 || intPi.point==intPj.point) {
-                    continue;
-                }
-                
+                if (intPj.interaction != InterType::HYDROPHOBIC
+                        ||  intPj.merged_to != -1 || intPi.point==intPj.point) continue;
                 dist = intPi.center.calcDist(intPj.center,1.1);
-                if ( dist > 1 ) {
-                    continue;
-                }
+                if ( dist > 1 ) continue;
+                //                if (interResult.listInters.size() == 2048) {
+                //                    cout << "maximum size"  << endl;
+                //                }
 
                 modif=true;
                 NInter = (int)interResult.listInters.size();
+                new_center=(intPj.center+intPi.center)/2;
 
-                // Calculate the new center
-                new_center = (intPj.center + intPi.center) / 2;
-
-                // Determine new atom references based on proximity of the two points
-                if (new_center.calcDist(intPi.Prot_Ref->fixpos) < new_center.calcDist(intPj.Prot_Ref->fixpos) ) {
+                if (new_center.calcDist(intPi.Prot_Ref->fixpos) <
+                        new_center.calcDist(intPj.Prot_Ref->fixpos) )
+                {
                     new_atmP=intPi.Prot_Ref;
-                }
-                else {
-                    new_atmP=intPj.Prot_Ref;
-                } 
+                }else new_atmP=intPj.Prot_Ref;
 
                 if (new_center.calcDist(intPi.Lig_Ref->fixpos) < new_center.calcDist(intPj.Lig_Ref->fixpos ))
                 {
                     new_atmL=intPi.Lig_Ref;
-                }
-                else{
-                    new_atmL=intPj.Lig_Ref;
-                } 
+                }else new_atmL=intPj.Lig_Ref;
+                InterPoint IntP(NInter,
+                                new_atmP,
+                                new_atmL,
+                                new_center,
+                                InterType::HYDROPHOBIC,(intPi.dist<intPj.dist)? intPi.dist:intPj.dist);
 
-                // Create the new merged InterPoint
-                InterPoint IntP(NInter, new_atmP, new_atmL, new_center, InterType::HYDROPHOBIC,(intPi.dist<intPj.dist) ? intPi.dist : intPj.dist);
+                interResult.listInters.push_back(IntP);
+                if (intPi.merged_to != -1)
+                {
+                    for (size_t inter_k=0; inter_k < interResult.listInters.size();++inter_k)
+                    {
+                        InterPoint &intPk = interResult.listInters.at(inter_k);
+                        if (intPk.merged_to == intPi.merged_to) intPk.merged_to=NInter;
 
-                // Add the merged interpoint to the temporary vector new_interpoints 
-                new_interpoints.push_back(IntP);
-
-                /*  The two loops merged into one 
-                    update merged_to fields for both interacting points */
-                for (InterPoint& intPk : interResult.listInters) {
-                    if (intPk.merged_to == intPi.merged_to || intPk.merged_to == intPj.merged_to) {
-                        intPk.merged_to = NInter;
                     }
                 }
-                intPi.merged_to = NInter;
-                intPj.merged_to = NInter;
-            }
-        }
+                intPi.merged_to=NInter;
+                if (intPj.merged_to != -1)
+                {
+                    for (size_t inter_k=0; inter_k < interResult.listInters.size();++inter_k)
+                    {
+                        InterPoint &intPk = interResult.listInters.at(inter_k);
+                        if (intPk.merged_to == intPj.merged_to) intPk.merged_to=NInter;
 
-        // add new_interaction points to the original vector
+                    }
+                }
+                intPj.merged_to=NInter;
+                NInter++;
+
+            } //END inter_j
+        } //END inter_i
         interResult.listInters.insert(interResult.listInters.end(), new_interpoints.begin(), new_interpoints.end());
-    }
+    } //END WHILE
 }
-
 
 
 

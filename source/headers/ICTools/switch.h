@@ -47,7 +47,7 @@ private:
 
              void calcGrim(ICMole::Grim& grim)const;
 
-
+            void atom_properties(ICMole::Molecule& ligand) const;
                       void helpGenKey()    const;
                       void helpRealign()   const;
                       void helpBSAcalc()   const;
@@ -97,7 +97,7 @@ public:
 
     IChemSwitch(const int &argc, const std::vector<std::string> &argv) throw(ICMole::MoleExcept);
     IChemSwitch(const int& argc, char* argv[]) throw(ICMole::MoleExcept);
- void help() ;
+ void help();
 
 
 

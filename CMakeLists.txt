@@ -37,7 +37,7 @@ set(SOURCES
     source/sources/ICCalcs/volsite.cpp
     source/sources/ICCalcs/pdbconvert.cpp
     source/sources/ICCalcs/interaction.cpp
-    source/sources/ICCalcs/config_options.cpp
+    # source/sources/ICCalcs/config_options.cpp
 
 
     source/sources/ICRSA/RSA.cpp
@@ -47,6 +47,7 @@ set(SOURCES
     source/sources/ICRSA/EasyCrypt.cpp
     source/sources/ICRSA/BigInt.cpp
     source/sources/ICTools/switch.cpp
+    source/sources/ICTools/atom_properties.cpp
     source/sources/ICTools/realign.cpp
     source/sources/ICTools/genKey.cpp
     source/sources/ICTools/IFP.cpp
