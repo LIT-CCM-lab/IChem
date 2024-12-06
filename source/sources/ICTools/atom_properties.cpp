@@ -25,14 +25,10 @@ void IChemSwitch::printAtomInfo(const ICMole::Atom& atom) const {
               << "\t charge: " << atom.getFormalCharge() << "\n\n";
 }
 
-/* 
-    - The command must have this following argument structure: Protein ligand
-    - Ligand can be multimol2 in one file, but it can also be many files (each either single or multiple mol2)
-    - The command can take many arguments: ligand1, ligand2, ligand3, ..., ligandn
-    - The result must display all of these properties: Identifier - type - props - charge
- */
-
-
+/*
+    * Main function of AtomProps command, allowing the loading of multimol2 file (protein, ligand)
+    * Able to take as many arguments as possible  
+*/
 void IChemSwitch::AtomProps() const {
     if (Input_Values.size() < 2) {
         throw MoleExcept(9020101, "IChemSwitch::AtomProps", "Must provide at least one protein file and one ligand file");
