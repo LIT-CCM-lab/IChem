@@ -8,12 +8,9 @@ using namespace ICMole;
 void IChemSwitch::helpAtomProps() const {
     cout << " AtomProps - Print atom properties of ligands\n"
               << "    Usage: IChem AtomProps protein.mol2 ligand1.mol2 [ligand2.mol2 ...]\n"
-              << "    Options:\n"
-              << "      protein.mol2:       The protein structure file\n"
-              << "      ligand.mol2        One or more ligand files\n"
               << "    Description:\n"
               << "      This command prints the atom properties (ID, MOL2 type, properties, and charge)\n"
-              << "      for each ligand molecule in the provided files.\n"
+              << "      for each mol2 file provided as argument\n"
               << "\n";
 }
 
