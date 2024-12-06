@@ -81,7 +81,6 @@ void IChemSwitch::AtomProps() const {
             }
         }
     } catch (MoleExcept& e) {
-        // throw runtime_error("Processing error \n");
-        cerr << "Error: " << e.getCode() << " " << e.getSource() << " " << e.getData() << "\n";
+        cerr << "AtomProps processing files failed: " << e.getCode() << " " << e.getSource() << " " << e.getData() << "\n";
     }
 }
