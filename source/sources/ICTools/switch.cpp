@@ -9,8 +9,8 @@ using namespace ICMole;
 
 bool IChemSwitch::verbose       =false;
 bool IChemSwitch::licence_loaded=false;
-bool IChemSwitch::allowed[ICHEM_TOOLS]= {false,false,false,false,false,false,false,false,false,false,false,false,false};
-//bool IChemSwitch::allowed[ICHEM_TOOLS]= {true,true,true,true,true,true,true,true,true,true,true,true,true};
+// bool IChemSwitch::allowed[ICHEM_TOOLS]= {false,false,false,false,false,false,false,false,false,false,false,false,false,false};
+bool IChemSwitch::allowed[ICHEM_TOOLS]= {true,true,true,true,true,true,true,true,true,true,true,true,true,true};
 const std::string IChemSwitch::moduluskeys   ="1722935102953";
 const std::string IChemSwitch::privatexp     ="817040704029";
 const std::string IChemSwitch::publicexp     ="65537";
@@ -42,6 +42,7 @@ const vector<string> IChemSwitch::FetchPossInput()
     RX.push_back("sims");
     RX.push_back("scoring");
     RX.push_back("detectppi");
+    RX.push_back("AtomProps");
 //    RX.push_back("cavLig");
     return RX;
 }
@@ -59,7 +60,9 @@ IChemSwitch::pf1 IChemSwitch::listFunc[ICHEM_TOOLS]={&IChemSwitch::genKey,
                                                      &IChemSwitch::utils,
                                                      &IChemSwitch::runFGPS,
                                                      &IChemSwitch::scoring,
-                                                     &IChemSwitch::detectPPI};
+                                                     &IChemSwitch::detectPPI,
+                                                     &IChemSwitch::AtomProps
+                                                };
 //                                                     &IChemSwitch::convertCav};
 IChemSwitch::pf1 IChemSwitch::listHelp[ICHEM_TOOLS]={&IChemSwitch::helpGenKey,
                                                      &IChemSwitch::helpRealign,
@@ -73,13 +76,15 @@ IChemSwitch::pf1 IChemSwitch::listHelp[ICHEM_TOOLS]={&IChemSwitch::helpGenKey,
                                                      &IChemSwitch::helpUtils,
                                                      &IChemSwitch::helpFGPS,
                                                      &IChemSwitch::helpScoring,
-                                                     &IChemSwitch::helpdetectPPI};
+                                                     &IChemSwitch::helpdetectPPI,
+                                                     &IChemSwitch::helpAtomProps
+                                                     };
 //                                                     &IChemSwitch::helpconvertCav};
 
 
 IChemSwitch::IChemSwitch(const int& argc, char *argv[]) throw(ICMole::MoleExcept)
 {
-    checkLicence();
+    // checkLicence();
 
     if (argc == 1) {help();return;}
 
@@ -199,7 +204,7 @@ IChemSwitch::IChemSwitch(const int& argc, char *argv[]) throw(ICMole::MoleExcept
 }
 IChemSwitch::IChemSwitch(const int &argc,const std::vector<std::string>& argv) throw(ICMole::MoleExcept)
 {
-    checkLicence();
+    // checkLicence();
 
     if (argc == 1) {help();return;}
 

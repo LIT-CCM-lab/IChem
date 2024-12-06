@@ -37,9 +37,6 @@ set(SOURCES
     source/sources/ICCalcs/volsite.cpp
     source/sources/ICCalcs/pdbconvert.cpp
     source/sources/ICCalcs/interaction.cpp
-    # source/sources/ICCalcs/config_options.cpp
-
-
     source/sources/ICRSA/RSA.cpp
     source/sources/ICRSA/PrimeGenerator.cpp
     source/sources/ICRSA/KeyPair.cpp
