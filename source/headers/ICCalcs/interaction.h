@@ -4,7 +4,6 @@
 
 #include "headers/ICMole/molecule.h"
 #include "headers/ICMole/fingerprint.h"
-#include <config_options.h>
 
 
 namespace ICMole
