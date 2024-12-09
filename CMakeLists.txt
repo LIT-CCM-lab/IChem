@@ -2,13 +2,13 @@ cmake_minimum_required(VERSION 3.13)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -w -std=c++11 -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++11 -O3")
 
 if (ICHEM_DEBUG)
     add_definitions(-DICHEM_DEBUG=1)
 endif (ICHEM_DEBUG)
 
-project(IChem VERSION 5.2.11)
+project(IChem VERSION 5.3.0)
 
 set(SOURCES
     source/main.cpp
