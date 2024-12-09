@@ -27,34 +27,15 @@ void IChemSwitch::printAtomInfo(const ICMole::Atom& atom) const {
     * Able to take as many arguments as possible  
 */
 void IChemSwitch::AtomProps() const {
-    if (Input_Values.size() < 2) {
-        throw MoleExcept(9020101, "IChemSwitch::AtomProps", "Must provide at least one protein file and one ligand file");
-    }
-
-    // Protein input
-    const std::string& fProtein = Input_Values.at(0);
-
+    
     Complex icomplex;
     MoleReader iread;
+    int ligandCount = 1;
 
     try {
-        // Load the protein file
-        iread.loadNewFile(fProtein);
-        iread.loadInComplex(icomplex, MoleType::PROTEIN);
-        Molecule* protein = icomplex.getMole(MoleType::PROTEIN);
-
-        if (protein == nullptr) {
-            throw MoleExcept(9020102, "IChemSwitch::AtomProps", "No protein found in " + fProtein);
-        }
-
-        // Display protein properties
-        cout << "\t\t\tProtein: " << protein->getName() << " (from file: " << fProtein << ")" << "\n\n";
-        for(ItCAtom itPA = protein->firstAtom(); itPA != protein->lastAtom(); ++itPA ) {
-            printAtomInfo(**itPA);
-        }
-
+        
         // Process each ligand file
-        for (size_t i = 1; i < Input_Values.size(); ++i) {
+        for (size_t i = 0; i < Input_Values.size(); ++i) {
             const std::string& fLigand = Input_Values.at(i); // Current ligand
 
             // Load the ligand file
@@ -65,7 +46,7 @@ void IChemSwitch::AtomProps() const {
                 Molecule ligand;
                 iread.loadNextMolecule(ligand, MoleType::LIGAND);
 
-                cout << "Ligand: " << ligand.getName() << " from file: " << fLigand << "\n\n";
+                cout << "Ligand: " << ligandCount++ << " with name " << ligand.getName() << " from file: " << fLigand << "\n\n";
 
                 // Print atom properties for the current ligand
                 for (ItCAtom itLA = ligand.firstAtom(); itLA != ligand.lastAtom(); ++itLA) {
