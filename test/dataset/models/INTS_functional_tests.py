@@ -6,7 +6,7 @@ import glob
 
 BASE_DIRECTORY = Path.cwd()
 
-ICHEM_COMMAND = BASE_DIRECTORY / "../../../build-test/IChem"
+ICHEM_COMMAND = BASE_DIRECTORY / "../../../build/IChem"
 
 PSEUDOATOM_DESCRIPTIONS = {
     "CA": "hydrophobic",

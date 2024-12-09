@@ -4,7 +4,7 @@ from pathlib import Path
 
 BASE_DIRECTORY = Path.cwd()
 SIMS_DIRECTORY = BASE_DIRECTORY / "sims-test-data"  # Directory containing functional test cases
-ICHEM_COMMAND = BASE_DIRECTORY / "../../../build-test/IChem"
+ICHEM_COMMAND = BASE_DIRECTORY / "../../../build/IChem"
 
 # Read the bitstring from a file
 # Should be in the format of: namefile\tbitstring
@@ -130,7 +130,7 @@ def process_test_directory(case_dir):
 # Run similarity tests for all directories dynamically detected in sims-test-data
 def run_all_tests():
     if not SIMS_DIRECTORY.exists() or not SIMS_DIRECTORY.is_dir():
-        print(f"Error: Sims test directory {SIMS_DIRECTORY} does not exist or is not a directory.")
+        print(f"Error: Sims test directory {SIMS_DIRECTORY} does not exist or is not a directory")
         return []
 
     results_summary = []

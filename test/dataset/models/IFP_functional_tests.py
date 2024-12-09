@@ -4,7 +4,7 @@ from pathlib import Path
 
 BASE_DIRECTORY = Path.cwd()
 
-ICHEM_COMMAND = BASE_DIRECTORY / "../../../build-test/IChem"  
+ICHEM_COMMAND = BASE_DIRECTORY / "../../../build/IChem"  
 
 BIT_POSITION_MAP = {
     0: "hydrophobic",
