@@ -46,8 +46,8 @@ void IChemSwitch::AtomProps() const {
                 Molecule ligand;
                 iread.loadNextMolecule(ligand, MoleType::LIGAND);
 
-                cout << "Ligand: " << ligandCount++ << " with name " << ligand.getName() << " from file: " << fLigand << "\n\n";
-
+                cout << "Ligand " << ligandCount++ << " with name " << ligand.getName() << " from file: " << fLigand << "\n\n";
+                // cout << "Ligand " << ligandCount++ << " from file: " << fLigand << "\n\n";
                 // Print atom properties for the current ligand
                 for (ItCAtom itLA = ligand.firstAtom(); itLA != ligand.lastAtom(); ++itLA) {
                     printAtomInfo(**itLA);
