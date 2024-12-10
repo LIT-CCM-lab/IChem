@@ -341,8 +341,8 @@ void IChemSwitch::IFP() const throw(MoleExcept)
 
                     iread.loadNextMolecule(ligand,MoleType::LIGAND);
                     names.push_back(ligand.getName());
-//                    ligand.checkMOL2();
-//                    ligand.ringPerception();
+                   ligand.checkMOL2();
+                   ligand.ringPerception();
                     Interactions intsosef(icomplex);
                     if (changedist){
                         intsosef.setDist_H(dh);
@@ -403,5 +403,3 @@ void IChemSwitch::IFP() const throw(MoleExcept)
 
 
 }
-
-

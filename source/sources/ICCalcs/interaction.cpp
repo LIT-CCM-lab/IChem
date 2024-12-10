@@ -1656,7 +1656,7 @@ void Interactions::mergeInteractions(InterResults& interResult) const
 {
     int NInter;
     Coords new_center;
-    Atom *new_atmP, *new_atmL;
+    Atom *new_atmP = nullptr, *new_atmL = nullptr;
     bool modif = true ; double dist;
     
     while (modif)
@@ -1707,7 +1707,7 @@ void Interactions::mergeInteractions(InterResults& interResult) const
                                 new_center,
                                 InterType::HYDROPHOBIC,(intPi.dist<intPj.dist)? intPi.dist:intPj.dist);
 
-                interResult.listInters.push_back(IntP);
+                new_interpoints.push_back(IntP);
                 if (intPi.merged_to != -1)
                 {
                     for (size_t inter_k=0; inter_k < interResult.listInters.size();++inter_k)
