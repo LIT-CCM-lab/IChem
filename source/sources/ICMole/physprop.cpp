@@ -7,7 +7,7 @@ PhysProp::PhysProp():
     aromatic(false),    acceptor(false),
     donor(false),      cation(false),
     anion(false), hydrophobic(false),
-    metal(false),       dummy(false),
+    metal(false),       dummy(false), metalA(false),
     ring(false),substituent(false),    scaffold(false),
     linker(false),weakDonor(false),weakAcceptor(false),inProtein(false),
     inLigand(false),closeProtein(false),
@@ -25,6 +25,7 @@ PhysProp& PhysProp::operator=  (const PhysProp& _prop)
     cation       = _prop.cation;
     anion        = _prop.anion;
     metal        = _prop.metal;
+    metalA       = _prop.metalA;
     dummy        = _prop.dummy;
     ring         = _prop.ring;
     hydrophobic  = _prop.hydrophobic;
@@ -52,6 +53,7 @@ bool PhysProp::operator==  (const PhysProp& _prop)
     cation       == _prop.cation &&
     anion        == _prop.anion &&
     metal        == _prop.metal &&
+    metalA       == _prop.metalA &&
     dummy        == _prop.dummy &&
     ring         == _prop.ring &&
     hydrophobic  == _prop.hydrophobic &&
@@ -82,6 +84,7 @@ void PhysProp::clear()
     cation       = false;
     anion        = false;
     metal        = false;
+    metalA       = false;
     dummy        = false;
     ring         = false;
     hydrophobic  = false;
