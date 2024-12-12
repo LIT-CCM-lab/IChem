@@ -1728,7 +1728,7 @@ void Interactions::mergeInteractions(InterResults& interResult) const
                     }
                 }
                 intPj.merged_to=NInter;
-                // NInter++;
+                NInter++;
 
             } //END inter_j
         } //END inter_i
