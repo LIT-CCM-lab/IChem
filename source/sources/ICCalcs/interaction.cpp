@@ -70,14 +70,14 @@ void Interactions::setStdRules()
     Dist_Ionic   = 4.0;
     Dist_Metal   = 2.8;
     // Dist_Arom    = 4.0; // Changed to 5.0
-    Dist_Arom    = 5.0;
+    Dist_Arom    = 4.0;
     dist_H       = 2.5;
     dist_Hyd     = 3.2;
     dist_Ionic   = 2.5;
     dist_Metal   = 1.8;
     dist_Arom    = 3.2;
     // Dist_PiCation= 4.0; // Changed to 5.0
-    Dist_PiCation= 5.0;
+    Dist_PiCation= 4.0;
     Dist_WHBond  = 2.8;
     Angl_H       = M_PI;
     AngT_H       = M_PI/3;
@@ -1656,7 +1656,7 @@ void Interactions::mergeInteractions(InterResults& interResult) const
 {
     int NInter;
     Coords new_center;
-    Atom *new_atmP, *new_atmL;
+    Atom *new_atmP = nullptr, *new_atmL = nullptr;
     bool modif = true ; double dist;
     
     while (modif)
@@ -1707,7 +1707,7 @@ void Interactions::mergeInteractions(InterResults& interResult) const
                                 new_center,
                                 InterType::HYDROPHOBIC,(intPi.dist<intPj.dist)? intPi.dist:intPj.dist);
 
-                interResult.listInters.push_back(IntP);
+                new_interpoints.push_back(IntP);
                 if (intPi.merged_to != -1)
                 {
                     for (size_t inter_k=0; inter_k < interResult.listInters.size();++inter_k)
@@ -1728,7 +1728,7 @@ void Interactions::mergeInteractions(InterResults& interResult) const
                     }
                 }
                 intPj.merged_to=NInter;
-                NInter++;
+                // NInter++;
 
             } //END inter_j
         } //END inter_i

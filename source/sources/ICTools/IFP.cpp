@@ -24,8 +24,8 @@ void IChemSwitch::helpIFP() const
          << "      -D_Hyd   N (4.5)  Hydrophobic length                      (Angstroem)"<<endl
          << "      -D_Io    N (4.0)  Ionic length                            (Angstroem)"<<endl
          << "      -D_Me    N (2.8)  Metal/Acceptor length                   (Angstroem)"<<endl
-         << "      -D_Ar    N (4.0)  Aromatic interaction length             (Angstroem)"<<endl
-         << "      -D_Pic   N (4.0)  Pi cation interaction length            (Angstroem)"      <<endl
+         << "      -D_Ar    N (5.0)  Aromatic interaction length             (Angstroem)"<<endl
+         << "      -D_Pic   N (5.0)  Pi cation interaction length            (Angstroem)"      <<endl
          << "      -a_H     N (Pi)   HBond angle                             (rad)"	   <<endl
          << "      -at_H    N (Pi/3) HBond tolerance angle                   (rad)"      <<endl
          << "      -a_ArFF  N (Pi)   Aromatic Face to Face interaction angle (rad)"      <<endl
@@ -341,8 +341,8 @@ void IChemSwitch::IFP() const throw(MoleExcept)
 
                     iread.loadNextMolecule(ligand,MoleType::LIGAND);
                     names.push_back(ligand.getName());
-//                    ligand.checkMOL2();
-//                    ligand.ringPerception();
+                   ligand.checkMOL2();
+                   ligand.ringPerception();
                     Interactions intsosef(icomplex);
                     if (changedist){
                         intsosef.setDist_H(dh);
