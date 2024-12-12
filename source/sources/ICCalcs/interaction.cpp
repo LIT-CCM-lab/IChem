@@ -70,14 +70,14 @@ void Interactions::setStdRules()
     Dist_Ionic   = 4.0;
     Dist_Metal   = 2.8;
     // Dist_Arom    = 4.0; // Changed to 5.0
-    Dist_Arom    = 5.0;
+    Dist_Arom    = 4.0;
     dist_H       = 2.5;
     dist_Hyd     = 3.2;
     dist_Ionic   = 2.5;
     dist_Metal   = 1.8;
     dist_Arom    = 3.2;
     // Dist_PiCation= 4.0; // Changed to 5.0
-    Dist_PiCation= 5.0;
+    Dist_PiCation= 4.0;
     Dist_WHBond  = 2.8;
     Angl_H       = M_PI;
     AngT_H       = M_PI/3;
@@ -1728,7 +1728,7 @@ void Interactions::mergeInteractions(InterResults& interResult) const
                     }
                 }
                 intPj.merged_to=NInter;
-                NInter++;
+                // NInter++;
 
             } //END inter_j
         } //END inter_i

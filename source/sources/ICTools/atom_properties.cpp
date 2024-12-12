@@ -7,7 +7,7 @@ using namespace ICMole;
 
 void IChemSwitch::helpAtomProps() const {
     cout << " AtomProps - Print atom properties of ligands\n"
-              << "    Usage: IChem AtomProps protein.mol2 ligand1.mol2 [ligand2.mol2 ...]\n"
+              << "    Usage: IChem AtomProps file1 file2...fileN\n"
               << "    Description:\n"
               << "      This command prints the atom properties (ID, MOL2 type, properties, and charge)\n"
               << "      for each mol2 file provided as argument\n"
@@ -19,7 +19,7 @@ void IChemSwitch::printAtomInfo(const ICMole::Atom& atom) const {
     cout << "ATOM \t" << atom.getIdentifier() << "\n"
               << "\t type: " << atom.getMOL2Type() << "\n"
               << "\t props : " << atom.props.toString() << "\n"
-              << "\t charge: " << atom.getFormalCharge() << "\n\n";
+              << "\t charge: " << atom.getPartialCharge() << "\n\n";
 }
 
 /*
@@ -46,8 +46,7 @@ void IChemSwitch::AtomProps() const {
                 Molecule ligand;
                 iread.loadNextMolecule(ligand, MoleType::LIGAND);
 
-                cout << "Ligand " << ligandCount++ << " with name " << ligand.getName() << " from file: " << fLigand << "\n\n";
-                // cout << "Ligand " << ligandCount++ << " from file: " << fLigand << "\n\n";
+                cout << "Molecule " << ligandCount++ << " with name " << ligand.getName() << " from file: " << fLigand << "\n\n";
                 // Print atom properties for the current ligand
                 for (ItCAtom itLA = ligand.firstAtom(); itLA != ligand.lastAtom(); ++itLA) {
                     printAtomInfo(**itLA);
