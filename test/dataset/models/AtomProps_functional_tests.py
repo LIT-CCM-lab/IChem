@@ -19,7 +19,7 @@ def count_molecules_in_output(output, mol_file):
     # get full path
     full_path = str(mol_file.resolve())
     # We are looking for the line "Ligand..." ; the start of the molecule
-    pattern = rf"Ligand \d+ with name \S+ from file: {re.escape(full_path)}"
+    pattern = rf"Molecule \d+ with name \S+ from file: {re.escape(full_path)}"
     matches = re.findall(pattern, output)
     print(f"Tell me you found a match {matches}")
     return len(matches)
