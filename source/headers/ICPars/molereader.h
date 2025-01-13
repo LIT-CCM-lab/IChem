@@ -45,6 +45,9 @@ namespace ICMole
     std::map<std::string,Residu*> mapRes;
     /*!< Makes the link between Calpha and residues */
     std::map<unsigned int,Residu*> mapResRoot;
+
+   
+
     bool open();
     void close();
     void getLine(std::string &ligne) ;
@@ -60,6 +63,11 @@ public:
 
     MoleReader( const std::string& filename, const unsigned int& fformat=FileFormat::UNDEFINED) throw(MoleExcept);
     
+    // Mol2 is  integer 10001
+    unsigned int get_format_file() {
+      std::cout << "Format file: " << format << std::endl;
+      return format;
+    }
     const bool& isEOF() const {return EOFile;}
 
     void loadNewFile( const std::string& filename, const unsigned int& fformat=FileFormat::UNDEFINED, const bool &with_split=false) throw(MoleExcept);

@@ -2540,31 +2540,33 @@ Fingerprint& Interactions::generateTriplets(InterResults& interResult,const bool
 
 
 
-void Interactions::genIFP(InterResults& interResult,
-                          const unsigned int& fgpType) const
-{
-    static const int intToPos[5][NB_INTTYPE]=
-    {{-1,3,4,5,6, 0,-1, 1, 2,-1,-1,-1,-1,-1},
-     {-1,0,1,2,3,-1,4,-1,-1,-1,-1,-1,-1,-1},
-     {-1,3,4,5,6, 0,8, 1, 2, 7, -1, -1,-1,-1},
-     {-1,0,1,2,3,-1,7,-1,-1, 6, 4, 5,-1,-1},
-     {-1,-1,-1,-1,-1,-1,0,-1,-1,-1,-1,-1,-1}};
+void Interactions::genIFP(InterResults& interResult, const unsigned int& fgpType) const {
+    static const int intToPos[5][NB_INTTYPE]= {
+        {-1,3,4,5,6, 0,-1, 1, 2,-1,-1,-1,-1,-1},
+        {-1,0,1,2,3,-1,4,-1,-1,-1,-1,-1,-1,-1},
+        {-1,3,4,5,6, 0,8, 1, 2, 7, -1, -1,-1,-1},
+        {-1,0,1,2,3,-1,7,-1,-1, 6, 4, 5,-1,-1},
+        {-1,-1,-1,-1,-1,-1,0,-1,-1,-1,-1,-1,-1}
+    };
+
     static const short length[5]={7,5,9,8,1};
     //     U ,H,H,I,I, H,M , A, A
     //     N ,B,B,O,O, Y,E , R, R
     //     D ,P,L,P,L, D,T , F, E
     //     E , , , , ,  ,  , F, F
     //     F
+    
     map<int,Residu*> NumtoRes;
-    for (ItCRes itR = complex.firstResidu();itR != complex.lastResidu();++itR)
+    for (ItCRes itR = complex.firstResidu();itR != complex.lastResidu();++itR) 
     {
         Residu *res =*itR;
+        cout << "Residue number as given by the input: " << res->getFNum() << endl; // Return the residue number as given by the input
+        cout << "Residue number as given by IChem: " << res->getNum() << endl;
+        cout << "Return residue's name, id, and chain name of the residue: " << res->getIdentifier() << "\n\n";
         if (!res->isUsed() || res->getParent()->getMoleType()==MoleType::LIGAND) continue;
-        if (Residu::Rules[res->getParent()->getMoleType()][res->getResType()]==MoleType::UNDEFINED
-                ||Molecule::Rules[res->getParent()->getMoleType()]==MoleType::UNDEFINED)continue;
-
-        NumtoRes.insert(pair<int,Residu*>(res->getFNum(),res));
-
+        if (Residu::Rules[res->getParent()->getMoleType()][res->getResType()] == MoleType::UNDEFINED || Molecule::Rules[res->getParent()->getMoleType()] == MoleType::UNDEFINED)
+            continue;
+        NumtoRes.insert(pair<int,Residu*>(res->getNum(),res));
     }
 
 
@@ -2589,15 +2591,15 @@ void Interactions::genIFP(InterResults& interResult,
     interResult.IFP=Fingerprint(NumtoRes.size()*length[fgpType]);
     int NRes=0;
     ostringstream oss;
-    for (map<int,Residu*>::iterator it =NumtoRes.begin(); it != NumtoRes.end();++it )
-    {
+    for (map<int,Residu*>::iterator it =NumtoRes.begin(); it != NumtoRes.end();++it ) {
 
         std::pair <std::multimap<Residu*,InterPoint*>::iterator, std::multimap<Residu*,InterPoint*>::iterator> ret;
         ret = listRes.equal_range((*it).second);
 
-        for (std::multimap<Residu*,InterPoint*>::iterator it2=ret.first; it2!=ret.second; ++it2)
-        {
-            if (intToPos[fgpType][(*it2).second->interaction] == -1)continue;
+        for (std::multimap<Residu*,InterPoint*>::iterator it2=ret.first; it2!=ret.second; ++it2) {
+            if (intToPos[fgpType][(*it2).second->interaction] == -1)
+                continue;
+
             interResult.IFP.bitOn(NRes*length[fgpType]+intToPos[fgpType][(*it2).second->interaction]);
         }
         interResult.IFPString+="|";
