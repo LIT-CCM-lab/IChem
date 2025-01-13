@@ -148,7 +148,7 @@ throw(MoleExcept)
                          "MoleReader::loadNewFile",
                          "No file given");
 
-    if (fformat>=FileFormat::UNDEFINED){
+    if (fformat>=FileFormat::UNDEFINED) {
         const string extension = filename.substr(filename.length()-4,4);
         if (extension == "mol2" ||
                 extension == "MOL2") format = FileFormat::MOL2;
@@ -161,10 +161,14 @@ throw(MoleExcept)
         else throw MoleExcept(2010302,
                               "MoleReader::loadNewFile",
                               "Unrecognized file format "+extension
-                              +" in "+filename);}
-    else format = fformat;
+                              +" in "+filename);
+    }
+    else
+        format = fformat;
+
     if (isOpen) 
         finput.close();
+
     EOFile = false;
     isOpen=false;
     fileName = filename;

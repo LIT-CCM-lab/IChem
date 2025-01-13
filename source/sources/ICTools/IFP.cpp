@@ -119,12 +119,11 @@ void IChemSwitch::IFP() const throw(MoleExcept)
 
         // STEP 1 - LOADING DATA :
         // 1.1 - Loading protein :
-        iread.loadNewFile(fProtein);
-        iread.loadInComplex(icomplex,MoleType::PROTEIN);
-        if (icomplex.getMole(MoleType::PROTEIN)==(Molecule*)NULL)
-            throw MoleExcept(9020102,
-                             "IChem::BSACalc",
-                             "No protein found in "+fProtein);
+        iread.loadNewFile(fProtein); // Just for the format 
+        iread.get_format_file(); // Get the integer for Mol2
+        iread.loadInComplex(icomplex,MoleType::PROTEIN); // ReadAtoms seems to read the file with no problems
+        if (icomplex.getMole(MoleType::PROTEIN)==(Molecule*)NULL) // Icomplex cannot be nullpointer
+            throw MoleExcept(9020102, "IChem::BSACalc", "No protein found in "+fProtein);
 //        Molecule &protein = *icomplex.getMole(MoleType::PROTEIN);
 //        for (ItCAtom itLA = protein.firstAtom(); itLA != protein.lastAtom();++itLA)
 //        {
@@ -246,18 +245,19 @@ void IChemSwitch::IFP() const throw(MoleExcept)
             delete[] interRes;
         }else {
             // 1.2 - Loading Ligand :
-            iread.loadNewFile(fLigand);
-            const size_t nLigand=iread.getNumMolecules();
+            iread.loadNewFile(fLigand); // Same thing for format mol2
+            const size_t nLigand=iread.getNumMolecules(); // Get number of molecules (Essentially 1 ligand)
+            cout << "The value of nligand " << nLigand << endl;
             if (nLigand==1)
             {
-                iread.loadInComplex(icomplex,MoleType::LIGAND);
+                iread.loadInComplex(icomplex,MoleType::LIGAND); // Load molecules => LoadNextMolecules which calls readMOL2Atom method
 
-                if (icomplex.getMole(MoleType::LIGAND)==(Molecule*)NULL)
+                if (icomplex.getMole(MoleType::LIGAND)==(Molecule*)NULL) // Cannot be empty
                     throw MoleExcept(9020102,
                                      "IChem::BSACalc",
                                      "No ligand found in "+fLigand);
 
-                Molecule &ligand = *icomplex.getMole(MoleType::LIGAND);               
+                Molecule &ligand = *icomplex.getMole(MoleType::LIGAND);
                 icomplex.genGrid(1.5);
                 icomplex.genGrid(4.5);
                 Interactions ints(icomplex);
@@ -308,7 +308,9 @@ void IChemSwitch::IFP() const throw(MoleExcept)
                 else ints.genIFP(interRes,3);
                 cout << ints.toString(interRes)<<endl;
                 if (ifp_out) {
-                    cout << interRes.IFPString<<"\n"<<interRes.IFP.toString()<<"\n";
+                    cout << interRes.IFPString <<
+                            "\n" <<
+                            interRes.IFP.toString()<< "\n";
                 }
             }
             else

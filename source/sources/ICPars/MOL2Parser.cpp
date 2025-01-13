@@ -13,8 +13,7 @@ using namespace ICMole;
 
 void MoleReader::loadNextMolecule(Molecule &molecule,
                                   const unsigned int& typeMole)
-try
-{
+    try {
 
 #ifdef ICHEM_DEBUG
 //    if (debug)
@@ -110,7 +109,24 @@ try
 
                  << setw(15) << left << "Molecule type:" << typeMole << " (initial:"<<ligne<<")" << endl;
 #endif
+            cout << "MOLECULE" << endl;
+            cout << setw(20) << left << "Molecule name"
+                << setw(10) << left << "N atoms"
+                << setw(11) << left << "N bonds"
+                << setw(11) << left << "N residues"
+                << setw(11) << left << "N features"
+                << setw(11) << left << "N sets"
+                << endl
 
+                << setw(20) << left << name
+                << setw(11) << left << NbrAt
+                << setw(11) << left << NbrBd
+                << setw(11) << left << NbrSubst
+                << setw(11) << left << NbrFeat
+                << setw(11) << left << NbrSets
+                << endl
+
+                << setw(15) << left << "Molecule type:" << typeMole << " (initial:"<<ligne<<")" << endl;
             break;
         } // END ligne - <TRIPOS>MOLECULE
     }// END WHILE !EOFILE
@@ -185,25 +201,25 @@ try
     finput.seekg(size_at,ios_base::beg);
     readMOL2Atom(NbrAt,molecule);
     getLine(ligne);
-    if (ligne.find("@<TRIPOS>BOND")==string::npos)
+    if (ligne.find("@<TRIPOS>BOND") == string::npos)
         throw MoleExcept(2020408,
                          "MoleReader::READ_MOL2",
                          "Number of atoms count differs from actual atoms : "+ligne);
 
     /// Position file pointer to size_at to read bonds :
     finput.seekg(size_bd,ios_base::beg);
-    if (NbrBd > 0)readMOL2Bond(NbrBd,molecule);
+    if (NbrBd > 0)
+        readMOL2Bond(NbrBd,molecule);
+        
     getLine(ligne);
-    if (ligne.find("@<TRIPOS>")==string::npos
-            && ligne.find("#")==string::npos
-            && ligne.length()>0)
-        throw MoleExcept(2020409,
-                         "MoleReader::READ_MOL2",
-                         "Premature end of bond block");
+    if (ligne.find("@<TRIPOS>")==string::npos && ligne.find("#")==string::npos && ligne.length() > 0)
+        throw MoleExcept(2020409,"MoleReader::READ_MOL2", "Premature end of bond block");
+
     finput.seekg(size_set,ios_base::beg);
     // if (NbrSubst > 0) readMOL2Set(NbrSets,molecule);
     //     if (NbrFeat > 0) readMOL2Feat(NbrFeat,size_start,size_mo,mole);
-    if (size_mo != 0)finput.seekg(size_mo-1,ios_base::beg);
+    if (size_mo != 0)
+        finput.seekg(size_mo-1,ios_base::beg);
 
     ///////////////////////////////////
     ///////// POST-PROCESSING  ////////
