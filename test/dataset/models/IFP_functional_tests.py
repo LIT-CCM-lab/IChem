@@ -48,30 +48,48 @@ def run_chem_command(file_a, file_b, interaction_type):
 
 
 # Parse result for either 7-bit or 9-bit string
-def parse_result(output, extended=False):
-    # print(f"Output defined when entering parse_result: {output}")
-    bit_length_string = 9 if extended else 7
-    # rf for raw f-strings
-    match = re.search(rf'[01]{{{bit_length_string}}}', output)  # Match either 7 or 9 bits based on --extended option
-    if match:
-        return match.group(0)
+def parse_result(output, extended=False, homodimer=False):
+    if not homodimer:
+        bit_length_string = 9 if extended else 7
+        # rf for raw f-strings
+        match = re.search(rf'[01]{{{bit_length_string}}}', output)  # Match either 7 or 9 bits based on --extended option
+        if match:
+            return match.group(0)
+        else:
+            print(f"Failed to parse {bit_length_string}-bit string in output:\n{output}")
+            return None
     else:
-        print(f"Failed to parse {bit_length_string}-bit string in output:\n{output}")
-    return None
+        # For homodimer case, search for exactly 322 bits
+        match = re.search(r'[01]{322}', output)
+        if match:
+            return match.group(0)
+        else:
+            print(f"Failed to parse 322-bit string in homodimer output:\n{output}")
+            return None
 
 
 # Identify interactions based on bit positions
-def detect_interactions(result_string):
+def detect_interactions(result_string, homodimer=False):
     detected_interactions = []
-    for position, interaction_type in BIT_POSITION_MAP.items():
-        if position < len(result_string) and result_string[position] == "1":
-            detected_interactions.append(interaction_type)
-    # print(f"FINAL INTERACTIONS {detected_interactions}")
-    return detected_interactions # Return an array of interactions: exp ['hydrophobic', 'aromatic_edge_to_face']
+    
+    if not homodimer:
+        # For 7 or 9 bit strings
+        for position, interaction_type in BIT_POSITION_MAP.items():
+            if position < len(result_string) and result_string[position] == "1":
+                detected_interactions.append(interaction_type)
+    else:
+        # logic for 322-bit homodimer string
+        for i in range(0, len(result_string), 7):
+            chunk = result_string[i:i+7]
+            for position, interaction_type in BIT_POSITION_MAP.items():
+                if position < len(chunk) and chunk[position] == "1":
+                    detected_interactions.append(interaction_type)
+    
+    return detected_interactions
 
 
 # Log results for each case
-def process_test_results(file_a, file_b, result_string, interaction_type):
+def process_test_results(file_a, file_b, result_string, interaction_type, homodimer=False):
     if result_string is None:
         # print(f"No valid bit string for files {file_a.name} and {file_b.name}")
         return {
@@ -85,7 +103,7 @@ def process_test_results(file_a, file_b, result_string, interaction_type):
         }
     
     # print(f"The result string before the interactions get detected {result_string}")
-    detected_interactions = detect_interactions(result_string)
+    detected_interactions = detect_interactions(result_string, homodimer)
     # print(f"Interactions detected {detected_interactions}") 
     status = "Passed" if detected_interactions else "Failed" # Status defined
     message = f"Interactions found for the test case {interaction_type}: {detected_interactions} with the bit string: {result_string}" if detected_interactions else f"No interactions found for the test case {interaction_type} with file_a:({file_a.name} and  file_b:{file_b.name})"
@@ -96,7 +114,6 @@ def process_test_results(file_a, file_b, result_string, interaction_type):
         "interaction_type": interaction_type,
         "file_a": file_a.name,
         "file_b": file_b.name,
-        "result_string": result_string,
         "interactions_found": detected_interactions,
         "status": status,
         "message": message
@@ -110,14 +127,16 @@ def run_all_tests():
     for test_dir, file_pairs in test_files.items():
         for file_a, file_b in file_pairs:
             interaction_type = test_dir  # Interaction type: name of the file containing the test
-            extended = interaction_type in ["metal", "pication"] # Extend parsing for those two cases 
+            extended = interaction_type in ["metal", "pication"] # Extend parsing for those two cases
+            ## here
+            homodimer = interaction_type in ["homodimer"] 
             # print(f"Displaying extended value {extended}")
             
             try:
                 output = run_chem_command(file_a, file_b, interaction_type)
                 # print(f"Output result in run_all_tests {output}")
-                result_string = parse_result(output, extended=extended)
-                test_result = process_test_results(file_a, file_b, result_string, interaction_type)
+                result_string = parse_result(output, extended=extended, homodimer=homodimer)
+                test_result = process_test_results(file_a, file_b, result_string, interaction_type, homodimer=homodimer)
                 results_summary.append(test_result)
                 
             except Exception as e:
