@@ -61,7 +61,7 @@ def process_file(file_path):
             c_prot = int(row["CProt"])
 
             # Calculate DiffI
-            diff_i = calculate_diffl(r_lig, r_center, r_prot, c_lig, c_center, c_prot)
+            diff_i = calculate_diffi(r_lig, r_center, r_prot, c_lig, c_center, c_prot)
 
             # Calculate GrSc
             grsc = calculate_grsc(n_lig, n_center, n_prot, sum_cl, rmsd, diff_i)
