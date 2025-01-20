@@ -109,24 +109,24 @@ void MoleReader::loadNextMolecule(Molecule &molecule,
 
                  << setw(15) << left << "Molecule type:" << typeMole << " (initial:"<<ligne<<")" << endl;
 #endif
-            cout << "MOLECULE" << endl;
-            cout << setw(20) << left << "Molecule name"
-                << setw(10) << left << "N atoms"
-                << setw(11) << left << "N bonds"
-                << setw(11) << left << "N residues"
-                << setw(11) << left << "N features"
-                << setw(11) << left << "N sets"
-                << endl
+            // cout << "MOLECULE" << endl;
+            // cout << setw(20) << left << "Molecule name"
+            //     << setw(10) << left << "N atoms"
+            //     << setw(11) << left << "N bonds"
+            //     << setw(11) << left << "N residues"
+            //     << setw(11) << left << "N features"
+            //     << setw(11) << left << "N sets"
+            //     << endl
 
-                << setw(20) << left << name
-                << setw(11) << left << NbrAt
-                << setw(11) << left << NbrBd
-                << setw(11) << left << NbrSubst
-                << setw(11) << left << NbrFeat
-                << setw(11) << left << NbrSets
-                << endl
+            //     << setw(20) << left << name
+            //     << setw(11) << left << NbrAt
+            //     << setw(11) << left << NbrBd
+            //     << setw(11) << left << NbrSubst
+            //     << setw(11) << left << NbrFeat
+            //     << setw(11) << left << NbrSets
+            //     << endl
 
-                << setw(15) << left << "Molecule type:" << typeMole << " (initial:"<<ligne<<")" << endl;
+            //     << setw(15) << left << "Molecule type:" << typeMole << " (initial:"<<ligne<<")" << endl;
             break;
         } // END ligne - <TRIPOS>MOLECULE
     }// END WHILE !EOFILE
