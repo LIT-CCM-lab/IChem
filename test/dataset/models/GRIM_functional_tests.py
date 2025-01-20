@@ -24,7 +24,7 @@ def calculate_grsc(n_lig, n_center, n_prot, sum_cl, rmsd, diff_i):
     return round(grsc, 4)
 
 #  Calculate DiffI
-def calculate_diffl(r_lig, r_center, r_prot, c_lig, c_center, c_prot):
+def calculate_diffi(r_lig, r_center, r_prot, c_lig, c_center, c_prot):
     ref_total = r_lig + r_center + r_prot
     comp_total = c_lig + c_center + c_prot
     return abs(ref_total - comp_total)
