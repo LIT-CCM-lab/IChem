@@ -247,7 +247,6 @@ void IChemSwitch::IFP() const throw(MoleExcept)
             // 1.2 - Loading Ligand :
             iread.loadNewFile(fLigand); // Same thing for format mol2
             const size_t nLigand=iread.getNumMolecules(); // Get number of molecules (Essentially 1 ligand)
-            cout << "The value of nligand " << nLigand << endl;
             if (nLigand==1)
             {
                 iread.loadInComplex(icomplex,MoleType::LIGAND); // Load molecules => LoadNextMolecules which calls readMOL2Atom method
