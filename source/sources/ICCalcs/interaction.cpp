@@ -2560,9 +2560,6 @@ void Interactions::genIFP(InterResults& interResult, const unsigned int& fgpType
     for (ItCRes itR = complex.firstResidu();itR != complex.lastResidu();++itR) 
     {
         Residu *res =*itR;
-        cout << "Residue number as given by the input: " << res->getFNum() << endl; // Return the residue number as given by the input
-        cout << "Residue number as given by IChem: " << res->getNum() << endl;
-        cout << "Return residue's name, id, and chain name of the residue: " << res->getIdentifier() << "\n\n";
         if (!res->isUsed() || res->getParent()->getMoleType()==MoleType::LIGAND) continue;
         if (Residu::Rules[res->getParent()->getMoleType()][res->getResType()] == MoleType::UNDEFINED || Molecule::Rules[res->getParent()->getMoleType()] == MoleType::UNDEFINED)
             continue;
