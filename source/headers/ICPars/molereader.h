@@ -65,7 +65,6 @@ public:
     
     // Mol2 is  integer 10001
     unsigned int get_format_file() {
-      std::cout << "Format file: " << format << std::endl;
       return format;
     }
     const bool& isEOF() const {return EOFile;}
