@@ -626,7 +626,7 @@ void  MoleReader::readMOL2Atom(const unsigned int NbrAt,
 
         //Searching corresponding residu :
         oss.str("");
-        oss << atm_resId<<atm_resName;
+        oss << atm_resId << atm_resName;
         ITTI = mapRes.find(oss.str());
 
         if (ITTI == mapRes.end()) {
@@ -637,10 +637,10 @@ void  MoleReader::readMOL2Atom(const unsigned int NbrAt,
             case Levels::NONE:
                 break;
             case Levels::NOTICE:
-                cerr << "WARNING|" << error.str() << endl; 
+                cerr << "WARNING|" << error.str() << "\n"; 
                 break;
             case Levels::WARNING:
-                cerr << "ERROR|" << error.str() << endl;
+                cerr << "ERROR|" << error.str() << "\n";
                 break;
             case Levels::STRICT:
             case Levels::FATAL:
