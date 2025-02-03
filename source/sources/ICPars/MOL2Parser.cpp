@@ -612,29 +612,39 @@ void  MoleReader::readMOL2Atom(const unsigned int NbrAt,
         <<"  \tResName:"<<atm_resName<<endl
         <<"ICHEM_DEBUG|#########"<<endl;
 #endif
-        // Analysing value :
+
+        // Analysing value:
         const std::string former_name=atm_resName;
-        if (atm_resName.substr(0,1)=="<"
-                && atm_resName.substr(atm_resName.length()-1)==">")
-        {atm_resName="TMP"; atm_resId=1;    }
-        else if (atm_resId == 0
-                 && atm_resName=="")          {atm_resName="TMP"; atm_resId=100000;}
+        if (atm_resName.substr(0,1) == "<" && atm_resName.substr(atm_resName.length()-1) == ">") {
+            atm_resName="TMP"; 
+            atm_resId=1;
+        }
+        else if (atm_resId == 0 && atm_resName=="") {
+            atm_resName = "TMP";
+            atm_resId = 100000;
+        }
+
         //Searching corresponding residu :
-        oss.str("");oss << atm_resId<<atm_resName;
+        oss.str("");
+        oss << atm_resId<<atm_resName;
         ITTI = mapRes.find(oss.str());
+
         if (ITTI == mapRes.end()) {
             ostringstream error;
-            error <<"Residu "<< former_name<<"/"<<atm_resId
-                 <<" not found for Atom "<<atm_Name<<"/"<<atm_Id;
-            switch (Moleaccess)
-            {
-            case Levels::NONE:break;
-            case Levels::NOTICE:cout<<"WARNING|"<<error.str()<<endl;break;
-            case Levels::WARNING:cerr<<"ERROR|"<<error.str()<<endl;break;
+            cerr << "Residue " << former_name << "/" << atm_resId << " was not found for the atom " << atm_Name << "/" << atm_Id;
+            
+            switch (Moleaccess) {
+            case Levels::NONE:
+                break;
+            case Levels::NOTICE:
+                cerr << "WARNING|" << error.str() << endl; 
+                break;
+            case Levels::WARNING:
+                cerr << "ERROR|" << error.str() << endl;
+                break;
             case Levels::STRICT:
-            case Levels::FATAL:throw MoleExcept(2020703,
-                                                "MoleReader::readMOL2Atom",
-                                                error.str());
+            case Levels::FATAL:
+                throw MoleExcept(2020703,"MoleReader::readMOL2Atom", error.str());
                 break;
             }// END SWITCH
 
