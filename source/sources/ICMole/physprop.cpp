@@ -127,8 +127,8 @@ const std::string PhysProp::toString() const
     if (metal) oss << "Metal|";
     if (metalA) oss << "MetalAcceptor|";
     if (ring) oss << "In Ring|";
-//    if (weakAcceptor) oss << "Weak Acceptor|";
-//    if (weakDonor) oss << "Weak Donor|";
+   if (weakAcceptor) oss << "Weak Acceptor|";
+   if (weakDonor) oss << "Weak Donor|";
     return oss.str().substr(0,oss.str().length()-1);
 
 }
