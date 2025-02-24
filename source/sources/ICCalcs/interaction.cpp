@@ -1909,134 +1909,265 @@ void Interactions::mergeSpeInts(InterResults& interResult)const
 
 }
 
-std::string Interactions::toString(const  InterResults& interResult)const
+// std::string Interactions::toString(const  InterResults& interResult)const
+// {
+//     ostringstream oss;
+
+//     for (std::vector<InterPoint>::const_iterator it=interResult.listInters.begin();
+//          it != interResult.listInters.end();it++)
+//     {
+//         const InterPoint& interpt=*it;
+//         if (interpt.merged_to != -1)continue;
+//         switch (interpt.interaction)
+//         {
+//         case InterType::HBOND_LIG:   oss << "HBond_LIG         ";break;
+//         case InterType::HBOND_PROT:  oss << "HBond_PROT        ";break;
+//         case InterType::IONIC_LIG:   oss << "Ionic_LIG         ";break;
+//         case InterType::IONIC_PROT:  oss << "Ionic_PROT        ";break;
+//         case InterType::METAL:       oss << "Metal_Acceptor    ";break;
+//         case InterType::HYDROPHOBIC: oss << "Hydrophobic       ";break;
+//         case InterType::ARFACEFACE:  oss << "Aromatic_Face/Face";break;
+//         case InterType::AREDGEFACE:  oss << "Aromatic_Edge/Face";break;
+//         case InterType::PICATION:    oss << "Pi/Cation         ";break;
+//         case InterType::WHBOND_LIG:  oss << "Weak_HBond_LIG    ";break;
+//         case InterType::WHBOND_PROT: oss << "Weak_HBond_PROT   ";break;
+//         }
+// //        if interpt.interaction != InterType::PICATION
+//         if (interpt.interaction != InterType::AREDGEFACE
+//                 &&interpt.interaction != InterType::ARFACEFACE
+//                 &&interpt.interaction != InterType::PICATION)
+//         {
+//             oss << "\t"; oss.setf(ios::left);
+//             oss << "|" << interpt.Prot_Ref->getIdentifier();
+//             oss << "\t|" << interpt.Lig_Ref->getIdentifier();
+//             oss << "\t|" << interpt.point;
+//             oss << "\t|"; oss.width(7); oss.setf(ios::right); oss<< interpt.dist;
+//             oss << "\t|";
+//             if (interpt.angle != -100000)
+//                 oss <<(interpt.angle*180/M_PI);
+//             else oss<<"/";
+//         }
+//         else if (interpt.interaction== InterType::PICATION)
+//         {
+//             if (interpt.Prot_Ref->getName()=="DuAr")
+//             {
+//                 Cycle* cyc=interpt.Prot_Ref->getParent().getCycleFromCenter(interpt.Prot_Ref);
+
+//                 oss << "\t"; oss.setf(ios::left);
+//                 oss << "|"; oss.width(5);oss.setf(ios::left); oss<< cyc->getCenter().getName();
+//                 oss << "|"; oss.width(5);oss.setf(ios::left); oss << "NULL";
+//                 oss << "|"; oss << cyc->getAtom(0)->getResidu()->getIdentifier();
+
+//                 oss << "\t|" << interpt.Lig_Ref->getIdentifier();
+//                 oss << "\t|" << interpt.point;
+//                 oss << "\t|"; oss.width(7); oss.setf(ios::right); oss << interpt.dist;
+//                 oss << "\t|";
+//                 if (interpt.angle != -100000)
+//                     oss <<(interpt.angle*180/M_PI);
+//                 else oss<<"/";
+
+
+// //                oss<<"|";oss.width(7);oss<<"|";
+// //                oss.width(5);oss.setf(ios::left); oss<< cyc->getCenter().getName();
+// //                oss<<"|";
+// //                oss.width(5); oss<< "NULL";
+// //                oss <<"|";oss.width(9);oss<<cyc->getAtom(0)->getResidu()->getIdentifier();
+// //                oss<< "|";oss.width(7);oss
+// //                   <<interpt.Lig_Ref->getIdentifier();
+// //                oss<< "|";oss.width(7);oss<<interpt.dist
+// //                 <<oss.width(7);
+// //                if (interpt.angle != -100000)
+// //                    oss   <<(interpt.angle*180/M_PI);
+// //                else oss<<"/";
+//             }
+//             else
+//             {
+//                 oss << "\t"; oss.setf(ios::left);
+//                 oss << "|" << interpt.Prot_Ref->getIdentifier();
+//                 Cycle* cyc = interpt.Lig_Ref->getParent().getCycleFromCenter(interpt.Lig_Ref);
+
+//                 oss << "\t";
+//                 oss << "|"; oss.setf(ios::left, ios::adjustfield); oss.width(5); oss << cyc->getCenter().getName(); // Without adjustfield, it does not work
+//                 oss << "|"; oss.setf(ios::left); oss.width(5); oss << "0";
+//                 oss << "|"; oss << "UNK1001-XX";
+//                 oss << "\t|" << interpt.point;
+//                 oss << "\t|"; oss.width(7); oss.setf(ios::right); oss<< interpt.dist;
+//                 oss << "\t|";
+//                 oss <<(interpt.angle*180/M_PI);
+
+//             }
+//         }
+//         else
+//         {   
+//             // here
+//             Cycle* cyc=interpt.Prot_Ref->getParent().getCycleFromCenter(interpt.Prot_Ref);
+//             oss << "\t";
+//             oss << "|"; oss.setf(ios::left, ios::adjustfield); oss.width(5); oss << cyc->getCenter().getName(); // Without adjustfield, it does not work
+//             oss << "|"; oss.setf(ios::left); oss.width(5); oss << "NULL";
+//             oss << "|"; oss << cyc->getAtom(0)->getResidu()->getIdentifier();
+
+//             cyc=interpt.Lig_Ref->getParent().getCycleFromCenter(interpt.Lig_Ref);
+
+//             oss << "\t";
+//             oss << "|"; oss.setf(ios::left, ios::adjustfield); oss.width(5); oss << cyc->getCenter().getName(); // Without adjustfield, it does not work
+//             oss << "|"; oss.setf(ios::left); oss.width(5); oss << "NULL";
+//             oss << "|"; oss << cyc->getAtom(0)->getResidu()->getIdentifier();
+
+//             oss << "\t|" << interpt.point;
+//             oss << "\t|"; oss.width(7); oss.setf(ios::right); oss<< interpt.dist;
+//             oss << "\t|/";
+
+//         }
+//         oss <<endl;
+// //        for (std::vector<InterPoint>::const_iterator it2=interResult.listInters.begin();
+// //             it2 != interResult.listInters.end();it2++)
+// //        {
+// //            const InterPoint& interpt2=*it2;
+// //            if (interpt2.merged_to!= interpt.point) continue;
+// //            oss<<"\t|-->"<<interpt2.Prot_Ref->getIdentifier()
+// //              <<"\t"<<interpt2.Lig_Ref->getIdentifier()
+// //             <<"\t"<<interpt2.dist
+// //            <<"\t";
+// //            if (interpt2.angle != -100000)
+// //                oss   <<(interpt2.angle*180/M_PI);
+// //            else oss<<"/";
+// //            oss<<"\n";
+// //        }
+//     }
+//     return oss.str();
+
+// }
+
+
+std::string Interactions::toString(const InterResults& interResult) const
 {
     ostringstream oss;
 
-    for (std::vector<InterPoint>::const_iterator it=interResult.listInters.begin();
-         it != interResult.listInters.end();it++)
+    // Stores ligand cycle atoms per interaction index
+    std::map<int, std::vector<std::string>> ligandCycleAtoms; 
+
+    for (std::vector<InterPoint>::const_iterator it = interResult.listInters.begin();
+         it != interResult.listInters.end(); it++)
     {
-        const InterPoint& interpt=*it;
-        if (interpt.merged_to != -1)continue;
+        const InterPoint& interpt = *it;
+        if (interpt.merged_to != -1) continue;
+
         switch (interpt.interaction)
         {
-        case InterType::HBOND_LIG:   oss << "HBond_LIG         ";break;
-        case InterType::HBOND_PROT:  oss << "HBond_PROT        ";break;
-        case InterType::IONIC_LIG:   oss << "Ionic_LIG         ";break;
-        case InterType::IONIC_PROT:  oss << "Ionic_PROT        ";break;
-        case InterType::METAL:       oss << "Metal_Acceptor    ";break;
-        case InterType::HYDROPHOBIC: oss << "Hydrophobic       ";break;
-        case InterType::ARFACEFACE:  oss << "Aromatic_Face/Face";break;
-        case InterType::AREDGEFACE:  oss << "Aromatic_Edge/Face";break;
-        case InterType::PICATION:    oss << "Pi/Cation         ";break;
-        case InterType::WHBOND_LIG:  oss << "Weak_HBond_LIG    ";break;
-        case InterType::WHBOND_PROT: oss << "Weak_HBond_PROT   ";break;
+        case InterType::HBOND_LIG:   oss << "HBond_LIG         "; break;
+        case InterType::HBOND_PROT:  oss << "HBond_PROT        "; break;
+        case InterType::IONIC_LIG:   oss << "Ionic_LIG         "; break;
+        case InterType::IONIC_PROT:  oss << "Ionic_PROT        "; break;
+        case InterType::METAL:       oss << "Metal_Acceptor    "; break;
+        case InterType::HYDROPHOBIC: oss << "Hydrophobic       "; break;
+        case InterType::ARFACEFACE:  oss << "Aromatic_Face/Face"; break;
+        case InterType::AREDGEFACE:  oss << "Aromatic_Edge/Face"; break;
+        case InterType::PICATION:    oss << "Pi/Cation         "; break;
+        case InterType::WHBOND_LIG:  oss << "Weak_HBond_LIG    "; break;
+        case InterType::WHBOND_PROT: oss << "Weak_HBond_PROT   "; break;
         }
-//        if interpt.interaction != InterType::PICATION
+
         if (interpt.interaction != InterType::AREDGEFACE
-                &&interpt.interaction != InterType::ARFACEFACE
-                &&interpt.interaction != InterType::PICATION)
+            && interpt.interaction != InterType::ARFACEFACE
+            && interpt.interaction != InterType::PICATION)
         {
             oss << "\t"; oss.setf(ios::left);
             oss << "|" << interpt.Prot_Ref->getIdentifier();
             oss << "\t|" << interpt.Lig_Ref->getIdentifier();
             oss << "\t|" << interpt.point;
-            oss << "\t|"; oss.width(7); oss.setf(ios::right); oss<< interpt.dist;
+            oss << "\t|"; oss.width(7); oss.setf(ios::right); oss << interpt.dist;
             oss << "\t|";
             if (interpt.angle != -100000)
-                oss <<(interpt.angle*180/M_PI);
-            else oss<<"/";
+                oss << (interpt.angle * 180 / M_PI);
+            else
+                oss << "/";
         }
-        else if (interpt.interaction== InterType::PICATION)
+        else if (interpt.interaction == InterType::PICATION)
         {
-            if (interpt.Prot_Ref->getName()=="DuAr")
+            if (interpt.Prot_Ref->getName() == "DuAr")
             {
-                Cycle* cyc=interpt.Prot_Ref->getParent().getCycleFromCenter(interpt.Prot_Ref);
-
+                Cycle* cyc = interpt.Prot_Ref->getParent().getCycleFromCenter(interpt.Prot_Ref);
                 oss << "\t"; oss.setf(ios::left);
-                oss << "|"; oss.width(5);oss.setf(ios::left); oss<< cyc->getCenter().getName();
-                oss << "|"; oss.width(5);oss.setf(ios::left); oss << "NULL";
+                oss << "|"; oss.width(5); oss.setf(ios::left); oss << cyc->getCenter().getName();
+                oss << "|"; oss.width(5); oss.setf(ios::left); oss << "NULL";
                 oss << "|"; oss << cyc->getAtom(0)->getResidu()->getIdentifier();
-
                 oss << "\t|" << interpt.Lig_Ref->getIdentifier();
                 oss << "\t|" << interpt.point;
                 oss << "\t|"; oss.width(7); oss.setf(ios::right); oss << interpt.dist;
                 oss << "\t|";
                 if (interpt.angle != -100000)
-                    oss <<(interpt.angle*180/M_PI);
-                else oss<<"/";
-
-
-//                oss<<"|";oss.width(7);oss<<"|";
-//                oss.width(5);oss.setf(ios::left); oss<< cyc->getCenter().getName();
-//                oss<<"|";
-//                oss.width(5); oss<< "NULL";
-//                oss <<"|";oss.width(9);oss<<cyc->getAtom(0)->getResidu()->getIdentifier();
-//                oss<< "|";oss.width(7);oss
-//                   <<interpt.Lig_Ref->getIdentifier();
-//                oss<< "|";oss.width(7);oss<<interpt.dist
-//                 <<oss.width(7);
-//                if (interpt.angle != -100000)
-//                    oss   <<(interpt.angle*180/M_PI);
-//                else oss<<"/";
+                    oss << (interpt.angle * 180 / M_PI);
+                else
+                    oss << "/";
             }
             else
             {
                 oss << "\t"; oss.setf(ios::left);
                 oss << "|" << interpt.Prot_Ref->getIdentifier();
-                Cycle* cyc=interpt.Lig_Ref->getParent().getCycleFromCenter(interpt.Lig_Ref);
-
+                Cycle* cyc = interpt.Lig_Ref->getParent().getCycleFromCenter(interpt.Lig_Ref);
                 oss << "\t";
-                oss << "|"; oss.setf(ios::left, ios::adjustfield); oss.width(5); oss << cyc->getCenter().getName(); // Without adjustfield, it does not work
+                oss << "|"; oss.setf(ios::left, ios::adjustfield); oss.width(5); oss << cyc->getCenter().getName();
                 oss << "|"; oss.setf(ios::left); oss.width(5); oss << "0";
                 oss << "|"; oss << "UNK1001-XX";
                 oss << "\t|" << interpt.point;
-                oss << "\t|"; oss.width(7); oss.setf(ios::right); oss<< interpt.dist;
+                oss << "\t|"; oss.width(7); oss.setf(ios::right); oss << interpt.dist;
                 oss << "\t|";
-                oss <<(interpt.angle*180/M_PI);
-
+                oss << (interpt.angle * 180 / M_PI);
             }
         }
         else
         {
-            Cycle* cyc=interpt.Prot_Ref->getParent().getCycleFromCenter(interpt.Prot_Ref);
-
+            Cycle* cyc = interpt.Prot_Ref->getParent().getCycleFromCenter(interpt.Prot_Ref);
             oss << "\t";
-            oss << "|"; oss.setf(ios::left, ios::adjustfield); oss.width(5); oss << cyc->getCenter().getName(); // Without adjustfield, it does not work
+            oss << "|"; oss.setf(ios::left, ios::adjustfield); oss.width(5); oss << cyc->getCenter().getName();
             oss << "|"; oss.setf(ios::left); oss.width(5); oss << "NULL";
             oss << "|"; oss << cyc->getAtom(0)->getResidu()->getIdentifier();
 
-            cyc=interpt.Lig_Ref->getParent().getCycleFromCenter(interpt.Lig_Ref);
-
+            cyc = interpt.Lig_Ref->getParent().getCycleFromCenter(interpt.Lig_Ref);
             oss << "\t";
-            oss << "|"; oss.setf(ios::left, ios::adjustfield); oss.width(5); oss << cyc->getCenter().getName(); // Without adjustfield, it does not work
+            oss << "|"; oss.setf(ios::left, ios::adjustfield); oss.width(5); oss << cyc->getCenter().getName();
             oss << "|"; oss.setf(ios::left); oss.width(5); oss << "NULL";
             oss << "|"; oss << cyc->getAtom(0)->getResidu()->getIdentifier();
 
             oss << "\t|" << interpt.point;
-            oss << "\t|"; oss.width(7); oss.setf(ios::right); oss<< interpt.dist;
+            oss << "\t|"; oss.width(7); oss.setf(ios::right); oss << interpt.dist;
             oss << "\t|/";
-
         }
-        oss <<endl;
-//        for (std::vector<InterPoint>::const_iterator it2=interResult.listInters.begin();
-//             it2 != interResult.listInters.end();it2++)
-//        {
-//            const InterPoint& interpt2=*it2;
-//            if (interpt2.merged_to!= interpt.point) continue;
-//            oss<<"\t|-->"<<interpt2.Prot_Ref->getIdentifier()
-//              <<"\t"<<interpt2.Lig_Ref->getIdentifier()
-//             <<"\t"<<interpt2.dist
-//            <<"\t";
-//            if (interpt2.angle != -100000)
-//                oss   <<(interpt2.angle*180/M_PI);
-//            else oss<<"/";
-//            oss<<"\n";
-//        }
+
+        oss << endl;
+
+        // Store ligand cycle atoms for ARFACEFACE and AREDGEFACE interactions mapped by interaction index
+        if (interpt.interaction == InterType::ARFACEFACE || interpt.interaction == InterType::AREDGEFACE)
+        {
+            Cycle* cyc = interpt.Lig_Ref->getParent().getCycleFromCenter(interpt.Lig_Ref);
+            if (cyc != nullptr)
+            {
+                for (ItCAtom itA = cyc->first(); itA != cyc->end(); ++itA)
+                {
+                    ligandCycleAtoms[interpt.point].push_back((*itA)->getName());
+                }
+            }
+        }
+    }
+
+    // Ligand cycle atoms printed, grouped by interaction index
+    if (!ligandCycleAtoms.empty())
+    {
+        oss << "\n==== Ligand Atoms Involved in Aromatic Cycles: ====\n";
+        for (const auto& entry : ligandCycleAtoms)
+        {
+            oss << "Interaction " << entry.first << ": ";
+            for (const auto& atom : entry.second)
+            {
+                oss << atom << " ";
+            }
+            oss << endl;
+        }
     }
     return oss.str();
-
 }
+
+
 
 
 
