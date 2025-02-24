@@ -279,7 +279,7 @@ void IChemSwitch::IFP() const throw(MoleExcept)
                 InterResults interRes;
                 InterResults osef;
                 ligand.checkMOL2();
-                ligand.ringPerception();
+                // ligand.ringPerception();
                 Interactions intsosef(icomplex);
                 if (changedist){
                     intsosef.setDist_H(dh);
