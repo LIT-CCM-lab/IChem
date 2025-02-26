@@ -2153,7 +2153,7 @@ std::string Interactions::toString(const InterResults& interResult) const
     // Ligand cycle atoms printed, grouped by interaction index
     if (!ligandCycleAtoms.empty())
     {
-        oss << "\n==== Ligand Atoms Involved in Aromatic Cycles: ====\n";
+        oss << "\n==== Ligand atoms involved in the aromatic cycle: ====\n";
         for (const auto& entry : ligandCycleAtoms)
         {
             oss << "Interaction " << entry.first << ": ";
