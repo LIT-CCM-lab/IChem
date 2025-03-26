@@ -71,9 +71,9 @@ void Interactions::setStdRules()
     Dist_Metal   = 2.8;
     // Dist_Arom    = 4.0; // Changed to 5.0
     Dist_Arom    = 5.0;
-    dist_H       = 2.5;
+    dist_H       = 2.3;
     dist_Hyd     = 3.2;
-    dist_Ionic   = 2.5;
+    dist_Ionic   = 2.3;
     dist_Metal   = 1.8;
     dist_Arom    = 3.2;
     // Dist_PiCation= 4.0; // Changed to 5.0

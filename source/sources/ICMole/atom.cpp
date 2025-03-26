@@ -675,7 +675,7 @@ void Atom::checkMOL2type() throw(MoleExcept)
             if ((props.isAromatic()
                  || linkedatmSize==3
                  || linkedatmSize==2) && wH)
-                props.setWeakAcceptor(true);
+                props.setWeakDonor(true);
         }
 
         return;
