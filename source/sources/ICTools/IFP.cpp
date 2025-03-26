@@ -118,7 +118,7 @@ void IChemSwitch::IFP() const throw(MoleExcept)
 
 
         // STEP 1 - LOADING DATA :
-        // 1.1 - Loading protein :
+        // 1.1 -KiB Loading protein :
         iread.loadNewFile(fProtein); // Just for the format 
         iread.get_format_file(); // Get the integer for Mol2
         iread.loadInComplex(icomplex,MoleType::PROTEIN); // ReadAtoms seems to read the file with no problems

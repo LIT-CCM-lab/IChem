@@ -6,11 +6,17 @@
 #include "headers/ICMole/fingerprint.h"
 
 
-namespace ICMole
-{
+namespace ICMole {
 
- struct InterPoint
-{
+
+struct resbest {
+  Atom *atmP;
+  double dist;
+  unsigned short id;
+};
+
+
+struct InterPoint {
     int point;
     ICMole::Atom* Prot_Ref;
     ICMole::Atom* Lig_Ref;
@@ -20,40 +26,19 @@ namespace ICMole
     double angle;
     int merged_to;
 
-    InterPoint(const InterPoint  &p):
-        point(p.point),
-        Prot_Ref(p.Prot_Ref),
-        Lig_Ref(p.Lig_Ref),
-        center(p.center),
-        interaction(p.interaction),
-        dist(p.dist),
-        angle(p.angle),
-        merged_to(p.merged_to) {}
+    InterPoint(const InterPoint  &p): 
+      point(p.point),
+      Prot_Ref(p.Prot_Ref),
+      Lig_Ref(p.Lig_Ref),
+      center(p.center),
+      interaction(p.interaction),
+      dist(p.dist),
+      angle(p.angle),
+      merged_to(p.merged_to) {}
 
-    // InterPoint(const  int& p,
-    //             Atom* const protein,
-    //             Atom* const ligand,
-    //            const Coords& center,
-    //            const unsigned int& int_type,
-    //            const double& dist,
-    //            const double& angl= -100000):
-    //             point(p),
-    //             Prot_Ref(protein),
-    //             Lig_Ref(ligand),
-    //             center(center),
-    //             interaction(int_type),
-    //             dist(dist),
-    //             angle(angl),
-    //             merged_to(-1){}
-    InterPoint(const int& p,
-                       Atom* const protein,
-                       Atom* const ligand,
-                       const Coords& center,
-                       const unsigned int& int_type,
-                       const double& dist,
-                      //  const double& angl = 0)
-                      const double& angl= -100000)
-    : point(p),
+
+    InterPoint(const int& p, Atom* const protein, Atom* const ligand, const Coords& center, const unsigned int& int_type, const double& dist, const double& angl= -100000) :
+      point(p),
       Prot_Ref(protein != nullptr ? protein : nullptr),
       Lig_Ref(ligand != nullptr ? ligand : nullptr),   
       center(center),
@@ -62,58 +47,20 @@ namespace ICMole
       angle(angl),                
       merged_to(-1) {}   
 
-
-    // friend std::ostream& operator<<(std::ostream& os, const InterPoint& interPoint) {
-    //     std::cout << "\n"; 
-    //     // os << "Protein_Ref: " << interPoint.Prot_Ref->getName() << std::endl;
-    //     // os << "Ligand_Ref: " << interPoint.Prot_Ref->getName() << std::endl;
-    //     os << "Distance: " << interPoint.dist << std::endl;
-    //     os << "center.x: " << interPoint.center.x << std::endl;
-    //     os << "center.y: " << interPoint.center.y << std::endl;
-    //     os << "center.z: " << interPoint.center.z << std::endl;
-    //     os << "Interaction: " << interPoint.interaction << std::endl;
-    //     os << "Angle: " << interPoint.angle << std::endl;
-    //     os << "Merged_to: " << interPoint.merged_to << std::endl;
-    //     return os;
-    // }
 };
 
 
- struct InterResults
- {
+ struct InterResults {
    Molecule Ints;
-   unsigned short CA,CZ,O,N,NZ,OD1,Zn;
+   unsigned short CA, CZ, O, N, NZ, OD1, Zn;
    std::vector<InterPoint> listInters;
    std::string IFPString;
    Fingerprint IFP;
    std::string chainA;
    std::string chainB;
 
-   
    InterResults():CA(0),CZ(0),O(0),N(0),NZ(0),OD1(0),Zn(0),chainA(""),chainB(""){}
-
-  // friend std::ostream& operator<<(std::ostream& os, InterResults& results) {
-  //   bool first = true;
-  //   os << "############### BEGINNING ######################### ";
-  //   for(const auto& x: results.listInters) {
-  //     if(!first) {
-  //       os << "------------";
-  //     }
-  //     os << x;
-  //     first = false;
-  //   }
-  //   std::cout << "\n";
-  //   os << "################# END ############################";
-  //   return os;
-  // }
-
-  // void displayInterResults() {
-  //   for(const auto x: listInters) {
-  //     cout << "display listInters elem: " << x << endl;
-  //   }
-  // } 
-
- };
+};
 
 
 class Interactions
@@ -304,21 +251,74 @@ public:
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+void processHydrophobicInteraction(Atom& atomL, Atom& atomP, double dist, bool oldh, InterResults& interResult, std::map<Residu*, ICMole::resbest>& hydlist, Grid& grid, Box* itBAdj) const;        
+
+void processAromaticInteractions(
+  Molecule &ligand,
+  Grid &grid,
+  double max_allowed_dist,
+  InterResults &interResult,
+  bool *wInterType,
+  int &NInter,
+  double min_allowed_dist,    
+  double Dist_PiCation,       
+  double Angl_PiCation,
+  double AngT_PiCation,       
+  double Dist_Arom,           
+  double dist_Arom,          
+  double Angl_AromFF,        
+  double AngT_AromFF,         
+  double Angl_AromEF,        
+  double AngT_AromEF,         
+  double Dist_H,              
+  double dist_H,              
+  double &dist,              
+  std::map<Residu*, resbest> &hydlist
+) const;
+
+void addInteraction(InterResults& interResult, Atom& atomP, Atom& atomL, double dist, int& NInter, double* angle, unsigned int interactionType) const;
+void checkMetalInteractions(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
+
+void checkHydrogenBondLigandAcceptor(Atom& atomL, Atom& atomP, double dist,  InterResults& interResult, int& NInter) const;
+void checkHydrogenBondLigandDonor(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
+
+void checkWeakHydrogenBondLigandAcceptor(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
+void checkWeakHydrogenBondLigandWeakAcceptor(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
+
+void checkWeakHydrogenBondLigandDonorProteinWeakAcceptor(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
+void checkWeakHydrogenBondLigandWeakDonorProteinAcceptor(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
+
+void checkIonicProteinInteractions(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
+
+
+
+
+
+
+
+
+
+
+
+
              /**
               * @brief Detect interaction according to geometric rules
               * @param ligand : molecule to detect interaction with
               * @param interResult : Detected interactions are score here
               * @param wMerge : Merge hydrophobic interactions
               */
-            //  void calcInteractions(Molecule&     ligand,
-            //                       InterResults& interResult,
-            //                       bool          wMerge=true,
-            //                       bool          oldh=true,
-            //                       bool mono_prop=false, 
-            //                       bool displayProperties = false,
-            //                       bool out_lig=false,
-            //                       bool stdout=false
-            //                       ) const; //bool displayProperties = false
+            
 
             void calcInteractions(Molecule&     ligand,
                                    InterResults& interResult,
