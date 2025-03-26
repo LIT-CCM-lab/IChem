@@ -668,14 +668,12 @@ void Atom::checkMOL2type() throw(MoleExcept)
         {
             bool wH=false;
             for (size_t i=0; i<linkedatmSize;++i)
-                if (atomlinked.at(i)->getAtomicNum() == 1)
-                {
-                    wH=true;break;
+                if (atomlinked.at(i)->getAtomicNum() == 1) {
+                    wH=true;
+                    break;
                 }
-            if ((props.isAromatic()
-                 || linkedatmSize==3
-                 || linkedatmSize==2) && wH)
-                props.setWeakAcceptor(true);
+            if ((props.isAromatic() || linkedatmSize==3 || linkedatmSize==2) && wH)
+                props.setWeakDonor(true);
         }
 
         return;
