@@ -312,6 +312,7 @@ void checkIonicProteinInteractions(Atom& atomL, Atom& atomP, double dist, InterR
 
 
 
+
              /**
               * @brief Detect interaction according to geometric rules
               * @param ligand : molecule to detect interaction with
