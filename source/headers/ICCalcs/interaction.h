@@ -323,10 +323,7 @@ void checkPiCationInteraction(Atom& atomL, Atom& atomP, double dist, InterResult
               */
             
 
-            void calcInteractions(Molecule&     ligand,
-                                   InterResults& interResult,
-                                   bool          wMerge=true,
-                                   bool          oldh=true, bool mono_prop=false, bool out_lig=false, bool stdout=false) const;
+            void calcInteractions(Molecule& ligand, InterResults& interResult, bool wMerge = true, bool oldh = true) const;
 
 
                 
