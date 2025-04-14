@@ -132,6 +132,13 @@ void Interactions::checkMetalInteractions(Atom& atomL, Atom& atomP, double dist,
         return;
     }
 
+    if(  dist < 3.4  && ( atomL.props.isMetal() && (atomP.props.isAcceptor() || atomP.props.isAnion())
+        || (atomL.props.isAnion() || atomL.props.isAcceptor() ) && atomP.props.isMetal()
+        || (atomP.isMetallic() && atomL.getAtomicName() == "N"))) {
+                    
+        atomL.props.setMetalA(true);
+    }
+
     // Special case: nitrogen linked to sulfonamide
     if (atomL.isNitrogen() && dist < Dist_Metal) {
         bool linkedToSulfur = false;
@@ -591,8 +598,8 @@ void Interactions::processAromaticInteractions(
 
             // CASE AROMATIC CENTER CLOSE :
             cycleP.calcVector();
-            possible =true;
-            EF=0; Ar=false;
+            possible = true;
+            EF = 0; Ar = false;
             // SCANNING LIGAND ATOM VS PROTEIN ATOM :
             for (size_t itCLA =0; itCLA < ligcycle.getNumAtom(); itCLA++) {
 
