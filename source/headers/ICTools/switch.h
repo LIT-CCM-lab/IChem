@@ -20,8 +20,7 @@ namespace IChemTools
     const unsigned int utils=9;
     const unsigned int sims=10;
     const unsigned int scoring=11;
-    const unsigned int detectppi=12;
-    const unsigned int atomProps = 13;
+    const unsigned int atomProps = 12;
 //    const unsigned int cavLig=13;
 }
 class IChemSwitch;
@@ -84,7 +83,6 @@ class IChemSwitch
         void utils() const throw(ICMole::MoleExcept);
         void runFGPS() const throw(ICMole::MoleExcept);
         void scoring()   const throw(ICMole::MoleExcept);
-        void detectPPI() const throw(ICMole::MoleExcept);
         void test() const throw(ICMole::MoleExcept);
         void pharma() const throw(ICMole::MoleExcept);
         void convertCav() const throw(ICMole::MoleExcept);

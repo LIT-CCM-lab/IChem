@@ -66,8 +66,6 @@ set(SOURCES
     source/sources/ICTools/patch.cpp
     source/sources/ICTools/sims.cpp
     source/sources/ICTools/scoring.cpp
-    source/sources/ICCalcs/ppi.cpp
-    source/sources/ICTools/detectPPI.cpp
     source/sources/ICMole/pharmprop.cpp
     source/sources/ICPars/pharmwriter.cpp
     source/sources/ICPars/CHMParser.cpp
