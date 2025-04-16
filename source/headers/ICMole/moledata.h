@@ -7,7 +7,7 @@
 #define NB_COLOR 17
 #define NB_RESTYPE 13
 #define NB_MOLETYPE 18
-#define NB_INTTYPE 14
+#define NB_INTTYPE 13
 #define NBHN 105
 #define NB_PHARMTYPE 7
 
