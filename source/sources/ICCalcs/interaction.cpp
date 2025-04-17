@@ -13,10 +13,11 @@ using namespace std;
 using namespace ICMole;
 
 
+
 double *Interactions::path_dist;
 unsigned int Interactions::path_dist_size;
 unsigned int Interactions::size_triplets;
-bool Interactions::Load_triplet = false;
+bool Interactions::Load_triplet=false;
 int Interactions::vect_list[1000][1000];
 
 
@@ -193,8 +194,9 @@ void Interactions::checkWeakHydrogenBondLigandDonorProteinWeakAcceptor(Atom& ato
 }
 
 void Interactions::checkWeakHydrogenBondLigandWeakDonorProteinAcceptor(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const {
-    
+     
     if (wInterType[InterType::WHBOND_LIG] && (atomP.props.isAcceptor() || atomP.props.isweakAcceptor()) && dist <= params.Dist_WHBond) {
+
         for (size_t i=0; i < atomL.getNumBond(); ++i) {
             const Atom &atomL2 = atomL.getAtomLinked(i);
             double angle = atomL2.fixpos.calcAngle(atomP.fixpos,  atomL.fixpos);
@@ -320,6 +322,7 @@ void Interactions::calcInteractions( Molecule& ligand, InterResults& interResult
 
                 if (atomL.props.isweakDonor()) {
                     // Ligand weak donor
+                    
                     checkWeakHydrogenBondLigandWeakDonorProteinAcceptor(atomL, atomP, dist, interResult, NInter);
                 }
 
