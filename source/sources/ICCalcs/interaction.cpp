@@ -193,24 +193,34 @@ void Interactions::checkWeakHydrogenBondLigandDonorProteinWeakAcceptor(Atom& ato
     }
 }
 
+
 void Interactions::checkWeakHydrogenBondLigandWeakDonorProteinAcceptor(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const {
-     
-    if (wInterType[InterType::WHBOND_LIG] && (atomP.props.isAcceptor() || atomP.props.isweakAcceptor()) && dist <= params.Dist_WHBond) {
+    
+    if (!atomL.props.isweakDonor())
+        return;
+    if (!wInterType[InterType::WHBOND_LIG])
+        return;
+    if (!(atomP.props.isAcceptor() || atomP.props.isweakAcceptor()))
+        return;
+    if (dist > params.Dist_WHBond) 
+        return;
 
-        for (size_t i=0; i < atomL.getNumBond(); ++i) {
-            const Atom &atomL2 = atomL.getAtomLinked(i);
-            double angle = atomL2.fixpos.calcAngle(atomP.fixpos,  atomL.fixpos);
+    for (size_t i = 0; i < atomL.getNumBond(); ++i) {
+        const Atom& atomL2 = atomL.getAtomLinked(i);
+        double angle = atomL2.fixpos.calcAngle(atomP.fixpos, atomL.fixpos);
 
-            if (!atomL2.isHydrogen())     
-                continue;
+        if (!atomL2.isHydrogen()) 
+            continue;
 
-            if (angle <= params.Angl_WHBond - params.AngT_WHBond || angle >= params.Angl_WHBond + params.AngT_WHBond)  
-                continue;
-
-            addInteraction(interResult, atomP, atomL, dist, NInter, &angle, InterType::WHBOND_LIG);
+        if (angle <= params.Angl_WHBond - params.AngT_WHBond || 
+            angle >= params.Angl_WHBond + params.AngT_WHBond) {
+            continue;
         }
+
+        addInteraction(interResult, atomP, atomL, dist, NInter, &angle, InterType::WHBOND_LIG);
     }
 }
+
 
 void Interactions::checkIonicProteinInteractions(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const {
 
@@ -320,11 +330,8 @@ void Interactions::calcInteractions( Molecule& ligand, InterResults& interResult
                     checkWeakHydrogenBondLigandDonorProteinWeakAcceptor(atomL, atomP, dist, interResult, NInter);
                 }
 
-                if (atomL.props.isweakDonor()) {
-                    // Ligand weak donor
-                    
-                    checkWeakHydrogenBondLigandWeakDonorProteinAcceptor(atomL, atomP, dist, interResult, NInter);
-                }
+                checkWeakHydrogenBondLigandWeakDonorProteinAcceptor(atomL, atomP, dist, interResult, NInter);
+
 
                 checkIonicProteinInteractions(atomL, atomP, dist, interResult, NInter);
                 

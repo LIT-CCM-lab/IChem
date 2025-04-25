@@ -17,7 +17,7 @@ namespace ICMole {
     double Dist_Metal = 2.8; // Metal/Acceptor maximal distance
     double Dist_Arom = 5.0; // Aromatic maximal distance between center
     double Dist_PiCation = 5.0; // PI-Cation maximal distance
-    double Dist_WHBond = 2.8; // Weak H-Bond maximal distance
+    double Dist_WHBond = 3.5; // Weak H-Bond maximal distance
     
     // Distances min
     double dist_H = 2.3; // HBond minimal distance
