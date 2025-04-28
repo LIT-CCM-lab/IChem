@@ -257,7 +257,7 @@ void Interactions::checkPiCationInteraction(Atom& atomL, Atom& atomP, double dis
         return;
 
     Cycle* cycleP = atomP.getParent().getCycleFromCenter(&atomP);
-    if (cycleP == nullptr) 
+    if (cycleP == nullptr)
         return;
 
     cycleP->calcVector();
@@ -625,8 +625,10 @@ void Interactions::processHydrophobicInteraction(Atom& atomL, Atom& atomP, doubl
     
     std::map<Residu*, ICMole::resbest>::iterator itHydList; // Declare iterator
 
-    if (!oldh) {
-        if (wInterType[InterType::HYDROPHOBIC] && atomL.props.isHydrophobic() && atomP.props.isHydrophobic() && !(atomL.props.isAromatic() && atomP.props.isAromatic()) && dist <= params.Dist_Hyd && dist >= params.dist_Hyd) {
+    // Never entered unless we give --newH as argument / oldh defined as true by default in IFP
+    // Then passed as an argument in calcInteraction()
+    if (!oldh) { 
+        if (wInterType[InterType::HYDROPHOBIC] && atomL.props.isHydrophobic() && atomP.props.isHydrophobic() && dist <= params.Dist_Hyd && dist >= params.dist_Hyd) {
             AtomList listAtoms;
             Box& box = *itBAdj; 
 
@@ -664,7 +666,7 @@ void Interactions::processHydrophobicInteraction(Atom& atomL, Atom& atomP, doubl
         }
     } 
     else {
-        if (wInterType[InterType::HYDROPHOBIC] && atomL.props.isHydrophobic() && atomP.props.isHydrophobic()  && !(atomL.props.isAromatic() && atomP.props.isAromatic())  && dist <= params.Dist_Hyd && dist >= params.dist_Hyd) {
+        if (wInterType[InterType::HYDROPHOBIC] && atomL.props.isHydrophobic() && atomP.props.isHydrophobic() && dist <= params.Dist_Hyd && dist >= params.dist_Hyd) {
             
             itHydList = hydlist.find(atomP.getResidu());
             if (itHydList == hydlist.end()) {
