@@ -601,8 +601,9 @@ void Atom::checkMOL2type() throw(MoleExcept)
                     }
                 }
             }
-            if (!wrong && NNpl3 < 2)
+            if (!wrong && NNpl3 < 2) 
                 props.setHydrophobic(true);
+                
         }
         // Apolar : must be np
         if (MOL2_SPEC[Ivar1].property.find("np")  !=string::npos)

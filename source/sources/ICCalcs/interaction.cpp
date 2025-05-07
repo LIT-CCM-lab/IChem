@@ -355,8 +355,16 @@ void Interactions::calcInteractions( Molecule& ligand, InterResults& interResult
             addInteraction(interResult, *atmP, atomL, rbest.dist, NInter, nullptr, InterType::HYDROPHOBIC);
         }
     }// END itLA*/
+    
 
-    if (!wInterType[InterType::AREDGEFACE] &&!wInterType[InterType::ARFACEFACE] &&!wInterType[InterType::PICATION]) {
+    if (wInterType[InterType::HYDROPHOBIC]) {
+        Molecule* protein = complex.getMole(MoleType::PROTEIN);
+        if (protein) {
+            checkAromaticHydrophobicInteractions(ligand, *protein, interResult, NInter, params.dist_Hyd, params.Dist_Hyd);
+        }
+    }
+    
+    if (!wInterType[InterType::AREDGEFACE] && !wInterType[InterType::ARFACEFACE] && !wInterType[InterType::PICATION] ) {
         if (wMerge)
             mergeInteractions(interResult);
         return;
@@ -370,9 +378,41 @@ void Interactions::calcInteractions( Molecule& ligand, InterResults& interResult
 
     if (wMerge){
         mergeInteractions(interResult);
-
     }
 }
+
+void Interactions::checkAromaticHydrophobicInteractions(Molecule& ligand, Molecule& protein, InterResults& interResult, int& NInter, double dist_H, double Dist_H) const
+{
+    for (ItCCycle ligandCycle = ligand.firstCycle(); ligandCycle != ligand.lastCycle(); ++ligandCycle) {
+        Cycle& ligCycle = **ligandCycle;
+        if (!ligCycle.isAromatic()) 
+            continue;
+
+        for (ItCCycle proteinCycle = protein.firstCycle(); proteinCycle != protein.lastCycle(); ++proteinCycle) {
+            Cycle& protCycle = **proteinCycle;
+            if (!protCycle.isAromatic())
+                continue;
+
+            for (size_t i = 0; i < ligCycle.getNumAtom(); ++i) {
+                Atom& atomL = *ligCycle.getAtom(i);
+                if (!atomL.props.isHydrophobic()) 
+                    continue;
+
+                for (size_t j = 0; j < protCycle.getNumAtom(); ++j) {
+                    Atom& atomP = *protCycle.getAtom(j);
+                    if (!atomP.props.isHydrophobic()) 
+                        continue;
+
+                    double distance = atomL.calcFixpos(atomP);
+                    if (distance >= dist_H && distance <= Dist_H) {
+                        addInteraction(interResult, atomP, atomL, distance, NInter, nullptr, InterType::HYDROPHOBIC);
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 void Interactions::processAromaticInteractions(
     Molecule &ligand,
@@ -502,6 +542,9 @@ void Interactions::processAromaticInteractions(
             cout << "  ||-->"<<cycleP.getCenter().fixpos.toString()
                  <<" " << ligcycle.getCenter().fixpos.toString()<<" " << distCENTER<<endl;
 #endif
+
+            
+
             // CASE AROMATIC CENTER TOO FAR => POSSIBLE HYDROPHOBIC INTERACTION :
             if (wInterType[InterType::HYDROPHOBIC] && distCENTER > Dist_Arom)
             {
@@ -628,7 +671,7 @@ void Interactions::processHydrophobicInteraction(Atom& atomL, Atom& atomP, doubl
     // Never entered unless we give --newH as argument / oldh defined as true by default in IFP
     // Then passed as an argument in calcInteraction()
     if (!oldh) { 
-        if (wInterType[InterType::HYDROPHOBIC] && atomL.props.isHydrophobic() && atomP.props.isHydrophobic() && dist <= params.Dist_Hyd && dist >= params.dist_Hyd) {
+        if (wInterType[InterType::HYDROPHOBIC] && atomL.props.isHydrophobic() && atomP.props.isHydrophobic() && !(atomL.props.isAromatic() && atomP.props.isAromatic()) && dist <= params.Dist_Hyd && dist >= params.dist_Hyd) {
             AtomList listAtoms;
             Box& box = *itBAdj; 
 
@@ -666,7 +709,7 @@ void Interactions::processHydrophobicInteraction(Atom& atomL, Atom& atomP, doubl
         }
     } 
     else {
-        if (wInterType[InterType::HYDROPHOBIC] && atomL.props.isHydrophobic() && atomP.props.isHydrophobic() && dist <= params.Dist_Hyd && dist >= params.dist_Hyd) {
+        if (wInterType[InterType::HYDROPHOBIC] && atomL.props.isHydrophobic() && atomP.props.isHydrophobic() & !(atomL.props.isAromatic() && atomP.props.isAromatic()) && dist <= params.Dist_Hyd && dist >= params.dist_Hyd) {
             
             itHydList = hydlist.find(atomP.getResidu());
             if (itHydList == hydlist.end()) {

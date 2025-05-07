@@ -138,8 +138,9 @@ namespace ICMole {
 
 
 
-      void processHydrophobicInteraction(Atom& atomL, Atom& atomP, double dist, bool oldh, InterResults& interResult, std::map<Residu*, ICMole::resbest>& hydlist, Grid& grid, Box* itBAdj) const;        
+      void processHydrophobicInteraction(Atom& atomL, Atom& atomP, double dist, bool oldh, InterResults& interResult, std::map<Residu*, ICMole::resbest>& hydlist, Grid& grid, Box* itBAdj) const;
 
+      void checkAromaticHydrophobicInteractions(Molecule& ligand, Molecule& protein, InterResults& interResult, int& NInter, double dist_H, double Dist_H) const;
       void processAromaticInteractions(
         Molecule &ligand,
         Grid &grid,
