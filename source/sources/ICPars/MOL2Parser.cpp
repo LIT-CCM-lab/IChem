@@ -504,7 +504,7 @@ void  MoleReader::readMOL2Atom(const unsigned int NbrAt,
 #ifdef ICHEM_DEBUG
         cout << "ICHEM_DEBUG| -- ATOM --"<<ligne<<endl;
 #endif
-        if (ligne == "END" || ligne.find("@<TRIPOS>", 0)!=string::npos)
+        if (ligne == "END" || ligne.find("@<TRIPOS>", 0) != string::npos)
         {
             oss.str("");
             oss<< "Unexpected end of atom block. Expecting "

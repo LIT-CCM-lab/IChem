@@ -207,25 +207,23 @@ void  Complex::removeMole(Molecule *const molecule) throw(MoleExcept)
 
 }
 
-bool Complex::isMoleIn(Molecule* const molecule) const
+bool Complex::isMoleIn(Molecule* const molecule) const 
 {
     const MoleList &listM= molecules[molecule->getMoleType()];
-    ItCMole it = find(listM.begin(),
-                      listM.end(),
-                      molecule);
+    ItCMole it = find(listM.begin(), listM.end(), molecule);
+
     if (it == molecules[molecule->getMoleType()].end()) return false;
     return true;
-
 }
-bool Complex::isMoleIn(const Molecule&  molecule) const
-{
+
+
+bool Complex::isMoleIn(const Molecule&  molecule) const {
+
     const MoleList &listM= molecules[molecule.getMoleType()];
-    ItCMole it = find(listM.begin(),
-                      listM.end(),
-                      &molecule);
+    ItCMole it = find(listM.begin(), listM.end(), &molecule);
+    
     if (it == molecules[molecule.getMoleType()].end()) return false;
     return true;
-
 }
 
 

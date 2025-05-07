@@ -277,29 +277,6 @@ double  Coords::calcDist (const Coords &_coords) const {
   return sqrt(Xd.x*Xd.x + Xd.y*Xd.y + Xd.z*Xd.z);
 }
 
-// double Coords::calcDist(const Coords &_coords) const {
-
-//     if (this == nullptr) {
-
-//         std::cerr << "Error: 'this' is a null pointer!" << std::endl;
-
-//         return -1;
-
-//     }
-
-//     // Assuming _coords is passed by reference, lets check its validity (printing vlaues)
-
-//     std::cout << "Coords being compared - This: (" << this->x << ", " << this->y << ", " << this->z
-
-//               << "), Other: (" << _coords.x << ", " << _coords.y << ", " << _coords.z << ")" << std::endl;
-
-//     const Coords Xd(x - _coords.x, y - _coords.y, z - _coords.z);
-
-//     return sqrt(Xd.x * Xd.x + Xd.y * Xd.y + Xd.z * Xd.z);
-
-// }
-
-
 double Coords::calcDist(const Coords &_coords, const double& max) const {
    double dist = 0;
    double diff = this->x - _coords.x;

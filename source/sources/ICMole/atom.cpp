@@ -22,7 +22,7 @@ std::vector<std::string> Atom::Hyd_DbS;
 
 std::vector<std::string> Atom::A_Atm;
 
-std::vector<std::string> Atom::Met_list;
+std::vector<std::string> Atom::Met_list;    
 void Atom::loadData()
 {
 
@@ -581,22 +581,29 @@ void Atom::checkMOL2type() throw(MoleExcept)
         if (MOL2_SPEC[Ivar1].property.find("H")  != string::npos
                 || (MOL2_SPEC[Ivar1].property.find("Ar") != string::npos && atomicNum ==  6))
         {
-            wrong=false;unsigned int NNpl3=0;
-            for (size_t i=0; i<linkedatmSize;++i)
-            {
+            wrong=false;
+            unsigned int NNpl3=0;
+            for (size_t i=0; i<linkedatmSize; ++i) {
+
                 const unsigned int &BType=links.at(i)->getBondType();
                 const std::string &OthMOL2=atomlinked.at(i)->getMOL2Type();
+                
                 if (atomicNum == 6 ) {
                     if ((find(Hyd_Db.begin(),Hyd_Db.end(),OthMOL2) != Hyd_Db.end())
-                            ||(BType==BondType::AROMATIC && OthMOL2.compare("O.co2")==0))wrong=true;
-                    else if (BType==BondType::AROMATIC && OthMOL2.compare("N.pl3")==0) NNpl3++;
-                } else {
+                    || (BType == BondType::AROMATIC && OthMOL2.compare("O.co2") == 0)) wrong=true;
+                    
+                    else if (BType == BondType::AROMATIC && OthMOL2.compare("N.pl3")==0)
+                        NNpl3++;
+                } 
+                else {
                     if (find(Hyd_Db.begin(),Hyd_Db.end(),OthMOL2) != Hyd_Db.end()) {
                         wrong =true;
                     }
                 }
             }
-            if (!wrong && NNpl3 <2) props.setHydrophobic(true);
+            if (!wrong && NNpl3 < 2) 
+                props.setHydrophobic(true);
+                
         }
         // Apolar : must be np
         if (MOL2_SPEC[Ivar1].property.find("np")  !=string::npos)
@@ -664,17 +671,14 @@ void Atom::checkMOL2type() throw(MoleExcept)
             //               {props.setAcceptor(true);break;}
             if ((atomicName=="S" || atomicName=="F" || atomicName=="Br" ||atomicName=="Cl" ||atomicName=="I") && formal_charge==0) props.setWeakAcceptor(true); // old weak acceptor
         }
-        if (atomicName=="C")
-        {
+        if (atomicName=="C") {
             bool wH=false;
             for (size_t i=0; i<linkedatmSize;++i)
-                if (atomlinked.at(i)->getAtomicNum() == 1)
-                {
-                    wH=true;break;
+                if (atomlinked.at(i)->getAtomicNum() == 1) {
+                    wH=true;
+                    break;
                 }
-            if ((props.isAromatic()
-                 || linkedatmSize==3
-                 || linkedatmSize==2) && wH)
+            if ((props.isAromatic() || linkedatmSize==3 || linkedatmSize==2) && wH)
                 props.setWeakDonor(true);
         }
 

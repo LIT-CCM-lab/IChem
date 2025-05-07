@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.13)
 
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++11 -O3")
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -w")
 
 if (ICHEM_DEBUG)
     add_definitions(-DICHEM_DEBUG=1)
@@ -66,8 +66,6 @@ set(SOURCES
     source/sources/ICTools/patch.cpp
     source/sources/ICTools/sims.cpp
     source/sources/ICTools/scoring.cpp
-    source/sources/ICCalcs/ppi.cpp
-    source/sources/ICTools/detectPPI.cpp
     source/sources/ICMole/pharmprop.cpp
     source/sources/ICPars/pharmwriter.cpp
     source/sources/ICPars/CHMParser.cpp

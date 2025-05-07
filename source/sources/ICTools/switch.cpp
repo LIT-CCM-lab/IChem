@@ -10,12 +10,12 @@ using namespace ICMole;
 bool IChemSwitch::verbose       =false;
 bool IChemSwitch::licence_loaded=false;
 // bool IChemSwitch::allowed[ICHEM_TOOLS]= {false,false,false,false,false,false,false,false,false,false,false,false,false,false};
-bool IChemSwitch::allowed[ICHEM_TOOLS]= {true,true,true,true,true,true,true,true,true,true,true,true,true,true};
+bool IChemSwitch::allowed[ICHEM_TOOLS]= {true,true,true,true,true,true,true,true,true,true,true,true,true};
 const std::string IChemSwitch::moduluskeys   ="1722935102953";
 const std::string IChemSwitch::privatexp     ="817040704029";
 const std::string IChemSwitch::publicexp     ="65537";
 const std::string IChemSwitch::possInputs    =
-        " realign genKey BSAcalc IFP grim ints fgps volsite pdbconv patch utils licence sims scoring detectppi \
+        " realign genKey BSAcalc IFP grim ints fgps volsite pdbconv patch utils licence sims scoring \
         -type -name -logf -d_Hb -d_Hyd -d_Io -d_Me -d_Ar -a_H -at_H -a_ArFF -at_ArFF -a_ArEF -at_ArEF --enf --noMerge --d\
         -boxStep -name \
         -step -boxS -b -n -nPTS -l -p -pha -phaC -phaP --weight --tol --outpoutsite --cofactor --dna --solvent --ligand  --hydrogen --svm --desc -drog \
@@ -41,7 +41,6 @@ const vector<string> IChemSwitch::FetchPossInput()
     RX.push_back("utils");
     RX.push_back("sims");
     RX.push_back("scoring");
-    RX.push_back("detectppi");
     RX.push_back("AtomProps");
 //    RX.push_back("cavLig");
     return RX;
@@ -60,7 +59,6 @@ IChemSwitch::pf1 IChemSwitch::listFunc[ICHEM_TOOLS]={&IChemSwitch::genKey,
                                                      &IChemSwitch::utils,
                                                      &IChemSwitch::runFGPS,
                                                      &IChemSwitch::scoring,
-                                                     &IChemSwitch::detectPPI,
                                                      &IChemSwitch::AtomProps
                                                 };
 //                                                     &IChemSwitch::convertCav};
@@ -76,7 +74,6 @@ IChemSwitch::pf1 IChemSwitch::listHelp[ICHEM_TOOLS]={&IChemSwitch::helpGenKey,
                                                      &IChemSwitch::helpUtils,
                                                      &IChemSwitch::helpFGPS,
                                                      &IChemSwitch::helpScoring,
-                                                     &IChemSwitch::helpdetectPPI,
                                                      &IChemSwitch::helpAtomProps
                                                      };
 //                                                     &IChemSwitch::helpconvertCav};

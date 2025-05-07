@@ -1660,10 +1660,8 @@ void Grid::rotateMole(Molecule & mole,
     {
 
         Atom *atm= *itA;
-        if (withResSelRules &&
-                Residu::Rules[MType][atm->getResidu()->getResType()] != MoleType::PROTEIN
-                && Residu::Rules[MType][atm->getResidu()->getResType()] != MoleType::LIGAND
-                ) continue;
+        if (withResSelRules && Residu::Rules[MType][atm->getResidu()->getResType()] != MoleType::PROTEIN && Residu::Rules[MType][atm->getResidu()->getResType()] != MoleType::LIGAND )
+            continue;
         // Calculating coordinates based on O',i,j,k axis :
         atm->rotpos = (atm->fixpos-X8)/boxStep;
 

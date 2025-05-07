@@ -118,7 +118,7 @@ void IChemSwitch::IFP() const throw(MoleExcept)
 
 
         // STEP 1 - LOADING DATA :
-        // 1.1 - Loading protein :
+        // 1.1 -KiB Loading protein :
         iread.loadNewFile(fProtein); // Just for the format 
         iread.get_format_file(); // Get the integer for Mol2
         iread.loadInComplex(icomplex,MoleType::PROTEIN); // ReadAtoms seems to read the file with no problems
@@ -177,7 +177,7 @@ void IChemSwitch::IFP() const throw(MoleExcept)
 //                Interactions intsosef(icomplex);
 //                InterResults osef;
 //                intsosef.calcInteractions(*icomplex.getMole(MoleType::PROTEIN),osef,false,oldh,ligd);
-                ints.calcInteractions(ligand,interRes[currLig],true,oldh,ligd);
+                ints.calcInteractions(ligand,interRes[currLig],true,oldh);
                 if      (!polarOnly && !extended && !metalOnly) ints.genIFP(interRes[currLig],0);
                 else if ( polarOnly && !extended) ints.genIFP(interRes[currLig],1);
                 else if (!polarOnly &&  extended) ints.genIFP(interRes[currLig],2);
@@ -216,7 +216,7 @@ void IChemSwitch::IFP() const throw(MoleExcept)
 
 //                InterResults osef;
 //                intsosef.calcInteractions(*icomplex.getMole(MoleType::PROTEIN),osef,false,oldh,ligd);
-                ints.calcInteractions(ligand,interRes[currLig],true,oldh,ligd);
+                ints.calcInteractions(ligand,interRes[currLig],true,oldh);
                 if      (!polarOnly && !extended && !metalOnly) ints.genIFP(interRes[currLig],0);
                 else if ( polarOnly && !extended) ints.genIFP(interRes[currLig],1);
                 else if (!polarOnly &&  extended) ints.genIFP(interRes[currLig],2);
@@ -299,7 +299,7 @@ void IChemSwitch::IFP() const throw(MoleExcept)
                 }
 //                intsosef.calcInteractions(*icomplex.getMole(MoleType::PROTEIN),osef,false,oldh,ligd);
 
-                ints.calcInteractions(ligand,interRes,true,oldh,ligd);
+                ints.calcInteractions(ligand,interRes,true,oldh);
                 if      (!polarOnly && !extended && !metalOnly) ints.genIFP(interRes,0);
                 else if ( polarOnly && !extended) ints.genIFP(interRes,1);
                 else if (!polarOnly &&  extended) ints.genIFP(interRes,2);
@@ -363,7 +363,7 @@ void IChemSwitch::IFP() const throw(MoleExcept)
                     }
 //                    InterResults osef;
 //                    intsosef.calcInteractions(*icomplex.getMole(MoleType::PROTEIN),osef,false,oldh,ligd);
-                    ints.calcInteractions(ligand,interRes[currLig],true,oldh,ligd);
+                    ints.calcInteractions(ligand,interRes[currLig],true,oldh);
                     if      (!polarOnly && !extended && !metalOnly) ints.genIFP(interRes[currLig],0);
                     else if ( polarOnly && !extended) ints.genIFP(interRes[currLig],1);
                     else if (!polarOnly &&  extended) ints.genIFP(interRes[currLig],2);
