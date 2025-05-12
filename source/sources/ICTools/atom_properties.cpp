@@ -6,18 +6,29 @@ using namespace ICMole;
 
 
 void IChemSwitch::helpAtomProps() const {
-    cout << " AtomProps - Print atom properties of ligands\n"
-              << "    Usage: IChem AtomProps file1 file2...fileN\n"
-              << "    Description:\n"
-              << "      This command prints the atom properties (ID, MOL2 type, properties, and charge)\n"
-              << "      for each mol2 file provided as argument\n"
+        cout  << "NAME\n"
+              << "      IChem AtomProps - Display atom-level properties from MOL2 files\n\n\n"
+              << "SYNOPSIS:\n"
+              << "      IChem AtomProps <mol2_file1> [<mol2_file2> ... <mol2_filen]\n\n\n"
+              << "DESCRIPTION:\n"
+              << "      Parses one or more MOL2 files and displays the atom-level properties for each structure\n\n"
+              << "  Supported input:\n"
+              << "      - Any valid MOL2 file\n\n"
+              << "  Displayed properties per atom:\n"
+              << "      - Atom ID\n"
+              << "      - MOL2 atom type\n"
+              << "      - Chemical property (e.g. apolar, hydrophobic, acceptor)\n"
+              << "      - Charge\n\n\n"
+              << "EXAMPLES:\n"
+              << "      IChem AtomProps ligand.mol2\n"
+              << "      IChem AtomProps protein.mol2 ligand.mol2 \n"
               << "\n";
 }
 
 
 void IChemSwitch::printAtomInfo(const ICMole::Atom& atom) const {
     cout << "ATOM \t" << atom.getIdentifier() << "\n"
-              << "\t type: " << atom.getMOL2Type() << "\n"
+              << "\t type : " << atom.getMOL2Type() << "\n"
               << "\t props : " << atom.props.toString() << "\n"
               << "\t charge: " << atom.getPartialCharge() << "\n\n";
 }

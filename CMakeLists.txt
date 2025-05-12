@@ -8,7 +8,7 @@ if (ICHEM_DEBUG)
     add_definitions(-DICHEM_DEBUG=1)
 endif (ICHEM_DEBUG)
 
-project(IChem VERSION 5.3.0)
+project(IChem VERSION 5.3.4)
 
 set(SOURCES
     source/main.cpp

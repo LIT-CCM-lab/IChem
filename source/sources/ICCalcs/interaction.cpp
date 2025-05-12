@@ -308,7 +308,7 @@ void Interactions::calcInteractions( Molecule& ligand, InterResults& interResult
 
                 dist = atomL.calcFixpos(atomP,max_allowed_dist+0.1);
 
-                cout << "Checking interaction: " << atomL.getName() << " ligand atom with " << atomP.getName() << " protein atom" << endl;
+                // cout << "Checking interaction: " << atomL.getName() << " ligand atom with " << atomP.getName() << " protein atom" << endl;
            
                 if (dist > max_allowed_dist ) {
                     continue;
