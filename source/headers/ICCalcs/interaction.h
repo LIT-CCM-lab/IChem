@@ -165,6 +165,7 @@ namespace ICMole {
       ) const;
 
       void addInteraction(InterResults& interResult, Atom& atomP, Atom& atomL, double dist, int& NInter, double* angle, unsigned int interactionType) const;
+      void checkMetalNitrogenSulfonamideCase(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
       void checkMetalInteractions(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
 
       void checkHydrogenBondLigandAcceptor(Atom& atomL, Atom& atomP, double dist,  InterResults& interResult, int& NInter) const;

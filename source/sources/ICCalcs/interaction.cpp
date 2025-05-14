@@ -63,8 +63,32 @@ void Interactions::addInteraction(InterResults& interResult, Atom& atomP, Atom& 
     }
 }
 
+// Special case: nitrogen linked to sulfonamide
+void Interactions::checkMetalNitrogenSulfonamideCase(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const {
+    
+    if (atomL.isNitrogen() && dist < params.Dist_Metal) {
+        bool linkedToSulfur = false;
+
+        for (size_t i = 0; i < atomL.getNumBond(); ++i) {
+
+            const Atom& linkedAtom = atomL.getAtomLinked(i);
+            if (linkedAtom.isSulfur()) {
+                linkedToSulfur = true;
+                break;
+            }
+        }
+        if (linkedToSulfur) {
+            addInteraction(interResult, atomP, atomL, dist, NInter, nullptr, InterType::METAL);
+        }
+    }
+}
+
+
 void Interactions::checkMetalInteractions(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const {
     
+    if(!atomL.props.isAcceptor())
+        return;
+
     if (!wInterType[InterType::METAL] || !atomP.props.isMetal())
         return;
 
@@ -77,25 +101,8 @@ void Interactions::checkMetalInteractions(Atom& atomL, Atom& atomP, double dist,
     if(  dist < 3.4  && ( atomL.props.isMetal() && (atomP.props.isAcceptor() || atomP.props.isAnion())
         || (atomL.props.isAnion() || atomL.props.isAcceptor() ) && atomP.props.isMetal()
         || (atomP.isMetallic() && atomL.getAtomicName() == "N"))) {
-                    
+
         atomL.props.setMetalA(true);
-    }
-
-    // Special case: nitrogen linked to sulfonamide
-    if (atomL.isNitrogen() && dist < params.Dist_Metal) {
-        bool linkedToSulfur = false;
-
-        for (size_t i = 0; i < atomL.getNumBond(); ++i) {
-            const Atom& linkedAtom = atomL.getAtomLinked(i);
-            if (linkedAtom.isSulfur()) {
-                linkedToSulfur = true;
-                break;
-            }
-        }
-
-        if (linkedToSulfur) {
-            addInteraction(interResult, atomP, atomL, dist, NInter, nullptr, InterType::METAL);
-        }
     }
 }
 
@@ -313,10 +320,12 @@ void Interactions::calcInteractions( Molecule& ligand, InterResults& interResult
                 if (dist > max_allowed_dist ) {
                     continue;
                 }
-
+                
+                checkMetalNitrogenSulfonamideCase(atomL, atomP, dist, interResult, NInter);
+                checkMetalInteractions(atomL, atomP, dist, interResult, NInter);
+                
                 if (atomL.props.isAcceptor()) {
                     checkHydrogenBondLigandAcceptor(atomL, atomP, dist, interResult, NInter);
-                    checkMetalInteractions(atomL, atomP, dist, interResult, NInter);
                     checkWeakHydrogenBondLigandAcceptor(atomL, atomP, dist, interResult, NInter);
                 }
 
