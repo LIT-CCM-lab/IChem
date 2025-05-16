@@ -9,6 +9,7 @@ build_images:
   stage: prepare
   tags: [IChem-tag]
   script:
+    - cd $CI_PROJECT_DIR
     - echo "Building UBI 8.8 image..."
     - podman build -f ci-containers/Containerfile.ubi -t ichem-dev:ubi8 .
     - echo "Building Ubuntu 22.04 image..."
