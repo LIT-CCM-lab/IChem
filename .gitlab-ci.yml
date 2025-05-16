@@ -16,8 +16,6 @@ build_images:
     - podman build -f ci-containers/Containerfile.ubuntu -t ichem-dev:ubuntu .
     - echo "Building Debian 12 image..."
     - podman build -f ci-containers/Containerfile.debian -t ichem-dev:debian .
-    - echo "Building CentOS 8 image..."
-    - podman build -f ci-containers/Containerfile.centos -t ichem-dev:centos .
     - echo "All images built successfully."
   rules:
     - when: manual
