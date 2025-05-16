@@ -1,5 +1,0 @@
-FROM centos:8
-
-RUN yum install -y epel-release && \
-    yum install -y cmake gcc-c++ make && \
-    yum clean all
