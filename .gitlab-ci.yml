@@ -61,7 +61,7 @@ build_all:
 
 create_release:
   stage: release
-  image: registry.gitlab.com/gitlab-org/release-cli:v0.12.0
+  image: registry.gitlab.com/gitlab-org/release-cli:v1.0.4
   dependencies:
     - build_all
   script:
