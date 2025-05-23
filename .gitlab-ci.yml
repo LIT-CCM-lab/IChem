@@ -54,36 +54,18 @@ build_all:
 
 create_release:
   stage: release
-  image: alpine:latest
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
   script:
-    - apk add --no-cache curl jq
-    - |
-      set -e
-      echo "Fetching build_all job ID for commit $CI_COMMIT_SHA"
-      JOB_ID=$(curl --silent --header "JOB-TOKEN: $CI_JOB_TOKEN" \
-        "$CI_API_V4_URL/projects/$CI_PROJECT_ID/jobs?scope=success" | \
-        jq '.[] | select(.name=="build_all" and .commit.id=="'"$CI_COMMIT_SHA"'") | .id' | head -n1)
-
-      echo "Found build_all job ID: $JOB_ID"
-
-      jq -n --arg job_id "$JOB_ID" --arg project "$CI_PROJECT_URL" --arg tag "$CI_COMMIT_TAG" '{
-        name: $tag,
-        tag_name: $tag,
-        description: "Automated release for \($tag)",
-        assets: {
-          links: [
-            { name: "IChem for UBI 8.8", url: "\($project)/-/jobs/\($job_id)/artifacts/raw/IChem_ubi" },
-            { name: "IChem for Ubuntu 22.04", url: "\($project)/-/jobs/\($job_id)/artifacts/raw/IChem_ubuntu" },
-            { name: "IChem for Debian 12", url: "\($project)/-/jobs/\($job_id)/artifacts/raw/IChem_debian" }
-          ]
-        }
-      }' > release.json
-
-      curl --header "JOB-TOKEN: $CI_JOB_TOKEN" \
-        --request POST "$CI_API_V4_URL/projects/$CI_PROJECT_ID/releases" \
-        --header "Content-Type: application/json" \
-        --data @release.json
+    - echo "Creating GitLab release for tag $CI_COMMIT_TAG"
+    - release-cli create \
+        --tag-name "$CI_COMMIT_TAG" \
+        --name "$CI_COMMIT_TAG" \
+        --description "Automated release for $CI_COMMIT_TAG" \
+        --assets-link='{"name":"IChem for UBI 8.8","url":"https://gitlab.in2p3.fr/neddaoudi/ichem-main-work/-/jobs/1223036/artifacts/raw/IChem_ubi"}' \
+        --assets-link='{"name":"IChem for Ubuntu 22.04","url":"https://gitlab.in2p3.fr/neddaoudi/ichem-main-work/-/jobs/1223036/artifacts/raw/IChem_ubuntu"}' \
+        --assets-link='{"name":"IChem for Debian 12","url":"https://gitlab.in2p3.fr/neddaoudi/ichem-main-work/-/jobs/1223036/artifacts/raw/IChem_debian"}'
   rules:
     - if: '$CI_COMMIT_TAG'
+
 
 
