@@ -61,12 +61,11 @@ build_all:
 
 create_release:
   stage: release
-  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  image: registry.gitlab.com/gitlab-org/release-cli:v1.4.0
   dependencies:
     - build_all
   script:
     - echo "Creating GitLab release for tag $CI_COMMIT_TAG"
-    - echo "Verifying binaries before upload:"
     - ls -lh IChem_*
     - release-cli create --tag-name "$CI_COMMIT_TAG" --name "$CI_COMMIT_TAG" --description "Automated release for $CI_COMMIT_TAG" --assets-path "IChem_ubi" --assets-path "IChem_ubuntu" --assets-path "IChem_debian"
   rules:
