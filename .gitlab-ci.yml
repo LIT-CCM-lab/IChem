@@ -54,19 +54,22 @@ build_all:
       - IChem_ubi
       - IChem_ubuntu
       - IChem_debian
-    expire_in: 1 week
+    expire_in: 1 year
   rules:
     - if: '$CI_COMMIT_TAG'
     - when: manual
 
 create_release:
   stage: release
-  image: registry.gitlab.com/gitlab-org/release-cli:edge
-  dependencies:
-    - build_all
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
   script:
     - echo "Creating GitLab release for tag $CI_COMMIT_TAG"
-    - ls -lh IChem_*
-    - release-cli create --tag-name "$CI_COMMIT_TAG" --name "$CI_COMMIT_TAG" --description "Automated release for $CI_COMMIT_TAG" --assets-path "IChem_ubi" --assets-path "IChem_ubuntu" --assets-path "IChem_debian"
+    - release-cli create \
+        --tag-name "$CI_COMMIT_TAG" \
+        --name "$CI_COMMIT_TAG" \
+        --description "Automated release for $CI_COMMIT_TAG" \
+        --assets-link='{"name":"IChem for UBI 8.8","url":"https://gitlab.in2p3.fr/neddaoudi/ichem-main-work/-/jobs/artifacts/$CI_COMMIT_TAG/raw/IChem_ubi?job=build_all"}' \
+        --assets-link='{"name":"IChem for Ubuntu 22.04","url":"https://gitlab.in2p3.fr/neddaoudi/ichem-main-work/-/jobs/artifacts/$CI_COMMIT_TAG/raw/IChem_ubuntu?job=build_all"}' \
+        --assets-link='{"name":"IChem for Debian 12","url":"https://gitlab.in2p3.fr/neddaoudi/ichem-main-work/-/jobs/artifacts/$CI_COMMIT_TAG/raw/IChem_debian?job=build_all"}'
   rules:
     - if: '$CI_COMMIT_TAG'
