@@ -70,10 +70,7 @@ create_release:
     tag_name: "$CI_COMMIT_TAG"
     description: "Automated release for $CI_COMMIT_TAG"
     assets:
-      links:
-        - name: "IChem for UBI 8.8"
-          filepath: "IChem_ubi"
-        - name: "IChem for Ubuntu 22.04"
-          filepath: "IChem_ubuntu"
-        - name: "IChem for Debian 12"
-          filepath: "IChem_debian"
+      paths:
+        - IChem_ubi
+        - IChem_ubuntu
+        - IChem_debian
