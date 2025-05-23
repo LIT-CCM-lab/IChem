@@ -11,13 +11,9 @@ build_images:
   tags: [IChem-tag]
   script:
     - cd $CI_PROJECT_DIR
-    - echo "Building UBI 8.8 image..."
     - podman build -f ci-containers/Containerfile.ubi -t ichem-dev:ubi8 .
-    - echo "Building Ubuntu 22.04 image..."
     - podman build -f ci-containers/Containerfile.ubuntu -t ichem-dev:ubuntu .
-    - echo "Building Debian 12 image..."
     - podman build -f ci-containers/Containerfile.debian -t ichem-dev:debian .
-    - echo "All images built successfully."
   rules:
     - when: manual
 
@@ -27,7 +23,6 @@ build_all:
   script:
     - mkdir -p $CI_PROJECT_DIR/$BUILD_DIR
     - |
-      echo "Building with UBI 8.8..."
       podman run --rm \
         -v $CI_PROJECT_DIR:/IChem:Z \
         -w /IChem/$BUILD_DIR \
@@ -35,7 +30,6 @@ build_all:
         bash -c "cmake .. && make -j\$(nproc) && cp IChem /IChem/IChem_ubi"
     - rm -rf $CI_PROJECT_DIR/$BUILD_DIR/*
     - |
-      echo "Building with Ubuntu 22.04..."
       podman run --rm \
         -v $CI_PROJECT_DIR:/IChem:Z \
         -w /IChem/$BUILD_DIR \
@@ -43,7 +37,6 @@ build_all:
         bash -c "cmake .. && make -j\$(nproc) && cp IChem /IChem/IChem_ubuntu"
     - rm -rf $CI_PROJECT_DIR/$BUILD_DIR/*
     - |
-      echo "Building with Debian 12..."
       podman run --rm \
         -v $CI_PROJECT_DIR:/IChem:Z \
         -w /IChem/$BUILD_DIR \
@@ -64,12 +57,16 @@ create_release:
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   script:
     - echo "Creating GitLab release for tag $CI_COMMIT_TAG"
+    - |
+      echo '[ 
+        {"name":"IChem for UBI 8.8","url":"https://gitlab.in2p3.fr/neddaoudi/ichem-main-work/-/jobs/artifacts/'"$CI_COMMIT_TAG"'/raw/IChem_ubi?job=build_all"}, 
+        {"name":"IChem for Ubuntu 22.04","url":"https://gitlab.in2p3.fr/neddaoudi/ichem-main-work/-/jobs/artifacts/'"$CI_COMMIT_TAG"'/raw/IChem_ubuntu?job=build_all"}, 
+        {"name":"IChem for Debian 12","url":"https://gitlab.in2p3.fr/neddaoudi/ichem-main-work/-/jobs/artifacts/'"$CI_COMMIT_TAG"'/raw/IChem_debian?job=build_all"} 
+      ]' > links.json
     - release-cli create \
         --tag-name "$CI_COMMIT_TAG" \
         --name "$CI_COMMIT_TAG" \
         --description "Automated release for $CI_COMMIT_TAG" \
-        --assets-link='{"name":"IChem for UBI 8.8","url":"https://gitlab.in2p3.fr/neddaoudi/ichem-main-work/-/jobs/artifacts/$CI_COMMIT_TAG/raw/IChem_ubi?job=build_all"}' \
-        --assets-link='{"name":"IChem for Ubuntu 22.04","url":"https://gitlab.in2p3.fr/neddaoudi/ichem-main-work/-/jobs/artifacts/$CI_COMMIT_TAG/raw/IChem_ubuntu?job=build_all"}' \
-        --assets-link='{"name":"IChem for Debian 12","url":"https://gitlab.in2p3.fr/neddaoudi/ichem-main-work/-/jobs/artifacts/$CI_COMMIT_TAG/raw/IChem_debian?job=build_all"}'
+        --assets-link="$(cat links.json)"
   rules:
     - if: '$CI_COMMIT_TAG'
