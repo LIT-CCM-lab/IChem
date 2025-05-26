@@ -1,55 +1,50 @@
 stages:
   - prepare
   - build
-  - release                     
+  - release
 
 variables:
   BUILD_DIR: build
-
 
 build_images:
   stage: prepare
   tags: [IChem-tag]
   script:
     - cd "$CI_PROJECT_DIR"
-    - podman build -f ci-containers/Containerfile.ubi     -t ichem-dev:ubi8 .
-    - podman build -f ci-containers/Containerfile.ubuntu  -t ichem-dev:ubuntu .
-    - podman build -f ci-containers/Containerfile.debian  -t ichem-dev:debian .
+    - podman build -f ci-containers/Containerfile.ubi -t ichem-dev:ubi8 .
+    - podman build -f ci-containers/Containerfile.ubuntu -t ichem-dev:ubuntu .
+    - podman build -f ci-containers/Containerfile.debian -t ichem-dev:debian .
   rules:
     - when: manual
-
 
 build_all:
   stage: build
   tags: [IChem-tag]
-  script:
-    - mkdir -p "$CI_PROJECT_DIR/$BUILD_DIR"
+  script: |
+    set -e
+    mkdir -p "$CI_PROJECT_DIR/$BUILD_DIR"
 
-    
-    - podman run --rm \
-        -v "$CI_PROJECT_DIR:/IChem:Z" \
-        -w "/IChem/$BUILD_DIR" \
-        ichem-dev:ubi8 \
-        bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_ubi'
+    podman run --rm \
+      -v "$CI_PROJECT_DIR:/IChem:Z" \
+      -w "/IChem/$BUILD_DIR" \
+      ichem-dev:ubi8 \
+      bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_ubi'
 
-    - rm -rf "$CI_PROJECT_DIR/$BUILD_DIR"/*
+    rm -rf "$CI_PROJECT_DIR/$BUILD_DIR"/*
 
-    
-    - podman run --rm \
-        -v "$CI_PROJECT_DIR:/IChem:Z" \
-        -w "/IChem/$BUILD_DIR" \
-        ichem-dev:ubuntu \
-        bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_ubuntu'
+    podman run --rm \
+      -v "$CI_PROJECT_DIR:/IChem:Z" \
+      -w "/IChem/$BUILD_DIR" \
+      ichem-dev:ubuntu \
+      bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_ubuntu'
 
-    - rm -rf "$CI_PROJECT_DIR/$BUILD_DIR"/*
+    rm -rf "$CI_PROJECT_DIR/$BUILD_DIR"/*
 
-    
-    - podman run --rm \
-        -v "$CI_PROJECT_DIR:/IChem:Z" \
-        -w "/IChem/$BUILD_DIR" \
-        ichem-dev:debian \
-        bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_debian'
-
+    podman run --rm \
+      -v "$CI_PROJECT_DIR:/IChem:Z" \
+      -w "/IChem/$BUILD_DIR" \
+      ichem-dev:debian \
+      bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_debian'
   artifacts:
     paths:
       - IChem_ubi
@@ -57,39 +52,33 @@ build_all:
       - IChem_debian
     expire_in: 1 year
   rules:
-    - if: '$CI_COMMIT_TAG'       
+    - if: '$CI_COMMIT_TAG'
     - when: manual
-
 
 release_job:
   stage: release
   image: registry.gitlab.com/gitlab-org/cli:latest
   needs:
     - job: build_all
-      artifacts: true            
+      artifacts: true
   rules:
-    - if: '$CI_COMMIT_TAG'       
+    - if: '$CI_COMMIT_TAG'
   script:
     - echo "Creating release $CI_COMMIT_TAG"
-
- 
   release:
     tag_name: "$CI_COMMIT_TAG"
-    name:     "IChem $CI_COMMIT_TAG"
+    name: "IChem $CI_COMMIT_TAG"
     description: |
       Automated build for commit $CI_COMMIT_SHA  
       Pipeline: $CI_PIPELINE_URL
-
     assets:
       links:
-        - name:     "IChem (RHEL UBI 8)"
+        - name: "IChem (RHEL UBI 8)"
           filepath: "/IChem_ubi"
-          url:      "${CI_JOB_ARTIFACTS_DOWNLOAD_URL}/IChem_ubi"
-
-        - name:     "IChem (Ubuntu)"
+          url: "${CI_JOB_ARTIFACTS_DOWNLOAD_URL}/IChem_ubi"
+        - name: "IChem (Ubuntu)"
           filepath: "/IChem_ubuntu"
-          url:      "${CI_JOB_ARTIFACTS_DOWNLOAD_URL}/IChem_ubuntu"
-
-        - name:     "IChem (Debian)"
+          url: "${CI_JOB_ARTIFACTS_DOWNLOAD_URL}/IChem_ubuntu"
+        - name: "IChem (Debian)"
           filepath: "/IChem_debian"
-          url:      "${CI_JOB_ARTIFACTS_DOWNLOAD_URL}/IChem_debian"
+          url: "${CI_JOB_ARTIFACTS_DOWNLOAD_URL}/IChem_debian"
