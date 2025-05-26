@@ -23,24 +23,13 @@ build_all:
   script: |
     set -e
     mkdir -p "$CI_PROJECT_DIR/$BUILD_DIR"
-
-    podman run --rm \
-      -v "$CI_PROJECT_DIR:/IChem:Z" \
-      -w "/IChem/$BUILD_DIR" ichem-dev:ubi8 \
+    podman run --rm -v "$CI_PROJECT_DIR:/IChem:Z" -w "/IChem/$BUILD_DIR" ichem-dev:ubi8 \
       bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_ubi'
-
     rm -rf "$CI_PROJECT_DIR/$BUILD_DIR"/*
-
-    podman run --rm \
-      -v "$CI_PROJECT_DIR:/IChem:Z" \
-      -w "/IChem/$BUILD_DIR" ichem-dev:ubuntu \
+    podman run --rm -v "$CI_PROJECT_DIR:/IChem:Z" -w "/IChem/$BUILD_DIR" ichem-dev:ubuntu \
       bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_ubuntu'
-
     rm -rf "$CI_PROJECT_DIR/$BUILD_DIR"/*
-
-    podman run --rm \
-      -v "$CI_PROJECT_DIR:/IChem:Z" \
-      -w "/IChem/$BUILD_DIR" ichem-dev:debian \
+    podman run --rm -v "$CI_PROJECT_DIR:/IChem:Z" -w "/IChem/$BUILD_DIR" ichem-dev:debian \
       bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_debian'
   artifacts:
     paths:
@@ -54,14 +43,12 @@ build_all:
 
 release_job:
   stage: release
-  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  image: registry.gitlab.com/gitlab-org/cli:latest   # uses built-in release keyword
   needs:
     - job: build_all
       artifacts: true
   rules:
     - if: '$CI_COMMIT_TAG'
-  script:
-    - echo "Publishing IChem release $CI_COMMIT_TAG"
   release:
     tag_name: "$CI_COMMIT_TAG"
     name: "IChem $CI_COMMIT_TAG"
@@ -71,11 +58,8 @@ release_job:
     assets:
       links:
         - name: "IChem (RHEL UBI 8)"
-          filepath: "/IChem_ubi"
-          url: "$CI_PROJECT_URL/-/releases/$CI_COMMIT_TAG/downloads/IChem_ubi"
+          filepath: "IChem_ubi"
         - name: "IChem (Ubuntu)"
-          filepath: "/IChem_ubuntu"
-          url: "$CI_PROJECT_URL/-/releases/$CI_COMMIT_TAG/downloads/IChem_ubuntu"
+          filepath: "IChem_ubuntu"
         - name: "IChem (Debian)"
-          filepath: "/IChem_debian"
-          url: "$CI_PROJECT_URL/-/releases/$CI_COMMIT_TAG/downloads/IChem_debian"
+          filepath: "IChem_debian"
