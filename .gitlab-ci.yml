@@ -23,28 +23,11 @@ build_all:
   script: |
     set -e
     mkdir -p "$CI_PROJECT_DIR/$BUILD_DIR"
-
-    podman run --rm \
-      -v "$CI_PROJECT_DIR:/IChem:Z" \
-      -w "/IChem/$BUILD_DIR" \
-      ichem-dev:ubi8 \
-      bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_ubi'
-
+    podman run --rm -v "$CI_PROJECT_DIR:/IChem:Z" -w "/IChem/$BUILD_DIR" ichem-dev:ubi8   bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_ubi'
     rm -rf "$CI_PROJECT_DIR/$BUILD_DIR"/*
-
-    podman run --rm \
-      -v "$CI_PROJECT_DIR:/IChem:Z" \
-      -w "/IChem/$BUILD_DIR" \
-      ichem-dev:ubuntu \
-      bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_ubuntu'
-
+    podman run --rm -v "$CI_PROJECT_DIR:/IChem:Z" -w "/IChem/$BUILD_DIR" ichem-dev:ubuntu bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_ubuntu'
     rm -rf "$CI_PROJECT_DIR/$BUILD_DIR"/*
-
-    podman run --rm \
-      -v "$CI_PROJECT_DIR:/IChem:Z" \
-      -w "/IChem/$BUILD_DIR" \
-      ichem-dev:debian \
-      bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_debian'
+    podman run --rm -v "$CI_PROJECT_DIR:/IChem:Z" -w "/IChem/$BUILD_DIR" ichem-dev:debian bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_debian'
   artifacts:
     paths:
       - IChem_ubi
@@ -63,22 +46,10 @@ release_job:
       artifacts: true
   rules:
     - if: '$CI_COMMIT_TAG'
+  variables:
+    GITLAB_TOKEN: $CI_JOB_TOKEN
   script:
-    - echo "Creating release $CI_COMMIT_TAG"
-  release:
-    tag_name: "$CI_COMMIT_TAG"
-    name: "IChem $CI_COMMIT_TAG"
-    description: |
-      Automated build for commit $CI_COMMIT_SHA  
-      Pipeline: $CI_PIPELINE_URL
-    assets:
-      links:
-        - name: "IChem (RHEL UBI 8)"
-          filepath: "/IChem_ubi"
-          url: "${CI_JOB_ARTIFACTS_DOWNLOAD_URL}/IChem_ubi"
-        - name: "IChem (Ubuntu)"
-          filepath: "/IChem_ubuntu"
-          url: "${CI_JOB_ARTIFACTS_DOWNLOAD_URL}/IChem_ubuntu"
-        - name: "IChem (Debian)"
-          filepath: "/IChem_debian"
-          url: "${CI_JOB_ARTIFACTS_DOWNLOAD_URL}/IChem_debian"
+    - release-cli create --name "IChem $CI_COMMIT_TAG" --tag-name "$CI_COMMIT_TAG" --description "Automated build for commit $CI_COMMIT_SHA  Pipeline: $CI_PIPELINE_URL"
+    - release-cli assets upload --tag-name "$CI_COMMIT_TAG" --filepath IChem_ubi    --name "IChem (RHEL UBI 8)"
+    - release-cli assets upload --tag-name "$CI_COMMIT_TAG" --filepath IChem_ubuntu --name "IChem (Ubuntu)"
+    - release-cli assets upload --tag-name "$CI_COMMIT_TAG" --filepath IChem_debian --name "IChem (Debian)"
