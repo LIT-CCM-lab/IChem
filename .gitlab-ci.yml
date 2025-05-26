@@ -26,24 +26,21 @@ build_all:
 
     podman run --rm \
       -v "$CI_PROJECT_DIR:/IChem:Z" \
-      -w "/IChem/$BUILD_DIR" \
-      ichem-dev:ubi8 \
+      -w "/IChem/$BUILD_DIR" ichem-dev:ubi8 \
       bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_ubi'
 
     rm -rf "$CI_PROJECT_DIR/$BUILD_DIR"/*
 
     podman run --rm \
       -v "$CI_PROJECT_DIR:/IChem:Z" \
-      -w "/IChem/$BUILD_DIR" \
-      ichem-dev:ubuntu \
+      -w "/IChem/$BUILD_DIR" ichem-dev:ubuntu \
       bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_ubuntu'
 
     rm -rf "$CI_PROJECT_DIR/$BUILD_DIR"/*
 
     podman run --rm \
       -v "$CI_PROJECT_DIR:/IChem:Z" \
-      -w "/IChem/$BUILD_DIR" \
-      ichem-dev:debian \
+      -w "/IChem/$BUILD_DIR" ichem-dev:debian \
       bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_debian'
   artifacts:
     paths:
@@ -63,15 +60,22 @@ release_job:
       artifacts: true
   rules:
     - if: '$CI_COMMIT_TAG'
-  variables:
-    GITLAB_TOKEN: $CI_JOB_TOKEN
-  script: |
-    set -e
-    release-cli create \
-      --name "IChem $CI_COMMIT_TAG" \
-      --tag-name "$CI_COMMIT_TAG" \
-      --description "Automated build for commit $CI_COMMIT_SHA  Pipeline: $CI_PIPELINE_URL"
-
-    release-cli upload --tag-name "$CI_COMMIT_TAG" --name "IChem (RHEL UBI 8)" --filepath IChem_ubi
-    release-cli upload --tag-name "$CI_COMMIT_TAG" --name "IChem (Ubuntu)"      --filepath IChem_ubuntu
-    release-cli upload --tag-name "$CI_COMMIT_TAG" --name "IChem (Debian)"      --filepath IChem_debian
+  script:
+    - echo "Publishing IChem release $CI_COMMIT_TAG"
+  release:
+    tag_name: "$CI_COMMIT_TAG"
+    name: "IChem $CI_COMMIT_TAG"
+    description: |
+      Automated build for commit $CI_COMMIT_SHA  
+      Pipeline: $CI_PIPELINE_URL
+    assets:
+      links:
+        - name: "IChem (RHEL UBI 8)"
+          filepath: "/IChem_ubi"
+          url: "$CI_PROJECT_URL/-/releases/$CI_COMMIT_TAG/downloads/IChem_ubi"
+        - name: "IChem (Ubuntu)"
+          filepath: "/IChem_ubuntu"
+          url: "$CI_PROJECT_URL/-/releases/$CI_COMMIT_TAG/downloads/IChem_ubuntu"
+        - name: "IChem (Debian)"
+          filepath: "/IChem_debian"
+          url: "$CI_PROJECT_URL/-/releases/$CI_COMMIT_TAG/downloads/IChem_debian"
