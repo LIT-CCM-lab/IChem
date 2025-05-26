@@ -43,7 +43,7 @@ build_all:
 
 release_job:
   stage: release
-  image: registry.gitlab.com/gitlab-org/cli:latest   # uses built-in release keyword
+  image: registry.gitlab.com/gitlab-org/cli:latest
   needs:
     - job: build_all
       artifacts: true
