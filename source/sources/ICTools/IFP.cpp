@@ -257,8 +257,8 @@ void IChemSwitch::IFP() const throw(MoleExcept)
                                      "No ligand found in "+fLigand);
 
                 Molecule &ligand = *icomplex.getMole(MoleType::LIGAND);
-                icomplex.genGrid(1.5);
-                icomplex.genGrid(4.5);
+                // icomplex.genGrid(1.5);
+                // icomplex.genGrid(4.5);
                 Interactions ints(icomplex);
                 if (changedist){
                     ints.setDist_H(dh);
@@ -314,8 +314,8 @@ void IChemSwitch::IFP() const throw(MoleExcept)
             }
             else
             {
-                icomplex.genGrid(1.5);
-                icomplex.genGrid(4.5);
+                // icomplex.genGrid(1.5);
+                // icomplex.genGrid(4.5);
                 Interactions ints(icomplex);
                 if (changedist){
                     ints.setDist_H(dh);

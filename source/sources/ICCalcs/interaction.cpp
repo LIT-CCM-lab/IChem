@@ -6,6 +6,7 @@
 #include "headers/ICCalcs/volsite.h"
 #include "headers/ICPars/molereader.h"
 
+// #include "headers/ICCalcs/neighborsearch.hpp"
 
 
 //#define ICHEM_DEBUG
@@ -63,8 +64,32 @@ void Interactions::addInteraction(InterResults& interResult, Atom& atomP, Atom& 
     }
 }
 
+// Special case: nitrogen linked to sulfonamide
+void Interactions::checkMetalNitrogenSulfonamideCase(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const {
+    
+    if (atomL.isNitrogen() && dist < params.Dist_Metal) {
+        bool linkedToSulfur = false;
+
+        for (size_t i = 0; i < atomL.getNumBond(); ++i) {
+
+            const Atom& linkedAtom = atomL.getAtomLinked(i);
+            if (linkedAtom.isSulfur()) {
+                linkedToSulfur = true;
+                break;
+            }
+        }
+        if (linkedToSulfur) {
+            addInteraction(interResult, atomP, atomL, dist, NInter, nullptr, InterType::METAL);
+        }
+    }
+}
+
+
 void Interactions::checkMetalInteractions(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const {
     
+    if(!atomL.props.isAcceptor())
+        return;
+
     if (!wInterType[InterType::METAL] || !atomP.props.isMetal())
         return;
 
@@ -77,27 +102,11 @@ void Interactions::checkMetalInteractions(Atom& atomL, Atom& atomP, double dist,
     if(  dist < 3.4  && ( atomL.props.isMetal() && (atomP.props.isAcceptor() || atomP.props.isAnion())
         || (atomL.props.isAnion() || atomL.props.isAcceptor() ) && atomP.props.isMetal()
         || (atomP.isMetallic() && atomL.getAtomicName() == "N"))) {
-                    
+
         atomL.props.setMetalA(true);
     }
-
-    // Special case: nitrogen linked to sulfonamide
-    if (atomL.isNitrogen() && dist < params.Dist_Metal) {
-        bool linkedToSulfur = false;
-
-        for (size_t i = 0; i < atomL.getNumBond(); ++i) {
-            const Atom& linkedAtom = atomL.getAtomLinked(i);
-            if (linkedAtom.isSulfur()) {
-                linkedToSulfur = true;
-                break;
-            }
-        }
-
-        if (linkedToSulfur) {
-            addInteraction(interResult, atomP, atomL, dist, NInter, nullptr, InterType::METAL);
-        }
-    }
 }
+
 
 void Interactions::checkHydrogenBondLigandAcceptor(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const  {
     
@@ -269,420 +278,701 @@ void Interactions::checkPiCationInteraction(Atom& atomL, Atom& atomP, double dis
     addInteraction(interResult, cycleP->getCenter(), atomL, dist, NInter, &angle, InterType::PICATION);
 }
 
-void Interactions::calcInteractions( Molecule& ligand, InterResults& interResult, bool wMerge, bool oldh) const {
+// void Interactions::calcInteractions( Molecule& ligand, InterResults& interResult, bool wMerge, bool oldh) const {
 
-    BoxList boxlist;
-    map<Residu*,resbest> hydlist;
-    map<Residu*,resbest>::iterator itHydList;
+//     BoxList boxlist;
+//     map<Residu*,resbest> hydlist;
+//     map<Residu*,resbest>::iterator itHydList;
+//     double dist, angle;
+//     int NInter = 0;
+//     double min_allowed_dist = 1.5;
+   
+//     double max_allowed_dist = std::max({ max_allowed_dist, params.Dist_H, params.Dist_Hyd, params.Dist_Ionic, params.Dist_Metal, params.Dist_Arom, params.Dist_PiCation });
+    
+//     if (!complex.isMoleIn(&ligand)) 
+//         grid.rotateMole(ligand);
+
+//     for (ItCAtom itLA = ligand.firstAtom(); itLA != ligand.lastAtom(); ++itLA) {
+
+//         Atom &atomL = **itLA;
+//         bool hyd = false;
+
+//         if (atomL.isHydrogen() || (atomL.getName()=="DuCy") || !atomL.isUsed()) 
+//             continue;
+//         if (atomL.getBox(&grid) == (Box*)NULL) 
+//             continue;
+
+//         Box& boxL = *atomL.getBox(&grid);
+//         boxlist.clear();
+//         grid.getAdjacency(boxlist,&boxL,max_allowed_dist*2,true);
+
+//         hydlist.clear();
+//         for (ItBox itBAdj = boxlist.begin(); itBAdj != boxlist.end(); ++itBAdj) {
+//             for (ItCAtom itAA  = (*itBAdj)->firstAtom(); itAA != (*itBAdj)->lastAtom(); itAA++) {
+//                 Atom &atomP = **itAA;
+
+//                 // protein atom
+//                 if (&atomP.getParent()==&ligand || !atomP.isUsed() || atomP.isHydrogen())
+//                     continue;
+
+//                 dist = atomL.calcFixpos(atomP,max_allowed_dist+0.1);
+
+//                 cout << "Checking interaction: " << atomL.getName() << " ligand atom with " << atomP.getName() << " protein atom" << endl;
+           
+//                 if (dist > max_allowed_dist ) {
+//                     continue;
+//                 }
+
+//                 if (atomL.props.isAcceptor()) {
+//                     checkHydrogenBondLigandAcceptor(atomL, atomP, dist, interResult, NInter);
+//                     checkMetalInteractions(atomL, atomP, dist, interResult, NInter);
+//                     checkWeakHydrogenBondLigandAcceptor(atomL, atomP, dist, interResult, NInter);
+//                 }
+
+//                 // Ligand weak acceptor / protein weak donor or donor
+//                 checkWeakHydrogenBondLigandWeakAcceptor(atomL, atomP, dist, interResult, NInter);
+
+//                 if (atomL.props.isDonor()) {
+//                     // Ligand donor / protein acceptor
+//                     checkHydrogenBondLigandDonor(atomL, atomP, dist, interResult, NInter);
+//                     // Ligand donor / protein weak acceptor
+//                     checkWeakHydrogenBondLigandDonorProteinWeakAcceptor(atomL, atomP, dist, interResult, NInter);
+//                 }
+
+//                 checkWeakHydrogenBondLigandWeakDonorProteinAcceptor(atomL, atomP, dist, interResult, NInter);
+
+
+//                 checkIonicProteinInteractions(atomL, atomP, dist, interResult, NInter);
+                
+//                 if (atomL.props.isCation()) {
+//                     checkIonicLigandInteractions(atomL, atomP, dist, interResult, NInter);
+//                     checkPiCationInteraction(atomL, atomP, dist, interResult, NInter);
+//                 }
+
+//                 processHydrophobicInteraction(atomL, atomP, dist, oldh, interResult, hydlist, grid, *itBAdj);
+//             } // END itAA
+//         }// END itBADj
+
+        
+//         for (auto it = hydlist.begin(); it != hydlist.end(); ++it) {
+//             const resbest& rbest = it->second;
+//             Atom* atmP = rbest.atmP;
+
+//             if (atomL.getResidu()->getIdentifier() == atmP->getResidu()->getIdentifier())
+//                 continue;
+
+//             addInteraction(interResult, *atmP, atomL, rbest.dist, NInter, nullptr, InterType::HYDROPHOBIC);
+//         }
+//     }// END itLA*/
+
+//     if (!wInterType[InterType::AREDGEFACE] &&!wInterType[InterType::ARFACEFACE] &&!wInterType[InterType::PICATION]) {
+//         if (wMerge)
+//             mergeInteractions(interResult);
+//         return;
+//     }
+
+   
+//     processAromaticInteractions(ligand, grid, max_allowed_dist, interResult, wInterType, NInter, min_allowed_dist, params.Dist_PiCation,      
+//     params.Angl_PiCation, params.AngT_PiCation, params.Dist_Arom, params.dist_Arom, params.Angl_AromFF, params.AngT_AromFF, params.Angl_AromEF, params.AngT_AromEF,   
+//     params.Dist_H, params.dist_H, dist, hydlist);
+
+
+//     if (wMerge){
+//         mergeInteractions(interResult);
+
+//     }
+// }
+
+        /* ####################### I LET THIS ONE ####################### */
+
+// void Interactions::calcInteractions(Molecule& ligand, InterResults& interResult, bool wMerge, bool oldh) const {
+
+//     double dist, angle;
+//     int NInter = 0;
+//     double min_allowed_dist = 1.5;
+//     double max_allowed_dist = std::max({ params.Dist_H, params.Dist_Hyd, params.Dist_Ionic, params.Dist_Metal, params.Dist_Arom, params.Dist_PiCation });
+
+
+//     if(!complex.isMoleIn(&ligand)) {
+//         grid.rotateMole(ligand);
+//     }
+
+//     // Build NeighborSearch for protein atoms
+//     NeighborSearch neighborSearch;
+//     std::vector<std::array<double, 3>> proteinPoints;
+//     std::vector<Atom*> proteinAtoms;
+
+//     for (ItCAtom itA = complex.firstAtom(); itA != complex.lastAtom(); ++itA) {
+//         Atom* atom = *itA;
+//         if (atom->isUsed() && !atom->isHydrogen() && atom->getParent().getMoleType() == MoleType::PROTEIN) {
+//             proteinPoints.push_back({ atom->fixpos.x, atom->fixpos.y, atom->fixpos.z });
+//             proteinAtoms.push_back(atom);
+//         }
+//     }
+
+//     neighborSearch.build(proteinPoints);
+
+//     // Prepare ligand points
+//     std::vector<std::array<double, 3>> ligandPoints;
+//     std::vector<Atom*> ligandAtoms;
+
+//     for (ItCAtom itA = ligand.firstAtom(); itA != ligand.lastAtom(); ++itA) {
+//         Atom* atom = *itA;
+//         if (atom->isUsed() && !atom->isHydrogen() && atom->getName() != "DuCy") {
+//             ligandPoints.push_back({ atom->fixpos.x, atom->fixpos.y, atom->fixpos.z });
+//             ligandAtoms.push_back(atom);
+//         }
+//     }
+
+//     // Find all neighbor pairs
+//     auto pairs = neighborSearch.query(ligandPoints, max_allowed_dist);
+
+//     for (const auto& pair : pairs) {
+//         Atom& atomL = *ligandAtoms[pair.first];
+//         Atom& atomP = *proteinAtoms[pair.second];
+//         dist = atomL.fixpos.calcDist(atomP.fixpos);
+
+//         if (dist > max_allowed_dist)
+//             continue;
+
+//         if (atomL.props.isAcceptor()) {
+//             checkHydrogenBondLigandAcceptor(atomL, atomP, dist, interResult, NInter);
+//             checkMetalInteractions(atomL, atomP, dist, interResult, NInter);
+//             checkWeakHydrogenBondLigandAcceptor(atomL, atomP, dist, interResult, NInter);
+//         }
+
+//         checkWeakHydrogenBondLigandWeakAcceptor(atomL, atomP, dist, interResult, NInter);
+
+//         if (atomL.props.isDonor()) {
+//             checkHydrogenBondLigandDonor(atomL, atomP, dist, interResult, NInter);
+//             checkWeakHydrogenBondLigandDonorProteinWeakAcceptor(atomL, atomP, dist, interResult, NInter);
+//         }
+
+//         checkWeakHydrogenBondLigandWeakDonorProteinAcceptor(atomL, atomP, dist, interResult, NInter);
+//         checkIonicProteinInteractions(atomL, atomP, dist, interResult, NInter);
+
+//         if (atomL.props.isCation()) {
+//             checkIonicLigandInteractions(atomL, atomP, dist, interResult, NInter);
+//             checkPiCationInteraction(atomL, atomP, dist, interResult, NInter);
+//         }
+//     }
+// }
+
+double manualCalcDist(const Atom& a1, const Atom& a2) {
+    double dx = a1.fixpos.x - a2.fixpos.x;
+    double dy = a1.fixpos.y - a2.fixpos.y;
+    double dz = a1.fixpos.z - a2.fixpos.z;
+    return sqrt(dx * dx + dy * dy + dz * dz);
+}
+
+
+void Interactions::calcInteractions(Molecule& ligand, InterResults& interResult, bool wMerge, bool oldh) const {
+
     double dist, angle;
     int NInter = 0;
     double min_allowed_dist = 1.5;
-   
-    double max_allowed_dist = std::max({ max_allowed_dist, params.Dist_H, params.Dist_Hyd, params.Dist_Ionic, params.Dist_Metal, params.Dist_Arom, params.Dist_PiCation });
-    
-    if (!complex.isMoleIn(&ligand)) 
-        grid.rotateMole(ligand);
-
-    for (ItCAtom itLA = ligand.firstAtom(); itLA != ligand.lastAtom(); ++itLA) {
-
-        Atom &atomL = **itLA;
-        bool hyd = false;
-
-        if (atomL.isHydrogen() || (atomL.getName()=="DuCy") || !atomL.isUsed()) 
-            continue;
-        if (atomL.getBox(&grid) == (Box*)NULL) 
-            continue;
-
-        Box& boxL = *atomL.getBox(&grid);
-        boxlist.clear();
-        grid.getAdjacency(boxlist,&boxL,max_allowed_dist*2,true);
-
-        hydlist.clear();
-        for (ItBox itBAdj = boxlist.begin(); itBAdj != boxlist.end(); ++itBAdj) {
-            for (ItCAtom itAA  = (*itBAdj)->firstAtom(); itAA != (*itBAdj)->lastAtom(); itAA++) {
-                Atom &atomP = **itAA;
-
-                // protein atom
-                if (&atomP.getParent()==&ligand || !atomP.isUsed() || atomP.isHydrogen())
-                    continue;
-
-                dist = atomL.calcFixpos(atomP,max_allowed_dist+0.1);
-
-                cout << "Checking interaction: " << atomL.getName() << " ligand atom with " << atomP.getName() << " protein atom" << endl;
-           
-                if (dist > max_allowed_dist ) {
-                    continue;
-                }
-
-                if (atomL.props.isAcceptor()) {
-                    checkHydrogenBondLigandAcceptor(atomL, atomP, dist, interResult, NInter);
-                    checkMetalInteractions(atomL, atomP, dist, interResult, NInter);
-                    checkWeakHydrogenBondLigandAcceptor(atomL, atomP, dist, interResult, NInter);
-                }
-
-                // Ligand weak acceptor / protein weak donor or donor
-                checkWeakHydrogenBondLigandWeakAcceptor(atomL, atomP, dist, interResult, NInter);
-
-                if (atomL.props.isDonor()) {
-                    // Ligand donor / protein acceptor
-                    checkHydrogenBondLigandDonor(atomL, atomP, dist, interResult, NInter);
-                    // Ligand donor / protein weak acceptor
-                    checkWeakHydrogenBondLigandDonorProteinWeakAcceptor(atomL, atomP, dist, interResult, NInter);
-                }
-
-                checkWeakHydrogenBondLigandWeakDonorProteinAcceptor(atomL, atomP, dist, interResult, NInter);
+    double max_allowed_dist = std::max({ params.Dist_H, params.Dist_Hyd, params.Dist_Ionic, params.Dist_Metal, params.Dist_Arom, params.Dist_PiCation });
+    map<Residu*,resbest> hydlist;
+    map<Residu*,resbest>::iterator itHydList;
 
 
-                checkIonicProteinInteractions(atomL, atomP, dist, interResult, NInter);
-                
-                if (atomL.props.isCation()) {
-                    checkIonicLigandInteractions(atomL, atomP, dist, interResult, NInter);
-                    checkPiCationInteraction(atomL, atomP, dist, interResult, NInter);
-                }
+    // We search neighbors for protein atoms
+    NeighborSearch neighborSearch;
+    std::vector<std::array<double, 3>> proteinPoints;
+    std::vector<Atom*> proteinAtoms;
 
-                processHydrophobicInteraction(atomL, atomP, dist, oldh, interResult, hydlist, grid, *itBAdj);
-            } // END itAA
-        }// END itBADj
-
-        
-        for (auto it = hydlist.begin(); it != hydlist.end(); ++it) {
-            const resbest& rbest = it->second;
-            Atom* atmP = rbest.atmP;
-
-            if (atomL.getResidu()->getIdentifier() == atmP->getResidu()->getIdentifier())
-                continue;
-
-            addInteraction(interResult, *atmP, atomL, rbest.dist, NInter, nullptr, InterType::HYDROPHOBIC);
+    // Prepare protein points
+    for (ItCAtom itA = complex.firstAtom(); itA != complex.lastAtom(); ++itA) {
+        Atom* atom = *itA;
+        if (atom->isUsed() && !atom->isHydrogen() && atom->getParent().getMoleType() == MoleType::PROTEIN) {
+            proteinPoints.push_back({ atom->fixpos.x, atom->fixpos.y, atom->fixpos.z });
+            proteinAtoms.push_back(atom);
         }
-    }// END itLA*/
+    }
 
-    if (!wInterType[InterType::AREDGEFACE] &&!wInterType[InterType::ARFACEFACE] &&!wInterType[InterType::PICATION]) {
+    // Build protein points
+    neighborSearch.build(proteinPoints); // KDTree have been built here!
+
+    
+    // We do the smame for ligandPoints
+    std::vector<std::array<double, 3>> ligandPoints;
+    std::vector<Atom*> ligandAtoms;
+
+    // Prepare ligand points
+    for (ItCAtom itA = ligand.firstAtom(); itA != ligand.lastAtom(); ++itA) {
+        Atom* atom = *itA;
+        if (atom->isUsed() && !atom->isHydrogen() && atom->getName() != "DuCy") {
+            ligandPoints.push_back({ atom->fixpos.x, atom->fixpos.y, atom->fixpos.z });
+            ligandAtoms.push_back(atom);
+        }
+    }
+
+    // ==> Remove: prot/lig atom positions
+    std::cout << "====### Protein Atom Positions ###====" << std::endl;
+    for (size_t i = 0; i < proteinPoints.size(); ++i) {
+        Atom* atom = proteinAtoms[i];
+        std::cout << "Protein Atom " << atom->getName() << " (" << atom->fixpos.x << ", " << atom->fixpos.y << ", " << atom->fixpos.z << ")" << std::endl;
+    }
+
+    std::cout << "====### Ligand Atom Positions ###====" << std::endl;
+    for (size_t i = 0; i < ligandPoints.size(); ++i) {
+        Atom* atom = ligandAtoms[i];
+        std::cout << "Ligand Atom " << atom->getName() << " (" << atom->fixpos.x << ", " << atom->fixpos.y << ", " << atom->fixpos.z << ")" << std::endl;
+    }
+    // <== Remove
+
+    // Find all neighbor pairs: We query the ligandPoints to the built proteinPoints in the KDtree
+    auto pairs = neighborSearch.query(ligandPoints, max_allowed_dist);
+
+    for (const auto& pair : pairs) {
+        Atom& atomL = *ligandAtoms[pair.first];
+        Atom& atomP = *proteinAtoms[pair.second];
+        dist = atomL.fixpos.calcDist(atomP.fixpos);
+        // dist = manualCalcDist(atomL, atomP); Remove
+        
+        if(&atomP.getParent() == &ligand || !atomP.isUsed() || atomP.isHydrogen())
+            continue;
+
+        if (dist > max_allowed_dist)
+            continue;
+
+        checkMetalNitrogenSulfonamideCase(atomL, atomP, dist, interResult, NInter);
+        checkMetalInteractions(atomL, atomP, dist, interResult, NInter);
+        
+        if (atomL.props.isAcceptor()) {
+            checkHydrogenBondLigandAcceptor(atomL, atomP, dist, interResult, NInter);
+            checkWeakHydrogenBondLigandAcceptor(atomL, atomP, dist, interResult, NInter);
+        }
+
+        checkWeakHydrogenBondLigandWeakAcceptor(atomL, atomP, dist, interResult, NInter);
+
+        if (atomL.props.isDonor()) {
+            checkHydrogenBondLigandDonor(atomL, atomP, dist, interResult, NInter);
+            checkWeakHydrogenBondLigandDonorProteinWeakAcceptor(atomL, atomP, dist, interResult, NInter);
+        }
+
+        checkWeakHydrogenBondLigandWeakDonorProteinAcceptor(atomL, atomP, dist, interResult, NInter);
+        checkIonicProteinInteractions(atomL, atomP, dist, interResult, NInter);
+
+        if (atomL.props.isCation()) {
+            checkIonicLigandInteractions(atomL, atomP, dist, interResult, NInter);
+            checkPiCationInteraction(atomL, atomP, dist, interResult, NInter);
+        }
+        processHydrophobicInteraction(atomL, atomP, dist, oldh, interResult, hydlist, neighborSearch, proteinAtoms);
+    }
+    // We take the best hydrophobic interaction from each residue
+    for (const auto& [residu, rbest] : hydlist) {
+        if (!rbest.atmP || !rbest.atmL)
+            continue;
+
+        if (rbest.atmL->getResidu()->getIdentifier() != rbest.atmP->getResidu()->getIdentifier()) {
+            addInteraction(interResult, *rbest.atmP, *rbest.atmL, rbest.dist, NInter, nullptr, InterType::HYDROPHOBIC);
+        }
+    }
+    if (wInterType[InterType::HYDROPHOBIC]) {
+        Molecule* protein = complex.getMole(MoleType::PROTEIN);
+        if (protein) {
+            checkAromaticHydrophobicInteractions(ligand, *protein, interResult, NInter, params.dist_Hyd, params.Dist_Hyd);
+        }
+    }
+
+    if (!wInterType[InterType::AREDGEFACE] && !wInterType[InterType::ARFACEFACE] && !wInterType[InterType::PICATION] ) {
         if (wMerge)
             mergeInteractions(interResult);
         return;
     }
 
-   
-    processAromaticInteractions(ligand, grid, max_allowed_dist, interResult, wInterType, NInter, min_allowed_dist, params.Dist_PiCation,      
-    params.Angl_PiCation, params.AngT_PiCation, params.Dist_Arom, params.dist_Arom, params.Angl_AromFF, params.AngT_AromFF, params.Angl_AromEF, params.AngT_AromEF,   
-    params.Dist_H, params.dist_H, dist, hydlist);
 
+    // processAromaticInteractions(ligand, neighborSearch, proteinAtoms, max_allowed_dist, interResult, wInterType, NInter, min_allowed_dist, dist, hydlist);
 
     if (wMerge){
         mergeInteractions(interResult);
-
     }
 }
 
-void Interactions::processAromaticInteractions(
-    Molecule &ligand,
-    Grid &grid,
-    double max_allowed_dist,
-    InterResults &interResult,
-    const bool *wInterType,  
-    int &NInter,
-    double min_allowed_dist,    
-    double Dist_PiCation,
-    double Angl_PiCation,      
-    double AngT_PiCation,      
-    double Dist_Arom,          
-    double dist_Arom,   
-    double Angl_AromFF,         
-    double AngT_AromFF,         
-    double Angl_AromEF,       
-    double AngT_AromEF,         
-    double Dist_H,              
-    double dist_H,              
-    double &dist,               
-    std::map<Residu*, resbest> &hydlist
-) const
- {
 
-    AtomList toRotate;
-    BoxList boxlist;
-    CycleList cyclelist;
-    bool possible =true;
-    unsigned short EF = 0;
-    bool Ar = false;
-    double distCENTER;
+void Interactions::checkAromaticHydrophobicInteractions(Molecule& ligand, Molecule& protein, InterResults& interResult, int& NInter, double dist_H, double Dist_H) const
+{
+    for (ItCCycle ligandCycle = ligand.firstCycle(); ligandCycle != ligand.lastCycle(); ++ligandCycle) {
+        Cycle& ligCycle = **ligandCycle;
+        if (!ligCycle.isAromatic()) 
+            continue;
 
-    for (ItCCycle itLC= ligand.firstCycle(); itLC!= ligand.lastCycle(); itLC++) {
-        // Getting ligand cycle :
-        Cycle& ligcycle=**itLC;
-
-        // Not aromatic : continue;
-        if (!ligcycle.isAromatic()) continue;
-
-        // Getting atom center :
-        Atom &atomL=ligcycle.getCenter();
-#ifdef ICHEM_DEBUG
-        cout << "LOOKING AT : "<<atomL.getIdentifier()
-             <<"::"<<atomL.fixpos.toString()<<endl;
-#endif
-        // Checking that atom center is located in the cube :
-        if (atomL.getBox(&grid) == (Box*)NULL)
-        {
-            // When not, we find its cube :
-            toRotate.clear();
-            toRotate.push_back(&atomL);
-            grid.rotateAtoms(toRotate);
-            // When we cannot find it, we ignore the cycle :
-            if (atomL.getBox(&grid) == (Box*)NULL)
+        for (ItCCycle proteinCycle = protein.firstCycle(); proteinCycle != protein.lastCycle(); ++proteinCycle) {
+            Cycle& protCycle = **proteinCycle;
+            if (!protCycle.isAromatic())
                 continue;
-        }
 
-        // Fetching cube :
-        Box& boxL = *atomL.getBox(&grid);
+            for (size_t i = 0; i < ligCycle.getNumAtom(); ++i) {
+                Atom& atomL = *ligCycle.getAtom(i);
+                if (!atomL.props.isHydrophobic()) 
+                    continue;
 
-        ligcycle.calcVector();
-        boxlist.clear();
-        // Getting adjacent cube of this cube :
-        grid.getAdjacency(boxlist,&boxL,max_allowed_dist*1.5,true);
+                for (size_t j = 0; j < protCycle.getNumAtom(); ++j) {
+                    Atom& atomP = *protCycle.getAtom(j);
+                    if (!atomP.props.isHydrophobic()) 
+                        continue;
 
-
-        // Scanning every atom of every adjacent cube looking for Aromatic center:
-        for (ItBox   itBAdj  = boxlist.begin();
-             itBAdj != boxlist.end();
-             ++itBAdj)
-            for (ItCAtom itAA    = (*itBAdj)->firstAtom(); itAA   != (*itBAdj)->lastAtom(); itAA++) {
-                Atom &atomP = **itAA;
-                ItCAtom itAAA = ligcycle.first();
-                Atom &atomcycle = **itAAA;
-                //                cout << atomP.getResidu()->getIdentifier() <<" :: " <<  atomcycle.getResidu()->getIdentifier() << endl;
-                if (atomP.getResidu()->getIdentifier() == atomcycle.getResidu()->getIdentifier() ) continue;
-                //                    cout <<atomcycle.getResidu()->getIdentifier()  <<" :: " <<  atomP.getResidu()->getIdentifier() << endl;
-                if (&atomP.getParent()==&ligand) continue;
-                if (atomP.props.isCation())
-                {
-                    dist = atomL.calcFixpos(atomP,Dist_PiCation+0.1);
-                    if (dist > Dist_PiCation)continue;// Cannot be aromatic either
-
-                    dist = atomL.calcFixpos(atomP,Dist_PiCation+0.1);
-                    if (dist > Dist_PiCation || dist < min_allowed_dist )continue;// Cannot be aromatic either
-
-                    const double angle=ligcycle.getCenter().fixpos.calcAngle(ligcycle.getNormVector(),atomP.fixpos);
-                    if ((angle >= Angl_PiCation-AngT_PiCation
-                            && angle <= Angl_PiCation+AngT_PiCation)
-                            ||(angle >= Angl_PiCation-AngT_PiCation-PI
-                               && angle <= Angl_PiCation+AngT_PiCation-PI)
-                            ){
-
-                    InterPoint IntP(NInter,
-                                    &atomP,
-                                    &ligcycle.getCenter(),
-                                    (atomP.fixpos+ligcycle.getCenter().fixpos)/2,
-                                    InterType::PICATION,dist,angle);NInter++;
-                    interResult.listInters.push_back(IntP);
+                    double distance = atomL.calcFixpos(atomP);
+                    if (distance >= dist_H && distance <= Dist_H) {
+                        addInteraction(interResult, atomP, atomL, distance, NInter, nullptr, InterType::HYDROPHOBIC);
                     }
                 }
-
-
-                if (atomP.getName()!="DuAr")continue;
-                dist = atomL.calcFixpos(atomP,10.1);
-                // Since we have both cycle centers here, we can check if they are
-                // not too far away :
-                if (dist > 10 || dist < min_allowed_dist) continue;
-
-                // Getting the corresponding cycle from this atom center :
-                Cycle* cycleP=atomP.getParent().getCycleFromCenter(&atomP);
-                if (cycleP==(Cycle*)NULL)continue;
-                // Saving it :
-                cyclelist.push_back(cycleP);
             }
+        }
+    }
+}
 
-        // Sort and unique to avoid cycle redundance :
 
-        SortUniqueVector(cyclelist);
 
-        for (ItCCycle itC = cyclelist.begin() ; itC != cyclelist.end();itC++) {
-            Cycle &cycleP = **itC;
 
-            distCENTER = cycleP.getFixpos().calcDist(ligcycle.getFixpos());
-#ifdef ICHEM_DEBUG
-            cout << "  ||-->"<<cycleP.getCenter().fixpos.toString()
-                 <<" " << ligcycle.getCenter().fixpos.toString()<<" " << distCENTER<<endl;
-#endif
-            // CASE AROMATIC CENTER TOO FAR => POSSIBLE HYDROPHOBIC INTERACTION :
-            if (wInterType[InterType::HYDROPHOBIC] && distCENTER > Dist_Arom)
-            {
-                double bestdist=100; Atom* Hlig=(Atom*)NULL, *Hprot=(Atom*)NULL;
-                // SCANNING LIGAND SIDE ATOMS IN CYCLE :
-                for (ItCAtom itCLA = ligcycle.first(); itCLA!= ligcycle.end(); itCLA++) {
-                    Atom& atomCLA = **itCLA;
-                    if (!atomCLA.props.isHydrophobic()) continue;
 
-                    // SCANNING PROTEIN SIDE ATOMS IN CYCLE :
-                    for (ItCAtom itCLP = cycleP.first(); itCLP!= cycleP.end(); itCLP++) {
-                        Atom& atomCLP = **itCLP;
-                        if (!atomCLP.props.isHydrophobic()) continue;
 
-                        // GETTING CLOSEST ATOMS BETWEEN PROT/LIGAND
-                        dist = atomCLA.calcFixpos(atomCLP);
-                        if (dist < dist_H || bestdist > Dist_H) 
-                            continue;
-                        if (dist < bestdist) {
-                            Hlig = &atomCLA;
-                            Hprot = &atomCLP;
-                            bestdist = dist;
-                        }
-                    }
-                }
 
-#ifdef ICHEM_DEBUG
-                cout << "HYD"<<endl;
-#endif
-                //                cout << " 2 : " << Hprot->getIdentifier() << " | " << Hlig->getIdentifier() << endl;
-                // BELOW Dist_H : HYDROPHOBIC INTERACTION
+// void Interactions::processAromaticInteractions(Molecule &ligand, Grid &grid, double max_allowed_dist, InterResults &interResult, const bool *wInterType, int &NInter, double min_allowed_dist, double &dist, std::map<Residu*, resbest> &hydlist ) const {
+
+//     AtomList toRotate;
+//     BoxList boxlist;
+//     CycleList cyclelist;
+//     bool possible = true;
+//     unsigned short EF = 0;
+//     bool Ar = false;
+//     double distCENTER;
+
+//     // We loop over the ligand cycles
+//     for (ItCCycle itLC = ligand.firstCycle(); itLC!= ligand.lastCycle(); itLC++) {
+        
+//         Cycle& ligcycle= **itLC;
+   
+//         if (!ligcycle.isAromatic()) // Those are detected before adding the cycles to Cycles vector
+//             continue;
+
+//         Atom &atomL = ligcycle.getCenter(); // Return center
+
+//         // Fixpos are the original coordonates
+//         // Rotpos are calculated 
+        
+        
+        
+//         if (atomL.getBox(&grid) == (Box*)NULL) { // Done in genGrid() =>  Atom &atomL = ligcycle.getCenter();
+//             toRotate.clear();
+//             toRotate.push_back(&atomL); // Vector of atoms to put in the grid 
+//             grid.rotateAtoms(toRotate); // Generation of the box within the grid
+            
+//             if (atomL.getBox(&grid) == (Box*)NULL)
+//                 continue;
+//         }
+
+//         // Fetching cube :
+//         Box& boxL = *atomL.getBox(&grid);
+
+//         ligcycle.calcVector();
+//         boxlist.clear();
+        
+//         // boxlist is the list of boxes to fill (adjacent boxes)
+//         // Input Box
+//         grid.getAdjacency(boxlist, &boxL, max_allowed_dist * 1.5, true); // Getting adjacent cube of this cube :
+
+//         // Once we have the boxlist, we loop over it
+
+//         // Scanning every atom of every adjacent cube looking for Aromatic center
+//         for (ItBox itBAdj = boxlist.begin(); itBAdj != boxlist.end(); ++itBAdj)
+//             for (ItCAtom itAA = (*itBAdj)->firstAtom(); itAA != (*itBAdj)->lastAtom(); itAA++) {
                 
-                if (bestdist > Dist_H || bestdist < dist_H)
-                    continue;
+//                 Atom &atomP = **itAA;
+//                 ItCAtom itAAA = ligcycle.first();
+//                 Atom &atomcycle = **itAAA;
 
-                if (Hprot->getResidu()->getIdentifier() == Hlig->getResidu()->getIdentifier())
-                    continue;
+//                 if (atomP.getResidu()->getIdentifier() == atomcycle.getResidu()->getIdentifier() ) 
+//                     continue;
 
-                InterPoint IntP(NInter, Hprot, Hlig, (Hprot->fixpos+Hlig->fixpos)/2, InterType::HYDROPHOBIC, bestdist);
-                NInter++;
-                interResult.listInters.push_back(IntP);
-                interResult.CA++;
-                continue;
-            }
+//                 if (&atomP.getParent() == &ligand) 
+//                     continue;
 
-            // CASE AROMATIC CENTER CLOSE :
-            cycleP.calcVector();
-            possible = true;
-            EF = 0; Ar = false;
-            // SCANNING LIGAND ATOM VS PROTEIN ATOM :
-            for (size_t itCLA =0; itCLA < ligcycle.getNumAtom(); itCLA++) {
+//                 if (atomP.props.isCation()) {
+                     
+//                     dist = atomL.calcFixpos(atomP, params.Dist_PiCation+0.1);
+//                     if (dist > params.Dist_PiCation) // Cannot be aromatic either
+//                         continue;
 
-                Atom& atomCLA =*ligcycle.getAtom(itCLA);
-                if (!atomCLA.isCarbon())continue;
-                const Coords& normalCLA = ligcycle.getNormVector(itCLA);
+//                     dist = atomL.calcFixpos(atomP, params.Dist_PiCation + 0.1);
+//                     if (dist > params.Dist_PiCation || dist < min_allowed_dist ) // Cannot be aromatic either
+//                         continue;
 
-                for (size_t itCLP =0; itCLP < cycleP.getNumAtom(); itCLP++) {
-                    Atom& atomCLP = *cycleP.getAtom(itCLP);
-                    if (!atomCLP.isCarbon())continue;
-                    dist = atomCLA.calcFixpos(atomCLP);
+//                     const double angle = ligcycle.getCenter().fixpos.calcAngle(ligcycle.getNormVector(), atomP.fixpos);
 
-                    if (dist > Dist_Arom*3){possible=false;break;}
-                    const Coords& normalCLP=cycleP.getNormVector(itCLP);
-                    const double angle =
-                            acos((atomCLA.fixpos.x-normalCLA.x)*(atomCLP.fixpos.x-normalCLP.x)
-                                 + (atomCLA.fixpos.y-normalCLA.y)*(atomCLP.fixpos.y-normalCLP.y)
-                                 + (atomCLA.fixpos.z-normalCLA.z)*(atomCLP.fixpos.z-normalCLP.z)
-                            );
-                    if ((dist < Dist_Arom && dist > dist_Arom)
-                            && ((angle > Angl_AromFF-AngT_AromFF && angle < Angl_AromFF+AngT_AromFF)
-                                ||  (angle > M_PI+Angl_AromFF - AngT_AromFF && angle < M_PI + Angl_AromFF + AngT_AromFF)
-                                ||  (angle > Angl_AromFF - AngT_AromFF- M_PI && angle < Angl_AromFF + AngT_AromFF - M_PI))) Ar = true;
-                    if ((dist < Dist_Arom && dist > dist_Arom)
-                            && ((angle > Angl_AromEF-AngT_AromEF && angle < Angl_AromEF+AngT_AromEF)
-                                || (angle > M_PI+Angl_AromEF-AngT_AromEF && angle < M_PI+Angl_AromEF+AngT_AromEF)
-                                || (angle > Angl_AromEF-AngT_AromEF-M_PI && angle < Angl_AromEF+AngT_AromEF-M_PI)))  EF++;
-                }
-                if (!possible)break;
-            }
+//                     if ((angle >= params.Angl_PiCation - params.AngT_PiCation && angle <= params.Angl_PiCation + params.AngT_PiCation)
+//                             ||(angle >= params.Angl_PiCation - params.AngT_PiCation - M_PI
+//                             && angle <= params.Angl_PiCation + params.AngT_PiCation - M_PI)) 
+//                     {
+//                     InterPoint IntP(NInter, &atomP, &ligcycle.getCenter(), (atomP.fixpos+ligcycle.getCenter().fixpos)/2, InterType::PICATION, dist, angle);NInter++;
+//                     interResult.listInters.push_back(IntP);
+//                     }
+//                 }
 
-            if (Ar || EF > 5) {
-                //                cout << "ligcenter " <<ligcycle.getCenter().props.toString() << endl;
-                Box& boxL = *ligcycle.getCenter().getBox(&grid);
-                boxlist.clear();
-                grid.getAdjacency(boxlist,&boxL,max_allowed_dist*2,true);
-                //        grid.printInFile(atomL.getIdentifier(),boxlist,true);
+//                 if (atomP.getName() != "DuAr")
+//                     continue;
 
-                hydlist.clear();;
-                for (ItBox itBAdj=boxlist.begin(); itBAdj != boxlist.end(); ++itBAdj) {
-                    for (ItCAtom itAA  = (*itBAdj)->firstAtom(); itAA != (*itBAdj)->lastAtom(); itAA++) {
-                        Atom &atomP = **itAA;
-                        //                if (&atomP.getResidu()) //here
-                        if (&atomP.getParent()==&ligand
-                                || !atomP.isUsed()
-                                || atomP.isHydrogen())continue;
-                        dist = atomL.calcFixpos(atomP,max_allowed_dist+0.1);
-                        if (dist > max_allowed_dist ) {
-                            continue;
-                        }
-                    }
-                }
-            }
+//                 dist = atomL.calcFixpos(atomP, 10.1);
+               
+//                 if (dist > 10 || dist < min_allowed_dist)  // Since we have both cycle centers here, we can check if they are // not too far away :
+//                     continue; 
 
-            if (wInterType[InterType::ARFACEFACE] && Ar) {
-                InterPoint IntP(NInter, &cycleP.getCenter(), &ligcycle.getCenter(), (cycleP.getCenter().fixpos+ligcycle.getCenter().fixpos)/2, InterType::ARFACEFACE,distCENTER);
-                NInter++;
-                interResult.listInters.push_back(IntP);
-                interResult.CZ++;
-            }
+//                 Cycle* cycleP = atomP.getParent().getCycleFromCenter(&atomP); // Getting the corresponding cycle from this atom center :
+//                 if (cycleP==(Cycle*)NULL)
+//                     continue;
+                
+//                     // Saving it :
+//                 cyclelist.push_back(cycleP);
+//             }
 
-            else if (wInterType[InterType::AREDGEFACE] && EF>5) {
-                InterPoint IntP(NInter, &cycleP.getCenter(), &ligcycle.getCenter(), (cycleP.getCenter().fixpos+ligcycle.getCenter().fixpos)/2, InterType::AREDGEFACE,distCENTER);NInter++;
-                interResult.listInters.push_back(IntP);
-                interResult.CZ++;
-            }
-        }
-    }
-}
+//         SortUniqueVector(cyclelist); // Sort and unique to avoid cycle redundance :
 
-void Interactions::processHydrophobicInteraction(Atom& atomL, Atom& atomP, double dist, bool oldh, InterResults& interResult, std::map<Residu*, ICMole::resbest>& hydlist, Grid& grid, Box* itBAdj) const  {
+//         for (ItCCycle itC = cyclelist.begin() ; itC != cyclelist.end();itC++) {
+            
+//             Cycle &cycleP = **itC;
+//             distCENTER = cycleP.getFixpos().calcDist(ligcycle.getFixpos());
+
+            
+//             if (wInterType[InterType::HYDROPHOBIC] && distCENTER > params.Dist_Arom) { // CASE AROMATIC CENTER TOO FAR => POSSIBLE HYDROPHOBIC INTERACTION :
+
+//                 double bestdist=100; Atom* Hlig=(Atom*)NULL, *Hprot=(Atom*)NULL;
+                
+//                 for (ItCAtom itCLA = ligcycle.first(); itCLA!= ligcycle.end(); itCLA++) { // SCANNING LIGAND SIDE ATOMS IN CYCLE :
+//                     Atom& atomCLA = **itCLA;
+//                     if (!atomCLA.props.isHydrophobic()) 
+//                         continue;
+                    
+//                     for (ItCAtom itCLP = cycleP.first(); itCLP!= cycleP.end(); itCLP++) { // SCANNING PROTEIN SIDE ATOMS IN CYCLE :
+//                         Atom& atomCLP = **itCLP;
+//                         if (!atomCLP.props.isHydrophobic()) 
+//                             continue;
+
+//                         dist = atomCLA.calcFixpos(atomCLP); // GETTING CLOSEST ATOMS BETWEEN PROT/LIGAND
+//                         if (dist < params.dist_H || bestdist > params.Dist_H) 
+//                             continue;
+//                         if (dist < bestdist) {
+//                             Hlig = &atomCLA;
+//                             Hprot = &atomCLP;
+//                             bestdist = dist;
+//                         }
+//                     }
+//                 }
+
+//                 if (bestdist > params.Dist_H || bestdist < params.dist_H)
+//                     continue;
+
+//                 if (Hprot->getResidu()->getIdentifier() == Hlig->getResidu()->getIdentifier())
+//                     continue;
+
+//                 InterPoint IntP(NInter, Hprot, Hlig, (Hprot->fixpos+Hlig->fixpos)/2, InterType::HYDROPHOBIC, bestdist);
+//                 NInter++;
+//                 interResult.listInters.push_back(IntP);
+//                 interResult.CA++;
+//                 continue;
+//             }
+
+//             cycleP.calcVector(); // CASE AROMATIC CENTER CLOSE :
+//             possible = true;
+//             EF = 0; Ar = false;
+            
+//             for (size_t itCLA = 0; itCLA < ligcycle.getNumAtom(); itCLA++) { // SCANNING LIGAND ATOM VS PROTEIN ATOM :
+
+//                 Atom& atomCLA =*ligcycle.getAtom(itCLA);
+//                 if (!atomCLA.isCarbon())continue;
+//                 const Coords& normalCLA = ligcycle.getNormVector(itCLA);
+
+//                 for (size_t itCLP =0; itCLP < cycleP.getNumAtom(); itCLP++) {
+//                     Atom& atomCLP = *cycleP.getAtom(itCLP);
+//                     if (!atomCLP.isCarbon()) continue;
+//                     dist = atomCLA.calcFixpos(atomCLP);
+
+//                     if (dist > params.Dist_Arom * 3) {
+//                         possible=false;
+//                         break;
+//                     }
+
+//                     const Coords& normalCLP=cycleP.getNormVector(itCLP);
+//                     const double angle = acos((atomCLA.fixpos.x-normalCLA.x)*(atomCLP.fixpos.x-normalCLP.x) + (atomCLA.fixpos.y-normalCLA.y)*(atomCLP.fixpos.y-normalCLP.y) + (atomCLA.fixpos.z-normalCLA.z)*(atomCLP.fixpos.z-normalCLP.z));
+                    
+//                     if ((dist < params.Dist_Arom && dist > params.dist_Arom) && ((angle > params.Angl_AromFF- params.AngT_AromFF && angle < params.Angl_AromFF + params.AngT_AromFF)
+//                                 ||  (angle > M_PI+ params.Angl_AromFF - params.AngT_AromFF && angle < M_PI + params.Angl_AromFF + params.AngT_AromFF)
+//                                 ||  (angle > params.Angl_AromFF - params.AngT_AromFF- M_PI && angle < params.Angl_AromFF + params.AngT_AromFF - M_PI))) Ar = true;
+
+//                     if ((dist < params.Dist_Arom && dist > params.dist_Arom)
+//                             && ((angle > params.Angl_AromEF - params.AngT_AromEF && angle < params.Angl_AromEF + params.AngT_AromEF)
+//                                 || (angle > M_PI + params.Angl_AromEF - params.AngT_AromEF && angle < M_PI+ params.Angl_AromEF + params.AngT_AromEF)
+//                                 || (angle > params.Angl_AromEF - params.AngT_AromEF - M_PI && angle < params.Angl_AromEF + params.AngT_AromEF - M_PI)))  EF++;
+//                 }
+//                 if (!possible)
+//                     break;
+//             }
+
+//             if (Ar || EF > 5) {
+//                 Box& boxL = *ligcycle.getCenter().getBox(&grid);
+//                 boxlist.clear();
+//                 grid.getAdjacency(boxlist, &boxL, max_allowed_dist * 2, true);
+
+//                 hydlist.clear();
+
+//                 for (ItBox itBAdj=boxlist.begin(); itBAdj != boxlist.end(); ++itBAdj) {
+//                     for (ItCAtom itAA  = (*itBAdj)->firstAtom(); itAA != (*itBAdj)->lastAtom(); itAA++) {
+//                         Atom &atomP = **itAA;
+//                         if (&atomP.getParent()== &ligand || !atomP.isUsed() || atomP.isHydrogen())
+//                             continue;
+
+//                         dist = atomL.calcFixpos(atomP,max_allowed_dist+0.1);
+//                         if (dist > max_allowed_dist ) {
+//                             continue;
+//                         }
+//                     }
+//                 }
+//             }
+
+//             if (wInterType[InterType::ARFACEFACE] && Ar) {
+//                 InterPoint IntP(NInter, &cycleP.getCenter(), &ligcycle.getCenter(), (cycleP.getCenter().fixpos+ligcycle.getCenter().fixpos)/2, InterType::ARFACEFACE, distCENTER);
+//                 NInter++;
+//                 interResult.listInters.push_back(IntP);
+//                 interResult.CZ++;
+//             }
+
+//             else if (wInterType[InterType::AREDGEFACE] && EF > 5) {
+//                 InterPoint IntP(NInter, &cycleP.getCenter(), &ligcycle.getCenter(), (cycleP.getCenter().fixpos + ligcycle.getCenter().fixpos) / 2, InterType::AREDGEFACE,distCENTER); NInter++;
+//                 interResult.listInters.push_back(IntP);
+//                 interResult.CZ++;
+//             }
+//         }
+//     }
+// }
+
+
+
+// Original processHydrophobicInteraction
+// void Interactions::processHydrophobicInteraction(Atom& atomL, Atom& atomP, double dist, bool oldh, InterResults& interResult, std::map<Residu*, ICMole::resbest>& hydlist, Grid& grid, Box* itBAdj) const  {
     
-    std::map<Residu*, ICMole::resbest>::iterator itHydList; // Declare iterator
+//     std::map<Residu*, ICMole::resbest>::iterator itHydList; // Declare iterator
+
+//     if (!oldh) {
+//         if (wInterType[InterType::HYDROPHOBIC] && atomL.props.isHydrophobic() && atomP.props.isHydrophobic() && !(atomL.props.isAromatic() && atomP.props.isAromatic()) && dist <= params.Dist_Hyd && dist >= params.dist_Hyd) {
+//             AtomList listAtoms;
+//             Box& box = *itBAdj; 
+
+//             int nbhyd = 1, nbatm = 1;
+//             grid.getAdjacentAtoms(listAtoms, box, 4.5);
+
+//             for (ItCAtom itAtm = listAtoms.begin(); itAtm != listAtoms.end(); ++itAtm) {
+//                 Atom &atm = **itAtm;
+//                 if (atm.isHydrogen())
+//                     continue;
+//                 if (atm.props.isHydrophobic()){
+//                     nbhyd++;
+//                 }
+//                 nbatm++;
+//             }
+
+//             if (nbhyd == 0 || nbatm == 0) return;
+//             if (100 * nbhyd / nbatm > 50) {
+//                 itHydList = hydlist.find(atomP.getResidu());
+//                 if (itHydList == hydlist.end()) {
+//                     resbest rbest;
+//                     rbest.atmP = &atomP;  
+//                     rbest.dist = dist;
+//                     hydlist.insert(std::pair<Residu*, resbest>(atomP.getResidu(), rbest));
+//                 }
+//                 else
+//                 {
+//                     resbest &rbest = (*itHydList).second;
+//                     if (dist < rbest.dist) {
+//                         rbest.dist = dist;
+//                         rbest.atmP = &atomP;  
+//                     }
+//                 }
+//             }
+//         }
+//     } 
+//     else {
+//         if (wInterType[InterType::HYDROPHOBIC] && atomL.props.isHydrophobic() && atomP.props.isHydrophobic()  && !(atomL.props.isAromatic() && atomP.props.isAromatic())  && dist <= params.Dist_Hyd && dist >= params.dist_Hyd) {
+            
+//             itHydList = hydlist.find(atomP.getResidu());
+//             if (itHydList == hydlist.end()) {
+//                 resbest rbest;
+//                 rbest.atmP = &atomP;  
+//                 rbest.dist = dist;
+//                 hydlist.insert(std::pair<Residu*, resbest>(atomP.getResidu(), rbest));
+//             }
+//             else {
+//                 resbest &rbest = (*itHydList).second;
+//                 if (dist < rbest.dist) {
+//                     rbest.dist = dist;
+//                     rbest.atmP = &atomP;  
+//                 }
+//             }
+//         }
+//     }
+// }
+
+void Interactions::processHydrophobicInteraction(Atom& atomL, Atom& atomP, double dist, bool oldh, InterResults& interResult, std::map<Residu*, ICMole::resbest>& hydlist, NeighborSearch& neighborSearch, const std::vector<Atom*>& proteinAtoms) const {
+   
+    if (!wInterType[InterType::HYDROPHOBIC])
+        return;
+
+    if (!atomL.props.isHydrophobic() || !atomP.props.isHydrophobic())
+        return;
+
+    if (atomL.props.isAromatic() && atomP.props.isAromatic())
+        return;
+
+    if (dist > params.Dist_Hyd || dist < params.dist_Hyd)
+        return;
 
     if (!oldh) {
-        if (wInterType[InterType::HYDROPHOBIC] && atomL.props.isHydrophobic() && atomP.props.isHydrophobic() && !(atomL.props.isAromatic() && atomP.props.isAromatic()) && dist <= params.Dist_Hyd && dist >= params.dist_Hyd) {
-            AtomList listAtoms;
-            Box& box = *itBAdj; 
 
-            int nbhyd = 1, nbatm = 1;
-            grid.getAdjacentAtoms(listAtoms, box, 4.5);
+        // Query points from atomP's coordinates
+        std::vector<std::array<double, 3>> queryPoints = {{
+            { atomP.fixpos.x, atomP.fixpos.y, atomP.fixpos.z }
+        }};
 
-            for (ItCAtom itAtm = listAtoms.begin(); itAtm != listAtoms.end(); ++itAtm) {
-                Atom &atm = **itAtm;
-                if (atm.isHydrogen())
-                    continue;
-                if (atm.props.isHydrophobic()){
-                    nbhyd++;
-                }
-                nbatm++;
-            }
+        double density_radius = 4.5;
+        auto results = neighborSearch.query(queryPoints, density_radius);
 
-            if (nbhyd == 0 || nbatm == 0) return;
-            if (100 * nbhyd / nbatm > 50) {
-                itHydList = hydlist.find(atomP.getResidu());
-                if (itHydList == hydlist.end()) {
-                    resbest rbest;
-                    rbest.atmP = &atomP;  
-                    rbest.dist = dist;
-                    hydlist.insert(std::pair<Residu*, resbest>(atomP.getResidu(), rbest));
-                }
-                else
-                {
-                    resbest &rbest = (*itHydList).second;
-                    if (dist < rbest.dist) {
-                        rbest.dist = dist;
-                        rbest.atmP = &atomP;  
-                    }
-                }
-            }
+        std::vector<size_t> neighbors;
+        for (const auto& p : results)
+            neighbors.push_back(p.second);
+
+        int nbatm = 0, nbhyd = 0;
+        for (size_t idx : neighbors) {
+            Atom* neighbor = proteinAtoms[idx];
+            if (neighbor->isHydrogen()) continue;
+            ++nbatm;
+            if (neighbor->props.isHydrophobic()) ++nbhyd;
         }
-    } 
-    else {
-        if (wInterType[InterType::HYDROPHOBIC] && atomL.props.isHydrophobic() && atomP.props.isHydrophobic()  && !(atomL.props.isAromatic() && atomP.props.isAromatic())  && dist <= params.Dist_Hyd && dist >= params.dist_Hyd) {
-            
-            itHydList = hydlist.find(atomP.getResidu());
-            if (itHydList == hydlist.end()) {
-                resbest rbest;
-                rbest.atmP = &atomP;  
-                rbest.dist = dist;
-                hydlist.insert(std::pair<Residu*, resbest>(atomP.getResidu(), rbest));
-            }
-            else {
-                resbest &rbest = (*itHydList).second;
-                if (dist < rbest.dist) {
-                    rbest.dist = dist;
-                    rbest.atmP = &atomP;  
-                }
-            }
+
+        if (nbatm == 0 || (100.0 * nbhyd / nbatm) <= 50.0)
+            return;
+    }
+
+    Residu* residu = atomP.getResidu();
+    auto itHydList = hydlist.find(residu);
+
+    if (itHydList == hydlist.end()) {
+        resbest rbest;
+        rbest.atmP = &atomP;
+        rbest.atmL = &atomL;
+        rbest.dist = dist;
+        rbest.id = 0;
+        hydlist[residu] = rbest;
+
+    } else {
+        resbest& rbest = itHydList->second;
+        if (dist < rbest.dist) {
+            rbest.atmP = &atomP;
+            rbest.atmL = &atomL;
+            rbest.dist = dist;
         }
     }
 }
+
+
 
 
 /*

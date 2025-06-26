@@ -33,9 +33,9 @@ double calcHScoreO(const Coords& H, const Coords& AtmCD, const Coords &AtmCA, co
     //cout << " ||-> "<<distH_D<< " " << distH_A<<" " <<minAngl<<"<"<< angl_HDDl<<"<"<<maxAngl<<endl;
 
     //if (angl_HDDl >= maxAngl || angl_HDDl <= minAngl) { return 0;}
-    const double anglAHD = (H.calcAngle(AtmCA,AtmCD))*180/PI;              if (anglAHD <=130) { return 0;}
+    const double anglAHD = (H.calcAngle(AtmCA,AtmCD))*180/PI_CONST;              if (anglAHD <=130) { return 0;}
     const double alpha = 34 - distH_A*sin( distH_D*sin(angl_HDDl)/dist);
-    const double angl_ADDl=((AtmCD.calcAngle(AtmD_L,AtmCA))*180/PI); if (angl_ADDl > 109.5+alpha || angl_ADDl < 109.5-alpha) {// cout <<angl_ADDl<< " avoid"<<endl;
+    const double angl_ADDl=((AtmCD.calcAngle(AtmD_L,AtmCA))*180/PI_CONST); if (angl_ADDl > 109.5+alpha || angl_ADDl < 109.5-alpha) {// cout <<angl_ADDl<< " avoid"<<endl;
         return 0;}
     const double diffAHD=180-anglAHD;
     if (diffAHD <= 30) {if (water) return 1+(diffAHD)/50; else return 1;}

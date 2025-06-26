@@ -402,9 +402,9 @@ void VolSite::proj(const int& min, const bool &force_stop)
                 cout << "new block "<<endl;
 #endif
                 // Getting angle in rad:
-                A = cos (alpha_*PI/180); B = sin (alpha_*PI/180);
-                C = cos (beta_*PI/180);  D = sin (beta_*PI/180);
-                E = cos (gamma_*PI/180); F = sin (gamma_*PI/180);
+                A = cos (alpha_*PI_CONST/180); B = sin (alpha_*PI_CONST/180);
+                C = cos (beta_*PI_CONST/180);  D = sin (beta_*PI_CONST/180);
+                E = cos (gamma_*PI_CONST/180); F = sin (gamma_*PI_CONST/180);
                 AD = A*D; BD = B*D;
 
                 // Creating rotation matrix :
@@ -449,7 +449,7 @@ void VolSite::proj(const int& min, const bool &force_stop)
                 }
                 //Second try on the projection vector:
 
-                tmp = S1+p_*0.5*U;
+                tmp = S1+p_*0.5*U_CONST;
 
                 S1xyz.setCoords(X8.x+boxStep*(tmp.x*vect_i.x+tmp.y*vect_j.x+tmp.z*vect_k.x),
                                 X8.y+boxStep*(tmp.x*vect_i.y+tmp.y*vect_j.y+tmp.z*vect_k.y),
@@ -484,7 +484,7 @@ void VolSite::proj(const int& min, const bool &force_stop)
                     {
                         break;
                     }
-                    tmp += p_*0.5*U;
+                    tmp += p_*0.5*U_CONST;
                     S1xyz.setCoords(X8.x+boxStep*(tmp.x*vect_i.x+tmp.y*vect_j.x+tmp.z*vect_k.x),
                                     X8.y+boxStep*(tmp.x*vect_i.y+tmp.y*vect_j.y+tmp.z*vect_k.y),
                                     X8.z+boxStep*(tmp.x*vect_i.z+tmp.y*vect_j.z+tmp.z*vect_k.z));

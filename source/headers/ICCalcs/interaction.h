@@ -4,6 +4,7 @@
 
 #include "headers/ICMole/molecule.h"
 #include "headers/ICMole/fingerprint.h"
+#include "headers/ICCalcs/neighborsearch.hpp"
 
 
 namespace ICMole {
@@ -41,9 +42,10 @@ namespace ICMole {
   };
 
   struct resbest {
-    Atom *atmP;
-    double dist;
-    unsigned short id;
+    Atom *atmP = nullptr;
+    Atom *atmL = nullptr; // Added
+    double dist = std::numeric_limits<double>::max();
+    unsigned short id = 0;
   };
 
 
@@ -138,32 +140,22 @@ namespace ICMole {
 
 
 
-      void processHydrophobicInteraction(Atom& atomL, Atom& atomP, double dist, bool oldh, InterResults& interResult, std::map<Residu*, ICMole::resbest>& hydlist, Grid& grid, Box* itBAdj) const;        
+      void processHydrophobicInteraction(Atom& atomL, Atom& atomP, double dist, bool oldh, InterResults& interResult, std::map<Residu*, ICMole::resbest>& hydlist, NeighborSearch& neighborSearch, const std::vector<Atom*>& proteinAtoms) const;        
 
-      void processAromaticInteractions(
-        Molecule &ligand,
-        Grid &grid,
-        double max_allowed_dist,
-        InterResults &interResult,
-        const bool *wInterType,
-        int &NInter,
-        double min_allowed_dist,    
-        double Dist_PiCation,       
-        double Angl_PiCation,
-        double AngT_PiCation,       
-        double Dist_Arom,           
-        double dist_Arom,          
-        double Angl_AromFF,        
-        double AngT_AromFF,         
-        double Angl_AromEF,        
-        double AngT_AromEF,         
-        double Dist_H,              
-        double dist_H,              
-        double &dist,              
-        std::map<Residu*, resbest> &hydlist
-      ) const;
+      void checkAromaticHydrophobicInteractions(Molecule& ligand, Molecule& protein, InterResults& interResult, int& NInter, double dist_H, double Dist_H) const;
+      void processAromaticInteractions(Molecule& ligand,
+                                 NeighborSearch& neighborSearch,
+                                 const std::vector<Atom*>& proteinAtoms,
+                                 double max_allowed_dist,
+                                 InterResults& interResult,
+                                 const bool* wInterType,
+                                 int& NInter,
+                                 double min_allowed_dist,
+                                 double& dist,
+                                 std::map<Residu*, resbest>& hydlist) const;
 
       void addInteraction(InterResults& interResult, Atom& atomP, Atom& atomL, double dist, int& NInter, double* angle, unsigned int interactionType) const;
+      void checkMetalNitrogenSulfonamideCase(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
       void checkMetalInteractions(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
 
       void checkHydrogenBondLigandAcceptor(Atom& atomL, Atom& atomP, double dist,  InterResults& interResult, int& NInter) const;

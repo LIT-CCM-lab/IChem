@@ -83,5 +83,6 @@ include_directories(
     source/headers/ICRSA
     source/headers/ICCalcs
     source/headers/ICSVM
+    source/external/nanoflann
 )
 add_executable(IChem ${SOURCES})
