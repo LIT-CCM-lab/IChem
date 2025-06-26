@@ -508,26 +508,30 @@ void Interactions::calcInteractions(Molecule& ligand, InterResults& interResult,
     }
 
     // ==> Remove: prot/lig atom positions
-    std::cout << "====### Protein Atom Positions ###====" << std::endl;
-    for (size_t i = 0; i < proteinPoints.size(); ++i) {
-        Atom* atom = proteinAtoms[i];
-        std::cout << "Protein Atom " << atom->getName() << " (" << atom->fixpos.x << ", " << atom->fixpos.y << ", " << atom->fixpos.z << ")" << std::endl;
-    }
+    // std::cout << "====### Protein Atom Positions ###====" << std::endl;
+    // for (size_t i = 0; i < proteinPoints.size(); ++i) {
+    //     Atom* atom = proteinAtoms[i];
+    //     std::cout << "Protein Atom " << atom->getName() << " (" << atom->fixpos.x << ", " << atom->fixpos.y << ", " << atom->fixpos.z << ")" << std::endl;
+    // }
 
-    std::cout << "====### Ligand Atom Positions ###====" << std::endl;
-    for (size_t i = 0; i < ligandPoints.size(); ++i) {
-        Atom* atom = ligandAtoms[i];
-        std::cout << "Ligand Atom " << atom->getName() << " (" << atom->fixpos.x << ", " << atom->fixpos.y << ", " << atom->fixpos.z << ")" << std::endl;
-    }
+    // std::cout << "====### Ligand Atom Positions ###====" << std::endl;
+    // for (size_t i = 0; i < ligandPoints.size(); ++i) {
+    //     Atom* atom = ligandAtoms[i];
+    //     std::cout << "Ligand Atom " << atom->getName() << " (" << atom->fixpos.x << ", " << atom->fixpos.y << ", " << atom->fixpos.z << ")" << std::endl;
+    // }
     // <== Remove
 
     // Find all neighbor pairs: We query the ligandPoints to the built proteinPoints in the KDtree
     auto pairs = neighborSearch.query(ligandPoints, max_allowed_dist);
 
     for (const auto& pair : pairs) {
-        Atom& atomL = *ligandAtoms[pair.first];
-        Atom& atomP = *proteinAtoms[pair.second];
-        dist = atomL.fixpos.calcDist(atomP.fixpos);
+        Atom& atomL = *ligandAtoms[pair.ligand_idx];
+        Atom& atomP = *proteinAtoms[pair.protein_idx];
+        // double dist = atomL.fixpos.calcDist(atomP.fixpos);
+        double dist = std::sqrt(pair.distance_squared); 
+
+        // cout << "dist_test: " << dist_test << endl;
+        // cout << "dist: " << dist << endl; 
         // dist = manualCalcDist(atomL, atomP); Remove
         
         if(&atomP.getParent() == &ligand || !atomP.isUsed() || atomP.isHydrogen())
@@ -937,7 +941,7 @@ void Interactions::processHydrophobicInteraction(Atom& atomL, Atom& atomP, doubl
 
         std::vector<size_t> neighbors;
         for (const auto& p : results)
-            neighbors.push_back(p.second);
+            neighbors.push_back(p.ligand_idx);
 
         int nbatm = 0, nbhyd = 0;
         for (size_t idx : neighbors) {
