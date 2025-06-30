@@ -43,7 +43,7 @@ namespace ICMole {
 
   struct resbest {
     Atom *atmP = nullptr;
-    Atom *atmL = nullptr; // Added
+    Atom *atmL = nullptr;
     double dist = std::numeric_limits<double>::max();
     unsigned short id = 0;
   };
