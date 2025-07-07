@@ -287,18 +287,12 @@ void Interactions::calcInteractions(Molecule& ligand, InterResults& interResult,
     double max_allowed_dist = std::max({ params.Dist_H,params.Dist_Hyd,params.Dist_Ionic,params.Dist_Metal,params.Dist_Arom,params.Dist_PiCation });
 
     
-    //Build KD-tree on protein atoms
+    // Build KD-tree on protein atoms
     NeighborSearch neighborSearch;
     std::vector<std::array<double,3>> proteinPoints;
     std::vector<Atom*> proteinAtoms;
 
-    // for (ItCAtom itA = complex.firstAtom(); itA != complex.lastAtom(); ++itA) {
-    //     Atom* a = *itA;
-    //     if (a->isUsed() && !a->isHydrogen() && a->getParent().getMoleType() == MoleType::PROTEIN) {
-    //         proteinPoints.push_back({ a->fixpos.x, a->fixpos.y, a->fixpos.z });
-    //         proteinAtoms.push_back(a);
-    //     }
-    // }
+    
     for (auto itM = complex.firstMole(); itM != complex.lastMole(); ++itM) {
         Molecule* mol = *itM;
 
@@ -307,7 +301,7 @@ void Interactions::calcInteractions(Molecule& ligand, InterResults& interResult,
         }
     }
     
-    // Add an atom
+    // Helper to add an atom
     auto push = [&](Atom* a) { 
         proteinPoints.push_back({ a->fixpos.x, a->fixpos.y, a->fixpos.z });
         proteinAtoms.push_back(a);
@@ -423,13 +417,6 @@ void Interactions::calcInteractions(Molecule& ligand, InterResults& interResult,
             checkAromaticHydrophobicInteractions(ligand, *protein, interResult, NInter, params.dist_Hyd, params.Dist_Hyd);
         }
     }
-
-    // // If all three pi interaction flags are off, we merge and we skipp processAromatic. 
-    // if (!wInterType[InterType::AREDGEFACE] && !wInterType[InterType::ARFACEFACE] && !wInterType[InterType::PICATION]) {
-    //     if (wMerge) 
-    //         mergeInteractions(interResult);
-    //     return;
-    // }
 
     // Executed only when at least oen pi interaction is enabled
     processAromaticInteractions(ligand, neighborSearch, proteinAtoms, max_allowed_dist, interResult, wInterType, NInter, min_allowed_dist);
