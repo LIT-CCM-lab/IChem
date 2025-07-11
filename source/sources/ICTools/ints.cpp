@@ -194,7 +194,7 @@ void IChemSwitch::ints()      const throw(ICMole::MoleExcept)
 
         InterResults results;
         results.listInters.reserve(10000);
-        ins.calcInteractions(*cplx.getMole(MoleType::LIGAND),results,merge,oldh);
+        ins.detectInteractions(*cplx.getMole(MoleType::LIGAND),results,merge,oldh);
         //      cplx.getGrid(0).printInFile("gridints",cplx.getGrid(0).getAllBox(),false,true);
 
         if (plp_out) {

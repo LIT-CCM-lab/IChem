@@ -293,9 +293,9 @@ void IChemSwitch::grim()      const throw(ICMole::MoleExcept)
                 if (CName.length()==0) CName=complexC.getMole(MoleType::PROTEIN)->getName();
 
                 Interactions interR(complexR);
-                interR.calcInteractions(*complexR.getMole(MoleType::LIGAND),reference,merge,oldh);
+                interR.detectInteractions(*complexR.getMole(MoleType::LIGAND),reference,merge,oldh);
                 Interactions interC(complexC);
-                interC.calcInteractions(*complexC.getMole(MoleType::LIGAND),comparison,merge,oldh);
+                interC.detectInteractions(*complexC.getMole(MoleType::LIGAND),comparison,merge,oldh);
 
                 interR.interToMOL2(reference,match_lig,match_prot,match_cent,match_merg);
                 //            interR.interToMOL2(reference,false,false,false,true);
@@ -579,7 +579,7 @@ void IChemSwitch::grim()      const throw(ICMole::MoleExcept)
                 if (RName.length() == 0) RName = complexR.getMole(MoleType::PROTEIN)->getName();
 
                 Interactions interR(complexR);
-                interR.calcInteractions(*complexR.getMole(MoleType::LIGAND),reference,merge,oldh);
+                interR.detectInteractions(*complexR.getMole(MoleType::LIGAND),reference,merge,oldh);
 
                 interR.interToMOL2(reference,match_lig,match_prot,match_cent,match_merg);
                 if (verbose){
@@ -610,7 +610,7 @@ void IChemSwitch::grim()      const throw(ICMole::MoleExcept)
                     complexC.genGrid(4.5);
 
                     Interactions interC(complexC);
-                    interC.calcInteractions(*complexC.getMole(MoleType::LIGAND),comparison,merge,oldh);
+                    interC.detectInteractions(*complexC.getMole(MoleType::LIGAND),comparison,merge,oldh);
                     interC.interToMOL2(comparison,match_lig,match_prot,match_cent,match_merg);
 
                     Grim grim(reference,comparison);
@@ -833,7 +833,7 @@ void IChemSwitch::grim()      const throw(ICMole::MoleExcept)
                             CName= ligand.getName();
                             ligand.checkMOL2();
                             ligand.ringPerception();
-                            interC.calcInteractions(ligand,interRes[currLig],merge,oldh);
+                            interC.detectInteractions(ligand,interRes[currLig],merge,oldh);
                             interC.interToMOL2(interRes[currLig],match_lig,match_prot,match_cent,match_merg);
                             if (verbose){
                                 cout << "comp  :" <<interC.toString(interRes[currLig]) << endl;
@@ -1019,7 +1019,7 @@ void IChemSwitch::grim()      const throw(ICMole::MoleExcept)
                         ligand.checkMOL2();
                         ligand.ringPerception();
                         Interactions interR(complexR);
-                        interR.calcInteractions(ligand, reference, merge, oldh);
+                        interR.detectInteractions(ligand, reference, merge, oldh);
                         interR.interToMOL2(reference, match_lig, match_prot, match_cent, match_merg);
                         if (verbose) {
                             cout << interR.toString(reference) << endl;
@@ -1052,7 +1052,7 @@ void IChemSwitch::grim()      const throw(ICMole::MoleExcept)
                             complexC.genGrid(4.5);
 
                             Interactions interC(complexC);
-                            interC.calcInteractions(*complexR.getMole(MoleType::LIGAND), comparison, merge, oldh);
+                            interC.detectInteractions(*complexR.getMole(MoleType::LIGAND), comparison, merge, oldh);
                             interC.interToMOL2(comparison, match_lig, match_prot, match_cent, match_merg);
 
                             Grim grim(reference, comparison);
@@ -1282,7 +1282,7 @@ void IChemSwitch::grim()      const throw(ICMole::MoleExcept)
                                 CName = ligand.getName();
                                 ligand.checkMOL2();
                                 ligand.ringPerception();
-                                interC.calcInteractions(ligand, interRes[currLig], merge, oldh);
+                                interC.detectInteractions(ligand, interRes[currLig], merge, oldh);
                                 interC.interToMOL2(interRes[currLig], match_lig, match_prot, match_cent, match_merg);
                                 if (verbose) {
                                     cout << "comp  :" << interC.toString(interRes[currLig]) << endl;
@@ -1508,7 +1508,7 @@ void IChemSwitch::grim()      const throw(ICMole::MoleExcept)
                 ligand.checkMOL2();
                 ligand.ringPerception();
                 Interactions interR(complexR);
-                interR.calcInteractions(ligand,referenceM,merge,oldh);
+                interR.detectInteractions(ligand,referenceM,merge,oldh);
                 interR.interToMOL2(referenceM,match_lig,match_prot,match_cent,match_merg);
                 if (verbose){
                     cout << interR.toString(referenceM) << endl;
@@ -1541,7 +1541,7 @@ void IChemSwitch::grim()      const throw(ICMole::MoleExcept)
                     complexMC.genGrid(1.5);
                     complexMC.genGrid(4.5);
                     Interactions interC(complexMC);
-                    interC.calcInteractions(LigandC,comparisonM,merge,oldh);
+                    interC.detectInteractions(LigandC,comparisonM,merge,oldh);
                     interC.interToMOL2(comparisonM,match_lig,match_prot,match_cent,match_merg);
 
                     Grim grimscr(referenceM,comparisonM);

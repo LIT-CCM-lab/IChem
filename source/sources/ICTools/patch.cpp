@@ -344,7 +344,7 @@ void IChemSwitch::patch() const   throw(ICMole::MoleExcept)
     mw.writeMOL2(&protein);
     Interactions ints(complex);
     InterResults intsresults;
-    ints.calcInteractions(ligand,intsresults,true);
+    ints.detectInteractions(ligand,intsresults,true);
     ints.interToMOL2(intsresults,false,false,false,true);
     mw.newFile(outInts+"_M.mol2");
     intsresults.Ints.setName(NAME+"_INTS_M");

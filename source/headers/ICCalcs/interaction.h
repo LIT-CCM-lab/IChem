@@ -195,7 +195,7 @@ namespace ICMole {
       * @param interResult : Detected interactions are score here
       * @param wMerge : Merge hydrophobic interactions
       */
-      void calcInteractions(Molecule& ligand, InterResults& interResult, bool wMerge = true, bool oldh = true) const;
+      void detectInteractions(Molecule& ligand, InterResults& interResult, bool wMerge = true, bool oldh = true) const;
 
 
       /**

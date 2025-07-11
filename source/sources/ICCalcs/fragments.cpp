@@ -13,7 +13,7 @@ FragGenerator::FragGenerator(Complex& complex):
 listFragments=(Fragment*)NULL;NCL=0;
 Interactions inters(complex);
 InterResults intersR;
-inters.calcInteractions(*complex.getMole(MoleType::LIGAND),intersR);
+inters.detectInteractions(*complex.getMole(MoleType::LIGAND),intersR);
                         inters.interToMOL2(intersR,false,false,false,true);
                         MoleWriter mw("xx.mol2");
                         mw.writeMOL2(&intersR.Ints);
@@ -410,7 +410,7 @@ inCycle=false;
 continue;
     }
     listFragments[i].wCycle=true;
-    inters.calcInteractions(ligand,listFragments[i].inters);
+    inters.detectInteractions(ligand,listFragments[i].inters);
     inters.interToMOL2(listFragments[i].inters,false,false,false,true);
     cout << inters.toString(listFragments[i].inters);
 

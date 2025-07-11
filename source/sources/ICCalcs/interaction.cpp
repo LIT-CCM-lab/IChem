@@ -279,7 +279,7 @@ void Interactions::checkPiCationInteraction(Atom& atomL, Atom& atomP, double dis
 }
 
 
-void Interactions::calcInteractions(Molecule& ligand, InterResults& interResult, bool wMerge, bool oldh) const {
+void Interactions::detectInteractions(Molecule& ligand, InterResults& interResult, bool wMerge, bool oldh) const {
     
     double dist;
     int NInter = 0;
@@ -321,7 +321,7 @@ void Interactions::calcInteractions(Molecule& ligand, InterResults& interResult,
             Cycle* cy = *itC;
             if (!cy->isAromatic()) 
                 continue;   
-                    
+
             cy->getFixpos();                       
             Atom* ctr = &cy->getCenter();          
             push(ctr);

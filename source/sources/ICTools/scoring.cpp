@@ -42,7 +42,7 @@ void IChemSwitch::scoring()      const throw(ICMole::MoleExcept)
 
         InterResults results;
 
-        ins.calcInteractions(*cplx.getMole(MoleType::LIGAND),results,true);
+        ins.detectInteractions(*cplx.getMole(MoleType::LIGAND),results,true);
         ins.interToMOL2(results,false,false,true,false);
 
 
