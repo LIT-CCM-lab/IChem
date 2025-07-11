@@ -319,9 +319,11 @@ void Interactions::calcInteractions(Molecule& ligand, InterResults& interResult,
         Molecule* prot = *m;
         for (auto itC = prot->firstCycle(); itC != prot->lastCycle(); ++itC) {
             Cycle* cy = *itC;
-            if (!cy->isAromatic()) continue;       // skip non-aromatic
-            cy->getFixpos();                       // ensure coordinates ready
-            Atom* ctr = &cy->getCenter();          // DuAr dummy
+            if (!cy->isAromatic()) 
+                continue;   
+                    
+            cy->getFixpos();                       
+            Atom* ctr = &cy->getCenter();          
             push(ctr);
         }
     }
@@ -418,9 +420,7 @@ void Interactions::calcInteractions(Molecule& ligand, InterResults& interResult,
         }
     }
 
-    // Executed only when at least oen pi interaction is enabled
     processAromaticInteractions(ligand, neighborSearch, proteinAtoms, max_allowed_dist, interResult, wInterType, NInter, min_allowed_dist);
-
 
     if (wMerge) {
         mergeInteractions(interResult);
