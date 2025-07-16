@@ -284,7 +284,7 @@ void Interactions::detectInteractions(Molecule& ligand, InterResults& interResul
     double dist;
     int NInter = 0;
     double min_allowed_dist = 1.5;
-    double max_allowed_dist = std::max({ params.Dist_H,params.Dist_Hyd,params.Dist_Ionic,params.Dist_Metal,params.Dist_Arom,params.Dist_PiCation });
+    double max_allowed_dist = std::max({ params.Dist_H, params.Dist_Hyd, params.Dist_Ionic, params.Dist_Metal, params.Dist_Arom, params.Dist_PiCation });
 
     
     // Build KD-tree on protein atoms
@@ -428,8 +428,7 @@ void Interactions::detectInteractions(Molecule& ligand, InterResults& interResul
 }
 
 
-void Interactions::checkAromaticHydrophobicInteractions(Molecule& ligand, Molecule& protein, InterResults& interResult, int& NInter, double dist_H, double Dist_H) const
-{
+void Interactions::checkAromaticHydrophobicInteractions(Molecule& ligand, Molecule& protein, InterResults& interResult, int& NInter, double dist_H, double Dist_H) const {
     for (ItCCycle ligandCycle = ligand.firstCycle(); ligandCycle != ligand.lastCycle(); ++ligandCycle) {
         Cycle& ligCycle = **ligandCycle;
         if (!ligCycle.isAromatic()) 
@@ -519,42 +518,44 @@ void Interactions::processAromaticInteractions(Molecule& ligand, NeighborSearch&
             
             Cycle& cycleP = *cp;
             double centerDist = cycleP.getFixpos().calcDist(ligCycle.getFixpos());
+            if(centerDist > max_allowed_dist)
+                continue;
 
             // hydrophobic
-            if (wInterType[InterType::HYDROPHOBIC] && centerDist > params.Dist_Arom) {
-                double best = 1e6; // We take big number by precaution, the 100 is a little bit small fro a threshold
-                Atom *bestL = nullptr;
-                Atom *bestP = nullptr;
+            // if (wInterType[InterType::HYDROPHOBIC] && centerDist > params.Dist_Arom) {
+            //     double best = 1e6; // We take big number by precaution, the 100 is a little bit small fro a threshold
+            //     Atom *bestL = nullptr;
+            //     Atom *bestP = nullptr;
 
-                for (size_t i = 0; i < ligCycle.getNumAtom(); ++i)
-                {
-                    Atom& aL = *ligCycle.getAtom(i);
-                    if (!aL.props.isHydrophobic())
-                        continue;
+            //     for (size_t i = 0; i < ligCycle.getNumAtom(); ++i)
+            //     {
+            //         Atom& aL = *ligCycle.getAtom(i);
+            //         if (!aL.props.isHydrophobic())
+            //             continue;
 
-                    for (size_t j = 0; j < cycleP.getNumAtom(); ++j) {
+            //         for (size_t j = 0; j < cycleP.getNumAtom(); ++j) {
                         
-                        Atom& aP = *cycleP.getAtom(j);
-                        if (!aP.props.isHydrophobic()) 
-                            continue;
+            //             Atom& aP = *cycleP.getAtom(j);
+            //             if (!aP.props.isHydrophobic()) 
+            //                 continue;
 
-                        double d = aL.calcFixpos(aP);
-                        if (d < params.dist_H || d > params.Dist_H) 
-                            continue;
+            //             double d = aL.calcFixpos(aP);
+            //             if (d < params.dist_H || d > params.Dist_H) 
+            //                 continue;
 
-                        if (d < best) {
-                            best = d;
-                            bestL = &aL;
-                            bestP = &aP;
-                        }
-                    }
-                }
+            //             if (d < best) {
+            //                 best = d;
+            //                 bestL = &aL;
+            //                 bestP = &aP;
+            //             }
+            //         }
+            //     }
 
-                if (bestL && bestP && bestL->getResidu()->getIdentifier() != bestP->getResidu()->getIdentifier()) {
-                    addInteraction(interResult, *bestP, *bestL, best, NInter, nullptr, InterType::HYDROPHOBIC);
-                }
-                continue; // no face/edge analysis when plainly hydrophobic
-            }
+            //     if (bestL && bestP && bestL->getResidu()->getIdentifier() != bestP->getResidu()->getIdentifier()) {
+            //         addInteraction(interResult, *bestP, *bestL, best, NInter, nullptr, InterType::HYDROPHOBIC);
+            //     }
+            //     continue; // no face/edge analysis when plainly hydrophobic
+            // }
 
             // Face-face / Edge-face
             cycleP.calcVector();
