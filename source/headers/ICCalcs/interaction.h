@@ -145,31 +145,6 @@ namespace ICMole {
       void checkAromaticHydrophobicInteractions(Molecule& ligand, Molecule& protein, InterResults& interResult, int& NInter, double dist_H, double Dist_H) const;
       void processAromaticInteractions(Molecule& ligand, NeighborSearch& neighborSearch, const std::vector<Atom*>& proteinAtoms, double max_allowed_dist, InterResults& interResult, const bool* wInterType, int& NInter, double min_allowed_dist) const;
 
-      // void processAromaticInteractions(
-      //   Molecule &ligand,
-      //   Grid &grid,
-      //   double max_allowed_dist,
-      //   InterResults &interResult,
-      //   const bool *wInterType,
-      //   int &NInter,
-      //   double min_allowed_dist,    
-      //   // double Dist_PiCation,       
-      //   // double Angl_PiCation,
-      //   // double AngT_PiCation,       
-      //   // double Dist_Arom,           
-      //   // double dist_Arom,          
-      //   // double Angl_AromFF,        
-      //   // double AngT_AromFF,         
-      //   // double Angl_AromEF,        
-      //   // double AngT_AromEF,         
-      //   // double Dist_H,              
-      //   // double dist_H,              
-      //   double &dist,              
-      //   std::map<Residu*, resbest> &hydlist
-      // ) const;
-
-
-
       void addInteraction(InterResults& interResult, Atom& atomP, Atom& atomL, double dist, int& NInter, double* angle, unsigned int interactionType) const;
       void checkMetalNitrogenSulfonamideCase(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
       void checkMetalInteractions(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
