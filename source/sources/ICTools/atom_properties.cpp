@@ -34,20 +34,20 @@ void IChemSwitch::AtomProps() const {
 
     try {
         
-        // Process each ligand file
+        // Process each molecule file
         for (size_t i = 0; i < Input_Values.size(); ++i) {
-            const std::string& fLigand = Input_Values.at(i); // Current ligand
+            const std::string& fLigand = Input_Values.at(i); // Current molecule file
 
-            // Load the ligand file
+            // Load the molecule file
             iread.loadNewFile(fLigand);
 
-            // Looping through all molecules in the file
+            // Looping through all molecules
             while (!iread.isEOF()) {
                 Molecule ligand;
                 iread.loadNextMolecule(ligand, MoleType::LIGAND);
 
                 cout << "Molecule " << ligandCount++ << " with name " << ligand.getName() << " from file: " << fLigand << "\n\n";
-                // Print atom properties for the current ligand
+                // Print atom properties for the current molecule
                 for (ItCAtom itLA = ligand.firstAtom(); itLA != ligand.lastAtom(); ++itLA) {
                     printAtomInfo(**itLA);
                 }
