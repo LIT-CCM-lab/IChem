@@ -348,11 +348,11 @@ void Interactions::detectInteractions(Molecule& ligand, InterResults& interResul
     // Sort by ligand_idx so that contacts of the same ligand atom
     // are consecutive so we can clear hydlist at each change
     std::sort(pairs.begin(), pairs.end(), [](const NeighborSearch::Contact& a, const NeighborSearch::Contact& b) {
-        return a.ligand_idx < b.ligand_idx; 
+        return a.ligand_idx < b.ligand_idx;
     });
 
     // Helper to clear hydrophobic list
-    auto flushHydList = [&](std::map<Residu*,resbest>& hydlist){
+    auto flushHydList = [&](std::map<Residu*,resbest>& hydlist) {
         for (auto& [res, rb] : hydlist) {
             if (!rb.atmP || !rb.atmL) 
                 continue;

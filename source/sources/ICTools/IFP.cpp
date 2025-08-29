@@ -48,11 +48,9 @@ void IChemSwitch::IFP() const throw(MoleExcept)
 {
     const size_t InputSize = Input_Values.size();
     bool w_ref = false;
-    if (InputSize == 3) w_ref=true;
+    if (InputSize == 3) w_ref = true;
     if (InputSize != 2 && w_ref==false)
-        throw MoleExcept(9020101,
-                         "IChem::BSACalc",
-                         "Number of parameters must be 2 or 3");
+        throw MoleExcept(9020101,"IChem::BSACalc", "Number of parameters must be 2 or 3");
 
     // USER INPUTS :
     const std::string& fProtein = Input_Values.at(0);

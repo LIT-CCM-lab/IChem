@@ -1,5 +1,7 @@
 #include "headers/ICTools/switch.h"
 #include "headers/ICMole/similarity.h"
+#include "headers/ICCalcs/interaction.h"
+
 using namespace std;
 using namespace ICMole;
 
@@ -9,6 +11,7 @@ void IChemSwitch::helpFGPS() const
         << "    sims ref comp                                                       (1)"<<endl
         << "    sims file                                                           (2)"<<endl
         << "    sims RefInt CompInt                                                 (3)"<<endl
+        << "    sims RefInt RefInt CompInt CompInt                                               (4)"<<endl
         << endl
         << "  [General options]"<<endl
         << "      --wInts           To use interactions instead of fingerprints "<<endl
@@ -27,11 +30,46 @@ void IChemSwitch::helpFGPS() const
 
 }
 
+
+static ICMole::Fingerprint generateIFP(const std::string& protein_file, const std::string& ligand_file, bool numeric) {
+    
+    using namespace ICMole;
+
+    Complex complex;
+    MoleReader reader;
+
+    reader.loadNewFile(protein_file);
+    reader.get_format_file();
+    reader.loadInComplex(complex, MoleType::PROTEIN);
+
+    reader.loadNewFile(ligand_file);
+    reader.loadInComplex(complex, MoleType::LIGAND);
+
+    Molecule* ligand = complex.getMole(MoleType::LIGAND);
+    if (!ligand) {
+        throw MoleExcept(9020102, "generateIFPfromFiles", "No ligand found in " + ligand_file);
+    }
+
+    ligand->checkMOL2();
+    ligand->ringPerception();
+
+    Interactions ints(complex);
+    InterResults res;
+    ints.detectInteractions(*ligand, res, true, true);  
+
+    ints.genIFP(res, 0);
+
+    res.IFP.setName(ligand->getName());
+
+    return res.IFP;
+}
+
+
 void IChemSwitch::runFGPS() const throw(ICMole::MoleExcept)
 {
 
     const unsigned int InputSize = (unsigned int)Input_Values.size();
-    if (InputSize != 1 && InputSize != 2) {throw MoleExcept(9010401,"IChem::runFGPS","Not enough parameters");}
+    if (InputSize != 1 && InputSize != 2 && InputSize != 4) {throw MoleExcept(9010401,"IChem::runFGPS","Not enough parameters");}
 
     bool numeric=true;
     unsigned int metric =1;
@@ -40,11 +78,8 @@ void IChemSwitch::runFGPS() const throw(ICMole::MoleExcept)
 
 
 
-    for (std::map<std::string,std::vector<std::string> >::const_iterator
-         it = Opt_Values.begin();
-         it != Opt_Values.end();
-         it++)
-    {
+    for (std::map<std::string,std::vector<std::string> >::const_iterator it = Opt_Values.begin(); it != Opt_Values.end(); it++) {
+        
         const std::string &opt_name = (*it).first;
         const vector<string> & opt_val = (*it).second;
         const std::string& value = opt_val.at(0);
@@ -68,37 +103,8 @@ void IChemSwitch::runFGPS() const throw(ICMole::MoleExcept)
         else throw MoleExcept(9010404,"IChem::runFGPS","Unrecognized optionp : "+opt_name);
     }
 
-    /* if (wInts)
-     {
-       const std::string Ref = Input_Values.at(0);
-       const std::string Comp = Input_Values.at(1);
-       Interactions itr;itr.loadInterFile(Ref);
-       Fingerprint &fgpr=itr.generateTriplets(full);
+    if (InputSize == 2) {
 
-       fgpr.setName(itr.name);
-       numeric=true;
-       Interactions itc;itc.loadInterFile(Comp);
-       Fingerprint &fgpc=itc.generateTriplets(full);
-       fgpc.setName(itc.name);
-
-       Similarity sims(fgpr,fgpc,numeric);
-
-       double simil=0;
-       switch(metric)
-         {
-         case 1:simil=sims.Tanimoto();break;
-         case 2:simil=sims.Hamming(); break;
-         case 3:simil=sims.RTve();    break;
-         case 4:simil=sims.FTve();    break;
-         case 5:simil=sims.Dice();    break;
-         case 6:simil=sims.Soergel(); break;
-         }
-       cout << fgpr.getName()<<"\t"<<fgpc.getName()<<"\t"<<simil<<endl;
-
-       delete &fgpr; delete &fgpc;
-     }
-  else */if (InputSize == 2)
-    {
         const std::string Ref = Input_Values.at(0);
         const std::string Comp = Input_Values.at(1);
 
@@ -124,6 +130,7 @@ void IChemSwitch::runFGPS() const throw(ICMole::MoleExcept)
 
             refFGPS.push_back(fgp);
         }
+
         ifs.close();
 
         ifstream ifsc(Comp.c_str());
@@ -136,13 +143,13 @@ void IChemSwitch::runFGPS() const throw(ICMole::MoleExcept)
             Fingerprint fgpc(ligne.substr(pos+1),ligne.substr(0,pos),numeric);
             compFGPS.push_back(fgpc);
         }
+
         ifsc.close();
 
-        for (vector<Fingerprint>::iterator it = refFGPS.begin(); it != refFGPS.end(); it++)
-        {
+        for (vector<Fingerprint>::iterator it = refFGPS.begin(); it != refFGPS.end(); it++) {
+
             sims.setRef(*it);
-            for (vector<Fingerprint>::iterator itC = compFGPS.begin(); itC != compFGPS.end(); itC++)
-            {
+            for (vector<Fingerprint>::iterator itC = compFGPS.begin(); itC != compFGPS.end(); itC++) {
                 sims.setComp(*itC);
 
                 switch(metric)
@@ -159,38 +166,39 @@ void IChemSwitch::runFGPS() const throw(ICMole::MoleExcept)
 
         }
 
-
-
-
-        //      try
-        //      {
-        //        Fingerprint fgpR(Ref,numeric);
-        //        Fingerprint fgpC(Comp,numeric);
-
-
-//                Similarity sims(fgpR,fgpC,numeric);
-        //        double simil = 0;
-        //        switch(metric)
-        //          {
-        //          case 1:simil=sims.Tanimoto();break;
-        //          case 2:simil=sims.Hamming(); break;
-        //          case 3:simil=sims.RTve();    break;
-        //          case 4:simil=sims.FTve();    break;
-        //          case 5:simil=sims.Dice();    break;
-        //          case 6:simil=sims.Soergel(); break;
-        //          }
-        //        cout << fgpR.getName()<<"\t"<<fgpC.getName()<<"\t"<<simil<<endl;
-
-        //      }
-        //      catch (MoleExcept &e)
-        //      {
-        //        cerr << e.getCode() <<"\t"<<e.getData()<<endl;
-
-        //      }
-
     }
-    else
-    {
+    else if (Input_Values.size() == 4) {
+        const std::string& protein1 = Input_Values.at(0);
+        const std::string& ligand1  = Input_Values.at(1);
+        const std::string& protein2 = Input_Values.at(2);
+        const std::string& ligand2  = Input_Values.at(3);
+
+        try {
+            Fingerprint fp1 = generateIFP(protein1, ligand1, numeric);
+            Fingerprint fp2 = generateIFP(protein2, ligand2, numeric);
+
+            Similarity sim(fp1, fp2, numeric);
+            double value = 0.0;
+
+            switch (metric) {
+                case 1: value = sim.Tanimoto(); break;
+                case 2: value = sim.Hamming();  break;
+                case 3: value = sim.RTve();     break;
+                case 4: value = sim.FTve();     break;
+                case 5: value = sim.Dice();     break;
+                case 6: value = sim.Soergel();  break;
+            }
+
+            std::cout << fp1.getName() << "\t" << fp2.getName() << "\t" << value << std::endl;
+        }
+        catch (const MoleExcept& e) {
+            MoleExcept except = e;
+            except.addTrace("IChem::runFGPS (4-file mode)");
+            throw except;
+        }
+    }
+
+    else {
         const std::string FName = Input_Values.at(0);
 
         string ligne;
