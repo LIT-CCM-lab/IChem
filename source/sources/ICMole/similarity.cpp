@@ -3,7 +3,6 @@
 #include "headers/ICMole/similarity.h"
 
 
-
 using namespace ICMole;
 using namespace std;
 

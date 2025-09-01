@@ -1,6 +1,9 @@
+
 #include "headers/ICTools/switch.h"
 #include "headers/ICMole/similarity.h"
 #include "headers/ICCalcs/interaction.h"
+
+
 
 using namespace std;
 using namespace ICMole;
@@ -31,7 +34,7 @@ void IChemSwitch::helpFGPS() const
 }
 
 
-static ICMole::Fingerprint generateIFP(const std::string& protein_file, const std::string& ligand_file, bool numeric) {
+Fingerprint Fingerprint::generateIFP(const std::string& protein_file, const std::string& ligand_file, bool numeric) {
     
     using namespace ICMole;
 
@@ -72,10 +75,9 @@ void IChemSwitch::runFGPS() const throw(ICMole::MoleExcept)
     if (InputSize != 1 && InputSize != 2 && InputSize != 4) {throw MoleExcept(9010401,"IChem::runFGPS","Not enough parameters");}
 
     bool numeric=true;
-    unsigned int metric =1;
+    unsigned int metric = 1;
     bool wInts=false;
     bool full=true;
-
 
 
     for (std::map<std::string,std::vector<std::string> >::const_iterator it = Opt_Values.begin(); it != Opt_Values.end(); it++) {
@@ -166,36 +168,6 @@ void IChemSwitch::runFGPS() const throw(ICMole::MoleExcept)
 
         }
 
-    }
-    else if (Input_Values.size() == 4) {
-        const std::string& protein1 = Input_Values.at(0);
-        const std::string& ligand1  = Input_Values.at(1);
-        const std::string& protein2 = Input_Values.at(2);
-        const std::string& ligand2  = Input_Values.at(3);
-
-        try {
-            Fingerprint fp1 = generateIFP(protein1, ligand1, numeric);
-            Fingerprint fp2 = generateIFP(protein2, ligand2, numeric);
-
-            Similarity sim(fp1, fp2, numeric);
-            double value = 0.0;
-
-            switch (metric) {
-                case 1: value = sim.Tanimoto(); break;
-                case 2: value = sim.Hamming();  break;
-                case 3: value = sim.RTve();     break;
-                case 4: value = sim.FTve();     break;
-                case 5: value = sim.Dice();     break;
-                case 6: value = sim.Soergel();  break;
-            }
-
-            std::cout << fp1.getName() << "\t" << fp2.getName() << "\t" << value << std::endl;
-        }
-        catch (const MoleExcept& e) {
-            MoleExcept except = e;
-            except.addTrace("IChem::runFGPS (4-file mode)");
-            throw except;
-        }
     }
 
     else {
