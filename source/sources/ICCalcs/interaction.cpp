@@ -1527,8 +1527,9 @@ Fingerprint& Interactions::generateTriplets(InterResults& interResult,const bool
 }
 
 
-
+// Map of residue pointers used to build the fingerprint IFP, we iterate over residues in NumToRes and turn detected interactions into bits // our problem for NA sodium is that the size of NumToRes = 0
 void Interactions::genIFP(InterResults& interResult, const unsigned int& fgpType) const {
+
     static const int intToPos[5][NB_INTTYPE]= {
         {-1,3,4,5,6, 0,-1, 1, 2,-1,-1,-1,-1,-1},
         {-1,0,1,2,3,-1,4,-1,-1,-1,-1,-1,-1,-1},
@@ -1548,12 +1549,17 @@ void Interactions::genIFP(InterResults& interResult, const unsigned int& fgpType
     for (ItCRes itR = complex.firstResidu();itR != complex.lastResidu();++itR) 
     {
         Residu *res =*itR;
-        if (!res->isUsed() || res->getParent()->getMoleType()==MoleType::LIGAND) continue;
+
+        
+
+        if (!res->isUsed() || res->getParent()->getMoleType()== MoleType::LIGAND) 
+            continue;
+        
         if (Residu::Rules[res->getParent()->getMoleType()][res->getResType()] == MoleType::UNDEFINED || Molecule::Rules[res->getParent()->getMoleType()] == MoleType::UNDEFINED)
             continue;
+        
         NumtoRes.insert(pair<int,Residu*>(res->getNum(),res));
     }
-
 
 
     multimap<Residu*,InterPoint*> listRes;

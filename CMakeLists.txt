@@ -9,6 +9,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Optimization 
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -flto")
 
+# Debug
+# set(CMAKE_CXX_FLAGS_DEBUG "-g -O3")
+
 if (ICHEM_DEBUG)
     add_definitions(-DICHEM_DEBUG=1)
 endif()
