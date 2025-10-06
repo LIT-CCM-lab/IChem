@@ -61,20 +61,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Behavioural / algorithmic changes:
 
         - Hydrophobic detection:
+        
             - Old: used grid-adjacency and grid.getAdjacentAtoms then computed local neighbor density by iterating atoms in boxes
             - New: for a candidate protein atom atomP the hydrophobic density check uses neighborSearch.query around atomP and computes nbhyd/nbatm directly from the KD results
             - Hydrophobic candidates are accumulated per protein residue in hydlist and flushed per ligand atom, keeping the "best" protein atom per residue (smallest distance)
+
         - Aromatic interactions:
             - Old: iterated ligand cycles, got adjacency using grid.getAdjacency of the ligand cycle center; scanned protein atoms to find DuAr centers and then scanned full cycles comparing per atom
             - New: for each ligand aromatic cycle the KD-tree is queried around the ring center (neighborSearch.query({q}, searchRadius)), candidate protein ring centers are collected and made unique then perform per ring pair checks
             - Uses Cycle::calcVector() and getNormVector similarly but the candidate selection is KD-tree based
+        
         - Pi-cation detection:
             -Old: pi-cation checks were done inside the big box loop and inside the aromatic pair loops. the new code isolates these checks into checkPiCationInteraction() and also uses KD-tree hits to find protein cation centers near ligand cycle centers
+        
         - Metal / special cases:
             - Metal interactions are moved to checkMetalInteractions()
             - The special N-linked to sulfonamide is moved to checkMetalNitrogenSulfonamideCase()
+        
         - Partial charges / PLP:
             - All the PLP logic is completely removed from detectInteractions()
+        
         - Iteration and ordering:
             - Old: used grid boxes and nested iteration over boxlist and their firstAtom() loops, rotating molecules into the grid as necessary. 
             - New: builds proteinPoints and ligandPoints vectors and processes pairs returned by KD-tree. This changes processing order, hydrophobic flush per ligand atom uses sorted contact list keyed by ligand index
