@@ -99,7 +99,7 @@ namespace ICMole {
   class Interactions {
 
     Complex& complex;
-    Grid &grid;
+    // Grid &grid;
 
     InteractionParameters params;
 
@@ -118,19 +118,13 @@ namespace ICMole {
      */
     void mergeInteractions(InterResults& interResult)const;
 
-    /**
-     * @brief Merge All interactions
-     * @param interResult : interaction set to be merged
-     */
-
-    void mergeSpeInts(InterResults& interResult)const;
 
   public:
       /**
       * @brief Constructor
       * @param complex with a least one molecule set a protein
       */
-      Interactions(ICMole::Complex &complex) throw(ICMole::MoleExcept);
+      Interactions(ICMole::Complex &complex);
 
 
       /**
@@ -139,28 +133,233 @@ namespace ICMole {
       void calcenfouiss(std::string mol_name);
 
 
-
+      /**
+      * @brief Adds a detected interaction to the interaction result container
+      *
+      * Creates a new interaction entry between ligand and protein atoms, storing the
+      * interaction type, distance, and angle if there is. The interaction center is
+      * defined as the midpoint between the two atom coordinates. Also updates the
+      * corresponding interaction counters based on interaction type.
+      *
+      * @param interResult Interaction result structure where the new interaction is added
+      * @param atomP Protein atom involved in the interaction
+      * @param atomL Ligand atom involved in the interaction
+      * @param dist  Distance between the two atoms
+      * @param NInter Incremental interaction index counter
+      * @param angle Optional pointer to the angle value; if null, angle is set to -100000]
+      * @param interactionType Type of interaction (e.g. hydrogen bond, metal, ionic, etc)
+      */
+      void addInteraction(InterResults& interResult, Atom& atomP, Atom& atomL, double dist, int& NInter, double* angle, unsigned int interactionType) const;
+      
+      /**
+      * @brief Processes and filters hydrophobic interactions between ligand and protein atoms
+      *
+      * Identifies hydrophobic contacts between nonpolar ligand and protein atoms
+      * Applies distance constraints and optionally evaluates the local hydrophobic
+      * environment using a KD-tree search to ensure a sufficiently hydrophobic
+      * protein neighborhood
+      *
+      * @param atomL Ligand atom being is nonpolar
+      * @param atomP Protein atom being tested nonpolar
+      * @param dist  Distance between ligand and protein atoms.
+      * @param oldh  If false, local hydrophobic density is evaluated around the protein atom
+      * @param interResult Interaction result container where detected interactions are stored
+      * @param hydlist Map of residues to their best hydrophobic contact, used to merge close contacts
+      * @param neighborSearch KD-tree object used for spatial neighborhood queries
+      * @param proteinAtoms List of protein atoms used in neighbor search results
+      */
       void processHydrophobicInteraction(Atom& atomL, Atom& atomP, double dist, bool oldh, InterResults& interResult, std::map<Residu*, ICMole::resbest>& hydlist, NeighborSearch& neighborSearch, const std::vector<Atom*>& proteinAtoms) const;        
-
+      
+      /**
+      * @brief Detects hydrophobic interactions between aromatic rings of ligand and protein
+      *
+      * Compares all aromatic cycles in the ligand and protein, checking for hydrophobic
+      * contacts between their atoms within the allowed distance range
+      * Each valid atom pair between two aromatic rings is recorded as a hydrophobic interaction
+      *
+      * @param ligand Ligand molecule containing potential aromatic rings
+      * @param protein Protein molecule containing potential aromatic rings
+      * @param interResult Container where detected interactions are stored
+      * @param NInter Incremental interaction index counter
+      * @param dist_H Minimum allowed hydrophobic distance
+      * @param Dist_H Maximum allowed hydrophobic distance
+      */
       void checkAromaticHydrophobicInteractions(Molecule& ligand, Molecule& protein, InterResults& interResult, int& NInter, double dist_H, double Dist_H) const;
+    
+      /**
+      * @brief Detects aromatic-aromatic and pi-cation interactions between ligand and protein rings ( I already have the function, this part must be deleted)
+      *
+      * Uses a KD-tree spatial neighbor search around ligand aromatic ring centers
+      * to identify nearby protein aromatic rings or cationic atoms. Depending on
+      * geometry and orientation, records either face-to-face, edge-to-face, or pi-cation
+      * interactions.
+      *
+      * @param ligand Ligand molecule containing aromatic rings
+      * @param neighborSearch KD-tree used to query protein atoms near ligand ring centers
+      * @param proteinAtoms List of protein atoms indexed by the KD-tree
+      * @param max_allowed_dist Maximum allowed distance between ring centers
+      * @param interResult Interaction result container where interactions are stored
+      * @param wInterType Boolean array controlling which interaction types are enabled
+      * @param NInter Incremental interaction index counter
+      * @param min_allowed_dist Minimum allowed distance between ring centers
+      */
       void processAromaticInteractions(Molecule& ligand, NeighborSearch& neighborSearch, const std::vector<Atom*>& proteinAtoms, double max_allowed_dist, InterResults& interResult, const bool* wInterType, int& NInter, double min_allowed_dist) const;
 
-      void addInteraction(InterResults& interResult, Atom& atomP, Atom& atomL, double dist, int& NInter, double* angle, unsigned int interactionType) const;
+     
+      /**
+      * @brief Checks for a case of metal interaction involving nitrogen and link to sulfonamide atoms
+      *
+      * Detects metal interactions between ligand atoms (nitrogen, sulfonamide)
+      * and metal ions in the protein (e.g Zn, Fe, Mg) and applies metal specific distance thresholds
+      * and records valid interactions.
+      *
+      * @param atomL Ligand atom to evaluate a potential nitrogen donor
+      * @param atomP Protein atom is a metal
+      * @param dist  Distance between the two atoms
+      * @param interResult Interaction container to store results
+      * @param NInter Interaction index counter
+      */
       void checkMetalNitrogenSulfonamideCase(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
+
+      /**
+      * @brief Detects general metal interactions between ligand and protein atoms
+      *
+      * This function checks whether a ligand atom is an acceptor and the protein atom is a metal and if these two are within the distance range
+      * then it records a metal interaction. Also When the distance is slightly below 3.4 and the atomic types suggest possible coordination 
+      * (e.g. metal acceptor, metal anion, or nitrogen near a metallic atom), we set the property metal acceptor to true
+      *
+      * @param atomL Ligand atom being tested as an acceptor
+      * @param atomP Protein atom acts as a metal
+      * @param dist  Distance between ligand and metal atom
+      * @param interResult Container where the interaction will be recorded
+      * @param NInter Running interaction counter
+      */
       void checkMetalInteractions(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
 
+      /**
+      * @brief Detects hydrogen bonds where the ligand atom acts as an acceptor and the protein atom as a donor
+      *
+      * Applies geometric criteria (distance and angle) to identify a hydrogen bond
+      *
+      * @param atomL Ligand atom acting as hydrogen bond acceptor
+      * @param atomP Protein atom acting as hydrogen bond donor
+      * @param dist  Distance between donor and acceptor
+      * @param interResult Interaction container where results are stored
+      * @param NInter Incremental interaction counter
+      */
       void checkHydrogenBondLigandAcceptor(Atom& atomL, Atom& atomP, double dist,  InterResults& interResult, int& NInter) const;
+
+      /**
+      * @brief Detects hydrogen bonds where the ligand atom acts as a donor and the protein atom acts as an acceptor
+      *
+      * Applies geometric criteria (distance and angle) to identify a hydrogen bond
+      *
+      * @param atomL Ligand atom being tested as hydrogen donor
+      * @param atomP Protein atom being tested as acceptor
+      * @param dist  Distance between the two atoms
+      * @param interResult Interaction container where results are stored
+      * @param NInter Incremental interaction index counter
+      */
       void checkHydrogenBondLigandDonor(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
 
+
+
+      /**
+       * @brief Detects hydrogen bonds where the ligand atom acts as a acceptor and the protein atom acts as a weak donor
+       *
+       * Applies geometric criteria (distance and angle) to identify a weak hydrogen bond
+       *
+       * @param atomL Ligand atom being tested as hydrogen acceptor
+       * @param atomP Protein atom being tested as weak donor
+       * @param dist  Distance between the two atoms
+       * @param interResult Interaction container where results are stored
+       * @param NInter Incremental interaction index counter
+       */
       void checkWeakHydrogenBondLigandAcceptor(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
+      
+      
+      /**
+       * @brief Detects weak hydrogen bonds where the ligand atom acts as a weak acceptor and the protein atom acts as a weak donor or a donor
+       *
+       * Applies geometric criteria (distance and angle) to identify a weak hydrogen bond
+       *
+       * @param atomL Ligand atom being tested as a weak acceptor
+       * @param atomP Protein atom being tested as weak donor or a donor
+       * @param dist  Distance between the two atoms
+       * @param interResult Interaction container where results are stored
+       * @param NInter Incremental interaction index counter
+       */
       void checkWeakHydrogenBondLigandWeakAcceptor(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
 
+      /**
+       * @brief Detects weak hydrogen bonds where the ligand atom acts as a donor and the protein atom acts as a weak acceptor
+       *
+       * Applies geometric criteria (distance and angle) to identify a weak hydrogen bond
+       *
+       * @param atomL Ligand atom being tested as hydrogen donor
+       * @param atomP Protein atom being tested as a weak acceptor
+       * @param dist  Distance between the two atoms
+       * @param interResult Interaction container where results are stored
+       * @param NInter Incremental interaction index counter
+       */
       void checkWeakHydrogenBondLigandDonorProteinWeakAcceptor(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
+      
+      /**
+       * @brief Detects weak hydrogen bonds where the ligand atom acts as a weak donor and the protein atom acts as an acceptor or a weak acceptor
+       *
+       * Applies geometric criteria (distance and angle) to identify a weak hydrogen bond
+       *
+       * @param atomL Ligand atom being tested as weak hydrogen donor
+       * @param atomP Protein atom being tested as weak acceptor
+       * @param dist  Distance between the two atoms
+       * @param interResult Interaction container where results are stored
+       * @param NInter Incremental interaction index counter
+       */
       void checkWeakHydrogenBondLigandWeakDonorProteinAcceptor(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
 
+      
+      /**
+      * @brief Detects ionic interactions where the ligand atom is anion and the protein is either cation or metal 
+      *
+      * The geometric criteria distance must be in range to detect the intertaction
+      *
+      * @param atomL Ligand atom acts as an anion
+      * @param atomP Protein atom acts as either cation or metal 
+      * @param dist  Distance between the two atoms
+      * @param interResult Interaction container where results are stored
+      * @param NInter Incremental interaction index counter
+      */
       void checkIonicProteinInteractions(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
+      
+      /**
+      * @brief Detects ionic interactions where the ligand atom is cation and the protein is anion
+      *
+      * The geometric criteria distance must be in range to detect the intertaction
+      *
+      * @param atomL Ligand atom acts as a cation
+      * @param atomP Protein atom acts as an anion 
+      * @param dist  Distance between the two atoms
+      * @param interResult Interaction container where results are stored
+      * @param NInter Incremental interaction index counter
+      */
       void checkIonicLigandInteractions(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
 
+
+      /**
+      * @brief Detects Pi-cation interactions between ligand cationic atoms and aromatic rings in the protein
+      *
+      * Applies geometric and distance criteria to identify pi-cation interactions,
+      * where a positively charged ligand atom is positioned near the center of
+      * an aromatic ring (represented by the dummy atom "DuCy" in the protein)
+      * The angle between the aromatic ring and the ligand ring vector
+      * must fall within the allowed tolerance range for this interaction
+      *
+      * @param atomL Ligand atom being tested as a cation
+      * @param atomP Protein dummy atom representing the aromatic ring center
+      * @param dist  Distance between the ligand atom and the ring center
+      * @param interResult Interaction container where detected interactions are stored
+      * @param NInter Incremental interaction index counter
+      */
       void checkPiCationInteraction(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
 
 
@@ -483,7 +682,7 @@ namespace ICMole {
       double getAngl_Tol_AromEF() const { return params.AngT_AromFF; }
 
 
-      inline ICMole::Grid& getGrid() { return grid; }
+      // inline ICMole::Grid& getGrid() { return grid; }
       inline const ICMole::Coords& getCenter(const InterResults& interresult, unsigned const int& n) const {return interresult.listInters.at(n).center;}
 
   };
