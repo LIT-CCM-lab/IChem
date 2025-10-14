@@ -71,11 +71,6 @@ void Interactions::addInteraction(InterResults& interResult, Atom& atomP, Atom& 
 // ║ * Handles hydrogen and weak hydrogen bonds, hydrophobic, ionic, metal and aromatic interactions      ║
 // ╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝
 
-/*
- * Performs ligand-protein interaction detection
- * Builds KD-tree for protein atoms, then checks distances for all ligand atoms
- * Handles hydrogen and weak hydrogen bonds, hydrophobic, ionic, metal and aromatic interactions 
- */
 void Interactions::detectInteractions(Molecule& ligand, InterResults& interResult, bool wMerge, bool oldh) const {
     
     double dist;
