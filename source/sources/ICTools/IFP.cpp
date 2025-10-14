@@ -177,7 +177,7 @@ void IChemSwitch::IFP() const throw(MoleExcept)
 //                Interactions intsosef(icomplex);
 //                InterResults osef;
 //                intsosef.calcInteractions(*icomplex.getMole(MoleType::PROTEIN),osef,false,oldh,ligd);
-                ints.calcInteractions(ligand,interRes[currLig],true,oldh);
+                ints.detectInteractions(ligand,interRes[currLig],true,oldh);
                 if      (!polarOnly && !extended && !metalOnly) ints.genIFP(interRes[currLig],0);
                 else if ( polarOnly && !extended) ints.genIFP(interRes[currLig],1);
                 else if (!polarOnly &&  extended) ints.genIFP(interRes[currLig],2);
@@ -216,7 +216,7 @@ void IChemSwitch::IFP() const throw(MoleExcept)
 
 //                InterResults osef;
 //                intsosef.calcInteractions(*icomplex.getMole(MoleType::PROTEIN),osef,false,oldh,ligd);
-                ints.calcInteractions(ligand,interRes[currLig],true,oldh);
+                ints.detectInteractions(ligand,interRes[currLig],true,oldh);
                 if      (!polarOnly && !extended && !metalOnly) ints.genIFP(interRes[currLig],0);
                 else if ( polarOnly && !extended) ints.genIFP(interRes[currLig],1);
                 else if (!polarOnly &&  extended) ints.genIFP(interRes[currLig],2);
@@ -257,8 +257,8 @@ void IChemSwitch::IFP() const throw(MoleExcept)
                                      "No ligand found in "+fLigand);
 
                 Molecule &ligand = *icomplex.getMole(MoleType::LIGAND);
-                icomplex.genGrid(1.5);
-                icomplex.genGrid(4.5);
+                // icomplex.genGrid(1.5);
+                // icomplex.genGrid(4.5);
                 Interactions ints(icomplex);
                 if (changedist){
                     ints.setDist_H(dh);
@@ -299,7 +299,7 @@ void IChemSwitch::IFP() const throw(MoleExcept)
                 }
 //                intsosef.calcInteractions(*icomplex.getMole(MoleType::PROTEIN),osef,false,oldh,ligd);
 
-                ints.calcInteractions(ligand,interRes,true,oldh);
+                ints.detectInteractions(ligand,interRes,true,oldh);
                 if      (!polarOnly && !extended && !metalOnly) ints.genIFP(interRes,0);
                 else if ( polarOnly && !extended) ints.genIFP(interRes,1);
                 else if (!polarOnly &&  extended) ints.genIFP(interRes,2);
@@ -314,8 +314,8 @@ void IChemSwitch::IFP() const throw(MoleExcept)
             }
             else
             {
-                icomplex.genGrid(1.5);
-                icomplex.genGrid(4.5);
+                // icomplex.genGrid(1.5);
+                // icomplex.genGrid(4.5);
                 Interactions ints(icomplex);
                 if (changedist){
                     ints.setDist_H(dh);
@@ -363,7 +363,7 @@ void IChemSwitch::IFP() const throw(MoleExcept)
                     }
 //                    InterResults osef;
 //                    intsosef.calcInteractions(*icomplex.getMole(MoleType::PROTEIN),osef,false,oldh,ligd);
-                    ints.calcInteractions(ligand,interRes[currLig],true,oldh);
+                    ints.detectInteractions(ligand,interRes[currLig],true,oldh);
                     if      (!polarOnly && !extended && !metalOnly) ints.genIFP(interRes[currLig],0);
                     else if ( polarOnly && !extended) ints.genIFP(interRes[currLig],1);
                     else if (!polarOnly &&  extended) ints.genIFP(interRes[currLig],2);

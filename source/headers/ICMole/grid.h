@@ -5,9 +5,11 @@
 #include "coords.h"
 
 #define R 72.9
-#define PI 3.14159265
 #define NB_PROJ 120
-#define U 0.5
+
+constexpr double U_CONST = 0.5;
+constexpr double PI_CONST = 3.14159265;
+
 //#define ICHEM_DEBUG
 
 namespace ICMole

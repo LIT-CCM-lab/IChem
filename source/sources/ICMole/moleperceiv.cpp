@@ -639,9 +639,9 @@ multimap<double,Coords> bDist;
 
             if (angl_HDDl >= maxAngl || angl_HDDl <= minAngl)continue;
 
-            const double anglAHD = (H.calcAngle(AtmA.fixpos,AtmD.fixpos))*180/PI;         if (anglAHD <=130) {continue;}
+            const double anglAHD = (H.calcAngle(AtmA.fixpos,AtmD.fixpos))*180/PI_CONST;         if (anglAHD <=130) {continue;}
             const double alpha = 34 - H.calcDist(AtmA.fixpos)*sin( 1*sin(angl_HDDl)/dist);
-            const double angl_ADDl=((AtmD.fixpos.calcAngle(atmL.fixpos,AtmA.fixpos))*180/PI);if (angl_ADDl > 109.5+alpha || angl_ADDl < 109.5-alpha) {continue;}
+            const double angl_ADDl=((AtmD.fixpos.calcAngle(atmL.fixpos,AtmA.fixpos))*180/PI_CONST);if (angl_ADDl > 109.5+alpha || angl_ADDl < 109.5-alpha) {continue;}
             const double curr_dist=H.calcDist(AtmA.fixpos,best_Dist+0.1);
 
                 bool allowed=true;

@@ -738,10 +738,10 @@ double calcHScore(const Coords& H,
     const double distH_D = H.calcDist(AtmCD,1.2);
     const double distH_A = H.calcDist(AtmCA,dist+0.1);
     const double angl_HDDl = (AtmCD.calcAngle(AtmD_L,H));
-    const double anglAHD = (H.calcAngle(AtmCA,AtmCD))*180/PI;
+    const double anglAHD = (H.calcAngle(AtmCA,AtmCD))*180/PI_CONST;
     if (anglAHD <=130) { return 0;}
     const double alpha = 34 - distH_A*sin( distH_D*sin(angl_HDDl)/dist);
-    const double angl_ADDl=((AtmCD.calcAngle(AtmD_L,AtmCA))*180/PI);
+    const double angl_ADDl=((AtmCD.calcAngle(AtmD_L,AtmCA))*180/PI_CONST);
     if (angl_ADDl > 109.5+alpha || angl_ADDl < 109.5-alpha) {return 0;}
     const double diffAHD=180-anglAHD;
     if (diffAHD <= 30) {if (water) return 1+(diffAHD)/50; else return 1;}
