@@ -3060,22 +3060,32 @@ void VolSite::cubeToPHA(Molecule& molen, PharmList& MonPharma , Molecule& ligand
                                 }
                                 plp_atm += plp;
                                 if (plp != 0) {
-                                cout << " "<<plpX<<" " <<plpY<<" " <<plpZ<<"\t : " << atomP.getIdentifier() << " | "<< atomP.props.toString() << " ||\t  dist : " << dist << "||\t plp : " << plp << endl;
+                                // cout << " "<<plpX<<" " <<plpY<<" " <<plpZ<<"\t : " << atomP.getIdentifier() << " | "<< atomP.props.toString() << " ||\t  dist : " << dist << "||\t plp : " << plp << endl;
                                 }
                             }
 //                            cout << "\t|| Somme de la pose : " << plp_atm << endl;
+                            
+                            if (plpX ==0 && plpY ==0 && plpZ ==0) {
+                                // cout << "\n\n";
+                                // cout << "\t\nDisplay the sum plp_atm: " << plp_atm << "\n";
+                                // cout << "\n\n";
+                            }
+                                
+
                             if (best_plp > plp_atm || (best_plp == plp_atm && (plpX ==0 && plpY ==0 && plpZ ==0))){
                                 best_plp = plp_atm;
                                 bestcoord = localbox;
                             }
                         }
                     }
+                cout << "\t\nDisplay best_plp: " << best_plp << "\n";
+                cout << "prop inverse " << atomlist[itPHA]->props.toString() << " || plp : " << best_plp << endl;
 
 
 
                 }
 
-                cout << "prop inverse " << atomlist[itPHA]->props.toString() << " || plp : " << best_plp << endl;
+                // cout << "prop inverse " << atomlist[itPHA]->props.toString() << " || plp : " << best_plp << endl;
                 coorlist[itPHA] = bestcoord;
 
                 Coords vectorD = atomlist[itPHA]->fixpos - coorlist[itPHA];
