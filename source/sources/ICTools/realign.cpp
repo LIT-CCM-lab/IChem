@@ -4,31 +4,39 @@ using namespace std;
 using namespace ICMole;
 
 
-void IChemSwitch::helpRealign() const
-{
-  cout << "realign - Molecular alignment"                                        <<endl
-  <<"realign rigidM mobilM applied1 applied2 ....                           "<<endl
-  <<" ||-> rigidM : reference molecule to apply alignment to                 "<<endl
-  <<" ||-> mobilM : comparison molecule to apply alignment from              "<<endl
-  <<" ||-> applied: molecule to apply rotation/translation to                "<<endl
-  << endl
-  << "  [General options]"<<endl
-  << "      -gmatch N (NAME)  Use graph matching to align"                        <<endl
-  << "         NAME           Atom Name matching                                 "<<endl
-  << "         ATMN           Atomic Name matching                               "<<endl
-  << "         MOL2           MOL2 Type matching                                 "<<endl
-  << "         CALP           CAlpha Atom matching (protein only)                "<<endl
-  << "      --wMob            Also output the aligned mobilM                     "<<endl
-  << "      -rule   R         "<<endl
-  << " By default, the program will perform an atom by atom match, without taking"<<endl
-  << " care of what kind of atom it match. If you want to perform a match by "    <<endl
-  << " regarding only some atoms, this index_string is here to do so "            <<endl
-  << "       ex : -i '2-3|1-6|23-160'"                                            <<endl
-  << "       Will match the second atom from the reference with the third from "  <<endl
-  << "       the comparison, the first with the sixth ..."                        <<endl
-  <<endl
-  << "###########################################################################"<<endl
-  <<endl;
+void IChemSwitch::helpRealign() const {
+    cout
+        << "realign - Molecular alignment" << endl
+        << "Usage: IChem realign rigidM mobilM applied1 [applied2 ...]" << endl
+        << endl
+        << "Description:" << endl
+        << "  Align mobilM onto rigidM and apply the resulting transformation" << endl
+        << "  to one or more applied molecules" << endl
+        << endl
+        << "Arguments:" << endl
+        << "  rigidM   Reference molecule to align to" << endl
+        << "  mobilM   Molecule to align from" << endl
+        << "  applied  Molecule(s) to apply rotation/translation to" << endl
+        << endl
+        << "Options:" << endl
+        << "  -gmatch N (NAME)  Use graph matching to align, where NAME can be:" << endl
+        << "                    NAME  : Atom Name matching" << endl
+        << "                    ATMN  : Atomic Name matching" << endl
+        << "                    MOL2  : MOL2 Type matching" << endl
+        << "                    CALP  : CAlpha Atom matching (protein only)" << endl
+        << "  --wMob            Also output the aligned mobilM" << endl
+        << "  -rule R           Use rule R for matching" << endl
+        << "  -i 'pairs'        Match specific atom pairs (e.g. '2-3|1-6|23-160')" << endl
+        << endl
+        << "Notes:" << endl
+        << "  By default, the program performs atom-by-atom matching without" << endl
+        << "  considering atom types. Use -gmatch or -i to restrict matches." << endl
+        << endl
+        << "Example:" << endl
+        << "  IChem realign ref.mol2 mob.mol2 target.mol2 -gmatch MOL2 --wMob" << endl
+        << endl
+        << "###########################################################################" << endl
+        << endl;
 }
 
 void IChemSwitch::realign() const throw(MoleExcept)
