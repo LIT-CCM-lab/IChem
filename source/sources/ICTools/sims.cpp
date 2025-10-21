@@ -3,28 +3,27 @@
 using namespace std;
 using namespace ICMole;
 
-void IChemSwitch::helpFGPS() const
-{
-    cout<< "Fingerprint Similarity"                                                     <<endl
-        << "    sims ref comp                                                       (1)"<<endl
-        << "    sims file                                                           (2)"<<endl
-        << "    sims RefInt CompInt                                                 (3)"<<endl
+void IChemSwitch::helpFGPS() const {
+    cout
+        << "sims - Fingerprint Similarity" << endl
+        << "Usage: IChem [options] sims ref comp " << endl
+        << "       IChem sims file" << endl
+        << "       IChem sims RefInt CompInt" << endl
         << endl
-        << "  [General options]"<<endl
-        << "      --wInts           To use interactions instead of fingerprints "<<endl
-        << "                        For (3) only"<<endl
-        << "      --small           Use small fingerprint. For (3) only"<<endl
-        << "      --binary          To add when the fingerprint is binary"              <<endl
-        << "      -metric N (TC)    Select the metric"                                  <<endl
-        << "         TC             Tanimoto metric"                                    <<endl
-        << "         HM             Hamming distance"                                   <<endl
-        << "         RT             Ref Tversky "                                       <<endl
-        << "         FT             Fit Tversky "                                       <<endl
-        << "         DI             Dice "                                              <<endl
-        << "         SO             Soergel "                                           <<endl
-        <<endl
-       << "###########################################################################"<<endl;
-
+        << "Description:" << endl
+        << "  Compute similarity between fingerprints or interaction fingerprints" << endl
+        << endl
+        << "Options:" << endl
+        << "  --wInts     Use interactions instead of fingerprints (for RefInt CompInt)" << endl
+        << "  --small     Use small fingerprint (for RefInt CompInt)" << endl
+        << "  --binary    Specify that input fingerprints are binary" << endl
+        << "  -metric N (TC)  Similarity metric: TC, HM, RT, FT, DI, SO" << endl
+        << endl
+        << "Example:" << endl
+        << "  IChem --binary sims FP1.txt FP2.txt > sim.txt" << endl
+        << "  IChem --binary sims FP.txt > matrix.txt" << endl
+        << endl
+        << "---------------------------------------------------------------------------" << endl;
 }
 
 void IChemSwitch::runFGPS() const throw(ICMole::MoleExcept)

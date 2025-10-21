@@ -44,7 +44,7 @@ void IChemSwitch::helpgrim() const {
         << endl
         << "  IChem -sim 1 -rn 2rh1 -cn 4amj grim 2rh1_INTS_M.mol2 4amj_INTS_M.mol2" << endl
         << endl
-        << "###########################################################################" << endl
+        << "---------------------------------------------------------------------------" << endl
         << endl;
 }
 

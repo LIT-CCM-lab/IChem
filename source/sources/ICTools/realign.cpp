@@ -35,7 +35,7 @@ void IChemSwitch::helpRealign() const {
         << "Example:" << endl
         << "  IChem realign ref.mol2 mob.mol2 target.mol2 -gmatch MOL2 --wMob" << endl
         << endl
-        << "###########################################################################" << endl
+        << "---------------------------------------------------------------------------" << endl
         << endl;
 }
 

@@ -45,7 +45,7 @@ void IChemSwitch::helpIFP() const
         << "  IChem IFP protein.mol2 ligand.mol2" << endl
         << "  IChem IFP protein.mol2 ligand.mol2 ligand_ref.mol2" << endl
         << endl
-        << "###########################################################################" << endl
+        << "---------------------------------------------------------------------------" << endl
         << endl;
 }
 

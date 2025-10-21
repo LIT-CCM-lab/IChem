@@ -4,22 +4,24 @@
 using namespace std;
 using namespace ICMole;
 
-void IChemSwitch::helpUtils() const
-{
-    cout << " Buried Surface Area calculation"                                           <<endl
-         << "    utils bsa protein ligand"<<endl<<endl
-         << "###########################################################################"<<endl
-         << "  Ligand Fragmentation"                                           <<endl
-         << "    utils frag protein ligand"<<endl
-         << "###########################################################################"<<endl
-         << "  Get water molecules from PDB file : "<<endl
-         << "    utils water protein.mol2 ligand.mol2 protein.pdb "<<endl <<endl
-         << "###########################################################################"<<endl
-
-         <<endl;
+void IChemSwitch::helpUtils() const {
+    cout
+        << "utils - General utilities" << endl
+        << "Usage: IChem utils [subcommands] protein.mol2 ligand.mol2" << endl
+        << endl
+        << "Subcommands:" << endl
+        << "  bsa    Compute buried surface area between protein and ligand" << endl
+        << "  frag   Fragment ligand within protein context" << endl
+        << "  water  Extract water molecules from a PDB file" << endl
+        << endl
+        << "Examples:" << endl
+        << "  IChem utils bsa protein.mol2 ligand.mol2" << endl
+        << "  IChem utils frag protein.mol2 ligand.mol2" << endl
+        << "  IChem utils water protein.mol2 ligand.mol2 protein.pdb" << endl
+        << endl
+        << "---------------------------------------------------------------------------" << endl
+        << endl;
 }
-
-
 
 
 void IChemSwitch::utils() const throw(MoleExcept)

@@ -57,7 +57,7 @@ void IChemSwitch::helpints() const {
         << "  IChem -logf 2rh1_ints.txt -type CENT ints site.mol2 ligand.mol2" << endl
         << "  IChem --small -fgps STD ints site.mol2 ligand.mol2 2rh1_small.fgp" << endl
         << endl
-        << "###########################################################################" << endl
+        << "---------------------------------------------------------------------------" << endl
         << endl;
 }
 
