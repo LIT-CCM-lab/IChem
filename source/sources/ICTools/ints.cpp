@@ -24,9 +24,9 @@ void IChemSwitch::helpints() const {
         << "  MERG  All three positions above" << endl
         << endl
         << "Fingerprint format (-fgps):" << endl
-        << "  STD   Standard numeric format  (e.g., 0 1 0 0 132 0 ...)" << endl
-        << "  SVM   Sparse SVM format         (e.g., 2:1 5:132 7:1 ...)" << endl
-        << "  CMP   Compressed format         (e.g., [1 1 [2 132 [1 ...)" << endl
+        << "  STD   Standard numeric format  (e.g. 0 1 0 0 132 0 ...)" << endl
+        << "  SVM   Sparse SVM format         (e.g. 2:1 5:132 7:1 ...)" << endl
+        << "  CMP   Compressed format         (e.g. [1 1 [2 132 [1 ...)" << endl
         << "  --small   Use reduced 210-integer fingerprint instead of full 12 510 integers" << endl
         << endl
         << "General options:" << endl

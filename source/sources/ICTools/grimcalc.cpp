@@ -6,52 +6,49 @@ using namespace std;
 using namespace ICMole;
 
 
-void IChemSwitch::helpgrim()      const
-{
-    cout << " GRIM - GRaph Interaction Matching :"                                       << endl
-         << "    grim refProt refLig CompProt CompLig                                (1)"<< endl
-         << "    grim refInts compInts                                               (2)"<< endl
-         << "    grim refProt refFile dockFile                                       (3)"<< endl
-
-         << endl
-         << "   [Note] "<< endl
-         << "       (1)  use --multim2 to use multimol2 ligand files"                    << endl
-         << "       (3)  refFile & dockFile can be multimol2 files"                      << endl
-         << "   [General options]"                                                       << endl
-         << "   NOTE : INTERACTION GENERATION General Options also accessible"           << endl
-         << "      -rn     N (Ref)   Reference name "                                    << endl
-         << "      -cn     N (Comp)  Comparison name "                                   << endl
-         << "      --values          Only output score and not alignment "               << endl
-         << "      -sim    N (0)     Boolean telling whether the pair is similair or not"<< endl
-         << "      -outInt   (MERG)  Output only one kind of interaction positionning "  << endl
-         << "         MERG           All aligned interactions are outputed"              << endl
-         << "         LIG            InterLIG positionning "                             << endl
-         << "         CENT           Centered positionning "                             << endl
-         << "         PROT           InterPROT positionning "                            << endl
-         << "       NOTE : outInt useless when used with --values "                      << endl
-         << "      -match  N (MERG)  Align only with a specific position "               << endl
-         << "         MERG           Align with ALL interaction points"                  << endl
-         << "         LIG            Align only with ligand interaction points"          << endl
-         << "         PROT           Align only with protein interaction points"         << endl
-         << "         CENT           Align only with centered interaction points"        << endl
-         << "      -score  N (FCT)   Scoring method function"                            << endl
-         << "         STD            Scored by decreasing SumCl and increasing RMSD"     << endl
-         << "         FCT            Scored with scoring function"                       << endl
-         << "      --newH            Less permissive definition of hydrophobe interaction "      <<endl
-         << "   [Alignment options]"                                                       << endl
-         << "      -max    N (1)     Maximal number of outputed cliques."                << endl
-         << "      -size   N (3)     Minimal size of a clique."                          << endl
-         << "      --all_cliques     Detect all cliques and not only maximal one"        << endl
-         << "      -dsame  N (0.5)   Maximal difference distance between to similar point(LIG-LIG, ...)"        << endl
-         << "      -dclose N (0.75)  Maximal difference distance between to close point (LIG-CENT or PROT-CENT)"<< endl
-         << "      -dfar   N (1)     Maximal difference distance between to far point (LIG-CENT)"               << endl
-
-         << endl
-         << "###########################################################################"<< endl
-         << endl;
+void IChemSwitch::helpgrim() const {
+    cout
+        << "grim - Graph Interaction Matching" << endl
+        << "Usage: IChem [options] grim refProt refLig compProt compLig" << endl
+        << "       IChem [options] grim refInts compInts" << endl
+        << "       IChem [options] grim refProt refFile dockFile" << endl
+        << endl
+        << "Description:" << endl
+        << "  Compare and align protein-ligand complexes based on their interaction" << endl
+        << "  pseudoatoms. GRIM builds interaction graphs and finds matching cliques" << endl
+        << "  between a reference and a comparison complex. It outputs alignment," << endl
+        << "  similarity scores, and fitted structures (ligand, protein, interactions)" << endl
+        << endl
+        << "General options:" << endl
+        << "  -rn N (Ref)    Reference name" << endl
+        << "  -cn N (Comp)   Comparison name" << endl
+        << "  --values       Output only score (no alignment files)" << endl
+        << "  -sim N (0)     Similarity flag (0/1) for reference-comparison pair" << endl
+        << "  -outInt (MERG) Output interaction positioning: MERG, LIG, CENT, PROT" << endl
+        << "  -match (MERG)  Align using only one interaction position: MERG, LIG, PROT, CENT" << endl
+        << "  -score (FCT)   Scoring method: STD (SumCl/RMSD) or FCT (function-based)" << endl
+        << "  --newH         Stricter hydrophobic definition: only kept if >50% of nearby" << endl
+        << "                 protein atoms are hydrophobic" << endl
+        << endl
+        << "Alignment options:" << endl
+        << "  -max N (1)     Maximum number of output cliques" << endl
+        << "  -size N (3)    Minimum clique size" << endl
+        << "  --all_cliques  Detect all cliques, not only maximal ones" << endl
+        << "  -dsame N (0.5) Max distance diff between similar points (e.g. LIG-LIG)" << endl
+        << "  -dclose N (0.75) Max distance diff between close points (e.g. LIG-CENT)" << endl
+        << "  -dfar N (1.0)  Max distance diff between far points (e.g. LIG-PROT)" << endl
+        << endl
+        << "Example:" << endl
+        << "  IChem -sim 1 -rn 2rh1 -cn 4amj grim 2rh1_prot.mol2 2rh1_lig.mol2" << endl
+        << "       4amj_prot.mol2 4amj_lig.mol2 -score STD" << endl
+        << endl
+        << "  IChem -sim 1 -rn 2rh1 -cn 4amj grim 2rh1_INTS_M.mol2 4amj_INTS_M.mol2" << endl
+        << endl
+        << "###########################################################################" << endl
+        << endl;
 }
 
-void IChemSwitch::grim()      const throw(ICMole::MoleExcept)
+void IChemSwitch::grim() const throw(ICMole::MoleExcept)
 {
     //    verbose = true;
     const size_t InputSize = (unsigned int)Input_Values.size();
