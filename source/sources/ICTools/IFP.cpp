@@ -73,7 +73,7 @@ void IChemSwitch::IFP() const throw(MoleExcept)
     bool metalOnly=false;
     bool extended=false;
     bool sol=true,cof=true,oldh=true, ligd=false, ifp_out=true;
-    double dh=3.5,dhy=4.5,di=4.0,dm =2.8,da=4.0,dpi=4.0;
+    double dh=3.5,dhy=4.5,di=4.0,dm =2.8,da=5.0,dpi=5.0;
     double aH=M_PI,atH=M_PI/3,aA=M_PI,atA=M_PI/6,aAe=M_PI/2,atAe=M_PI/3,aPi=M_PI,atPi=M_PI/6;
     bool changedist=false;
 
