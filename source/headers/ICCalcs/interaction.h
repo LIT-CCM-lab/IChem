@@ -234,7 +234,6 @@ namespace ICMole {
       * @param interResult Container where the interaction will be recorded
       * @param NInter Running interaction counter
       */
->>>>>>> feature/integrate-neighboring-algorithm
       void checkMetalInteractions(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
 
       /**

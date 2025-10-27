@@ -4,7 +4,7 @@ project(IChem VERSION 5.3.5)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -w")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
 
 # Optimization 
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -flto")
