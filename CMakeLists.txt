@@ -100,6 +100,10 @@ include_directories(
 )
 add_executable(IChem ${SOURCES})
 
+find_package(Threads REQUIRED)
+target_link_libraries(IChem PRIVATE Threads::Threads)
+
+
 # if(OpenMP_CXX_FOUND)
 #     target_link_libraries(IChem PRIVATE OpenMP::OpenMP_CXX)
 # endif()
