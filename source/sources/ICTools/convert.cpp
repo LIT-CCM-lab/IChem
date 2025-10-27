@@ -3,42 +3,47 @@
     using namespace std;
     using namespace ICMole;
 
-    void IChemSwitch::helpPDBConvert() const
-    {
-        cout
-                << "PDB Process                                                                     "<<endl
-                << "     pdbconv protein[.pdb|.mol2] output_dir pdb_id                              "<<endl
-                << endl
-                << "   --wMOL2    : Use MOL2 File as Input. PDB Options are not available           "<<endl
-                << "   --wUnDrug  : Output undruggable cavities"                                     <<endl
-                << "   --noLig    : PDB with no Ligand"                                              <<endl
-                << "By default all the following options are included.                              "<<endl
-                << "All chains will be kept                                                         "<<endl
-                << "  [PDB Options]                                                                 "<<endl
-                << "   --HARMSIZE : Harmonize size line to 80 characters                            "<<endl
-                << "   --MSEMET   : Change MSE to MET                                               "<<endl
-                << "   --CSECYS   : Change CSE to CYS                                               "<<endl
-                << "   --MOVHET   : move HETATM to the end of file                                  "<<endl
-                << "   --ALTATM   : select alternative atoms                                        "<<endl
-                << "   --NUMATM   : renumerotate atoms                                              "<<endl
-                << "   --UPDMAS   : update the MASTER line                                          "<<endl
-                << "   --TOMOL2   : convert to a molecular representation (instead of flat file)    "<<endl
-                << " if you use one of the option below, you MUST use also --TOMOL2 option          "<<endl
-                << " or use --wMOL2 option                                                          "<<endl
-                << "  [MOL2 Options]                                                                "<<endl
-                << "   --RESTYP   : apply Residu Class (cofactor/STD_AA/MOD_AA/Ligand ...)          "<<endl
-                << "   --BONDSE   : recreate bonds                                                  "<<endl
-                << "   --CLNUNW   : clean unwanted residus                                          "<<endl
-                << "   --MOL2TY   : apply MOL2 types according to templates                         "<<endl
-                << "   --SPLITM   : split molecule into protein/ligand/solvent                      "<<endl
-                << "   -SelChain N : List of chains to keep, separated by underscore                "<<endl
-                << "   --SELWAT   : select water molecules                                          "<<endl
-                << "   --SELLIG   : select ligand                                                   "<<endl
-                <<endl
-               << "################################################################################"<<endl
-               <<endl;
+void IChemSwitch::helpPDBConvert() const {
+    cout
+        << "pdbconv - PDB/MOL2 processing" << endl
+        << "Usage: IChem [options] pdbconv protein[.pdb|.mol2] output_dir pdb_id" << endl
+        << endl
+        << "Description:" << endl
+        << "  Parse  and  process  PDB  files,  automatically  detect  bound  ligands" << endl
+        << "  (HET code) and their cavity, and estimates their druggability" << endl
+        << endl
+        << "Global options:" << endl
+        << "  --wMOL2   Use MOL2 as input (disables PDB options)" << endl
+        << "  --wUnDrug Output undruggable cavities" << endl
+        << "  --noLig   Exclude ligand" << endl
+        << endl
+        << "PDB options:" << endl
+        << "  --HARMSIZE Harmonize SIZE lines to 80 chars" << endl
+        << "  --MSEMET   Change MSE to MET" << endl
+        << "  --CSECYS   Change CSE to CYS" << endl
+        << "  --MOVHET   Move HETATM to file end" << endl
+        << "  --ALTATM   Select alternative atoms" << endl
+        << "  --NUMATM   Renumber atoms" << endl
+        << "  --UPDMAS   Update MASTER line" << endl
+        << "  --TOMOL2   Convert to MOL2 representation" << endl
+        << endl
+        << "MOL2 options (require --TOMOL2 or --wMOL2):" << endl
+        << "  --RESTYP   Apply residue classification" << endl
+        << "  --BONDSE   Recreate bonds" << endl
+        << "  --CLNUNW   Clean unwanted residues" << endl
+        << "  --MOL2TY   Apply MOL2 atom types" << endl
+        << "  --SPLITM   Split into protein/ligand/solvent" << endl
+        << "  -SelChain N  Keep only specified chains" << endl
+        << "  --SELWAT   Include water molecules" << endl
+        << "  --SELLIG   Include ligands" << endl
+        << endl
+        << "Example:" << endl
+        << "  IChem pdbconv 2RH1.pdb output 2rh1" << endl
+        << endl
+        << "---------------------------------------------------------------------------" << endl
+        << endl;
+}
 
-    }
     void IChemSwitch::PDBConversion() const    throw(ICMole::MoleExcept)
     {
         const unsigned int InputSize = (unsigned int)Input_Values.size();

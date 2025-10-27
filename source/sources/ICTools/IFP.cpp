@@ -6,40 +6,50 @@ using namespace ICMole;
 
 void IChemSwitch::helpIFP() const
 {
-    cout << " IFP - Interaction FingerPrint"                                             <<endl
-         << "    IFP protein ligand"<<endl
-         << "    IFP protein ligand ligand_ref"<<endl
-         << endl
-         << "   [General options]"                                                       <<endl
-         << "      -name   N (LIG)  Name of the fingerprint -Default: Name of the ligand"<<endl
-         << "      --polar          Detect and output only polar interactions           "<<endl
-         << "      --metal          Detect and output only metal interactions           "<<endl
-         << "      --extended       Include within the fingeprint :"                     <<endl
-         << "                          |--> Metal/Acceptor interaction"                  <<endl
-         << "                          |--> Weak Hydrogen bonds "                        <<endl
-         << "                          |--> PI-Cation interactions"                      <<endl
-         << "     "<< endl
-         << "    [testing options]" << endl
-         << "      -D_Hb    N (3.5)  Hbond length                            (Angstroem)"<<endl
-         << "      -D_Hyd   N (4.5)  Hydrophobic length                      (Angstroem)"<<endl
-         << "      -D_Io    N (4.0)  Ionic length                            (Angstroem)"<<endl
-         << "      -D_Me    N (2.8)  Metal/Acceptor length                   (Angstroem)"<<endl
-         << "      -D_Ar    N (5.0)  Aromatic interaction length             (Angstroem)"<<endl
-         << "      -D_Pic   N (5.0)  Pi cation interaction length            (Angstroem)"      <<endl
-         << "      -a_H     N (Pi)   HBond angle                             (rad)"	   <<endl
-         << "      -at_H    N (Pi/3) HBond tolerance angle                   (rad)"      <<endl
-         << "      -a_ArFF  N (Pi)   Aromatic Face to Face interaction angle (rad)"      <<endl
-         << "      -at_ArFF N (Pi/6) Aromatic Face to Face tolerance angle   (rad)"      <<endl
-         << "      -a_ArEF  N (Pi/2) Aromatic Edge to Face interaction angle (rad)"      <<endl
-         << "      -at_ArEF N (Pi/3) Aromatic Edge to Face tolerance angle   (rad)"      <<endl
-         << "      -a_Pic   N (Pi)   Pi cation interaction angle             (rad)"      <<endl
-         << "      -at_Pic  N (Pi/6) Pi cation tolerance angle               (rad)"      <<endl
-//         << "      --newH   less permissive definitons of hydrophobic bonds "                    <<endl
-         << "      --ligD            Print all possible ligand interactions "                    <<endl
-         <<endl
-        << "###########################################################################"<<endl
-        <<endl;
+    cout
+        << "IFP - Interaction FingerPrint" << endl
+        << "Usage: IChem [options] IFP protein ligand" << endl
+        << "       IChem [options] IFP protein ligand ligand_ref" << endl
+        << endl
+        << "Description:" << endl
+        << "  Compute interaction fingerprints between a protein and a ligand" << endl
+        << "  Compare a reference ligand and detect various interaction types" << endl
+        << endl
+        << "Options:" << endl
+        << "  -name N (LIG)  Name of the fingerprint (default: ligand name)" << endl
+        << "  --polar        Detect and output only polar interactions" << endl
+        << "  --metal        Detect and output only metal interactions" << endl
+        << "  --extended     Include in the fingerprint:" << endl
+        << "                    * Metal/Acceptor interactions" << endl
+        << "                    * Weak Hydrogen bonds" << endl
+        << "                    * Pi-Cation interactions" << endl
+        << "  --ligD         Print all possible ligand interactions" << endl
+        << endl
+        << "Thresholds and angles:" << endl
+        << "  -D_Hb    N (3.5)  Hbond length (Å)" << endl
+        << "  -D_Hyd   N (4.5)  Hydrophobic length (Å)" << endl
+        << "  -D_Io    N (4.0)  Ionic length (Å)" << endl
+        << "  -D_Me    N (2.8)  Metal/Acceptor length (Å)" << endl
+        << "  -D_Ar    N (5.0)  Aromatic interaction length (Å)" << endl
+        << "  -D_Pic   N (5.0)  Pi-Cation interaction length (Å)" << endl
+        << "  -a_H     N (Pi)   Hbond angle (rad)" << endl
+        << "  -at_H    N (Pi/3) Hbond tolerance (rad)" << endl
+        << "  -a_ArFF  N (Pi)   Aromatic Face-to-Face angle (rad)" << endl
+        << "  -at_ArFF N (Pi/6) Aromatic FF tolerance (rad)" << endl
+        << "  -a_ArEF  N (Pi/2) Aromatic Edge-to-Face angle (rad)" << endl
+        << "  -at_ArEF N (Pi/3) Aromatic EF tolerance (rad)" << endl
+        << "  -a_Pic   N (Pi)   Pi-Cation angle (rad)" << endl
+        << "  -at_Pic  N (Pi/6) Pi-Cation tolerance (rad)" << endl
+        << endl
+        << "Example:" << endl
+        << "  IChem IFP protein.mol2 ligand.mol2" << endl
+        << "  IChem IFP protein.mol2 ligand.mol2 ligand_ref.mol2" << endl
+        << endl
+        << "---------------------------------------------------------------------------" << endl
+        << endl;
 }
+
+//         << "      --newH   less permissive definitons of hydrophobic bonds "                    <<endl
 
 
 
@@ -63,7 +73,7 @@ void IChemSwitch::IFP() const throw(MoleExcept)
     bool metalOnly=false;
     bool extended=false;
     bool sol=true,cof=true,oldh=true, ligd=false, ifp_out=true;
-    double dh=3.5,dhy=4.5,di=4.0,dm =2.8,da=4.0,dpi=4.0;
+    double dh=3.5,dhy=4.5,di=4.0,dm =2.8,da=5.0,dpi=5.0;
     double aH=M_PI,atH=M_PI/3,aA=M_PI,atA=M_PI/6,aAe=M_PI/2,atAe=M_PI/3,aPi=M_PI,atPi=M_PI/6;
     bool changedist=false;
 

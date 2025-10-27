@@ -8,37 +8,38 @@ using namespace ICMole;
  * @brief IChemSwitch::helpGenKey
  * Display help for generate licence file:
  */
-void IChemSwitch::helpGenKey()const
-{
+void IChemSwitch::helpGenKey() const {
     cout
-            << "KEY Generator                                                               "<<endl
-            << "     genKey year month day allowed_tools                                    "<<endl
-            << endl
-            << "   year : Expiring year  (4 digits : 2014)                                  "<<endl
-            << "   month: Expiring month (2 digits : 09)                                    "<<endl
-            << "   day  : Expiring day   (2 digits : 23)                                    "<<endl
-            << "   allowed_tools: each value is separated by space and must have            "<<endl
-            << "    a value of either 1 or 0. Must follow this order :                      "<<endl
-            << "    First  : Licence Key generator                                          "<<endl
-            << "    Second : Realigning molecules                                           "<<endl
-            << "    Third  : BSA Calculation "<<endl
-            << "    Fourth : IFP generator "<<endl
-            << "    Fifth  : Interaction detection "<<endl
-            << "    Sixth  : Graph Interaction Matching"<<endl
-            << "    Seventh: VolSite "<<endl
-            << "    Eighth : PDB to MOL2 conversion"<<endl
-            << "    Ninth  : Patching MOL2 conversion"<<endl
-            << "    Tenth  : Utils"<<endl
-            << "    Eleventh: sims"<<endl
-            << "    Twelfth: scoring"<<endl
-            << "    Thirteen: Detection of PPi"<<endl
-            << " Example : "<<endl
-            << "   genKey 2014 1 28 0 0 1 0 0 0 0 0 1 0 1 1 1 1"<<endl
-            << "          |<-DATE->|<--------TOOLS-------->"
-            << endl
-            << "###########################################################################"<<endl
-            << endl;
-
+        << "genKey - License key creation" << endl
+        << "Usage: IChem genKey year month day allowed_tools" << endl
+        << endl
+        << "Description:" << endl
+        << "  Generate a license key defining the expiry date and enabled tools" << endl
+        << endl
+        << "Arguments:" << endl
+        << "  year          Expiring year  (4 digits, e.g. 2014)" << endl
+        << "  month         Expiring month (2 digits, e.g. 09)" << endl
+        << "  day           Expiring day   (2 digits, e.g. 23)" << endl
+        << "  allowed_tools List of 0/1 flags defining allowed tools, in this order:" << endl
+        << "                1. Licence Key generator" << endl
+        << "                2. Realigning molecules" << endl
+        << "                3. BSA Calculation" << endl
+        << "                4. IFP generator" << endl
+        << "                5. Interaction detection" << endl
+        << "                6. Graph Interaction Matching" << endl
+        << "                7. VolSite" << endl
+        << "                8. PDB to MOL2 conversion" << endl
+        << "                9. Patching MOL2 conversion" << endl
+        << "                10. Utils" << endl
+        << "                11. sims" << endl
+        << "                12. scoring" << endl
+        << "                13. Detection of PPi" << endl
+        << endl
+        << "Example:" << endl
+        << "  IChem genKey 2025 10 20 1 1 1 1 1 1 1 1 1 1 1 1 1" << endl
+        << endl
+        << "---------------------------------------------------------------------------" << endl
+        << endl;
 }
 
 void IChemSwitch::genKey()const  throw(MoleExcept)

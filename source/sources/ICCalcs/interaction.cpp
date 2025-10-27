@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include "headers/ICCalcs/interaction.h"
 #include "headers/ICMole/complex.h"
 #include "headers/ICMole/box.h"
@@ -535,6 +536,9 @@ void Interactions::processAromaticInteractions(Molecule& ligand, NeighborSearch&
             int edge = 0;
             bool abort = false;
 
+            double faceAngle = -10000.0;
+            double edgeAngle = -10000.0;
+
             for (size_t i = 0; i < ligCycle.getNumAtom() && !abort; ++i) {
                 
                 Atom& aL = *ligCycle.getAtom(i);
@@ -569,7 +573,11 @@ void Interactions::processAromaticInteractions(Molecule& ligand, NeighborSearch&
                              ang < M_PI + params.Angl_AromFF + params.AngT_AromFF) ||
                             (ang > params.Angl_AromFF - params.AngT_AromFF - M_PI &&
                              ang < params.Angl_AromFF + params.AngT_AromFF - M_PI))
+                        {
                             face = true;
+                            faceAngle = ang;
+                        }
+                            
 
                         // edge-face
                         if ((ang > params.Angl_AromEF - params.AngT_AromEF &&
@@ -578,15 +586,19 @@ void Interactions::processAromaticInteractions(Molecule& ligand, NeighborSearch&
                              ang < M_PI + params.Angl_AromEF + params.AngT_AromEF) ||
                             (ang > params.Angl_AromEF - params.AngT_AromEF - M_PI &&
                              ang < params.Angl_AromEF + params.AngT_AromEF - M_PI))
+                        {
                             ++edge;
+                            edgeAngle = ang;
+                        }
+                            
                     }
                 }
             }
 
             if (face && wInterType[InterType::ARFACEFACE])
-                addInteraction(interResult, cycleP.getCenter(), ligCycle.getCenter(), centerDist, NInter, nullptr, InterType::ARFACEFACE);
+                addInteraction(interResult, cycleP.getCenter(), ligCycle.getCenter(), centerDist, NInter, &faceAngle, InterType::ARFACEFACE);
             else if (edge > 5 && wInterType[InterType::AREDGEFACE])
-                addInteraction(interResult, cycleP.getCenter(), ligCycle.getCenter(), centerDist, NInter, nullptr, InterType::AREDGEFACE);
+                addInteraction(interResult, cycleP.getCenter(), ligCycle.getCenter(), centerDist, NInter, &edgeAngle, InterType::AREDGEFACE);
         }
     }
 }
@@ -805,7 +817,7 @@ std::string Interactions::toString(const InterResults& interResult) const {
                 oss << (interpt.angle * 180 / M_PI);
             }
         }
-        else
+        else // ARFACEFACE - AREDGEFACE
         {
             Cycle* cyc = interpt.Prot_Ref->getParent().getCycleFromCenter(interpt.Prot_Ref);
             oss << "\t";
@@ -821,7 +833,11 @@ std::string Interactions::toString(const InterResults& interResult) const {
 
             oss << "\t|" << interpt.point;
             oss << "\t|"; oss.width(7); oss.setf(ios::right); oss << interpt.dist;
-            oss << "\t|/";
+            oss << "\t|";
+            if (interpt.angle != -100000)
+                    oss << (interpt.angle * 180 / M_PI);
+                else
+                    oss << "/";
         }
 
         oss << endl;

@@ -5,53 +5,94 @@
 
 using namespace std;
 using namespace ICMole;
-void IChemSwitch::helpVolSite() const
-{
-    cout << "Volsite help" <<endl
-            << "VOLSITE - Cavity detection in a mol2 file"                                  <<endl
-         << "    volsite prot lig                                                    (1)"<<endl
-         << "    volsite prot                                                        (2)"<<endl
-         << endl
-         << "   [General options]"<<endl
-         << "      -step  N (1.5)    Edge length of each box                 (Angstroem)"<<endl
-         << "      -boxS  N (20)     Edge length of the main box             (Angstroem)"<<endl
-         << "      -b     N (55)     Minimal threshold for buriedness "                  <<endl
-         << "      -name  N          PDB Name for output cavity names "                  <<endl
-         << "      -n     N  (5)     Minimal neighbours for buried cavity boxes"                  <<endl
-         << "      -nPTS  N (70)     Minimal number of cubes to consider it a cavity "   <<endl
-         << "      -NPTS  N (400)    Maximal number of cubes to consider it a cavity "   <<endl
-         << "      --dna             Consider DNA as part of the protein"                <<endl
-         << "      --cofactor        Consider cofactor as part of the protein "          <<endl
-         << "      --solvent         Consider solvent as part of the protein "           <<endl
-            //         << "      --ligand          Keep all ligand cubes as part of cavities (non fonctionnel)" <<endl
-            //<< "      --outputsite      Output protein site around cavities"<<endl
-         << "      --hydrogen        Consider hydrogens "                                <<endl
-         << "      --desc            Write a descriptor file name descriptor.txt"        <<endl
-         << "      --svm             Build a svm property file "                       <<endl
-         << "      -drog  N          Observed druggability "                             <<endl
-            //         << endl
-//         << "      --pharm           Generate a pharmacophore (.chm) from cavity "  <<endl
-//         << "      --outExclu        Output exclusion sphere in pharmacophore file" <<endl
-            //         << "             [1]        Closest cavity cubes "                            <<endl
-            //         << "             [2]        All cavity cubes "                                <<endl
-            //         << "             [3]        All cavity cubes with buriedness > 80"            <<endl
-            //         << "             [4]        Centered cubes with buriedness > 80"              <<endl
-            //         << "             [5]        Optimized pharmacophore"              <<endl
 
-            //         << "             [3]          Barycenter of cube shared property (-b optimized)"    <<endl
-            //         << "             [4]          Closest cavity cube to protein     (-b optimized)"    <<endl
-            //         << "             [5]          Closest cavity cube to barycenter  (-b optimized)"   <<endl
-            //         << "             [6]          3 with less hydrophobic features   (-b optimized)"   <<endl
-            //         << "             [7]          3 (hydrophobics features must be link to at least 2 residues)   (-b optimized)"   <<endl
-            //         << "   [Pharmacophore options]"<<endl
-            //         << "      -phaP  N (20)     Lowest percentage of standard cavity keep to generate pharmacophore" <<endl
-            //         << "      -phaC  N (50)     Number of cavity cube keep to generate pharmacophore "     <<endl
-            //         << "      --tol             Tolerance varying with numbers of neighbors"     <<endl
-            //         << "      --weight  N (50)  Weight varying with features percentage"     <<endl
-         << "###########################################################################"<<endl
-         <<endl;
 
+void IChemSwitch::helpVolSite() const {
+    cout
+        << "volsite - Cavity detection and druggability prediction" << endl
+        << "Usage: IChem [options] volsite prot [lig]" << endl
+        << endl
+        << "Description:" << endl
+        << "  Detect cavities on the protein surface and estimate their druggability" << endl
+        << "  If a ligand is provided, VolSite restricts detection to its binding site" << endl
+        << "  Optionally outputs descriptors, SVM features, or cavity-based pharmacophores" << endl
+        << endl
+        << "Options:" << endl
+        << "  -step N (1.5)   Grid spacing (Å)" << endl
+        << "  -boxS N (20)    Main box edge length (Å)" << endl
+        << "  -b N (55)       Minimal buriedness threshold" << endl
+        << "  -name N         Prefix for output cavity names" << endl
+        << "  -n N (5)        Min neighbors for buried boxes" << endl
+        << "  -nPTS N (70)    Min number of cubes to define a cavity" << endl
+        << "  -NPTS N (400)   Max number of cubes to define a cavity" << endl
+        << "  --dna           Include DNA in the protein" << endl
+        << "  --cofactor      Include cofactors" << endl
+        << "  --solvent       Include solvent molecules" << endl
+        << "  --hydrogen      Include hydrogens in detection" << endl
+        << "  --desc          Output cavity descriptors (descriptor.txt)" << endl
+        << "  --svm           Output SVM features for druggability model" << endl
+        << "  --pharm         Generate cavity-based pharmacophores (.chm, .mol2, .pml, .plp)" << endl
+        << "  --outExclu      Add exclusion spheres to pharmacophore output" << endl
+        << "  -drog N         Set observed druggability value" << endl
+        << endl
+        << "Example:" << endl
+        << "  IChem volsite protein.mol2              # Detect all cavities" << endl
+        << "  IChem volsite protein.mol2 ligand.mol2  # Detect ligand-binding site cavities" << endl
+        << "  IChem --pharm volsite protein.mol2 ligand.mol2  # Generate pharmacophore" << endl
+        << endl
+        << "---------------------------------------------------------------------------" << endl
+        << endl;
 }
+
+
+// Too many options commented, to be revised
+// Meanwhile, I will have my version with no comments
+// void IChemSwitch::helpVolSite() const {
+//     cout << "Volsite help" <<endl
+//             << "VOLSITE - Cavity detection in a mol2 file"                                  <<endl
+//          << "    volsite prot lig                                                    (1)"<<endl
+//          << "    volsite prot                                                        (2)"<<endl
+//          << endl
+//          << "   [General options]"<<endl
+//          << "      -step  N (1.5)    Edge length of each box                 (Angstroem)"<<endl
+//          << "      -boxS  N (20)     Edge length of the main box             (Angstroem)"<<endl
+//          << "      -b     N (55)     Minimal threshold for buriedness "                  <<endl
+//          << "      -name  N          PDB Name for output cavity names "                  <<endl
+//          << "      -n     N  (5)     Minimal neighbours for buried cavity boxes"                  <<endl
+//          << "      -nPTS  N (70)     Minimal number of cubes to consider it a cavity "   <<endl
+//          << "      -NPTS  N (400)    Maximal number of cubes to consider it a cavity "   <<endl
+//          << "      --dna             Consider DNA as part of the protein"                <<endl
+//          << "      --cofactor        Consider cofactor as part of the protein "          <<endl
+//          << "      --solvent         Consider solvent as part of the protein "           <<endl
+//             //         << "      --ligand          Keep all ligand cubes as part of cavities (non fonctionnel)" <<endl
+//             //<< "      --outputsite      Output protein site around cavities"<<endl
+//          << "      --hydrogen        Consider hydrogens "                                <<endl
+//          << "      --desc            Write a descriptor file name descriptor.txt"        <<endl
+//          << "      --svm             Build a svm property file "                       <<endl
+//          << "      -drog  N          Observed druggability "                             <<endl
+//             //         << endl
+// //         << "      --pharm           Generate a pharmacophore (.chm) from cavity "  <<endl
+// //         << "      --outExclu        Output exclusion sphere in pharmacophore file" <<endl
+//             //         << "             [1]        Closest cavity cubes "                            <<endl
+//             //         << "             [2]        All cavity cubes "                                <<endl
+//             //         << "             [3]        All cavity cubes with buriedness > 80"            <<endl
+//             //         << "             [4]        Centered cubes with buriedness > 80"              <<endl
+//             //         << "             [5]        Optimized pharmacophore"              <<endl
+
+//             //         << "             [3]          Barycenter of cube shared property (-b optimized)"    <<endl
+//             //         << "             [4]          Closest cavity cube to protein     (-b optimized)"    <<endl
+//             //         << "             [5]          Closest cavity cube to barycenter  (-b optimized)"   <<endl
+//             //         << "             [6]          3 with less hydrophobic features   (-b optimized)"   <<endl
+//             //         << "             [7]          3 (hydrophobics features must be link to at least 2 residues)   (-b optimized)"   <<endl
+//             //         << "   [Pharmacophore options]"<<endl
+//             //         << "      -phaP  N (20)     Lowest percentage of standard cavity keep to generate pharmacophore" <<endl
+//             //         << "      -phaC  N (50)     Number of cavity cube keep to generate pharmacophore "     <<endl
+//             //         << "      --tol             Tolerance varying with numbers of neighbors"     <<endl
+//             //         << "      --weight  N (50)  Weight varying with features percentage"     <<endl
+//          << "###########################################################################"<<endl
+//          <<endl;
+
+// }
 
 void IChemSwitch::volsite() const throw(ICMole::MoleExcept)
 {

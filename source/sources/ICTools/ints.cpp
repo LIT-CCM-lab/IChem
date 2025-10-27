@@ -6,50 +6,62 @@
 using namespace std;
 using namespace ICMole;
 
-void IChemSwitch::helpints()      const
-{
+void IChemSwitch::helpints() const {
     cout
-            << " INTERACTION GENERATOR : "                                                  <<endl
-            << "    ints prot lig outfile"                                                  <<endl
-            << "      -type      (CENT) Alter positionning output"                          <<endl
-            << "                        Multiple values allowed, separated by space"        <<endl
-            << "         PROT             InterPROT positionning "                          <<endl
-            << "         LIG              InterLIG positionning "                           <<endl
-            << "         CENT             Centered positionning "                           <<endl
-            << "         MERG             Merged all 3 above"                               <<endl
-            <<endl
-           << "      -fgps    (STD)  Fingerprint format"                                   <<endl
-           << "         STD              Standard   (1 0 21 0 0 3)"                        <<endl
-           << "         SVM              SVM format (1:1 3:21 6:3)"                        <<endl
-           << "         CMP              Compressed (1 [1 21 [2 3)"                        <<endl
-           << "      --small           Compressed fingerprint "                            <<endl
-           << endl
-           << "   [General options]"                                                       <<endl
-           << "      -name      (prot) Name of molecule in out file"                       <<endl
-           << "      -logf             Name of log file "                                  <<endl
-           << "      -D_Hb    N (3.5)  Hbond length                            (Angstroem)"<<endl
-           << "      -D_Hyd   N (4.5)  Hydrophobic length                      (Angstroem)"<<endl
-           << "      -D_Io    N (4.0)  Ionic length                            (Angstroem)"<<endl
-           << "      -D_Me    N (2.8)  Metal/Acceptor length                   (Angstroem)"<<endl
-           << "      -D_Ar    N (5.0)  Aromatic interaction length             (Angstroem)"<<endl
-           << "      -D_Pic   N (5.0)  Pi cation interaction length            (Angstroem)"      <<endl
-           << "      -a_H     N (Pi)   HBond angle                             (rad)"	   <<endl
-           << "      -at_H    N (Pi/3) HBond tolerance angle                   (rad)"    <<endl
-           << "      -a_ArFF  N (Pi)   Aromatic Face to Face interaction angle (rad)"       <<endl
-           << "      -at_ArFF N (Pi/6) Aromatic Face to Face tolerance angle   (rad)"    <<endl
-           << "      -a_ArEF  N (Pi/2) Aromatic Edge to Face interaction angle (rad)"    <<endl
-           << "      -at_ArEF N (Pi/3) Aromatic Edge to Face tolerance angle   (rad)"    <<endl
-           << "      -a_Pic   N (Pi)   Pi cation interaction angle             (rad)"      <<endl
-           << "      -at_Pic  N (Pi/6) Pi cation tolerance angle               (rad)"      <<endl
-           << "      --noMerge         Don't merge hydrophobic interactions"               <<endl
-           << "      --newH            Less permissive definition of hydrophobic interaction"      <<endl
-           << "      --stdout          Write results to standard output"      <<endl
-           << endl
-           << "###########################################################################"<<endl
-           << endl;
+        << "ints - Interaction Generator (Triplet Interaction Fingerprints)" << endl
+        << "Usage: IChem [options] ints prot lig outfile" << endl
+        << endl
+        << "Description:" << endl
+        << "  Detect protein-ligand interactions and encode them as pseudoatoms in a MOL2" << endl
+        << "  file (TIFPs: Triplet Interaction FingerPrints). Each interaction is represented" << endl
+        << "  by a pseudoatom whose position depends on the selected -type mode" << endl
+        << "  Optionally, generate interaction fingerprints (*.fgp) in several formats" << endl
+        << endl
+        << "Positioning mode (-type):" << endl
+        << "  PROT  Interacting protein atom" << endl
+        << "  LIG   Interacting ligand atom" << endl
+        << "  CENT  Midpoint between protein and ligand atoms (default)" << endl
+        << "  MERG  All three positions above" << endl
+        << endl
+        << "Fingerprint format (-fgps):" << endl
+        << "  STD   Standard numeric format  (e.g. 0 1 0 0 132 0 ...)" << endl
+        << "  SVM   Sparse SVM format         (e.g. 2:1 5:132 7:1 ...)" << endl
+        << "  CMP   Compressed format         (e.g. [1 1 [2 132 [1 ...)" << endl
+        << "  --small   Use reduced 210-integer fingerprint instead of full 12 510 integers" << endl
+        << endl
+        << "General options:" << endl
+        << "  -name N        Molecule name in output (default: prot)" << endl
+        << "  -logf FILE     Write log file" << endl
+        << "  --noMerge      Don't merge overlapping hydrophobic interactions" << endl
+        << "  --newH         Stricter hydrophobic definition: only kept if >50% of nearby" << endl
+        << "                 protein atoms are hydrophobic" << endl
+        << "  --stdout       Write results to standard output" << endl
+        << endl
+        << "Thresholds and angles:" << endl
+        << "  -D_Hb    N (3.5)  H-bond length (Å)" << endl
+        << "  -D_Hyd   N (4.5)  Hydrophobic length (Å)" << endl
+        << "  -D_Io    N (4.0)  Ionic length (Å)" << endl
+        << "  -D_Me    N (2.8)  Metal/Acceptor length (Å)" << endl
+        << "  -D_Ar    N (5.0)  Aromatic interaction length (Å)" << endl
+        << "  -D_Pic   N (5.0)  Pi-Cation interaction length (Å)" << endl
+        << "  -a_H     N (Pi)   H-bond angle (rad)" << endl
+        << "  -at_H    N (Pi/3) H-bond tolerance (rad)" << endl
+        << "  -a_ArFF  N (Pi)   Aromatic Face-to-Face angle (rad)" << endl
+        << "  -at_ArFF N (Pi/6) Aromatic FF tolerance (rad)" << endl
+        << "  -a_ArEF  N (Pi/2) Aromatic Edge-to-Face angle (rad)" << endl
+        << "  -at_ArEF N (Pi/3) Aromatic EF tolerance (rad)" << endl
+        << "  -a_Pic   N (Pi)   Pi-Cation angle (rad)" << endl
+        << "  -at_Pic  N (Pi/6) Pi-Cation tolerance (rad)" << endl
+        << endl
+        << "Example:" << endl
+        << "  IChem -logf 2rh1_ints.txt -type CENT ints site.mol2 ligand.mol2" << endl
+        << "  IChem --small -fgps STD ints site.mol2 ligand.mol2 2rh1_small.fgp" << endl
+        << endl
+        << "---------------------------------------------------------------------------" << endl
+        << endl;
 }
 
-void IChemSwitch::ints()      const throw(ICMole::MoleExcept)
+void IChemSwitch::ints() const throw(ICMole::MoleExcept)
 {
     const unsigned int InputSize = (unsigned int)Input_Values.size();
     if (InputSize > 4|| InputSize<=1)throw MoleExcept(9010301,"IChem::runInts","Not enough parameters");

@@ -6,23 +6,18 @@ using namespace ICMole;
 
 
 void IChemSwitch::helpAtomProps() const {
-        cout  << "NAME\n"
-              << "      IChem AtomProps - Display atom-level properties from MOL2 files\n\n\n"
-              << "SYNOPSIS:\n"
-              << "      IChem AtomProps <mol2_file1> [<mol2_file2> ... <mol2_filen]\n\n\n"
-              << "DESCRIPTION:\n"
-              << "      Parses one or more MOL2 files and displays the atom-level properties for each structure\n\n"
-              << "  Supported input:\n"
-              << "      - Any valid MOL2 file\n\n"
-              << "  Displayed properties per atom:\n"
-              << "      - Atom ID\n"
-              << "      - MOL2 atom type\n"
-              << "      - Chemical property (e.g. apolar, hydrophobic, acceptor)\n"
-              << "      - Charge\n\n\n"
-              << "EXAMPLES:\n"
-              << "      IChem AtomProps ligand.mol2\n"
-              << "      IChem AtomProps protein.mol2 ligand.mol2 \n"
-              << "\n";
+    cout 
+         << "AtomProps - Print atom properties from MOL2 files" << endl
+         << "Usage: IChem AtomProps file1 file2 ... fileN" << endl
+         << endl
+         << "Description:" << endl
+         << "  Print atom properties (ID, MOL2 type, properties, and charge)" << endl
+         << "  for each provided MOL2 file: it can be a protein, ligand, or any molecule." << endl
+         << endl
+         << "Example:" << endl
+         << "  IChem AtomProps protein.mol2" << endl
+         << "  IChem AtomProps ligandA.mol2 ligandB.mol2" << endl
+         << endl;
 }
 
 
