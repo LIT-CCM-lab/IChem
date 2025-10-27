@@ -25,15 +25,15 @@ build_all:
     mkdir -p "$CI_PROJECT_DIR/$BUILD_DIR"
 
     podman run --rm -v "$CI_PROJECT_DIR:/IChem:Z" -w "/IChem/$BUILD_DIR" ichem-dev:ubi8 \
-      bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_ubi'
+      bash -c 'cmake -DCMAKE_BUILD_TYPE=Release .. && make -j$(nproc) && cp IChem /IChem/IChem_ubi'
     rm -rf "$CI_PROJECT_DIR/$BUILD_DIR"/*
 
     podman run --rm -v "$CI_PROJECT_DIR:/IChem:Z" -w "/IChem/$BUILD_DIR" ichem-dev:ubuntu \
-      bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_ubuntu'
+      bash -c 'cmake -DCMAKE_BUILD_TYPE=Release .. && make -j$(nproc) && cp IChem /IChem/IChem_ubuntu'
     rm -rf "$CI_PROJECT_DIR/$BUILD_DIR"/*
 
     podman run --rm -v "$CI_PROJECT_DIR:/IChem:Z" -w "/IChem/$BUILD_DIR" ichem-dev:debian \
-      bash -c 'cmake .. && make -j$(nproc) && cp IChem /IChem/IChem_debian'
+      bash -c 'cmake -DCMAKE_BUILD_TYPE=Release .. && make -j$(nproc) && cp IChem /IChem/IChem_debian'
   artifacts:
     paths:
       - IChem_ubi
