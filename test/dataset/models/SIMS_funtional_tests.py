@@ -53,7 +53,6 @@ def run_similarity_command(file_a, file_b, result_file):
 
 
 # Process a single test directory and compare results
-# Process a single test directory to compare computed and command-generated similarities.
 def process_test_directory(case_dir):
     if not case_dir.exists() or not case_dir.is_dir():
         print(f"Test directory {case_dir} does not exist")
