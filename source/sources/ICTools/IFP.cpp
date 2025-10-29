@@ -70,7 +70,7 @@ void IChemSwitch::IFP() const throw(MoleExcept)
     bool metalOnly=false;
     bool extended=false;
     bool sol=true,cof=true,oldh=true, ligd=false, ifp_out=true;
-    double dh=3.5,dhy=4.5,di=4.0,dm =2.8,da=4.0,dpi=4.0;
+    double dh=3.5,dhy=4.5,di=4.0,dm =2.8,da=5.0,dpi=5.0;
     double aH=M_PI,atH=M_PI/3,aA=M_PI,atA=M_PI/6,aAe=M_PI/2,atAe=M_PI/3,aPi=M_PI,atPi=M_PI/6;
     bool changedist=false;
 
@@ -303,15 +303,15 @@ void IChemSwitch::IFP() const throw(MoleExcept)
             {
                 iread.loadInComplex(icomplex,MoleType::LIGAND); // Load molecules => LoadNextMolecules which calls readMOL2Atom method
 
-                if (icomplex.getMole(MoleType::LIGAND)==(Molecule*)NULL) // Cannot be empty
-                    throw MoleExcept(9020102,
-                                     "IChem::BSACalc",
-                                     "No ligand found in "+fLigand);
+                if (icomplex.getMole(MoleType::LIGAND)==(Molecule*)NULL)
+                    throw MoleExcept(9020102, "IChem::BSACalc", "No ligand found in " + fLigand);
 
                 Molecule &ligand = *icomplex.getMole(MoleType::LIGAND);
-                // icomplex.genGrid(1.5);
-                // icomplex.genGrid(4.5);
-                Interactions ints(icomplex);
+                
+                Interactions ints(icomplex); // Init interactions
+
+                // If one argument of distance exist in the command, then changedist goes to true
+                // Add all the necessary distances, but should be just those which changed not reassigning everything
                 if (changedist){
                     ints.setDist_H(dh);
                     ints.setDist_Hyd(dhy);
@@ -328,6 +328,8 @@ void IChemSwitch::IFP() const throw(MoleExcept)
                     ints.setAngl_Tol_PICation(atPi);
                     ints.setDist_PICation(dpi);
                 }
+
+                
                 InterResults interRes;
                 InterResults osef;
                 ligand.checkMOL2();

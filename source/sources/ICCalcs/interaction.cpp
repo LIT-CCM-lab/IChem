@@ -22,14 +22,20 @@ bool Interactions::Load_triplet=false;
 int Interactions::vect_list[1000][1000];
 
 
-Interactions::Interactions(ICMole::Complex &cp) throw(ICMole::MoleExcept): complex(cp),grid(complex.genGrid(4.5)) {
-    if (cp.getMole(MoleType::PROTEIN)== (Molecule*)NULL)
+Interactions::Interactions(ICMole::Complex &cp)
+    :complex(cp) 
+{
+    
+    Molecule* protein = cp.getMole(MoleType::PROTEIN);
+    
+    if (protein == nullptr)
         throw MoleExcept(3020101, "Interactions::Interactions", "No protein found in complex");
 
     for(short i = 0; i < NB_INTTYPE; ++i) {
         wInterType[i] = true;
     }
 } 
+
 
 void Interactions::addInteraction(InterResults& interResult, Atom& atomP, Atom& atomL, double dist, int& NInter, double* angle, unsigned int interactionType) const {
 
