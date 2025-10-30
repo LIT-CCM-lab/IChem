@@ -4,5 +4,5 @@
 # Ignore vscode conf
 .vscode/
 
-# Ignore build-test
-# build
+# Ignore build
+build
