@@ -48,7 +48,7 @@ void IChemSwitch::helpgrim() const {
         << endl;
 }
 
-void IChemSwitch::grim() const throw(ICMole::MoleExcept)
+void IChemSwitch::grim() const 
 {
     //    verbose = true;
     const size_t InputSize = (unsigned int)Input_Values.size();

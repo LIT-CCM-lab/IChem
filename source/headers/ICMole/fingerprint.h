@@ -37,8 +37,8 @@ public:
       * \param numeric : Tells whether the fingerprint is binary or numeric -> Default binary
       */
     Fingerprint(const unsigned int& size,const bool& numeric =false);
-    Fingerprint(const std::string& name, const bool& numeric =false) throw(MoleExcept);
-    Fingerprint(const std::string& fgp,  const std::string& name,const bool& numerical=false) throw(MoleExcept);
+    Fingerprint(const std::string& name, const bool& numeric =false) ;
+    Fingerprint(const std::string& fgp,  const std::string& name,const bool& numerical=false) ;
     Fingerprint(Fingerprint const &);
     /*!
       * \brief Destructor
@@ -47,18 +47,18 @@ public:
     ///////////////////
     // MODIFIERS :   //
     ///////////////////
-    void  addData (const unsigned int& pos, const unsigned int& val)throw(MoleExcept);
-    void  toggle  (const unsigned int& pos)throw(MoleExcept);
-    void  bitOn   (const unsigned int& pos)throw(MoleExcept);
-    void  bitOff  (const unsigned int& pos)throw(MoleExcept);
-    void  pushOne(const unsigned int &pos) throw(MoleExcept);
+    void  addData (const unsigned int& pos, const unsigned int& val);
+    void  toggle  (const unsigned int& pos);
+    void  bitOn   (const unsigned int& pos);
+    void  bitOff  (const unsigned int& pos);
+    void  pushOne(const unsigned int &pos) ;
     unsigned int at(const unsigned int& pos) const {return bitstring.at(pos);}
     void  toggleAll();
     void  toBinary();
 
 
     inline  size_t  size() const {return bit_size;}
-    unsigned int& operator[] (const unsigned int&b)throw(MoleExcept);
+    unsigned int& operator[] (const unsigned int&b);
     const std::string& getName() const {return name;}
     void setName(const std::string& N) {name=N;}
 
@@ -67,12 +67,12 @@ public:
     std::string toSVMString() const;
     std::string toCompressString() const;
 
-    void load(const std::string &fgp, const bool& numerical=false) throw(MoleExcept);
-    void loadCompress    (const std::string& str) throw(MoleExcept);
-    void loadSVM(const std::string& str) throw(MoleExcept);
-    void loadCompressFile(const std::string& _fname)throw(ICMole::MoleExcept);
-    void loadFile        (const std::string& _fname)throw(ICMole::MoleExcept);
-    void loadSVM_File    (const std::string& _fname)throw(ICMole::MoleExcept);
+    void load(const std::string &fgp, const bool& numerical=false) ;
+    void loadCompress    (const std::string& str) ;
+    void loadSVM(const std::string& str) ;
+    void loadCompressFile(const std::string& _fname);
+    void loadFile        (const std::string& _fname);
+    void loadSVM_File    (const std::string& _fname);
     static Fingerprint generateIFP(const std::string& protein_file, const std::string& ligand_file, bool numeric);
 
 

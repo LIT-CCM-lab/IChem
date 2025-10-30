@@ -42,36 +42,27 @@ Bond:: Bond(Atom  &nAtom1,
    *
    *  Will delete Bond pointer from each Atom.
    */
-Bond::~Bond() throw(MoleExcept)
-{
-    try
-    {
-        ItBond ited = find(atom1.links.begin(),atom1.links.end(),this);
-        if (ited == atom1.links.end())
-            throw MoleExcept(1060101,
-                             "Bond::~Bond",
-                             "Given Bond is not part of this Atom");
+Bond::~Bond() noexcept {
+  try {
 
+    ItBond ited = find(atom1.links.begin(),atom1.links.end(),this);
+    if (ited == atom1.links.end()) 
+      std::cerr << "Bond::~Bond: Given Bond is not part of atom\n";
 
-        atom1.links.erase(ited);
-        atom1.atomlinked.erase(atom1.atomlinked.begin()+
-                               std::distance(atom1.links.begin(),ited));
+    atom1.links.erase(ited);
+    atom1.atomlinked.erase(atom1.atomlinked.begin()+ std::distance(atom1.links.begin(),ited));
 
-        ited = find(atom2.links.begin(),atom2.links.end(),this);
-        if (ited == atom2.links.end())
-            throw MoleExcept(1060101,
-                             "Bond::~Bond",
-                             "Given Bond is not part of this Atom");
-        atom2.atomlinked.erase(atom2.atomlinked.begin()+
-                               std::distance(atom2.links.begin(),ited));
-        atom2.links.erase(ited);
+    ited = find(atom2.links.begin(),atom2.links.end(),this);
+    if (ited == atom2.links.end())
+      std::cerr << "Bond::~Bond: Given Bond is not part of atom\n";
 
-    }
-    catch (MoleExcept &e)
-    {
-        Moleaccess=Levels::FATAL;
-        throw;
-    }
+    atom2.atomlinked.erase(atom2.atomlinked.begin()+ std::distance(atom2.links.begin(),ited));
+    atom2.links.erase(ited);
+  }
+  
+  catch (MoleExcept &e) {
+    std::cerr << "Exception caught in Bond::~Bond()\n";
+  }
 }
 
 
@@ -90,7 +81,7 @@ Bond::~Bond() throw(MoleExcept)
    *  \return Atom pointer of the other Atom
    *  \throw MoleExcept 1030101 when the given Atom is not part of this Bond
    */
-Atom&  Bond::getOtherAtom(Atom const &atom) const throw(MoleExcept)
+Atom&  Bond::getOtherAtom(Atom const &atom) const 
 {
          if (&atom == &atom1) return atom2;
     else if (&atom == &atom2) return atom1;
@@ -105,7 +96,7 @@ Atom&  Bond::getOtherAtom(Atom const &atom) const throw(MoleExcept)
    *  \return Atom pointer
    *  \throw MoleExcept 1030102 when the given Atom is not part of this Bond
    */
-Atom&  Bond::getOtherAtom(const Atom *const atom) const throw(MoleExcept)
+Atom&  Bond::getOtherAtom(const Atom *const atom) const 
 {
          if (atom == &atom1) return atom2;
     else if (atom == &atom2) return atom1;
@@ -118,7 +109,7 @@ Atom&  Bond::getOtherAtom(const Atom *const atom) const throw(MoleExcept)
    * \param ed : Bond to look at
    * \return The Atom existing in the two Bonds or (Atom*)NULL
    */
-Atom&   Bond::shareAtom(Bond const &bond) const throw(MoleExcept)
+Atom&   Bond::shareAtom(Bond const &bond) const 
 {
   if (&bond.getAtom1() == &atom1 || &bond.getAtom2()==&atom1) return atom1;
   if (&bond.getAtom1() == &atom2 || &bond.getAtom2()==&atom2) return atom2;

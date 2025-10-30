@@ -41,7 +41,7 @@ class Vertex
      ////////////////////////////////////////////////
 
              void  addEdge(Edge *const ed);
-             void  delEdge(const Edge *const ed) throw(MoleExcept);
+             void  delEdge(const Edge *const ed) ;
 
 
 
@@ -50,11 +50,11 @@ public :
 ///// Edges :
 void reserve(const size_t& size){links.reserve(size);}
              bool  hasEdgeWith(Vertex const &ve) const;//
-       const Edge* getEdgeWith(Vertex const &ve) const throw(MoleExcept);//
-             void  cleanEdge()                         throw(MoleExcept);
+       const Edge* getEdgeWith(Vertex const &ve) const ;//
+             void  cleanEdge()                         ;
         size_t numEdges() const {return links.size();}
-       const Edge* getEdge(const size_t& i) const throw(MoleExcept);
-         Vertex& getVertex(const size_t& i) const throw(MoleExcept);
+       const Edge* getEdge(const size_t& i) const ;
+         Vertex& getVertex(const size_t& i) const ;
 
 ///// Setters:
              void  setParent(      Graph  *const  gr  ){  graph=gr;  }       /*!< \brief Set the parent graph */

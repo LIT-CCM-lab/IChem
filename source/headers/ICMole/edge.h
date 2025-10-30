@@ -30,7 +30,7 @@ private:
            Edge( Vertex  &V1,   Vertex  &V2,  const unsigned int& num,Graph&  par);
 
            ////// Destructors :
-                       ~Edge() throw(MoleExcept);
+                       ~Edge() ;
 public:
 
 
@@ -50,9 +50,9 @@ public:
           void  setLabel (const std::string &lab) { label = lab; }        /*!< \brief Set the label of the graph */
 
 ///// Miscellaneous
-         Vertex &getOtherVertex(Vertex  const &vertex) const throw(MoleExcept);
-         Vertex &getOtherVertex(const Vertex * const vertex) const throw(MoleExcept);
-        const Vertex &shareVertex(Edge    const &edge  ) const  throw(MoleExcept);
+         Vertex &getOtherVertex(Vertex  const &vertex) const ;
+         Vertex &getOtherVertex(const Vertex * const vertex) const ;
+        const Vertex &shareVertex(Edge    const &edge  ) const  ;
    std::string  toString() const;
           void  clone(Edge const & ed);
           void setBond( Bond* newbond){bond=newbond;}

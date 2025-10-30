@@ -73,7 +73,7 @@ void  Vertex::addEdge    ( Edge  *const  ed)
   * \warning It doesn't delete the edge, just the link in the vertex.
   * \throw MoleExcept 1020101 when the given edge is not part of this vertex
   */
-void  Vertex::delEdge    (const  Edge  *const ed ) throw(MoleExcept)
+void  Vertex::delEdge    (const  Edge  *const ed ) 
 {
     const ItEdge ited = find(links.begin(),links.end(),ed);
     if (ited == links.end())
@@ -110,7 +110,7 @@ bool  Vertex::hasEdgeWith(Vertex const &ve) const
   * \return Pointer of the edge betwwen ve and this vertex, or (Edge*)NULL when no edge exists.
   * \throw 1030301 - getOtherVertex
   */
-const Edge* Vertex::getEdgeWith(Vertex const &ve) const throw(MoleExcept)
+const Edge* Vertex::getEdgeWith(Vertex const &ve) const 
     {
     try
     {
@@ -130,12 +130,12 @@ const Edge* Vertex::getEdgeWith(Vertex const &ve) const throw(MoleExcept)
     }
 
 
-/*! \fn void Vertex::cleanEdge() throw(MoleExcept)
+/*! \fn void Vertex::cleanEdge() 
   * \brief Delete all edges of this vertex
   * Calls delEdge() function of the parent graph to make a clean deletion of all edges made with this vertex
   * \throw See Graph::delEdge(). If 1040201: Fatal error
   */
-void Vertex::cleanEdge() throw(MoleExcept)
+void Vertex::cleanEdge() 
 {
 
     try
@@ -152,7 +152,7 @@ void Vertex::cleanEdge() throw(MoleExcept)
 }
 
 
-const Edge* Vertex::getEdge(const size_t& i) const throw(MoleExcept)
+const Edge* Vertex::getEdge(const size_t& i) const 
 {
     if (i >= links.size()) throw MoleExcept(1020201,
                                                    "Vertex::getEdge",
@@ -160,7 +160,7 @@ const Edge* Vertex::getEdge(const size_t& i) const throw(MoleExcept)
     return links.at(i);
 }
 
- Vertex& Vertex::getVertex(const size_t& i) const throw(MoleExcept)
+ Vertex& Vertex::getVertex(const size_t& i) const 
 {
     if (i >= links.size()) throw MoleExcept(1020201,
                                                    "Vertex::getEdge",

@@ -1,0 +1,21 @@
+#    Name: 4D3J.B
+#    Modification time : Tue Jan 21 20:52:33 2025
+
+@<TRIPOS>MOLECULE
+4D3J.B
+    3     0     3     0     0
+SMALL
+NO_CHARGES
+
+
+@<TRIPOS>ATOM
+      1 CA          9.9820   12.3490   24.8600 C.3       1 GLL5       -0.8753 
+      2 CA          9.0950   11.9480   28.4930 C.3       2 GLP5        0.0000 
+      3 CA          9.3014   12.0171   26.5374 C.3       3 GLC5        0.0000 
+@<TRIPOS>BOND
+@<TRIPOS>SUBSTRUCTURE
+     1 GLL5        1 GROUP        1 Z    GLL  0     ROOT GLL Z 4
+     2 GLP5        2 GROUP        1 Z    GLP  0     **** GLP Z 11
+     3 GLC5        3 GROUP        1 Z    GLC  0     **** GLC Z 18
+@<TRIPOS>SET
+

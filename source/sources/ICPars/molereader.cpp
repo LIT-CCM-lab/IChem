@@ -39,7 +39,7 @@ MoleReader::MoleReader()
  */
 MoleReader::MoleReader(const std::string&  filename,
                        const unsigned int& fformat)
-throw(MoleExcept)
+
 {
     if (filename.length()== 0)
         throw MoleExcept(2010101,
@@ -78,7 +78,7 @@ throw(MoleExcept)
  */
 MoleReader::MoleReader(const vector<string> &linefile,
                        const unsigned int& fformat)
-throw(MoleExcept)
+
 {
     if (linefile.size() ==0)
         throw MoleExcept(2010201,
@@ -141,7 +141,7 @@ void MoleReader::close()
 void MoleReader::loadNewFile( const std::string& filename,
                               const unsigned int& fformat,
                               const bool &with_split)
-throw(MoleExcept)
+
 {
     if (filename.length()== 0)
         throw MoleExcept(2010301,

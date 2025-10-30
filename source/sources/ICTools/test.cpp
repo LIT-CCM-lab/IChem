@@ -21,7 +21,7 @@ void IChemSwitch::helpTest()      const
 
 }
 
-void IChemSwitch::test()      const throw(ICMole::MoleExcept)
+void IChemSwitch::test()      const 
 {
     cout << "Running IChem test procedures..." << endl;
     cout << "Atom" << endl;

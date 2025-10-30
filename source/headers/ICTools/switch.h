@@ -70,32 +70,32 @@ class IChemSwitch
         void helpTest() const;
 //                      void helpGrScreen() const;
 
-        void genKey()    const  throw(ICMole::MoleExcept);
-        void realign()   const throw(ICMole::MoleExcept);
-        void BSAcalc()   const throw(ICMole::MoleExcept);
-        void IFP()       const throw(ICMole::MoleExcept);
-        void IFPScreen() const throw(ICMole::MoleExcept);
-        void ints() const throw(ICMole::MoleExcept);
-        void grim()      const throw(ICMole::MoleExcept);
-        void volsite()   const throw(ICMole::MoleExcept);
-        void PDBConversion() const throw(ICMole::MoleExcept);
-        void patch()   const throw(ICMole::MoleExcept);
-        void utils() const throw(ICMole::MoleExcept);
-        void runFGPS() const throw(ICMole::MoleExcept);
-        void scoring()   const throw(ICMole::MoleExcept);
-        void test() const throw(ICMole::MoleExcept);
-        void pharma() const throw(ICMole::MoleExcept);
-        void convertCav() const throw(ICMole::MoleExcept);
-//                      void GrScreen() const throw(ICMole::MoleExcept);
+        void genKey()    const  ;
+        void realign()   const ;
+        void BSAcalc()   const ;
+        void IFP()       const ;
+        void IFPScreen() const ;
+        void ints() const ;
+        void grim()      const ;
+        void volsite()   const ;
+        void PDBConversion() const ;
+        void patch()   const ;
+        void utils() const ;
+        void runFGPS() const ;
+        void scoring()   const ;
+        void test() const ;
+        void pharma() const ;
+        void convertCav() const ;
+//                      void GrScreen() const ;
 
-        void checkLicence()    throw(ICMole::MoleExcept);
+        void checkLicence()    ;
         void yourlicence();
 
         static const std::vector<std::string> FetchPossInput() ;
     public:
 
-        IChemSwitch(const int &argc, const std::vector<std::string> &argv) throw(ICMole::MoleExcept);
-        IChemSwitch(const int& argc, char* argv[]) throw(ICMole::MoleExcept);
+        IChemSwitch(const int &argc, const std::vector<std::string> &argv) ;
+        IChemSwitch(const int& argc, char* argv[]) ;
         void help();
 };
 

@@ -42,7 +42,7 @@ void IChemSwitch::helpGenKey() const {
         << endl;
 }
 
-void IChemSwitch::genKey()const  throw(MoleExcept)
+void IChemSwitch::genKey()const  
 {
 
     if (Input_Values.size() != 3+ICHEM_TOOLS)

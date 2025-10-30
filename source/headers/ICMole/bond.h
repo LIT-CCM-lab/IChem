@@ -79,7 +79,7 @@ public:
 ////////////////////////////////// DESCTRUCTOR /////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-            ~Bond() throw(MoleExcept);
+            ~Bond() ;
 
 
 
@@ -170,15 +170,15 @@ const std::string& getBits() const{ return bits;}
 ////////////////////////////////////////////////////////////////////////////////
 
 /*!< \brief Return the other atom of the given one involved in this bond */
-    Atom& getOtherAtom(Atom  const &atom) const throw(MoleExcept);
+    Atom& getOtherAtom(Atom  const &atom) const ;
 
 
 /*!< \brief Return the other atom of the given one involved in this bond */
-    Atom& getOtherAtom(const Atom * const atom) const throw(MoleExcept);
+    Atom& getOtherAtom(const Atom * const atom) const ;
 
 
 /*!< \brief Return the atom that share this bond and the given on */
-    Atom& shareAtom   (Bond    const &bond  ) const  throw(MoleExcept);
+    Atom& shareAtom   (Bond    const &bond  ) const  ;
 
 
 /*!< \brief Return a description of this bond : atoms involved and bond type */

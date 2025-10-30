@@ -16,7 +16,7 @@ void IChemSwitch::helpScoring()     const
             << endl;
 }
 
-void IChemSwitch::scoring()      const throw(ICMole::MoleExcept)
+void IChemSwitch::scoring()      const 
 {
     const unsigned int InputSize = (unsigned int)Input_Values.size();
     if (InputSize!=3){helpScoring();throw MoleExcept(9010301,"IChem::scoring","Not enough parameters");}

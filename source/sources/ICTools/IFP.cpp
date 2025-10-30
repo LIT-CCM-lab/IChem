@@ -58,7 +58,7 @@ void IChemSwitch::helpIFP() const
 
 
 
-void IChemSwitch::IFP() const throw(MoleExcept)
+void IChemSwitch::IFP() const 
 {
     const size_t InputSize = Input_Values.size();
     bool w_ref = false;
@@ -139,8 +139,8 @@ void IChemSwitch::IFP() const throw(MoleExcept)
         const std::string& ligand2  = Input_Values.at(3);
 
         try {
-            Fingerprint fp1 = fp1.generateIFP(protein1, ligand1, numeric);
-            Fingerprint fp2 = fp2.generateIFP(protein2, ligand2, numeric);
+            Fingerprint fp1 = Fingerprint::generateIFP(protein1, ligand1, numeric);
+            Fingerprint fp2 = Fingerprint::generateIFP(protein2, ligand2, numeric);
 
             Similarity sim(fp1, fp2, numeric);
             double value = 0.0;

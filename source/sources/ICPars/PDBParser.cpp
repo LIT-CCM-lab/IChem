@@ -88,7 +88,7 @@ void MoleReader::tokenize( const string& str, map<string,string>& tokens)
 }
 
 
-void MoleReader::loadPDB(Molecule& molecule,const unsigned int& TypeMol) throw(MoleExcept)
+void MoleReader::loadPDB(Molecule& molecule,const unsigned int& TypeMol) 
 {
     if (!finput.is_open() && !lineinfile)
         throw MoleExcept(2020801,

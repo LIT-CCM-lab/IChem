@@ -22,7 +22,7 @@ Fingerprint::Fingerprint(const unsigned int& size,const bool& numerical):bit_siz
     for (unsigned int Iv = 0; Iv < size; Iv++) bitstring.push_back(0);
 }
 
-Fingerprint::Fingerprint(const string& Fname,const bool& numerical) throw(MoleExcept)
+Fingerprint::Fingerprint(const string& Fname,const bool& numerical) 
 {
     bit_size=0;
     string ligne;
@@ -39,7 +39,7 @@ Fingerprint::Fingerprint(const string& Fname,const bool& numerical) throw(MoleEx
     finput.close();
 }
 
-Fingerprint::Fingerprint(const string& fgp,const string& name,const bool& numerical) throw(MoleExcept):name(name)
+Fingerprint::Fingerprint(const string& fgp,const string& name,const bool& numerical) :name(name)
 {
     bit_size=0;
     numeric=numerical;
@@ -80,7 +80,7 @@ Fingerprint::Fingerprint(Fingerprint const &FGP)
   * If the fingerprint is numeric, it will add one to the bin, otherwise set the bin to 1.
   * \throw MoleExcept 1110101 - _pos is above the size of the fingerprint
   */
-void Fingerprint::pushOne(const unsigned int& pos) throw(MoleExcept)
+void Fingerprint::pushOne(const unsigned int& pos) 
 {
     if (pos >= bit_size) throw MoleExcept(1110101,"Fingerprint::pushOne","Given position is above the size of the fingerprint");
     if (numeric) bitstring.at(pos) ++;
@@ -95,7 +95,7 @@ void Fingerprint::pushOne(const unsigned int& pos) throw(MoleExcept)
   * Set the given bin to 1, only with a binary fingerprint
   * \throw MoleExcept 1110102 - _pos is above the size of the fingerprint
   */
-void Fingerprint::bitOn   (const unsigned int& pos)throw(MoleExcept) {
+void Fingerprint::bitOn   (const unsigned int& pos) {
     if (pos >= bit_size) throw MoleExcept(1110201,"Fingerprint::bitOn","Given position is above the size of the fingerprint");
     if(!numeric)bitstring.at(pos)= 1;
 }
@@ -107,7 +107,7 @@ void Fingerprint::bitOn   (const unsigned int& pos)throw(MoleExcept) {
   * Set the given bin to 0 only with a binary fingerprint
   * \throw MoleExcept 1110103 - _pos is above the size of the fingerprint
   */
-void Fingerprint::bitOff  (const unsigned int& pos) throw(MoleExcept){
+void Fingerprint::bitOff  (const unsigned int& pos) {
     if (pos >= bit_size) throw MoleExcept(1110301,"Fingerprint::bitOff","Given position is above the size of the fingerprint");
     if(!numeric)bitstring.at(pos)= 0;
 }
@@ -119,7 +119,7 @@ void Fingerprint::bitOff  (const unsigned int& pos) throw(MoleExcept){
   * For a binary fingerprint, set the value to 1 if its value is 0 and 0 if the value is 1.
   * \throw MoleExcept 1110104 - _pos is above the size of the fingerprint
   */
-void Fingerprint::toggle  (const unsigned int& pos)throw(MoleExcept)
+void Fingerprint::toggle  (const unsigned int& pos)
 {
     if (pos >= bit_size) throw MoleExcept(1110401,"Fingerprint::toggle","Given position is above the size of the fingerprint");
     if(!numeric) bitstring.at(pos)= (bitstring.at(pos)) ?0:1;
@@ -135,7 +135,7 @@ void Fingerprint::toggle  (const unsigned int& pos)throw(MoleExcept)
   * For a numerical fingerprint, add to the bin the given value.
   * \throw MoleExcept 1110105 - _pos is above the size of the fingerprint
   */
-void Fingerprint::addData(const unsigned int& pos, const unsigned int& val) throw(MoleExcept){
+void Fingerprint::addData(const unsigned int& pos, const unsigned int& val) {
     if (pos >= bit_size) throw MoleExcept(1110501,"Fingerprint::addData","Given position is above the size of the fingerprint");
     if (numeric) bitstring.at(pos)+=val;
     else if (val >=1)bitstring.at(pos)=1;
@@ -160,7 +160,7 @@ void Fingerprint::toggleAll(){
   *
     * Return the value of the pos bin
   */
-unsigned int& Fingerprint::operator[] (const unsigned int&_pos)throw(MoleExcept) {
+unsigned int& Fingerprint::operator[] (const unsigned int&_pos) {
     if (_pos >= bit_size) throw MoleExcept(1110601,"Fingerprint::operator[]","Given position is above the size of the fingerprint");
     return bitstring.at(_pos);
 
@@ -283,7 +283,7 @@ string  Fingerprint::toSVMString() const
   * \fn void Fingerprint::Load_Compress(string str)
   * \param str : compressed string
   */
-void Fingerprint::loadCompress(const string & str) throw(MoleExcept)
+void Fingerprint::loadCompress(const string & str) 
 {
     const unsigned int size = str.length() ;
     if (size == 0) throw MoleExcept(1110701, "Fingerprint::loadCompress","No fingerprint given");
@@ -322,11 +322,11 @@ void Fingerprint::loadCompress(const string & str) throw(MoleExcept)
 }
 
 /*!
- * \fn void  Fingerprint::load(const string fgp)throw(ICMole::MoleExcept)
+ * \fn void  Fingerprint::load(const string fgp)
   * \brief Load a file to transform the content into a fingerprint
   * \param fgp : fingerprint to analyse
   */
-void  Fingerprint::load(const string &fgp, const bool& numerical)throw(ICMole::MoleExcept)
+void  Fingerprint::load(const string &fgp, const bool& numerical)
 {
 
     if (!numerical){
@@ -358,7 +358,7 @@ void  Fingerprint::load(const string &fgp, const bool& numerical)throw(ICMole::M
 }
 
 
-void Fingerprint::loadSVM(const string& str) throw(ICMole::MoleExcept)
+void Fingerprint::loadSVM(const string& str) 
 {
     vector<string> entries;vector<string> posing;
     string bitter;
@@ -382,11 +382,11 @@ void Fingerprint::loadSVM(const string& str) throw(ICMole::MoleExcept)
 }
 
 /*!
- * \fn void  Fingerprint::loadFile(const string _fname)throw(ICMole::MoleExcept)
+ * \fn void  Fingerprint::loadFile(const string _fname)
   * \brief Load a file to transform the content into a fingerprint
   * \param fgp : fingerprint to analyse
   */
-void  Fingerprint::loadFile(const string& _fname)throw(ICMole::MoleExcept)
+void  Fingerprint::loadFile(const string& _fname)
 {
     ifstream finput;
     string ligne;
@@ -408,7 +408,7 @@ void  Fingerprint::loadFile(const string& _fname)throw(ICMole::MoleExcept)
   * \brief Load a file to transform the content into a fingerprint
   * \param _fname : File to read
   */
-void Fingerprint::loadCompressFile(const string& _fname)throw(ICMole::MoleExcept)
+void Fingerprint::loadCompressFile(const string& _fname)
 {
 
     ifstream 		finput;
@@ -432,7 +432,7 @@ void Fingerprint::loadCompressFile(const string& _fname)throw(ICMole::MoleExcept
    * \brief Load a file to transform the content into a fingerprint
    * \param _fname : File to read
    */
-void Fingerprint::loadSVM_File(const string& _fname)throw(ICMole::MoleExcept)
+void Fingerprint::loadSVM_File(const string& _fname)
 {
     ifstream finput;
     string ligne;

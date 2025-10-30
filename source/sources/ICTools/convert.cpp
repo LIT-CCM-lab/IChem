@@ -44,7 +44,7 @@ void IChemSwitch::helpPDBConvert() const {
         << endl;
 }
 
-    void IChemSwitch::PDBConversion() const    throw(ICMole::MoleExcept)
+    void IChemSwitch::PDBConversion() const    
     {
         const unsigned int InputSize = (unsigned int)Input_Values.size();
         if (InputSize != 3) {throw MoleExcept(9010301,"IChem::pdbconv","Not enough parameters");}

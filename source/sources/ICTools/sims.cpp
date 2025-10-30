@@ -66,7 +66,7 @@ Fingerprint Fingerprint::generateIFP(const std::string& protein_file, const std:
 }
 
 
-void IChemSwitch::runFGPS() const throw(ICMole::MoleExcept)
+void IChemSwitch::runFGPS() const 
 {
 
     const unsigned int InputSize = (unsigned int)Input_Values.size();

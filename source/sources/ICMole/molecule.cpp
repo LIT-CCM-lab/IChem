@@ -143,19 +143,14 @@ const Coords& Molecule::getRotpos(const bool& withH)
 
 Coords Molecule::getalpha(const int residu, const bool& withH){
     int n = 0;
-    for (ItCAtom itA = Atoms.begin();
-         itA!= Atoms.end();
-         ++itA)
-    {
+    for (ItCAtom itA = Atoms.begin(); itA!= Atoms.end(); ++itA) {
         const Atom& atm = **itA;
-        if (!(*itA)->isUsed()|| (!withH && (*itA)->isHydrogen()))continue;
-        if (atm.getName() == "CA"){
-           if (n == residu){
-//                cout << atm.getName() << endl;
-                return atm.fixpos;
-            }
-           n++;
-
+        if (!(*itA)->isUsed()|| (!withH && (*itA)->isHydrogen())) continue;
+        if (atm.getName() == "CA") {
+          if (n == residu) {
+            return atm.fixpos;
+          }
+          n++;
         }
     }
     //    return Coords(0,0,0);
@@ -291,7 +286,7 @@ Atom& Molecule::addAtom(
                const std::string& name,
                const std::string& mol2t,
                Residu*            residu)
-throw(MoleExcept)
+
 {
     if (residu != (Residu*)NULL && residu->molecule != this)
         throw MoleExcept(1070101,
@@ -331,7 +326,7 @@ Atom& Molecule::addAtom(
         const double& z,
         const std::string& name,
         const std::string& mol2t,
-        Residu*  residu) throw(MoleExcept)
+        Residu*  residu) 
 {
 
     if (residu != (Residu*)NULL && residu->molecule != this)
@@ -394,7 +389,7 @@ Atom& Molecule::addAtom(
         const Coords &coords,
         const std::string& name,
         const std::string& mol2t,
-        Residu*  residu)  throw(MoleExcept)
+        Residu*  residu)  
 {
     if (residu != (Residu*)NULL && residu->molecule != this)
         throw MoleExcept(1070201,
@@ -453,7 +448,7 @@ Atom& Molecule::addAtom(
  */
 
 void Molecule::addAtoms(const unsigned int &N,
-                        Residu* const residu) throw(MoleExcept)
+                        Residu* const residu) 
 {
     if (N==0)return;
     if (N+Atoms.size() > Atoms.capacity()) Atoms.reserve(N+Atoms.size());
@@ -499,7 +494,7 @@ void Molecule::addAtoms(const unsigned int &N,
   * \param with_maxnum : Update the maximum number for Atom (strong recommended)
   * \warning Will call cleanBond() function even if the given Atom is not in the Molecule
   */
-void Molecule::delAtom( Atom *const atom, const bool& with_maxnum) throw(MoleExcept)
+void Molecule::delAtom( Atom *const atom, const bool& with_maxnum) 
 {
     try{
         if (atom == (Atom*)NULL)
@@ -646,7 +641,7 @@ void Molecule::delAtom( Atom *const atom, const bool& with_maxnum) throw(MoleExc
 }
 
 
-void Molecule::delAtoms( AtomList& AtomsDel) throw(MoleExcept)
+void Molecule::delAtoms( AtomList& AtomsDel) 
 {
     try{
 
@@ -821,7 +816,7 @@ void Molecule::renumAtom()
  *  \throw 1040801- When pos is true and n is above the number of Atom in the Molecule
  *
  */
-const Atom& Molecule::getAtom(const unsigned int &n, const bool &pos) const throw(MoleExcept)
+const Atom& Molecule::getAtom(const unsigned int &n, const bool &pos) const 
 {
   if (pos)
     {
@@ -868,7 +863,7 @@ void Molecule::reserveAtomSize(const unsigned int &NAtm)
 ///////////////////////////////////////////////////////////////////////////////
 
 /*!
-  * \fn Bond& Molecule::addBond(const Atom &ve1,const Atom &ve2) throw(MoleExcept)
+  * \fn Bond& Molecule::addBond(const Atom &ve1,const Atom &ve2) 
   * \param ve1 : First Atom of the Bond
   * \param ve2 : Second Atom of the Bond
   * \throw MoleExcept code 1040601 when ve1 and ve2 are the same Atom. Returns the last added Bond
@@ -879,7 +874,7 @@ void Molecule::reserveAtomSize(const unsigned int &NAtm)
   * Add an Bond to Bonds list. <br/>
   * Each time a bond is added to a molecule, the Bond associated to the bond is added to the Molecule associated to the molecule
   */
-Bond& Molecule::addBond(Atom &Atom1, Atom &Atom2, const unsigned int &BondType) throw(MoleExcept)
+Bond& Molecule::addBond(Atom &Atom1, Atom &Atom2, const unsigned int &BondType) 
 {
     Bond *bd=(Bond*)NULL;
     try
@@ -925,7 +920,7 @@ Bond& Molecule::addBond(Atom &Atom1, Atom &Atom2, const unsigned int &BondType) 
 
 Bond&  Molecule::addBond( Atom *const Atom1,
                        Atom *const Atom2,
-                       const unsigned int &BondType) throw(MoleExcept)
+                       const unsigned int &BondType) 
 {
     Bond *bd=(Bond*)NULL;
     try
@@ -969,7 +964,7 @@ Bond&  Molecule::addBond( Atom *const Atom1,
 
 
 //Atom::cleanBond
-void Molecule::delBond(const Bond* const bond) throw(MoleExcept)
+void Molecule::delBond(const Bond* const bond) 
 {
     if (bond == (Bond*)NULL) throw MoleExcept(1040701,"Molecule::delBond","No Bond given");
     const unsigned int NumBond= bond->getNum();
@@ -1018,7 +1013,7 @@ void Molecule::cleanBond()
     Bonds.clear();
 }
 
-void Molecule::delBond(const BondList& EdList) throw(MoleExcept)
+void Molecule::delBond(const BondList& EdList) 
 {
     for (ItCBond itEd = EdList.begin() ; itEd != EdList.end(); itEd++)
     {
@@ -1055,7 +1050,7 @@ void Molecule::delBond(const BondList& EdList) throw(MoleExcept)
     if (maxNumBond >1|| zer==true) maxNumBond++;
 }
 
-/*! \fn void   Molecule::delBond  (const Bond&  ed) throw(MoleExcept)
+/*! \fn void   Molecule::delBond  (const Bond&  ed) 
   * \brief delete the given Bond from this Molecule
   * \throw 1040301 - Given Bond not part of this Molecule
   * \throw 1020101 when the given Bond is not found in one of its two Atoms
@@ -1065,7 +1060,7 @@ void Molecule::delBond(const BondList& EdList) throw(MoleExcept)
   * The deletion of the Bond automatically call delBond() function of Atoms involved.
   * Also update the maxNumBond value
   */
-void  Molecule::delBond(const       Bond &  bond) throw(MoleExcept)
+void  Molecule::delBond(const       Bond &  bond) 
 {
   const unsigned int NumBond= bond.getNum();
 
@@ -1147,7 +1142,7 @@ void Molecule::reserveBondSize(const unsigned int &NBond)
  *  list of Atoms. Otherwise if the id thought getNum() function that will be checked to n
  * @return The corresponding Bond
  */
-const Bond& Molecule::getBond(const size_t &n, const bool &pos) const throw(MoleExcept)
+const Bond& Molecule::getBond(const size_t &n, const bool &pos) const 
 {
   if (pos)
     {
@@ -1186,13 +1181,13 @@ void Molecule::reserveResiduSize(const unsigned int &NResidu)
 
 
 
-Residu& Molecule::getResidu(const size_t &pos) throw(MoleExcept)
+Residu& Molecule::getResidu(const size_t &pos) 
 {
   if (pos >= Residues.size()) throw MoleExcept(1071301,"Molecule::getResidu","Position is above the number of residu within the molecule");
   else return *Residues.at(pos);
 }
 
-Chain& Molecule::getChain(const size_t pos) throw(MoleExcept)
+Chain& Molecule::getChain(const size_t pos) 
 {
     if (pos >= Chains.size()) throw MoleExcept(1071401,"Molecule::getChain","Position is above the number of chains within the molecule");
     else return *Chains.at(pos);
@@ -1326,7 +1321,7 @@ Cycle* Molecule::getCycleFromCenter(Atom* const atom)
 
 
 
-void Molecule::delCycle(Cycle*const cy) throw(MoleExcept)
+void Molecule::delCycle(Cycle*const cy) 
 {
   if (cy == (Cycle*)NULL) throw MoleExcept(1071201,"Molecule::delCycle","No cycle given");
   ItCycle itt = std::find(Cycles.begin(),Cycles.end(),cy);
@@ -1349,7 +1344,7 @@ void Molecule::delCycle(Cycle*const cy) throw(MoleExcept)
  */
 void Molecule::moveResidu(Residu& residu,
                           Molecule& molecule,
-                          const bool &delBonds) throw(MoleExcept)
+                          const bool &delBonds) 
 {
 
     // First check that the given residu is indeed in this molecule:
@@ -1510,7 +1505,7 @@ Residues.erase(respos);
 
 void Molecule::moveResidu(ResiduList& residuList,
                           Molecule& molecule,
-                          const bool &delBonds) throw(MoleExcept)
+                          const bool &delBonds) 
 {
 
 

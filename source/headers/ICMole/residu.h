@@ -23,7 +23,7 @@ struct HetData
 private:
     static std::map<std::string,HetData> HETClass;
     static bool rules_loaded;
-    static bool loadHETClass() throw(MoleExcept);
+    static bool loadHETClass() ;
 
     /*!< \brief List of atoms included in this residu */
     AtomList      atoms;
@@ -190,13 +190,13 @@ public:
 
    void setNum(const unsigned int& number){num=number;}
 
-   void checkResidu(bool wSetType=false) throw(MoleExcept);
+   void checkResidu(bool wSetType=false) ;
 
 
    void setHetData(HetData* const newHetData){hetdata=newHetData;}
    void setResiduType(const unsigned int& newResType ){resType=newResType;}
 
-   void applyResiduType(const std::string verbose="") throw(MoleExcept);
+   void applyResiduType(const std::string verbose="") ;
 
    Molecule * getParent() const {return molecule;}
 

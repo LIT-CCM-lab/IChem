@@ -37,14 +37,14 @@ Graph::~Graph()
 ///////////////////////////////////////////////////////////////////////////////
 
 /*!
-  * \fn Vertex&  Graph::addVertex(const double weight, const std::string label) throw(MoleExcept)
+  * \fn Vertex&  Graph::addVertex(const double weight, const std::string label) 
   * \param weight: Weight of the vertex- Default 1
   * \param label : Label of the vertex- Default empty
   * \brief Add the given vertex to the graph
   * \return The newly created vertex
   * \throw 1040101 Bad allocation exception
   */
-Vertex&  Graph::addVertex(const double &weight, const string &label) throw(MoleExcept)
+Vertex&  Graph::addVertex(const double &weight, const string &label) 
 {
     Vertex *vertex= (Vertex*)NULL;
     try{
@@ -68,7 +68,7 @@ Vertex&  Graph::addVertex(const double &weight, const string &label) throw(MoleE
  * \throw 1040102 : When bad allocation appends
  */
 
-void Graph::addVertexs(const unsigned int &N) throw(MoleExcept)
+void Graph::addVertexs(const unsigned int &N) 
 {
     if (N==0)return;
     if (N+vertexs.size() > vertexs.capacity()) vertexs.reserve(N+vertexs.size());
@@ -106,7 +106,7 @@ void Graph::addVertexs(const unsigned int &N) throw(MoleExcept)
   * \param with_maxnum : Update the maximum number for vertex (strong recommended)
   * \warning Will call cleanEdge() function even if the given vertex is not in the graph
   */
-void Graph::delVertex( Vertex *const vertex, const bool& with_maxnum) throw(MoleExcept)
+void Graph::delVertex( Vertex *const vertex, const bool& with_maxnum) 
 {
     try{
         if (vertex == (Vertex*)NULL)throw MoleExcept(1040301,"Graph::delVertex","No vertex given");
@@ -159,7 +159,7 @@ void Graph::delVertex( Vertex *const vertex, const bool& with_maxnum) throw(Mole
 }
 
 
-void Graph::delVertexs( VertexList& vertexsToDel, const bool& renum) throw(MoleExcept)
+void Graph::delVertexs( VertexList& vertexsToDel, const bool& renum) 
 {
     try{
 
@@ -237,7 +237,7 @@ void Graph::renumVertex()
  *  \throw 1040801- When pos is true and n is above the number of vertex in the graph
  *
  */
-const Vertex& Graph::getVertex(const size_t &n, const bool &pos) const throw(MoleExcept)
+const Vertex& Graph::getVertex(const size_t &n, const bool &pos) const 
 {
   if (pos)
     {
@@ -257,7 +257,7 @@ const Vertex& Graph::getVertex(const size_t &n, const bool &pos) const throw(Mol
 ///////////////////////////////////////////////////////////////////////////////
 
 /*!
-  * \fn Edge& Graph::addEdge(const Vertex &ve1,const Vertex &ve2) throw(MoleExcept)
+  * \fn Edge& Graph::addEdge(const Vertex &ve1,const Vertex &ve2) 
   * \param ve1 : First vertex of the edge
   * \param ve2 : Second vertex of the edge
   * \throw MoleExcept code 1040601 when ve1 and ve2 are the same vertex. Returns the last added edge
@@ -268,7 +268,7 @@ const Vertex& Graph::getVertex(const size_t &n, const bool &pos) const throw(Mol
   * Add an edge to edges list. <br/>
   * Each time a bond is added to a molecule, the edge associated to the bond is added to the graph associated to the molecule
   */
-Edge& Graph::addEdge(Vertex &vertex1, Vertex &vertex2) throw(MoleExcept)
+Edge& Graph::addEdge(Vertex &vertex1, Vertex &vertex2) 
 {
     Edge *ed=(Edge*)NULL;
     try
@@ -301,7 +301,7 @@ Edge& Graph::addEdge(Vertex &vertex1, Vertex &vertex2) throw(MoleExcept)
 
 
 
-void Graph::delEdge(const Edge* const edge) throw(MoleExcept)
+void Graph::delEdge(const Edge* const edge) 
 {
     if (edge == (Edge*)NULL) throw MoleExcept(1040701,"Graph::delEdge","No edge given");
     const unsigned int NumEd= edge->getNum();
@@ -344,7 +344,7 @@ void Graph::delEdge(const Edge* const edge) throw(MoleExcept)
 }
 
 
-void Graph::delEdge(const EdgeList& EdList) throw(MoleExcept)
+void Graph::delEdge(const EdgeList& EdList) 
 {
     const size_t n=EdList.size();
     for (size_t i=0; i < n; i++)
@@ -388,7 +388,7 @@ void Graph::delEdge(const EdgeList& EdList) throw(MoleExcept)
     if (maxNumEd >1|| zer==true) maxNumEd++;
 }
 
-/*! \fn void   Graph::delEdge  (const Edge&  ed) throw(MoleExcept)
+/*! \fn void   Graph::delEdge  (const Edge&  ed) 
   * \brief delete the given edge from this graph
   * \throw 1040301 - Given edge not part of this graph
   * \throw 1020101 when the given edge is not found in one of its two vertexs
@@ -398,7 +398,7 @@ void Graph::delEdge(const EdgeList& EdList) throw(MoleExcept)
   * The deletion of the edge automatically call delEdge() function of vertexs involved.
   * Also update the maxNumEd value
   */
-void  Graph::delEdge(const       Edge &  edge) throw(MoleExcept)
+void  Graph::delEdge(const       Edge &  edge) 
 {
   const unsigned int NumEd= edge.getNum();
 
@@ -523,7 +523,7 @@ double Graph::getDensity() const
 
 }
 
-const Edge& Graph::getEdge(const size_t &pos) const throw(MoleExcept)
+const Edge& Graph::getEdge(const size_t &pos) const 
 {
     if (pos >= edges.size())
         throw MoleExcept(1041001,

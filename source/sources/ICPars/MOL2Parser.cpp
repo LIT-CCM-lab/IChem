@@ -303,7 +303,7 @@ catch (MoleExcept &e)
 */
 void MoleReader::readMOL2Substruct(const unsigned int NbrSubst,
                                    Molecule& mole)
-throw(MoleExcept)
+
 {
 #ifdef ICHEM_DEBUG
     cout << "__________________________________________________"<<endl
@@ -474,7 +474,7 @@ throw(MoleExcept)
 
 
 void  MoleReader::readMOL2Atom(const unsigned int NbrAt,
-                               Molecule &mole) throw(MoleExcept)
+                               Molecule &mole) 
 {
 #ifdef ICHEM_DEBUG
     cout << "ICHEM_DEBUG|____________________________________________"<<endl
@@ -672,12 +672,12 @@ void  MoleReader::readMOL2Atom(const unsigned int NbrAt,
 
 
 
-/*! \fn void MoleReader::Read_MOL2_Bond(const unsigned int NbrBd, Molecule* mole) throw(MoleExcept)
+/*! \fn void MoleReader::Read_MOL2_Bond(const unsigned int NbrBd, Molecule* mole) 
 * \param NbrBd : Number of bonds to search
 * \param mole : Molecule to put atom in
 *
 */
-void MoleReader::readMOL2Bond(const unsigned int NbrBd, Molecule& mole) throw(MoleExcept)
+void MoleReader::readMOL2Bond(const unsigned int NbrBd, Molecule& mole) 
 {
 #ifdef ICHEM_DEBUG
     cout << "ICHEM_DEBUG|____________________________________________"<<endl

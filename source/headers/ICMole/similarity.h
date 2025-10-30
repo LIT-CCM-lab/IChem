@@ -24,7 +24,7 @@ public:
                    void  setRef(const Fingerprint& _f1);  /*!< \brief  Set a new fingerprint as reference */
                    void  setComp(const Fingerprint& _f2); /*!< \brief  Set a new fingerprint as comparison */
     inline         void  setWeight(std::vector<double> t) {weights=t;}  /*!< \brief  Set weights */
-                 double  Hamming() const throw(MoleExcept); /*!< \brief  Return the Hamming distance. Goes from infinity (dissimilar) to 0 (similar) for numeric fgp. n (dissimilar) to 0 (similar) for binary fingerprint */
+                 double  Hamming() const ; /*!< \brief  Return the Hamming distance. Goes from infinity (dissimilar) to 0 (similar) for numeric fgp. n (dissimilar) to 0 (similar) for binary fingerprint */
                  double  Tanimoto()const ;/*!< \brief  Return the Tanimoto value. Goes from 0 (dissimilar) to 1 (similar).*/
                  double  RTve() const;    /*!< \brief  Return the Ref Tversky value. Goes from 0 (dissimilar) to 1 (similar). */
                  double  FTve() const;    /*!< \brief  Return the Fit Tversky value. Goes from 0 (dissimilar) to 1 (similar). */

@@ -11,7 +11,7 @@ void IChemSwitch::helpBSAcalc() const
 
 
 
-void IChemSwitch::BSAcalc() const throw(MoleExcept)
+void IChemSwitch::BSAcalc() const 
 {
     const size_t InputSize = Input_Values.size();
     if (InputSize != 2)

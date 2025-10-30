@@ -221,7 +221,7 @@ void saveM( Graph& graph, const unsigned int N)
  * a scaffold, a substituent or a linker.
  *
  */
-void Molecule::ringPerception() throw(MoleExcept)
+void Molecule::ringPerception() 
 {
     if (typemol == MoleType::PROTEIN)
     {
@@ -603,7 +603,7 @@ void Molecule::addCycle(const AtomList &ListAt)
 
 
 
-void Molecule::checkMOL2() throw(MoleExcept)
+void Molecule::checkMOL2() 
 {
 
   for (ItCAtom itA = Atoms.begin(); itA != Atoms.end(); ++itA)
@@ -653,7 +653,7 @@ void Molecule::clear()
 void Molecule::selChains(const std::vector<std::string>& allowedchains,
                          const bool &delete_all,
                          const std::string& verbose
-                         ) throw(MoleExcept)
+                         ) 
 {
     const bool for_scPDB=!verbose.empty();
     if (for_scPDB) cout << verbose<<"|START\t"<<endl;
@@ -701,7 +701,7 @@ if (for_scPDB) cout << verbose<<"|END"<<endl;
  *
  */
 void Molecule::createConnect(ResiduList &failedRes, AtomList &failedAtom, const bool& cleanAll,
-                             const string& verbose)  throw(MoleExcept)
+                             const string& verbose)  
 {
     const bool wVerbose= !verbose.empty();
     bool useGrid=false;
@@ -899,7 +899,7 @@ size_t Nmade=0;
 
 }
 
-void Molecule::setResiduTypes(const string &verbose) throw(MoleExcept)
+void Molecule::setResiduTypes(const string &verbose) 
 {
     const bool wVerbose= !verbose.empty();
     if (wVerbose)cout << verbose<<"START"<<endl;
@@ -929,7 +929,7 @@ void Molecule::setResiduTypes(const string &verbose) throw(MoleExcept)
 
 
 
-void Molecule::matchTemplate(ResiduList& failedRes, AtomList& failedAtom, const string& verbose,const bool& applyMOL2type) throw(MoleExcept)
+void Molecule::matchTemplate(ResiduList& failedRes, AtomList& failedAtom, const string& verbose,const bool& applyMOL2type) 
 {
 
     const bool wVerbose= !verbose.empty();

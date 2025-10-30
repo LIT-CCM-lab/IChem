@@ -128,23 +128,23 @@ public :
     ///////////////////////
     void  createComplexBoxes  (Complex& complex,
                                const double& box_Step)
-    throw(MoleExcept);
+    ;
     void  createMolecularBoxes(Molecule& molecule,
                                const double& box_Step)
-    throw(MoleExcept);
+    ;
     void  createComplexBoxes  (Molecule&  protein,
                                Molecule & ligand,
                                const double & box_Step,
                                const Coords& box_size)
-    throw(MoleExcept);
+    ;
     void  createComplexBoxes  (Complex&  protein,
                                Molecule & ligand,
                                const double & box_Step,
                                const Coords& box_size)
-    throw(MoleExcept);
+    ;
     void createParentGrid(const Grid& grid,
                           const double&box_Step)
-    throw(MoleExcept);
+    ;
     ///////////////////////
     //////// UTILS ////////
     ///////////////////////
@@ -189,7 +189,7 @@ public :
     void colorCube(Molecule & mole,
                    const bool& withRotation=true,
                    const bool& withResSelRules=true,
-                   const bool& withBorder=false)throw(MoleExcept);
+                   const bool& withBorder=false);
     Box* getBox(const Coords& pos)const;
     void getAdjacentAtoms(std::vector<Atom*>& liste,const Box&  box, const double &dist,const bool &wHydrogen=false) const;
     void calcBSA(Molecule &protein, Molecule& ligand, double&bsa, double &volume_ligand);

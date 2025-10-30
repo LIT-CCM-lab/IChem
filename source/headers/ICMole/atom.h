@@ -95,7 +95,7 @@ private:
            Molecule *const parent,
            Residu *const res,
            const std::string& name,
-           const std::string& mol2t) throw(MoleExcept);
+           const std::string& mol2t);
 
     Atom(const std::string& atomicName,
          Molecule *const parent,
@@ -104,14 +104,14 @@ private:
          const double& y,
          const double& z,
          const std::string& name,
-         const std::string& mol2t) throw(MoleExcept);
+         const std::string& mol2t);
 
     Atom( const std::string& atomicName,
                 Molecule *const parent,
                 Residu *const res,
                 const Coords &coords,
                 const std::string& name,
-                const std::string& mol2t)  throw(MoleExcept);
+                const std::string& mol2t);
 
      Atom( Atom const &);// No definition
      Atom& operator=(Atom const &);// No definition
@@ -135,7 +135,7 @@ private:
      ////////////////////////////////////////////////
 
      void  addBond(Bond *const ed);
-     void  delBond(const Bond *const ed) throw(MoleExcept);
+     void  delBond(const Bond *const ed);
 
 
      void  setParent(  Molecule  *const parent  );
@@ -143,7 +143,7 @@ private:
 
      void setResidu(  Residu* const residu);
 
-     void loadAtomicData() throw(MoleExcept);
+     void loadAtomicData();
 
 
 public :
@@ -252,10 +252,10 @@ inline  void  setName         (const std::string& N) {         name=N;         }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-void checkMOL2type()                          throw(MoleExcept);
+void checkMOL2type();
 void setAtomicName(const std::string& nAtm);
 void setAtomicNum (const unsigned int& atomicNum);
-void setMOL2Type  (const std::string&  MOL2) throw(MoleExcept);
+void setMOL2Type  (const std::string&  MOL2);
 
 
 
@@ -280,7 +280,7 @@ void setMOL2Type  (const std::string&  MOL2) throw(MoleExcept);
 
 Residu* getResidu() const {return residu;}
 
-const std::string& getResiduName() const;
+const std::string getResiduName() const;
 
 
 
@@ -300,9 +300,9 @@ ItAtom            lastAtom() {return atomlinked.end();}
 ItCAtom            firstAtomC() {return atomlinked.begin();}
 ItCAtom            lastAtomC() {return atomlinked.end();}
 
-    const Atom& getAtomLinked(const size_t& pos)const throw(MoleExcept);
+const Atom& getAtomLinked(const size_t& pos) const; 
 
-    size_t getNumBond() const {return atomlinked.size();}
+size_t getNumBond() const {return atomlinked.size();}
 
 
 
@@ -311,18 +311,18 @@ ItCAtom            lastAtomC() {return atomlinked.end();}
 ///////////////////////////////////// BONDS ////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-      bool  hasBondWith(const Atom &ve) const;
-const Bond* getBondWith(Atom const &ve) const throw(MoleExcept);
-      void  cleanBond()                       throw(MoleExcept);
-      Bond*  getBond(const size_t& pos)const  throw(MoleExcept);
+bool  hasBondWith(const Atom &ve) const;
+const Bond* getBondWith(Atom const &ve) const;
+void  cleanBond();
+Bond*  getBond(const size_t& pos) const;
 
-      ItBond            first() {return links.begin();}
-      ItBond            last() {return links.end();}
+ItBond            first() {return links.begin();}
+ItBond            last() {return links.end();}
 
 
 
-      ItCBond            firstC() {return links.begin();}
-      ItCBond            lastC() {return links.end();}
+ItCBond            firstC() {return links.begin();}
+ItCBond            lastC() {return links.end();}
 
 
 
@@ -429,8 +429,8 @@ inline       double  getBcolor()        const       { return color[2];      }
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-    void addBox(const Grid* const grid,  Box* const box) throw(MoleExcept);
-    Box* getBox(const Grid * const grid) const throw(MoleExcept);
+    void addBox(const Grid* const grid,  Box* const box);
+    Box* getBox(const Grid * const grid) const;
     void delBox(Box* const box);
 
 

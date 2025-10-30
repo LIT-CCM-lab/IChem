@@ -94,7 +94,7 @@ void IChemSwitch::helpVolSite() const {
 
 // }
 
-void IChemSwitch::volsite() const throw(ICMole::MoleExcept)
+void IChemSwitch::volsite() const 
 {
     Complex cplx;
     MoleReader mread;

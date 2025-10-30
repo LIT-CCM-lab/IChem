@@ -16,7 +16,7 @@ void IChemSwitch::helpconvertCav() const
 
 }
 
-void IChemSwitch::convertCav() const throw(ICMole::MoleExcept)
+void IChemSwitch::convertCav() const 
 {
     MoleReader mread;
     Complex cplx;

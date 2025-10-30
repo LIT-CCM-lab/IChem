@@ -202,7 +202,7 @@ void  Residu::setUse  (const bool& newUse,
 
 
 
-void Residu::checkResidu(bool wSetType) throw(MoleExcept)
+void Residu::checkResidu(bool wSetType) 
 {
 
 
@@ -267,7 +267,7 @@ void Residu::loadRules(const bool& force)
 
 
 std::map<std::string,HetData> Residu::HETClass;
-bool Residu::loadHETClass() throw(MoleExcept)
+bool Residu::loadHETClass() 
 {
     if (!HETClass.empty()) return true;
     try
@@ -340,7 +340,7 @@ bool Residu::loadHETClass() throw(MoleExcept)
 
 
 
-void Residu::applyResiduType(const std::string verbose) throw(ICMole::MoleExcept)
+void Residu::applyResiduType(const std::string verbose) 
 {
     const bool wVerbose= !verbose.empty();
     map<string,HetData>::iterator itHET, itHET2;

@@ -49,7 +49,7 @@ void IChemSwitch::helpPatch() const
 {
 
 }
-void IChemSwitch::patch() const   throw(ICMole::MoleExcept)
+void IChemSwitch::patch() const   
 {
     const unsigned int InputSize = (unsigned int)Input_Values.size();
     if (InputSize !=10) {throw MoleExcept(9010301,"IChem::patch","Not enough parameters");}
