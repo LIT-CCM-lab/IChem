@@ -1284,23 +1284,51 @@ std::string ec::AES::Encrypt(std::string plaintext, std::string key, int keybits
 			tour++;
 		}
 
-		const unsigned char plaintextt[16] = {text[0],text[1],text[2],text[3],text[4],text[5],text[6],text[7],text[8],text[9],text[10],text[11],text[12],text[13],text[14],text[15]};
+		const unsigned char plaintextt[16] = {
+      (unsigned char)text[0], (unsigned char)text[1], (unsigned char)text[2], (unsigned char)text[3],
+      (unsigned char)text[4], (unsigned char)text[5], (unsigned char)text[6], (unsigned char)text[7],
+      (unsigned char)text[8], (unsigned char)text[9], (unsigned char)text[10], (unsigned char)text[11],
+      (unsigned char)text[12], (unsigned char)text[13], (unsigned char)text[14], (unsigned char)text[15]
+    };
 		unsigned char finale[16] = {0};
 
 		if(keybits == 128){
-			const unsigned char key2[16] = {key1[0],key1[1],key1[2],key1[3],key1[4],key1[5],key1[6],key1[7],key1[8],key1[9],key1[10],key1[11],key1[12],key1[13],key1[14],key1[15]};
+			const unsigned char key2[16] = {
+        (unsigned char)key1[0], (unsigned char)key1[1], (unsigned char)key1[2], (unsigned char)key1[3],
+        (unsigned char)key1[4], (unsigned char)key1[5], (unsigned char)key1[6], (unsigned char)key1[7],
+        (unsigned char)key1[8], (unsigned char)key1[9], (unsigned char)key1[10], (unsigned char)key1[11],
+        (unsigned char)key1[12], (unsigned char)key1[13], (unsigned char)key1[14], (unsigned char)key1[15]
+      };
+
 			unsigned long rk[44] = {0};
 			AESBEncrypt(rk, key2, 128);
 			AESEncrypt(rk, 10, plaintextt, finale);
 		}
 		else if(keybits == 192){
-			const unsigned char keyy[24] = {key[0],key[1],key[2],key[3],key[4],key[5],key[6],key[7],key[8],key[9],key[10],key[11],key[12],key[13],key[14],key[15],key[16],key[17],key[18],key[19],key[20],key[21],key[22],key[23]};
+			const unsigned char keyy[24] = {
+        (unsigned char)key[0],  (unsigned char)key[1],  (unsigned char)key[2],  (unsigned char)key[3],
+        (unsigned char)key[4],  (unsigned char)key[5],  (unsigned char)key[6],  (unsigned char)key[7],
+        (unsigned char)key[8],  (unsigned char)key[9],  (unsigned char)key[10], (unsigned char)key[11],
+        (unsigned char)key[12], (unsigned char)key[13], (unsigned char)key[14], (unsigned char)key[15],
+        (unsigned char)key[16], (unsigned char)key[17], (unsigned char)key[18], (unsigned char)key[19],
+        (unsigned char)key[20], (unsigned char)key[21], (unsigned char)key[22], (unsigned char)key[23]
+      };
+
 			unsigned long rk[52] = {0};
 			AESBEncrypt(rk, keyy, 192);
 			AESEncrypt(rk, 12, plaintextt, finale);
 		}
 		else if(keybits == 256){
-			const unsigned char keyy[32] = {key[0],key[1],key[2],key[3],key[4],key[5],key[6],key[7],key[8],key[9],key[10],key[11],key[12],key[13],key[14],key[15],key[16],key[17],key[18],key[19],key[20],key[21],key[22],key[23],key[24],key[25],key[26],key[27],key[28],key[29],key[30],key[31]};
+      const unsigned char keyy[32] = {
+        (unsigned char)key[0],  (unsigned char)key[1],  (unsigned char)key[2],  (unsigned char)key[3],
+        (unsigned char)key[4],  (unsigned char)key[5],  (unsigned char)key[6],  (unsigned char)key[7],
+        (unsigned char)key[8],  (unsigned char)key[9],  (unsigned char)key[10], (unsigned char)key[11],
+        (unsigned char)key[12], (unsigned char)key[13], (unsigned char)key[14], (unsigned char)key[15],
+        (unsigned char)key[16], (unsigned char)key[17], (unsigned char)key[18], (unsigned char)key[19],
+        (unsigned char)key[20], (unsigned char)key[21], (unsigned char)key[22], (unsigned char)key[23],
+        (unsigned char)key[24], (unsigned char)key[25], (unsigned char)key[26], (unsigned char)key[27],
+        (unsigned char)key[28], (unsigned char)key[29], (unsigned char)key[30], (unsigned char)key[31]
+      };
 			unsigned long rk[60] = {0};
 			AESBEncrypt(rk, keyy, 256);
 			AESEncrypt(rk, 14, plaintextt, finale);
@@ -1360,24 +1388,52 @@ std::string ec::AES::Decrypt(std::string text, std::string key, int keybits)
 			tour++;
 		}
 
-		const unsigned char ciphertextt[16] = {text[0],text[1],text[2],text[3],text[4],text[5],text[6],text[7],text[8],text[9],text[10],text[11],text[12],text[13],text[14],text[15]};
+		const unsigned char ciphertextt[16] = {
+      (unsigned char)text[0], (unsigned char)text[1], (unsigned char)text[2], (unsigned char)text[3],
+      (unsigned char)text[4], (unsigned char)text[5], (unsigned char)text[6], (unsigned char)text[7],
+      (unsigned char)text[8], (unsigned char)text[9], (unsigned char)text[10], (unsigned char)text[11],
+      (unsigned char)text[12], (unsigned char)text[13], (unsigned char)text[14], (unsigned char)text[15]
+    };
+
 		unsigned char finale[16] = {0};
 
 		if(keybits == 128){
-			const unsigned char key2[16] = {key1[0],key1[1],key1[2],key1[3],key1[4],key1[5],key1[6],key1[7],key1[8],key1[9],key1[10],key1[11],key1[12],key1[13],key1[14],key1[15]};
+      const unsigned char key2[16] = {
+        (unsigned char)key1[0], (unsigned char)key1[1], (unsigned char)key1[2], (unsigned char)key1[3],
+        (unsigned char)key1[4], (unsigned char)key1[5], (unsigned char)key1[6], (unsigned char)key1[7],
+        (unsigned char)key1[8], (unsigned char)key1[9], (unsigned char)key1[10], (unsigned char)key1[11],
+        (unsigned char)key1[12], (unsigned char)key1[13], (unsigned char)key1[14], (unsigned char)key1[15]
+      };
 			unsigned long rk[44] = {0};
 			AESBDecrypt(rk, key2, 128);
 			AESDecrypt(rk, 10, ciphertextt, finale);
 		}
 		else if(keybits == 192){
-			const unsigned char key2[24] = {key[0],key[1],key[2],key[3],key[4],key[5],key[6],key[7],key[8],key[9],key[10],key[11],key[12],key[13],key[14],key[15],key[16],key[17],key[18],key[19],key[20],key[21],key[22],key[23]};
+      const unsigned char key2[24] = {
+        (unsigned char)key[0], (unsigned char)key[1], (unsigned char)key[2], (unsigned char)key[3],
+        (unsigned char)key[4], (unsigned char)key[5], (unsigned char)key[6], (unsigned char)key[7],
+        (unsigned char)key[8], (unsigned char)key[9], (unsigned char)key[10], (unsigned char)key[11],
+        (unsigned char)key[12], (unsigned char)key[13], (unsigned char)key[14], (unsigned char)key[15],
+        (unsigned char)key[16], (unsigned char)key[17], (unsigned char)key[18], (unsigned char)key[19],
+        (unsigned char)key[20], (unsigned char)key[21], (unsigned char)key[22], (unsigned char)key[23]
+      };
 			unsigned long rk[52] = {0};
 			AESBDecrypt(rk, key2, 192);
 			AESDecrypt(rk, 12, ciphertextt, finale);
 		}
 		else if(keybits == 256){
-			const unsigned char key2[32] = {key[0],key[1],key[2],key[3],key[4],key[5],key[6],key[7],key[8],key[9],key[10],key[11],key[12],key[13],key[14],key[15],key[16],key[17],key[18],key[19],key[20],key[21],key[22],key[23],key[24],key[25],key[26],key[27],key[28],key[29],key[30],key[31]};
-			unsigned long rk[60] = {0};
+			const unsigned char key2[32] = {
+        (unsigned char)key[0], (unsigned char)key[1], (unsigned char)key[2], (unsigned char)key[3],
+        (unsigned char)key[4], (unsigned char)key[5], (unsigned char)key[6], (unsigned char)key[7],
+        (unsigned char)key[8], (unsigned char)key[9], (unsigned char)key[10], (unsigned char)key[11],
+        (unsigned char)key[12], (unsigned char)key[13], (unsigned char)key[14], (unsigned char)key[15],
+        (unsigned char)key[16], (unsigned char)key[17], (unsigned char)key[18], (unsigned char)key[19],
+        (unsigned char)key[20], (unsigned char)key[21], (unsigned char)key[22], (unsigned char)key[23],
+        (unsigned char)key[24], (unsigned char)key[25], (unsigned char)key[26], (unsigned char)key[27],
+        (unsigned char)key[28], (unsigned char)key[29], (unsigned char)key[30], (unsigned char)key[31]
+      };
+
+      unsigned long rk[60] = {0};
 			AESBDecrypt(rk, key2, 256);
 			AESDecrypt(rk, 14, ciphertextt, finale);
 		}

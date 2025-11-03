@@ -153,7 +153,7 @@ Coords Molecule::getalpha(const int residu, const bool& withH){
           n++;
         }
     }
-    //    return Coords(0,0,0);
+       return Coords(0,0,0);
 }
 
 void Molecule::getextrem(const bool& withH){
