@@ -1,10 +1,6 @@
-
 #include "headers/ICTools/switch.h"
 #include "headers/ICCalcs/interaction.h"
 #include "headers/ICMole/similarity.h"
-#include "headers/ICMole/fingerprint.h"
-
-
 using namespace std;
 using namespace ICMole;
 
@@ -58,18 +54,15 @@ void IChemSwitch::helpIFP() const
 
 
 
-void IChemSwitch::IFP() const 
+void IChemSwitch::IFP() const
 {
     const size_t InputSize = Input_Values.size();
     bool w_ref = false;
-
-    bool numeric = true;
-    unsigned int metric = 1;
-
-    if (InputSize == 3 || InputSize == 4) w_ref = true;
+    if (InputSize == 3) w_ref=true;
     if (InputSize != 2 && w_ref==false)
-        throw MoleExcept(9020101,"IChem::BSACalc", "Number of parameters must be 2 or 3 or 4");
-
+        throw MoleExcept(9020101,
+                         "IChem::BSACalc",
+                         "Number of parameters must be 2 or 3");
 
     // USER INPUTS :
     const std::string& fProtein = Input_Values.at(0);
@@ -117,53 +110,8 @@ void IChemSwitch::IFP() const
             else if (key.compare("-at_ArEF")  == 0) { changedist=true; atAe= atof(value.c_str());}
             else if (key.compare("-a_Pic")    == 0) { changedist=true; aPi = atof(value.c_str());}
             else if (key.compare("-at_Pic")   == 0) { changedist=true; atPi= atof(value.c_str());}
-
-            if (key.compare("-metric")    == 0) {
-            if (value == "TC") metric=1;
-            else if (value == "HM") metric=2;
-            else if (value == "RT") metric=3;
-            else if (value == "FT") metric=4;
-            else if (value == "DI") metric=5;
-            else if (value == "SO") metric=6;
-            else throw MoleExcept(9010402,"IChem::runFGPS","Unrecognized option for metric : "+value);
-            }
-            if (key.compare("--binary")==0) {numeric=false;}
         }
 //changedist=false;
-
-    if (Input_Values.size() == 4) {
-
-        const std::string& protein1 = Input_Values.at(0);
-        const std::string& ligand1  = Input_Values.at(1);
-        const std::string& protein2 = Input_Values.at(2);
-        const std::string& ligand2  = Input_Values.at(3);
-
-        try {
-            Fingerprint fp1 = Fingerprint::generateIFP(protein1, ligand1, numeric);
-            Fingerprint fp2 = Fingerprint::generateIFP(protein2, ligand2, numeric);
-
-            Similarity sim(fp1, fp2, numeric);
-            double value = 0.0;
-
-            switch (metric) {
-                case 1: value = sim.Tanimoto(); break;
-                case 2: value = sim.Hamming();  break;
-                case 3: value = sim.RTve();     break;
-                case 4: value = sim.FTve();     break;
-                case 5: value = sim.Dice();     break;
-                case 6: value = sim.Soergel();  break;
-            }
-
-            std::cout << fp1.getName() << "\t" << fp2.getName() << "\t" << value << std::endl;
-        }
-        catch (const MoleExcept& e) {
-            MoleExcept except = e;
-            except.addTrace("IChem::BSACalc, IFP for two complexes");
-            throw except;
-        }
-        exit(EXIT_SUCCESS);
-    }
-
     try{
         // PARAMETERS NEEDED FOR OUR WORK :
         Complex icomplex;
@@ -313,15 +261,15 @@ void IChemSwitch::IFP() const
             {
                 iread.loadInComplex(icomplex,MoleType::LIGAND); // Load molecules => LoadNextMolecules which calls readMOL2Atom method
 
-                if (icomplex.getMole(MoleType::LIGAND)==(Molecule*)NULL)
-                    throw MoleExcept(9020102, "IChem::BSACalc", "No ligand found in " + fLigand);
+                if (icomplex.getMole(MoleType::LIGAND)==(Molecule*)NULL) // Cannot be empty
+                    throw MoleExcept(9020102,
+                                     "IChem::BSACalc",
+                                     "No ligand found in "+fLigand);
 
                 Molecule &ligand = *icomplex.getMole(MoleType::LIGAND);
-                
-                Interactions ints(icomplex); // Init interactions
-
-                // If one argument of distance exist in the command, then changedist goes to true
-                // Add all the necessary distances, but should be just those which changed not reassigning everything
+                // icomplex.genGrid(1.5);
+                // icomplex.genGrid(4.5);
+                Interactions ints(icomplex);
                 if (changedist){
                     ints.setDist_H(dh);
                     ints.setDist_Hyd(dhy);
@@ -338,8 +286,6 @@ void IChemSwitch::IFP() const
                     ints.setAngl_Tol_PICation(atPi);
                     ints.setDist_PICation(dpi);
                 }
-
-                
                 InterResults interRes;
                 InterResults osef;
                 ligand.checkMOL2();
