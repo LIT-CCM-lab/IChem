@@ -59,6 +59,6 @@ release_job:
       --name "IChem $CI_COMMIT_TAG" \
       --tag-name "$CI_COMMIT_TAG" \
       --description "Automated build for commit $CI_COMMIT_SHA  Pipeline: $CI_PIPELINE_URL" \
-      --assets-link "{\"name\":\"IChem (RHEL UBI 8.8)\",\"url\":\"$CI_PROJECT_URL/-/jobs/artifacts/$CI_COMMIT_TAG/raw/IChem_ubi?job=build_all\"}" \
+      --assets-link "{\"name\":\"IChem (RHEL_UBI_8.8)\",\"url\":\"$CI_PROJECT_URL/-/jobs/artifacts/$CI_COMMIT_TAG/raw/IChem_ubi?job=build_all\"}" \
       --assets-link "{\"name\":\"IChem (Ubuntu_22.04)\",\"url\":\"$CI_PROJECT_URL/-/jobs/artifacts/$CI_COMMIT_TAG/raw/IChem_ubuntu?job=build_all\"}" \
       --assets-link "{\"name\":\"IChem (Debian_12)\",\"url\":\"$CI_PROJECT_URL/-/jobs/artifacts/$CI_COMMIT_TAG/raw/IChem_debian?job=build_all\"}"
