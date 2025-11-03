@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - The function setAngl_Tol_AromEF() instanciating AngT_AromFF instead of AngT_AromEF
     - Bond::Bond() destructor, no throwing errors and redirect the logs into the error standard
     - Atom::getResiduName() returns invalid reference, fixed
+    - Warning implicit conversion from char to unsigned corrected
+    - Return default value added in function Molecule::getalpha()
 
 
 
