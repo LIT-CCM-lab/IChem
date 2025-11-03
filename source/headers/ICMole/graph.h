@@ -29,14 +29,14 @@ public:
   ////// Destructors :
       ~Graph();
   ////// Vertex :
-      Vertex& addVertex(const double &weight=1, const std::string &label="") throw(MoleExcept);
-        void  addVertexs(const unsigned int &NtoAdd)                         throw(MoleExcept);
-        void  delVertex( Vertex *const vertex, const bool& with_maxnum=true)  throw(MoleExcept);
-        void  delVertexs( VertexList& vertexs, const bool& renum=true)       throw(MoleExcept);
+      Vertex& addVertex(const double &weight=1, const std::string &label="") ;
+        void  addVertexs(const unsigned int &NtoAdd)                         ;
+        void  delVertex( Vertex *const vertex, const bool& with_maxnum=true)  ;
+        void  delVertexs( VertexList& vertexs, const bool& renum=true)       ;
         void  renumVertex();
         void  reserveVertex(const size_t& size){vertexs.reserve(size);}
         void  reserveEdges(const size_t& size){edges.reserve(size);}
-const Vertex& getVertex(const size_t &n,const bool &pos=true) const    throw(MoleExcept);
+const Vertex& getVertex(const size_t &n,const bool &pos=true) const    ;
 unsigned int  getMaxNumVert()   const  {return maxNumVe;}                                       /*!< \brief Return the maximal Num for Vertexs */
 size_t  numVertex()       const  {return vertexs.size();}                   /*!< \brief Return the number of vertex in this graph */
         ItVert firstVertex() {return vertexs.begin();}
@@ -44,13 +44,13 @@ size_t  numVertex()       const  {return vertexs.size();}                   /*!<
         void clear();
 
   ////// Edge :
-        Edge& addEdge( Vertex &vertex1, Vertex &vertex2) throw(MoleExcept);
-        void  delEdge(const Edge* const   edge)          throw(MoleExcept);
-        void  delEdge(const   EdgeList& EdList)          throw(MoleExcept);
-        void  delEdge(const       Edge &  edge)          throw(MoleExcept);
+        Edge& addEdge( Vertex &vertex1, Vertex &vertex2) ;
+        void  delEdge(const Edge* const   edge)          ;
+        void  delEdge(const   EdgeList& EdList)          ;
+        void  delEdge(const       Edge &  edge)          ;
         void  renumEdge();
 unsigned int  getMaxNumEdge()   const  {return maxNumEd;}                       /*!< \brief Return the maximal Num for edges */
-const Edge& getEdge(const size_t &pos) const throw(MoleExcept);
+const Edge& getEdge(const size_t &pos) const ;
 size_t numEdges()        const  {return edges.size();}     /*!< \brief Return the number of edges in this graph */
 ItEdge firstEdge() {return edges.begin();}
 ItEdge lastEdge() {return edges.end();}

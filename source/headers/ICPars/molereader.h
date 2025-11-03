@@ -51,17 +51,17 @@ namespace ICMole
     bool open();
     void close();
     void getLine(std::string &ligne) ;
-    void readMOL2Substruct(const unsigned int NbrSubst, Molecule& mole) throw(MoleExcept);
-    void readMOL2Atom(const unsigned int NbrAt,Molecule &mole) throw(MoleExcept);
-    void readMOL2Bond(const unsigned int NbrBd, Molecule& mole) throw(MoleExcept);
+    void readMOL2Substruct(const unsigned int NbrSubst, Molecule& mole) ;
+    void readMOL2Atom(const unsigned int NbrAt,Molecule &mole) ;
+    void readMOL2Bond(const unsigned int NbrBd, Molecule& mole) ;
     void tokenize( const std::string& str,std:: map<std::string,std::string>& tokens);
 
 public:
     MoleReader();
 
-    MoleReader(const std::vector<std::string> &linefile, const unsigned int& fformat=FileFormat::UNDEFINED) throw(MoleExcept);
+    MoleReader(const std::vector<std::string> &linefile, const unsigned int& fformat=FileFormat::UNDEFINED) ;
 
-    MoleReader( const std::string& filename, const unsigned int& fformat=FileFormat::UNDEFINED) throw(MoleExcept);
+    MoleReader( const std::string& filename, const unsigned int& fformat=FileFormat::UNDEFINED) ;
     
     // Mol2 is  integer 10001
     unsigned int get_format_file() {
@@ -69,13 +69,13 @@ public:
     }
     const bool& isEOF() const {return EOFile;}
 
-    void loadNewFile( const std::string& filename, const unsigned int& fformat=FileFormat::UNDEFINED, const bool &with_split=false) throw(MoleExcept);
+    void loadNewFile( const std::string& filename, const unsigned int& fformat=FileFormat::UNDEFINED, const bool &with_split=false) ;
 
     void loadNextMolecule(Molecule &molecule, const unsigned int& typeMole=MoleType::UNDEFINED);
 
     void loadInComplex(Complex &cp, const unsigned int& TypeMol);
 
-    void loadPDB(Molecule& molecule,const unsigned int& TypeMol) throw(MoleExcept);
+    void loadPDB(Molecule& molecule,const unsigned int& TypeMol) ;
 
     size_t getNumMolecules();
 

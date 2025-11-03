@@ -24,7 +24,7 @@ void IChemSwitch::helpUtils() const {
 }
 
 
-void IChemSwitch::utils() const throw(MoleExcept)
+void IChemSwitch::utils() const 
 {
     const size_t InputSize = Input_Values.size();
     if (InputSize < 3 || InputSize > 4)

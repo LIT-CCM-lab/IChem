@@ -87,7 +87,7 @@ public:
     void  operator-= (const Coords &coords);
     void  operator+= (const Coords &coords);
     void  operator*= (const Coords &coords);
-    void  operator/= (const Coords &coords) throw(MoleExcept);
+    void  operator/= (const Coords &coords) ;
     bool  operator== (const Coords& coords) const;
     bool  operator!= (const Coords& coords) const;
 
@@ -149,7 +149,7 @@ void normalize();
       *  \param a : The scalar
       *  \throw MoleExcept : when the scalar equals 0
       */
-    template < typename T > friend  void operator/=( Coords &c, const T &a) throw(MoleExcept)
+    template < typename T > friend  void operator/=( Coords &c, const T &a) 
     {
         if (a ==0 ) throw MoleExcept(1010201,"Coords::operator/=","a is equal to 0");
 
@@ -211,7 +211,7 @@ void normalize();
        *  \param c : The object to divide by
        *  \param a : The scalar
        */
-    template < typename T > friend  Coords operator/(const Coords &c, const T &a) throw(MoleExcept)
+    template < typename T > friend  Coords operator/(const Coords &c, const T &a) 
     {
         if (a==0) throw MoleExcept(1010301,"Coords::operator/","a is equal to 0");
         return Coords(c.x/a, c.y/a,c.z/a);

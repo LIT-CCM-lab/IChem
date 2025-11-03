@@ -39,7 +39,7 @@ void IChemSwitch::helpRealign() const {
         << endl;
 }
 
-void IChemSwitch::realign() const throw(MoleExcept)
+void IChemSwitch::realign() const 
 {
     const unsigned int InputSize = (unsigned int)Input_Values.size();
     if (InputSize < 2) throw MoleExcept(9010601,"IChem::Rotamole","Not enough parameters");

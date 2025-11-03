@@ -1,0 +1,94 @@
+Ligand 1 with name NONAME.**** from file: atomprops-test-data/methylammonium.mol2
+
+ATOM 	C    |1    |TMP   0-XX
+	 type: C.3
+	 props : Apolar
+	 charge: 0
+
+ATOM 	H1   |2    |TMP   0-XX
+	 type: H
+	 props : 
+	 charge: 0
+
+ATOM 	H2   |3    |TMP   0-XX
+	 type: H
+	 props : 
+	 charge: 0
+
+ATOM 	N3   |4    |TMP   0-XX
+	 type: N.4
+	 props : Cation
+	 charge: 0
+
+ATOM 	H31  |5    |TMP   0-XX
+	 type: H
+	 props : 
+	 charge: 0
+
+ATOM 	H32  |6    |TMP   0-XX
+	 type: H
+	 props : 
+	 charge: 0
+
+ATOM 	H33  |7    |TMP   0-XX
+	 type: H
+	 props : 
+	 charge: 0
+
+ATOM 	H4   |8    |TMP   0-XX
+	 type: H
+	 props : 
+	 charge: 0
+
+Ligand 2 with name NONAME.**** from file: atomprops-test-data/pyrrole.mol2
+
+ATOM 	C    |1    |TMP   0-XX
+	 type: C.2
+	 props : Apolar
+	 charge: 0
+
+ATOM 	H    |2    |TMP   0-XX
+	 type: H
+	 props : 
+	 charge: 0
+
+ATOM 	C    |3    |TMP   0-XX
+	 type: C.2
+	 props : Apolar
+	 charge: 0
+
+ATOM 	H    |4    |TMP   0-XX
+	 type: H
+	 props : 
+	 charge: 0
+
+ATOM 	C    |5    |TMP   0-XX
+	 type: C.2
+	 props : Apolar
+	 charge: 0
+
+ATOM 	H    |6    |TMP   0-XX
+	 type: H
+	 props : 
+	 charge: 0
+
+ATOM 	N    |7    |TMP   0-XX
+	 type: N.pl3
+	 props : 
+	 charge: 0
+
+ATOM 	H    |8    |TMP   0-XX
+	 type: H
+	 props : 
+	 charge: 0
+
+ATOM 	C    |9    |TMP   0-XX
+	 type: C.2
+	 props : Apolar|MetalAcceptor
+	 charge: 0
+
+ATOM 	H    |10   |TMP   0-XX
+	 type: H
+	 props : MetalAcceptor
+	 charge: 0
+

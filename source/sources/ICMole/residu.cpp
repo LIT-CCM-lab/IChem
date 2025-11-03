@@ -202,7 +202,7 @@ void  Residu::setUse  (const bool& newUse,
 
 
 
-void Residu::checkResidu(bool wSetType) throw(MoleExcept)
+void Residu::checkResidu(bool wSetType) 
 {
 
 
@@ -243,28 +243,31 @@ void Residu::loadRules(const bool& force)
             Rules[I][J]=MoleType::UNDEFINED;
         }
     }
-    Rules[MoleType::PROTEIN][ResType::STD_AA  ]=MoleType::PROTEIN;
-    Rules[MoleType::PROTEIN][ResType::MOD_AA  ]=MoleType::PROTEIN;
-    Rules[MoleType::PROTEIN][ResType::METAL   ]=MoleType::PROTEIN;
-    Rules[MoleType::PROTEIN][ResType::WATER   ]=MoleType::UNDEFINED;
-    Rules[MoleType::PROTEIN][ResType::COFACTOR]=MoleType::UNDEFINED;
-    Rules[MoleType::PROTEIN][ResType::NUCLEIC ]=MoleType::UNDEFINED;
-    Rules[MoleType::LIGAND] [ResType::STD_AA  ]=MoleType::LIGAND;
-    Rules[MoleType::LIGAND] [ResType::MOD_AA  ]=MoleType::LIGAND;
-    Rules[MoleType::LIGAND] [ResType::SUGAR   ]=MoleType::LIGAND;
-    Rules[MoleType::LIGAND] [ResType::ORGANOMET]=MoleType::LIGAND;
-    Rules[MoleType::LIGAND] [ResType::UNWANTED]=MoleType::LIGAND;
-    Rules[MoleType::LIGAND] [ResType::LIGAND  ]=MoleType::LIGAND;
-    Rules[MoleType::LIGAND] [ResType::COFACTOR]=MoleType::LIGAND;
-    Rules[MoleType::LIGAND] [ResType::UNKNOWN ]=MoleType::LIGAND;
-    Rules[MoleType::COFACTOR] [ResType::COFACTOR ]=MoleType::LIGAND;
-    Rules[MoleType::NUCLEIC][ResType::NUCLEIC ]=MoleType::UNDEFINED;
+    Rules[MoleType::PROTEIN][ResType::STD_AA  ] = MoleType::PROTEIN;
+    Rules[MoleType::PROTEIN][ResType::MOD_AA  ] = MoleType::PROTEIN;
+    Rules[MoleType::PROTEIN][ResType::METAL   ]= MoleType::PROTEIN;
+    
+    Rules[MoleType::PROTEIN][ResType::WATER   ] = MoleType::UNDEFINED;
+    Rules[MoleType::PROTEIN][ResType::COFACTOR] = MoleType::UNDEFINED;
+    Rules[MoleType::PROTEIN][ResType::NUCLEIC ] = MoleType::UNDEFINED;
+
+    Rules[MoleType::LIGAND] [ResType::STD_AA  ] = MoleType::LIGAND;
+    Rules[MoleType::LIGAND] [ResType::MOD_AA  ] = MoleType::LIGAND;
+    Rules[MoleType::LIGAND] [ResType::SUGAR   ] = MoleType::LIGAND;
+    Rules[MoleType::LIGAND] [ResType::ORGANOMET] = MoleType::LIGAND;
+    Rules[MoleType::LIGAND] [ResType::UNWANTED] = MoleType::LIGAND;
+    Rules[MoleType::LIGAND] [ResType::LIGAND  ] = MoleType::LIGAND;
+    Rules[MoleType::LIGAND] [ResType::COFACTOR] = MoleType::LIGAND;
+    Rules[MoleType::LIGAND] [ResType::UNKNOWN ] = MoleType::LIGAND;
+
+    Rules[MoleType::COFACTOR] [ResType::COFACTOR ] = MoleType::LIGAND;
+    Rules[MoleType::NUCLEIC][ResType::NUCLEIC ] = MoleType::UNDEFINED;
 
 }
 
 
 std::map<std::string,HetData> Residu::HETClass;
-bool Residu::loadHETClass() throw(MoleExcept)
+bool Residu::loadHETClass() 
 {
     if (!HETClass.empty()) return true;
     try
@@ -337,15 +340,16 @@ bool Residu::loadHETClass() throw(MoleExcept)
 
 
 
-void Residu::applyResiduType(const std::string verbose)
-throw(ICMole::MoleExcept)
+void Residu::applyResiduType(const std::string verbose) 
 {
     const bool wVerbose= !verbose.empty();
     map<string,HetData>::iterator itHET, itHET2;
 
     try
     {
-        if (Residu::HETClass.empty()) Residu::loadHETClass();
+        if (Residu::HETClass.empty()) {
+            Residu::loadHETClass();
+        }
     }
     catch (MoleExcept &e)
     {
@@ -358,9 +362,7 @@ throw(ICMole::MoleExcept)
 
     if (itHET == HETClass.end())
     {
-        const string error = verbose+
-                "|ERROR\tNO DATA FOUND FOR : "+
-                identifier;
+        const string error = verbose+ "|ERROR\tNO DATA FOUND FOR : "+ identifier;
         switch (Moleaccess)
         {
         case Levels::NOTICE:cout<<error<<endl;return;break;
@@ -370,12 +372,12 @@ throw(ICMole::MoleExcept)
             break;
         }// END SWITCH
     }// END it END CLASS
+
+
     // Checking if name has been replace by a new one
     if ((*itHET).second.HETreplace != "")
     {
-        if (wVerbose) cout << verbose
-                           <<"|REPLAC\t"
-                          <<(*itHET).second.HETreplace<<"\n";
+        if (wVerbose) cout << verbose <<"|REPLAC\t"  <<(*itHET).second.HETreplace<<"\n";
         // So we search for the new one
         itHET2 =HETClass.find((*itHET).second.HETreplace);
 
@@ -419,12 +421,14 @@ throw(ICMole::MoleExcept)
     {
         hetdata=&(*itHET).second;
         resType=(*itHET).second.ResT;
-#ifdef ICHEM_DEBUG
-        cout << "ICHEM_DEBUG|"<<verbose
-             <<"|RESIDU\t"<<identifier
+        //  cout << "ICHEM_DEBUG: No replacement, ResT = " << resType << endl; // residue type = 5 here
+
+        #ifdef ICHEM_DEBUG
+            cout << "ICHEM_DEBUG|"<<verbose
+            <<"|RESIDU\t"<<identifier
             << "\t"<<(*itHET).second.ResT
             << " " << getLongName()<<endl;
-#endif
+        #endif
     }// END ELSE
 
 

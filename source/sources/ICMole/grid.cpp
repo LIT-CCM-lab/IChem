@@ -172,7 +172,7 @@ void Grid::prepareMatrix(const Coords& center,
  * @param complex : Complex to create the grid over
  * @param box_Step : Length of each box
  */
-void  Grid::createComplexBoxes (Complex& complex, const double& box_Step) throw(MoleExcept)
+void  Grid::createComplexBoxes (Complex& complex, const double& box_Step) 
 {
 
     if (box_Step <= 0)
@@ -392,7 +392,7 @@ void  Grid::createComplexBoxes  (Complex&  protein,
                                  Molecule & ligand,
                                  const double & box_Step,
                                  const Coords& box_size)
-throw(MoleExcept)
+
 {
     boxStep=box_Step;
 
@@ -489,7 +489,7 @@ throw(MoleExcept)
 void  Grid::createComplexBoxes  (Molecule&  protein,
                                  Molecule & ligand,
                                  const double & box_Step,
-                                 const Coords& box_size) throw(MoleExcept)
+                                 const Coords& box_size) 
 {
     if (protein.numAtom() == 0)
         throw MoleExcept(1120201,
@@ -573,7 +573,7 @@ void  Grid::createComplexBoxes  (Molecule&  protein,
  *  @throw 1120303 - Selection rules for this molecule is set to 'ignore'
  *  @throw 1120303 - Not enough boxes on one axis. Minimal value is 5.
  */
-void  Grid::createMolecularBoxes(Molecule& molecule,const double& box_Step) throw(MoleExcept)
+void  Grid::createMolecularBoxes(Molecule& molecule,const double& box_Step) 
 {
     if (molecule.numAtom() == 0)
         throw MoleExcept(1120301,
@@ -882,7 +882,7 @@ void Grid::genBoxes(const double& dist1,
 
 
 
-void Grid::createParentGrid(const Grid& grid, const double&box_Step) throw(MoleExcept)
+void Grid::createParentGrid(const Grid& grid, const double&box_Step) 
 {
 
     if (fmod(box_Step,grid.boxStep) != 0)
@@ -1765,7 +1765,7 @@ void Grid::rotateMole(Molecule & mole,
 void Grid::colorCube(Molecule & mole,
                      const bool& withRotation,
                      const bool& withResSelRules,
-                     const bool& withBorder)throw(MoleExcept)
+                     const bool& withBorder)
 {
     if (AllBoxes.size() ==0)
     {

@@ -51,7 +51,7 @@ class PDBConvert
 public:
     static bool for_scPDB;
 
-    void loadPDB(const std::string& Path) throw(ICMole::MoleExcept);
+    void loadPDB(const std::string& Path) ;
     void harmonizeSizeLine(const size_t& length=80);
     void changeMSEtoMET();
     void changeCSEtoCYS();

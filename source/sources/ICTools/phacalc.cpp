@@ -16,7 +16,7 @@ void IChemSwitch::helpPharma() const
 
 }
 
-void IChemSwitch::pharma() const throw(ICMole::MoleExcept)
+void IChemSwitch::pharma() const 
 {
     Complex cplx;
     MoleReader mread;

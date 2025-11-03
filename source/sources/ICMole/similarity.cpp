@@ -3,7 +3,6 @@
 #include "headers/ICMole/similarity.h"
 
 
-
 using namespace ICMole;
 using namespace std;
 
@@ -21,7 +20,7 @@ void Similarity::setComp(const Fingerprint& comp){ Comp = &comp;}
 
 
 
-double Similarity::Hamming() const throw(MoleExcept)
+double Similarity::Hamming() const 
     {
         bool weight=false;
         if (Ref->bit_size != Comp->bit_size) throw MoleExcept(1140101,"Similarity::Hamming","Reference and comparison fingerprint are not the same size");

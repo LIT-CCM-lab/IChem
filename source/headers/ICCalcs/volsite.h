@@ -96,13 +96,13 @@ public:
 #ifdef ICHEM_DEBUG
     Grid &grid;
 #endif
-    VolSite(Complex &cp, const double &boxStep=1.5, const int proj_lens=8, bool def_alternative =false) throw(MoleExcept); // ppi
-    VolSite(Complex &cp, Molecule &ligand,   const double &boxStep=1.5, const Coords& box_size=Coords(20,20,20), const int proj_lens=8, bool def_alternative =false) throw(MoleExcept);
+    VolSite(Complex &cp, const double &boxStep=1.5, const int proj_lens=8, bool def_alternative =false) ; // ppi
+    VolSite(Complex &cp, Molecule &ligand,   const double &boxStep=1.5, const Coords& box_size=Coords(20,20,20), const int proj_lens=8, bool def_alternative =false) ;
 
-    VolSite(Molecule &protein, Molecule &ligand, Grid &grid, const double &boxStep=1.5, const Coords& box_size=Coords(20,20,20), const int proj_lens=8, bool def_alternative =false) throw(MoleExcept); //voslite
-    VolSite(Molecule &molecule, Grid &grid, const double &boxStep=1.5, const int proj_lens=8, bool def_alternative =false) throw(MoleExcept); // scoring
+    VolSite(Molecule &protein, Molecule &ligand, Grid &grid, const double &boxStep=1.5, const Coords& box_size=Coords(20,20,20), const int proj_lens=8, bool def_alternative =false) ; //voslite
+    VolSite(Molecule &molecule, Grid &grid, const double &boxStep=1.5, const int proj_lens=8, bool def_alternative =false) ; // scoring
 
-    void treatments(unsigned int minNeighbors=9,const double dist_prot=2.5,bool siteout=false) throw(MoleExcept);
+    void treatments(unsigned int minNeighbors=9,const double dist_prot=2.5,bool siteout=false) ;
     void KmeansPHA(int nb_clust, bool prop=false);
     void clusterCAV(const int &min_proj=40);
     void clusterPHA(int i, int j, int k);

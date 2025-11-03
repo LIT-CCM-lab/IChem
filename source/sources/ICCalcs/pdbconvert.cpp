@@ -39,7 +39,7 @@ void findAndReplace( std::string& ligne, const string& from, const string& to)
  *
  */
 void PDBConvert::loadPDB(const std::string& Path)
-throw(ICMole::MoleExcept)
+
 {
     unsigned short nmodel=0;
     filelines.clear();

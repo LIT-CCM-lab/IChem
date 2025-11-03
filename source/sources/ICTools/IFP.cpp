@@ -54,7 +54,7 @@ void IChemSwitch::helpIFP() const
 
 
 
-void IChemSwitch::IFP() const throw(MoleExcept)
+void IChemSwitch::IFP() const
 {
     const size_t InputSize = Input_Values.size();
     bool w_ref = false;

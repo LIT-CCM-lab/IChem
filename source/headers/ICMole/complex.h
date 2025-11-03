@@ -44,13 +44,13 @@ public:
 
     Complex();
     ~Complex();
-    void addMolecule(Molecule *const molecule) throw(MoleExcept);
-    size_t getNumMolecule(const unsigned int &MoleType) const throw(MoleExcept);
+    void addMolecule(Molecule *const molecule) ;
+    size_t getNumMolecule(const unsigned int &MoleType) const ;
     size_t getNumMolecule() const;
     Molecule * getMole(const size_t& MoleType )const {return lastmolecule[MoleType];}
-    void  clear() throw (MoleExcept);
-    void  deleteMole(Molecule *const molecule) throw(MoleExcept);
-    void removeMole(Molecule *const molecule) throw(MoleExcept);
+    void  clear() ;
+    void  deleteMole(Molecule *const molecule) ;
+    void removeMole(Molecule *const molecule) ;
     bool isMoleIn(Molecule* const molecule) const;
     bool isMoleIn(const Molecule&  molecule) const;
 
@@ -58,15 +58,15 @@ public:
 
     void updateMoleType(Molecule* const molecule,const unsigned int & type);
 
-    void addAtom  ( Atom*   const atom  ) throw(MoleExcept);
-    void addBond  ( Bond*   const bond  ) throw(MoleExcept);
-    void addResidu( Residu* const residu) throw(MoleExcept);
-    void addChain (Chain * const chain ) throw(MoleExcept);
+    void addAtom  ( Atom*   const atom  ) ;
+    void addBond  ( Bond*   const bond  ) ;
+    void addResidu( Residu* const residu) ;
+    void addChain (Chain * const chain ) ;
 
-    void deleteAtom  (const Atom*   const atom  ) throw(MoleExcept);
-    void deleteBond  (const Bond*   const bond  ) throw(MoleExcept);
-    void deleteResidu(const Residu* const residu) throw(MoleExcept);
-    void deleteChain (const Chain*  const chain ) throw(MoleExcept);
+    void deleteAtom  (const Atom*   const atom  ) ;
+    void deleteBond  (const Bond*   const bond  ) ;
+    void deleteResidu(const Residu* const residu) ;
+    void deleteChain (const Chain*  const chain ) ;
 
     ItCAtom firstAtom() const {return atomlist.begin();}
     ItCAtom lastAtom()  const {return atomlist.end();}
@@ -85,7 +85,7 @@ public:
 
     ItCRes firstResidu() const {return residulist.begin();}
     ItCRes lastResidu() const {return residulist.end();}
-    Grid& genGrid(const double& boxStep, const bool &wHydrogen=false) throw(MoleExcept);
+    Grid& genGrid(const double& boxStep, const bool &wHydrogen=false) ;
     void clearGrid();
     int getMaxGrid() const;
     Grid& getGrid(const unsigned short& n) {return grid[n];}
@@ -93,9 +93,9 @@ public:
     size_t numResidu() const {return residulist.size();}
     Molecule& getMoleAtPos(const size_t& pos) const {return * allmolecules.at(pos);}
 
-    void splitMoleculeInToComplex(Molecule &molecule,const std::string &verbose="") throw(ICMole::MoleExcept);
+    void splitMoleculeInToComplex(Molecule &molecule,const std::string &verbose="") ;
     std::string toString() const;
-    void selectWater(const std::string &verbose="")  throw(MoleExcept);
+    void selectWater(const std::string &verbose="")  ;
     void selectLigand(const std::string& PDB_DIR, const ResiduList& failedRes,const AtomList& failedAtm, const std::string &verbose="", const bool &wUnDrugg=false);
     template <class IT,class BA> double calcMoleSmallDist(const IT& ref, const BA& comp, const double& best_dist, const bool& wHydrogen=false) const;
 template<class BA> bool calcSmallDist(const Molecule& ref, const BA& comp, const double& best_dist, const bool& wHydrogen=false) ;

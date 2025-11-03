@@ -59,7 +59,7 @@ void Complex::clearGrid()
  * will be stored (but not own) within the complex.
  *
  */
-void Complex::addMolecule(Molecule *const molecule) throw(MoleExcept)
+void Complex::addMolecule(Molecule *const molecule) 
 {
     allmolecules.push_back(molecule);
     molecules[molecule->getMoleType()].push_back(molecule);
@@ -85,7 +85,7 @@ void Complex::addMolecule(Molecule *const molecule) throw(MoleExcept)
   * @param MoleType : Type of molecule you want the count of
   * @return Number of molecuels of this molecular type
   */
-size_t Complex::getNumMolecule(const unsigned int &MoleType) const throw(MoleExcept)
+size_t Complex::getNumMolecule(const unsigned int &MoleType) const 
 {
     if (MoleType >NB_MOLETYPE )
         throw MoleExcept(1100101,
@@ -115,7 +115,7 @@ size_t Complex::getNumMolecule() const
  * @brief Complex::clear
  * Delete all molecules within this complex
  */
-void  Complex::clear() throw (MoleExcept)
+void  Complex::clear()
 {
     for (ItMole it = allmolecules.begin(); it != allmolecules.end();++it)
         delete (*it);
@@ -133,7 +133,7 @@ void  Complex::clear() throw (MoleExcept)
 }
 
 
-void  Complex::deleteMole(Molecule *const molecule) throw(MoleExcept)
+void  Complex::deleteMole(Molecule *const molecule) 
 {
     if (molecule == (Molecule*)NULL)
         throw MoleExcept(1100701,
@@ -170,7 +170,7 @@ void  Complex::deleteMole(Molecule *const molecule) throw(MoleExcept)
 }
 
 
-void  Complex::removeMole(Molecule *const molecule) throw(MoleExcept)
+void  Complex::removeMole(Molecule *const molecule) 
 {
     if (molecule == (Molecule*)NULL)
         throw MoleExcept(1100701,
@@ -277,7 +277,7 @@ void Complex::loadData(const bool& only_used)
 
 
 
-void Complex::addAtom( Atom* const atom) throw(MoleExcept)
+void Complex::addAtom( Atom* const atom) 
 {
     if (atom == (Atom*)NULL) throw MoleExcept(1100301,
                                               "Complex::addAtom"
@@ -287,7 +287,7 @@ void Complex::addAtom( Atom* const atom) throw(MoleExcept)
 }
 
 
-void Complex::addBond( Bond* const bond) throw(MoleExcept)
+void Complex::addBond( Bond* const bond) 
 {
     if (bond == (Bond*)NULL) throw MoleExcept(1100401,
                                               "Complex::addBond"
@@ -296,7 +296,7 @@ void Complex::addBond( Bond* const bond) throw(MoleExcept)
     uptoGrid=false;
 }
 
-void Complex::addResidu( Residu* const residu) throw(MoleExcept)
+void Complex::addResidu( Residu* const residu) 
 {
     if (residu == (Residu*)NULL) throw MoleExcept(1100501,
                                                   "Complex::addResidu"
@@ -306,7 +306,7 @@ void Complex::addResidu( Residu* const residu) throw(MoleExcept)
 }
 
 
-void Complex::addChain( Chain* const chain) throw(MoleExcept)
+void Complex::addChain( Chain* const chain) 
 {
     if (chain == (Chain*)NULL) throw MoleExcept(1100601,
                                                 "Complex::addChain"
@@ -316,7 +316,7 @@ void Complex::addChain( Chain* const chain) throw(MoleExcept)
 }
 
 
-void Complex::deleteAtom(const Atom* const atom) throw(MoleExcept)
+void Complex::deleteAtom(const Atom* const atom) 
 {
     if (atom == (Atom*)NULL) throw MoleExcept(1100301,
                                               "Complex::addAtom"
@@ -331,7 +331,7 @@ void Complex::deleteAtom(const Atom* const atom) throw(MoleExcept)
 }
 
 
-void Complex::deleteBond(const Bond * const bond) throw(MoleExcept)
+void Complex::deleteBond(const Bond * const bond) 
 {
     if (bond == (Bond*)NULL) throw MoleExcept(1100301,
                                               "Complex::addAtom"
@@ -346,7 +346,7 @@ void Complex::deleteBond(const Bond * const bond) throw(MoleExcept)
 }
 
 
-void Complex::deleteResidu(const Residu* const residu) throw(MoleExcept)
+void Complex::deleteResidu(const Residu* const residu) 
 {
     if (residu == (Residu*)NULL) throw MoleExcept(1100301,
                                                   "Complex::addAtom"
@@ -359,7 +359,7 @@ void Complex::deleteResidu(const Residu* const residu) throw(MoleExcept)
     residulist.erase(pos);
     uptoGrid=false;
 }
-void Complex::deleteChain (const Chain * const chain ) throw(MoleExcept)
+void Complex::deleteChain (const Chain * const chain ) 
 {
     if (chain == (Chain*)NULL) throw MoleExcept(1100301,
                                                 "Complex::addAtom"
@@ -417,7 +417,7 @@ void Complex::updateMoleType(Molecule* const molecule,const unsigned int & type)
 
 
 
-Grid& Complex::genGrid(const double& boxValue,const bool& wHydrogen) throw(MoleExcept)
+Grid& Complex::genGrid(const double& boxValue,const bool& wHydrogen) 
 {
     // Position in the grid Array :
     unsigned int gr_pos=0;
@@ -482,7 +482,7 @@ int Complex::getMaxGrid() const
 
 
 
-void Complex::splitMoleculeInToComplex(Molecule& molecule,const std::string &verbose) throw(ICMole::MoleExcept)
+void Complex::splitMoleculeInToComplex(Molecule& molecule,const std::string &verbose) 
 {
     const bool wVerbose= !verbose.empty();
 
@@ -757,7 +757,7 @@ struct bestOrientH
     Coords H1,H2;
 
 };
-void Complex::selectWater(const std::string& verbose) throw(MoleExcept)
+void Complex::selectWater(const std::string& verbose) 
 {
     const bool wVerbose= !verbose.empty();
     if (wVerbose) cout << verbose<<"START"<<endl;

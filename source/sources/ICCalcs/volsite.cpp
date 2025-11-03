@@ -27,7 +27,7 @@ double D120         = M_PI/1.5;    //120
 double D180         = M_PI;
 double angl_aro     = M_PI/2;  // 90
 
-VolSite::VolSite(Complex &cp, const double &boxStep, const int proj_lens,bool def_alternative) throw(MoleExcept):
+VolSite::VolSite(Complex &cp, const double &boxStep, const int proj_lens,bool def_alternative) :
     grid(cp.genGrid(boxStep)),
     minProj(55),
     proteinOnly(true),
@@ -175,7 +175,7 @@ VolSite::VolSite(Molecule &protein,
                  Molecule &ligand,
                  Grid &grid,
                  const double &boxStep,
-                 const Coords& box_size, const int proj_lens, bool def_alternative) throw(MoleExcept):
+                 const Coords& box_size, const int proj_lens, bool def_alternative) :
     grid(grid),
     minProj(55),
     proteinOnly(false),
@@ -202,7 +202,7 @@ VolSite::VolSite(Molecule &protein,
 }
 
 VolSite::VolSite(Complex &cp, Molecule &ligand, const double &boxStep,
-                 const Coords& box_size, const int proj_lens, bool def_alternative) throw(MoleExcept):
+                 const Coords& box_size, const int proj_lens, bool def_alternative) :
     grid(cp.genGrid(boxStep)),
     minProj(55),
     proteinOnly(false),
@@ -305,7 +305,7 @@ VolSite::VolSite(Complex &cp, Molecule &ligand, const double &boxStep,
 
 VolSite::VolSite(Molecule &molecule,
                  Grid&grid,
-                 const double &boxStep, const int proj_lens, bool def_alternative) throw(MoleExcept):
+                 const double &boxStep, const int proj_lens, bool def_alternative) :
     grid(grid),
     minProj(55),
     proteinOnly(true),
@@ -728,7 +728,7 @@ const unsigned int& VolSite::getProjValue(const Box& bx)const
 }
 
 
-void VolSite::treatments(unsigned int minNeighbors, const double dist_prot, bool siteout) throw(MoleExcept)
+void VolSite::treatments(unsigned int minNeighbors, const double dist_prot, bool siteout) 
 {
     if (grid.AllBoxes.size() ==0) {throw MoleExcept(1160801,"Grid::traitements","No cube found");}
     vector<Box*> &AllBoxes= grid.AllBoxes;

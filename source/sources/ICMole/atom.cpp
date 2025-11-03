@@ -110,7 +110,7 @@ Atom::Atom(const std::string& atomicName,
            Molecule *const parent,
            Residu *const res,
            const std::string& name,
-           const std::string& mol2t) throw(MoleExcept)
+           const std::string& mol2t)
     :num(0),           fNum(0),                atomicNum(0) ,
       partial_charge(0),formal_charge(0),       BFactor(0) ,     data_loaded(false),
       inUse(true),inCycle(false),
@@ -155,7 +155,7 @@ Atom::Atom(const std::string& atomicName,
            const double& y,
            const double& z,
            const std::string& name,
-           const std::string& mol2t) throw(MoleExcept)
+           const std::string& mol2t)
     :num(0),           fNum(0),                atomicNum(0) ,
       partial_charge(0),formal_charge(0),       BFactor(0) ,     data_loaded(false),
       inUse(true),inCycle(false),
@@ -198,7 +198,7 @@ Atom::Atom( const std::string& atomicName,
             Residu *const res,
             const Coords &coords,
             const std::string& name,
-            const std::string& mol2t)  throw(MoleExcept)
+            const std::string& mol2t)
     :num(0),           fNum(0),                atomicNum(0) ,
       partial_charge(0),formal_charge(0),       BFactor(0) ,     data_loaded(false),
       inUse(true),inCycle(false),
@@ -312,7 +312,7 @@ void  Atom::addBond    ( Bond  *const  ed)
   * \warning It doesn't delete the Bond, just the link in the Atom.
   * \throw MoleExcept 1020101 when the given Bond is not part of this Atom
   */
-void  Atom::delBond    (const  Bond  *const ed ) throw(MoleExcept)
+void  Atom::delBond    (const  Bond  *const ed )
 {
     const ItBond ited = find(links.begin(),links.end(),ed);
     if (ited == links.end())
@@ -354,7 +354,7 @@ bool Atom::hasBondWith(const Atom &atom) const
   *  or (Bond*)NULL when no Bond exists.
   * \throw 1060201 - Bond::getOtherAtom
   */
-const Bond* Atom::getBondWith(Atom const &atom) const throw(MoleExcept)
+const Bond* Atom::getBondWith(Atom const &atom) const
 {
     try
     {
@@ -375,7 +375,7 @@ const Bond* Atom::getBondWith(Atom const &atom) const throw(MoleExcept)
 
 
 
-Bond*  Atom::getBond(const size_t& pos)const  throw(MoleExcept)
+Bond*  Atom::getBond(const size_t& pos) const
 
 {
     if (pos >= links.size())
@@ -387,13 +387,13 @@ Bond*  Atom::getBond(const size_t& pos)const  throw(MoleExcept)
 
 
 
-/*! \fn void Atom::cleanBond() throw(MoleExcept)
+/*! \fn void Atom::cleanBond() 
   * \brief Delete all Bonds of this Atom
   * Calls delBond() function of the parent Molecule to make a clean
   * deletion of all Bonds made with this Atom
   * \throw See Molecule::delBond(). If 1040201: Fatal error
   */
-void Atom::cleanBond() throw(MoleExcept)
+void Atom::cleanBond()
 {
 
     try
@@ -412,7 +412,7 @@ void Atom::cleanBond() throw(MoleExcept)
 
 
 
-const Atom& Atom::getAtomLinked(const size_t& pos) const throw(MoleExcept)
+const Atom& Atom::getAtomLinked(const size_t& pos) const
 {
     if (pos> atomlinked.size())
         throw MoleExcept(000000,
@@ -433,7 +433,7 @@ const Atom& Atom::getAtomLinked(const size_t& pos) const throw(MoleExcept)
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-/*! \fn void Atom::loadAtomicData() throw(MoleExcept)
+/*! \fn void Atom::loadAtomicData() 
  *  \brief Scan over AtomData struct a corresponding atomic Name
  *  Using the atomic name of the atom,
  * it will search over the AtomData struct the corresponding name to seek
@@ -444,7 +444,7 @@ const Atom& Atom::getAtomLinked(const size_t& pos) const throw(MoleExcept)
  * \throw MoleExcept 1050202 - Unrecognized atomic name
 
 */
-void Atom::loadAtomicData()                         throw(MoleExcept)
+void Atom::loadAtomicData()
 {
 
 
@@ -516,7 +516,7 @@ void Atom::loadAtomicData()                         throw(MoleExcept)
 
 
 
-/** \fn void Atom::checkMOL2type() throw(MoleExcept)
+/** \fn void Atom::checkMOL2type() 
   \brief Check the MOL2 type of the atom and update its properties
          according to MOL2 type and environment.
   \throw 1050301 - No MOL2 Type
@@ -537,7 +537,7 @@ void Atom::loadAtomicData()                         throw(MoleExcept)
   For donor atom, only if its an oxygen, nitrogen or sulfur linked to an hydrogen.
   \note : called by setMOL2type
   */
-void Atom::checkMOL2type() throw(MoleExcept)
+void Atom::checkMOL2type()
 {
 
     /* static const string Hyd_Db = " N.4 N.2 O.2 ";
@@ -767,7 +767,7 @@ void Atom::setAtomicNum (const unsigned int& atomicNumi)
      \throw 1050302 - MOL2 Type too long
      \throw 1050303 - If unrecognized MOL2 type (from checkMol2Type
   */
-void Atom::setMOL2Type  (const std::string&  MOL2) throw(MoleExcept)
+void Atom::setMOL2Type  (const std::string&  MOL2)
 {
     if (MOL2.empty())
         throw MoleExcept(1050501,
@@ -848,17 +848,9 @@ bool Atom::isSulfur()     const {return (atomicNum == 16)? true:false;}
 
 bool Atom::isHydrogen()   const {return (atomicNum == 1) ? true:false;}
 
-
-
-
-
-
-
-
-
-const std::string& Atom::getResiduName() const
+const std::string Atom::getResiduName() const
 {
-    if (residu == (Residu*)NULL)return "";
+    if (residu == nullptr) return "";
     return residu->getName();
 }
 
@@ -997,7 +989,7 @@ double Atom::calcFixpos(const Atom& atom, const double& threshold) const
 }
 
 
-void Atom::addBox(const Grid * const grid,  Box* const box) throw(MoleExcept)
+void Atom::addBox(const Grid * const grid,  Box* const box)
 {
     if (grid == (Grid*)NULL)
         throw MoleExcept(1050701,"Atom::addBox","No grid given");
@@ -1018,7 +1010,7 @@ void Atom::addBox(const Grid * const grid,  Box* const box) throw(MoleExcept)
 }
 
 
-Box* Atom::getBox(const Grid* const grid) const throw(MoleExcept)
+Box* Atom::getBox(const Grid* const grid) const
 {
     if (grid == (Grid*)NULL)
         throw MoleExcept(1050801,"Atom::getBox","No grid given");

@@ -125,7 +125,7 @@ public:
                    const std::string& name,
                    const std::string& mol2t,
                    Residu*            residu=(Residu*)NULL)
-    throw(MoleExcept);//
+    ;//
 
 
     Atom& addAtom( const std::string& atomicName,
@@ -135,7 +135,7 @@ public:
                    const std::string& name="",
                    const std::string& mol2t="",
                    Residu*  res=(Residu*)NULL)
-    throw(MoleExcept);//
+    ;//
 
 
     Atom& addAtom( const std::string& atomicName,
@@ -143,23 +143,23 @@ public:
                    const std::string& name="",
                    const std::string& mol2t="",
                    Residu*  res=(Residu*)NULL)
-    throw(MoleExcept);//
+    ;//
 
 
 
-    void  addAtoms(const unsigned int &NtoAdd, Residu* const residu) throw(MoleExcept);
+    void  addAtoms(const unsigned int &NtoAdd, Residu* const residu) ;
 
 
-    void  delAtom( Atom *const Atom, const bool& with_maxnum=true)  throw(MoleExcept);
+    void  delAtom( Atom *const Atom, const bool& with_maxnum=true)  ;
 
 
-    void  delAtoms( AtomList& Atoms)                                throw(MoleExcept);
+    void  delAtoms( AtomList& Atoms)                                ;
 
 
     void  renumAtom();
 
 
-    const Atom& getAtom(const unsigned int &n,const bool &pos=true) const throw(MoleExcept);
+    const Atom& getAtom(const unsigned int &n,const bool &pos=true) const ;
 
 
     /*!< \brief Return the maximal Num for Atoms */
@@ -193,20 +193,20 @@ public:
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
     ///
-    Bond&         addBond( Atom &Atom1, Atom &Atom2, const unsigned int &BondType) throw(MoleExcept);
+    Bond&         addBond( Atom &Atom1, Atom &Atom2, const unsigned int &BondType) ;
 
     Bond&         addBond( Atom *const Atom1,
                            Atom *const Atom2,
-                           const unsigned int &BondType) throw(MoleExcept);
+                           const unsigned int &BondType) ;
 
 
-    void          delBond(const Bond* const   Bond)          throw(MoleExcept);
+    void          delBond(const Bond* const   Bond)          ;
 
 
-    void          delBond(const   BondList& EdList)          throw(MoleExcept);
+    void          delBond(const   BondList& EdList)          ;
 
 
-    void          delBond(const       Bond &  Bond)          throw(MoleExcept);
+    void          delBond(const       Bond &  Bond)          ;
 
 
     void          renumBond();
@@ -217,7 +217,7 @@ public:
     /*!< \brief Return the number of Bonds in this Molecule */
     unsigned int  numBonds()        const  {return (unsigned int)Bonds.size();}
 
-    const Bond& getBond(const size_t &n,const bool &pos=true) const throw(MoleExcept);
+    const Bond& getBond(const size_t &n,const bool &pos=true) const ;
 
 
 
@@ -253,12 +253,12 @@ public:
     const unsigned int& getMaxNumResidu()const  {return maxNumResidu;}
     void setResToAtom(Atom *const atm, Residu* const res) ;
 
-    void moveResidu(Residu& residu, Molecule& molecule, const bool &delBonds=true) throw(MoleExcept);
+    void moveResidu(Residu& residu, Molecule& molecule, const bool &delBonds=true) ;
     void moveResidu(ResiduList& residuList,
                     Molecule& molecule,
-                    const bool &delBonds=true) throw(MoleExcept);
+                    const bool &delBonds=true) ;
     size_t numChains() const {return Chains.size();}
-    Chain& getChain(const size_t pos) throw(MoleExcept);
+    Chain& getChain(const size_t pos) ;
 
     ////////////////////
     ////// ADDERS //////
@@ -275,7 +275,7 @@ public:
 
     ItCRes firstResidu() const {return Residues.begin();}
     ItCRes lastResidu() const {return Residues.end();}
-    Residu& getResidu(const size_t& pos) throw(MoleExcept);
+    Residu& getResidu(const size_t& pos) ;
 
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
@@ -303,23 +303,23 @@ public:
     /// Definitions in moletreat.cpp
     void createConnect(ResiduList& failedRes, AtomList& failedAtom,
                        const bool& cleanAll=false,
-                       const std::string &verbose="")  throw(MoleExcept);
+                       const std::string &verbose="")  ;
 
-    void ringPerception() throw(MoleExcept);
+    void ringPerception() ;
 
     void createMoleGraph(Graph&,
                          const bool& onlyUsed=true, const bool& wHydrogen=true) const;
 
 
-    void checkMOL2() throw(MoleExcept);
+    void checkMOL2() ;
 
     void clear();
 
     void selChains(const std::vector<std::string> &allowedchains,
                    const bool &delete_all,
-                   const std::string &verbose="") throw(MoleExcept);
+                   const std::string &verbose="") ;
 
-    void matchTemplate(ResiduList &failedRes, AtomList &failedAtom, const std::string& verbose="",const bool& applyMOL2type=true) throw(MoleExcept);
+    void matchTemplate(ResiduList &failedRes, AtomList &failedAtom, const std::string& verbose="",const bool& applyMOL2type=true) ;
 
 
     void cleanUnwanted(const std::string &verbose="");
@@ -344,7 +344,7 @@ public:
     Residu &getAromRes() {return aromaticRes;}
     Residu &getUnkRes() {return unknownRes;}
     Cycle* getCycleFromCenter(Atom* const atom);
-    void delCycle(Cycle*const cy) throw(MoleExcept);
+    void delCycle(Cycle*const cy) ;
     void renumResidu();
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
@@ -355,7 +355,7 @@ public:
     ItCChain firstChain() const {return Chains.begin();}
     ItCChain lastChain() const {return Chains.end();}
 
-    void setResiduTypes(const std::string&  verbose="") throw(MoleExcept);
+    void setResiduTypes(const std::string&  verbose="") ;
 
     ////////////////////////////////////////////////
     ////////////////////////////////////////////////

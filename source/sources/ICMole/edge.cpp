@@ -37,7 +37,7 @@ Edge:: Edge( Vertex  &nV1,
    *
    *  Will delete edge pointer from each vertex.
    */
-Edge::~Edge() throw(MoleExcept)
+Edge::~Edge() 
 {
 
 }
@@ -58,7 +58,7 @@ Edge::~Edge() throw(MoleExcept)
    *  \return Vertex pointer of the other vertex
    *  \throw MoleExcept 1030101 when the given vertex is not part of this edge
    */
- Vertex&  Edge::getOtherVertex(const Vertex  &vertex) const throw(MoleExcept)
+ Vertex&  Edge::getOtherVertex(const Vertex  &vertex) const 
 {
          if (&vertex == &vertex1) return vertex2;
     else if (&vertex == &vertex2) return vertex1;
@@ -73,7 +73,7 @@ Edge::~Edge() throw(MoleExcept)
    *  \return Vertex pointer
    *  \throw MoleExcept 1030102 when the given vertex is not part of this edge
    */
- Vertex&  Edge::getOtherVertex(const Vertex *const vertex) const throw(MoleExcept)
+ Vertex&  Edge::getOtherVertex(const Vertex *const vertex) const 
 {
          if (vertex == &vertex1) return vertex2;
     else if (vertex == &vertex2) return vertex1;
@@ -86,7 +86,7 @@ Edge::~Edge() throw(MoleExcept)
    * \param ed : Edge to look at
    * \return The vertex existing in the two edges or (Vertex*)NULL
    */
-const Vertex&   Edge::shareVertex(Edge const &ed) const throw(MoleExcept)
+const Vertex&   Edge::shareVertex(Edge const &ed) const 
 {
   if (&ed.getVertex1() == &vertex1 || &ed.getVertex2()==&vertex1) return vertex1;
   if (&ed.getVertex1() == &vertex2 || &ed.getVertex2()==&vertex2) return vertex2;

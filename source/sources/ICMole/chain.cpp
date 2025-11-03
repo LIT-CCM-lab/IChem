@@ -10,7 +10,7 @@ using namespace ICMole;
  * \throw 1090101 : No chain name given
  * Standard private constructor that can only be called by a molecule
  */
-Chain::Chain(Molecule  &molecule, const std::string& Name) throw(MoleExcept)
+Chain::Chain(Molecule  &molecule, const std::string& Name) 
     :name(Name),molecule(molecule),inUse(true)
 {
     if (Name.length() == 0)
@@ -34,7 +34,7 @@ Chain::Chain(Molecule  &molecule, const std::string& Name) throw(MoleExcept)
  */
 
 Chain::Chain(Molecule  *const molecule,
-             const std::string& Name) throw(MoleExcept):
+             const std::string& Name) :
     name(Name),
     molecule(*molecule),inUse(true)
           {
@@ -65,7 +65,7 @@ Chain::Chain(Molecule  *const molecule,
  * Finally it add the given residu to the residu list of this chain
  *
  */
-void Chain::addResidu(Residu* const residu) throw(MoleExcept)
+void Chain::addResidu(Residu* const residu) 
 {
     if (residu== (Residu*)NULL)
         throw MoleExcept(1090301,
@@ -94,7 +94,7 @@ void Chain::addResidu(Residu* const residu) throw(MoleExcept)
  * This imply that the given residu is within this chain and not null
  *
  */
-void Chain::delResidu(Residu* const residu) throw(MoleExcept)
+void Chain::delResidu(Residu* const residu) 
 {
     if (residu == (Residu*)NULL)
         throw MoleExcept(1090401,
@@ -192,7 +192,7 @@ void Chain::setUse(const bool& use,const bool& applyto)
 
 
 
-Residu& Chain::getResidu(const size_t& pos) const throw(MoleExcept)
+Residu& Chain::getResidu(const size_t& pos) const 
 {
     if (pos >= residus.size()) throw MoleExcept(1071401,"Chain::getResidu","Position is above the number of residus within the chain");
     else return *residus.at(pos);

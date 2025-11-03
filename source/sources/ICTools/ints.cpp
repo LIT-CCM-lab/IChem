@@ -61,7 +61,7 @@ void IChemSwitch::helpints() const {
         << endl;
 }
 
-void IChemSwitch::ints() const throw(ICMole::MoleExcept)
+void IChemSwitch::ints() const 
 {
     const unsigned int InputSize = (unsigned int)Input_Values.size();
     if (InputSize > 4|| InputSize<=1)throw MoleExcept(9010301,"IChem::runInts","Not enough parameters");

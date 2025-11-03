@@ -79,7 +79,7 @@ IChemSwitch::pf1 IChemSwitch::listHelp[ICHEM_TOOLS]={&IChemSwitch::helpGenKey,
 //                                                     &IChemSwitch::helpconvertCav};
 
 
-IChemSwitch::IChemSwitch(const int& argc, char *argv[]) throw(ICMole::MoleExcept)
+IChemSwitch::IChemSwitch(const int& argc, char *argv[]) 
 {
     // checkLicence();
 
@@ -199,7 +199,7 @@ IChemSwitch::IChemSwitch(const int& argc, char *argv[]) throw(ICMole::MoleExcept
 
 
 }
-IChemSwitch::IChemSwitch(const int &argc,const std::vector<std::string>& argv) throw(ICMole::MoleExcept)
+IChemSwitch::IChemSwitch(const int &argc,const std::vector<std::string>& argv) 
 {
     // checkLicence();
 
@@ -332,7 +332,7 @@ IChemSwitch::IChemSwitch(const int &argc,const std::vector<std::string>& argv) t
  * @throw 9010305 : Your licence has expired
  * @throw 9010306 : Your licence has expired
  */
-void IChemSwitch::checkLicence()    throw(ICMole::MoleExcept)
+void IChemSwitch::checkLicence()    
 {
 
     if (licence_loaded) return;

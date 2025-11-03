@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.13)
 
 project(IChem VERSION 5.3.5)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -w")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
 
 # Optimization 
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -flto")
@@ -99,6 +99,10 @@ include_directories(
     source/external/nanoflann
 )
 add_executable(IChem ${SOURCES})
+
+find_package(Threads REQUIRED)
+target_link_libraries(IChem PRIVATE Threads::Threads)
+
 
 # if(OpenMP_CXX_FOUND)
 #     target_link_libraries(IChem PRIVATE OpenMP::OpenMP_CXX)

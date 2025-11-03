@@ -28,12 +28,12 @@ graph.renumVertex();
 
 
 
-/*! \fn void GraphMatch::createMatrix() throw(MoleExcept)
+/*! \fn void GraphMatch::createMatrix() 
   * Create the adjacency matrix of the graph and order them by decreasing edge size.
   * \exception MoleExcept
   */
 
-void GraphMatch::createMatrix() throw(MoleExcept)
+void GraphMatch::createMatrix() 
 {
     // STEP1 : Check list
     const size_t OrigNVertexs =  graph.numVertex();
@@ -151,7 +151,7 @@ void GraphMatch::createMatrix() throw(MoleExcept)
 
 
 
-void GraphMatch::runSearchAllMaxCliques(const bool verbose) throw(MoleExcept)
+void GraphMatch::runSearchAllMaxCliques(const bool verbose) 
 {
     // Number of vertex to consider in the product graph:
     const size_t ReduceNVertexs= orderNO.size();

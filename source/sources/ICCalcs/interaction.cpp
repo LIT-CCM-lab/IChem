@@ -31,6 +31,7 @@ Interactions::Interactions(ICMole::Complex &cp)
     }
 } 
 
+
 void Interactions::addInteraction(InterResults& interResult, Atom& atomP, Atom& atomL, double dist, int& NInter, double* angle, unsigned int interactionType) const {
 
     double ang = angle ? *angle : -100000.0; // <optional> C++17 library
@@ -141,11 +142,11 @@ void Interactions::detectInteractions(Molecule& ligand, InterResults& interResul
     // Sort by ligand_idx so that contacts of the same ligand atom
     // are consecutive so we can clear hydlist at each change
     std::sort(pairs.begin(), pairs.end(), [](const NeighborSearch::Contact& a, const NeighborSearch::Contact& b) {
-        return a.ligand_idx < b.ligand_idx; 
+        return a.ligand_idx < b.ligand_idx;
     });
 
     // Helper to clear hydrophobic list
-    auto flushHydList = [&](std::map<Residu*,resbest>& hydlist){
+    auto flushHydList = [&](std::map<Residu*,resbest>& hydlist) {
         for (auto& [res, rb] : hydlist) {
             if (!rb.atmP || !rb.atmL) 
                 continue;
@@ -1373,8 +1374,9 @@ Fingerprint& Interactions::generateTriplets(InterResults& interResult,const bool
 }
 
 
-
+// Map of residue pointers used to build the fingerprint IFP, we iterate over residues in NumToRes and turn detected interactions into bits // our problem for NA sodium is that the size of NumToRes = 0
 void Interactions::genIFP(InterResults& interResult, const unsigned int& fgpType) const {
+
     static const int intToPos[5][NB_INTTYPE]= {
         {-1,3,4,5,6, 0,-1, 1, 2,-1,-1,-1,-1,-1},
         {-1,0,1,2,3,-1,4,-1,-1,-1,-1,-1,-1,-1},
@@ -1394,12 +1396,17 @@ void Interactions::genIFP(InterResults& interResult, const unsigned int& fgpType
     for (ItCRes itR = complex.firstResidu();itR != complex.lastResidu();++itR) 
     {
         Residu *res =*itR;
-        if (!res->isUsed() || res->getParent()->getMoleType()==MoleType::LIGAND) continue;
+
+        
+
+        if (!res->isUsed() || res->getParent()->getMoleType()== MoleType::LIGAND) 
+            continue;
+        
         if (Residu::Rules[res->getParent()->getMoleType()][res->getResType()] == MoleType::UNDEFINED || Molecule::Rules[res->getParent()->getMoleType()] == MoleType::UNDEFINED)
             continue;
+        
         NumtoRes.insert(pair<int,Residu*>(res->getNum(),res));
     }
-
 
 
     multimap<Residu*,InterPoint*> listRes;

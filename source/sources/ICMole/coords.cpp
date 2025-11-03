@@ -109,7 +109,7 @@ void Coords:: operator*= (const Coords & coords)  { x*= coords.x;  y*= coords.y;
    *  \param coords : The object to divide to the reference
    *  \throw MoleExcept 1010101 - When x,y or z is equal to 0
    */
-void Coords:: operator/= (const Coords & coords)  throw(MoleExcept){
+void Coords:: operator/= (const Coords & coords)  {
   if (coords.x ==0 || coords.y == 0 || coords.z == 0) throw MoleExcept(1010101,"Coords::operator/=","x,y or z is equal to 0");
   x/= coords.x;  y/= coords.y;  z/= coords.z;  }//CHECK
 /*!

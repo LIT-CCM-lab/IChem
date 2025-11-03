@@ -1,0 +1,224 @@
+#############
+#############
+SCORE	0.845081
+SumCl	0.445229
+RMSD	0.00316228
+LIG	7
+CENT	8
+PROT	8
+MATCH	Ref Ints Point		Comp Ints Point	Pair	Weight	distance 
+MATCH	N    |1    |SEL   1-Z	N    |1    |SEL   1-Z	0.834	0
+MATCH	O    |2    |ALL   2-Z	O    |2    |ALL   2-Z	0.93	0
+MATCH	CA   |3    |GLL   5-Z	CA   |3    |GLL   5-Z	0.299	0
+MATCH	CA   |4    |GLL   5-Z	CA   |4    |GLL   5-Z	0.299	0
+MATCH	CA   |5    |GLL   5-Z	CA   |5    |GLL   5-Z	0.299	0
+MATCH	CA   |6    |GLL   5-Z	CA   |6    |GLL   5-Z	0.299	0
+MATCH	Zn   |7    |ZIL   7-Z	Zn   |7    |ZIL   7-Z	1	0
+MATCH	N    |8    |SEP   1-Z	N    |8    |SEP   1-Z	0.834	0
+MATCH	O    |9    |ALP   2-Z	O    |9    |ALP   2-Z	0.93	0
+MATCH	CA   |10   |GLP   5-Z	CA   |10   |GLP   5-Z	0.299	0
+MATCH	CA   |11   |GLP   5-Z	CA   |11   |GLP   5-Z	0.299	0
+MATCH	CA   |12   |GLP   5-Z	CA   |12   |GLP   5-Z	0.299	0
+MATCH	CA   |13   |GLP   5-Z	CA   |13   |GLP   5-Z	0.299	0
+MATCH	CA   |14   |GLP   5-Z	CA   |14   |GLP   5-Z	0.299	0
+MATCH	Zn   |15   |ZIP   7-Z	Zn   |15   |ZIP   7-Z	1	0
+MATCH	N    |16   |SEC   1-Z	N    |16   |SEC   1-Z	0.834	0
+MATCH	O    |17   |ALC   2-Z	O    |17   |ALC   2-Z	0.93	0
+MATCH	CA   |18   |GLC   5-Z	CA   |18   |GLC   5-Z	0.299	0
+MATCH	CA   |19   |GLC   5-Z	CA   |19   |GLC   5-Z	0.299	0
+MATCH	CA   |20   |GLC   5-Z	CA   |20   |GLC   5-Z	0.299	0
+MATCH	CA   |21   |GLC   5-Z	CA   |21   |GLC   5-Z	0.299	0
+MATCH	CA   |22   |GLC   5-Z	CA   |22   |GLC   5-Z	0.299	0
+MATCH	Zn   |23   |ZIC   7-Z	Zn   |23   |ZIC   7-Z	1	0
+#############
+#############
+SCORE	0.845081
+SumCl	0.445229
+RMSD	0.00316228
+LIG	7
+CENT	8
+PROT	8
+MATCH	Ref Ints Point		Comp Ints Point	Pair	Weight	distance 
+MATCH	N    |1    |SEL   1-Z	N    |1    |SEL   1-Z	0.834	0
+MATCH	O    |2    |ALL   2-Z	O    |2    |ALL   2-Z	0.93	0
+MATCH	CA   |3    |GLL   5-Z	CA   |3    |GLL   5-Z	0.299	0
+MATCH	CA   |4    |GLL   5-Z	CA   |4    |GLL   5-Z	0.299	0
+MATCH	CA   |5    |GLL   5-Z	CA   |5    |GLL   5-Z	0.299	0
+MATCH	CA   |6    |GLL   5-Z	CA   |6    |GLL   5-Z	0.299	0
+MATCH	Zn   |7    |ZIL   7-Z	Zn   |7    |ZIL   7-Z	1	0
+MATCH	N    |8    |SEP   1-Z	N    |8    |SEP   1-Z	0.834	0
+MATCH	O    |9    |ALP   2-Z	O    |9    |ALP   2-Z	0.93	0
+MATCH	CA   |10   |GLP   5-Z	CA   |10   |GLP   5-Z	0.299	0
+MATCH	CA   |11   |GLP   5-Z	CA   |11   |GLP   5-Z	0.299	0
+MATCH	CA   |12   |GLP   5-Z	CA   |12   |GLP   5-Z	0.299	0
+MATCH	CA   |13   |GLP   5-Z	CA   |13   |GLP   5-Z	0.299	0
+MATCH	CA   |14   |GLP   5-Z	CA   |14   |GLP   5-Z	0.299	0
+MATCH	Zn   |15   |ZIP   7-Z	Zn   |15   |ZIP   7-Z	1	0
+MATCH	N    |16   |SEC   1-Z	N    |16   |SEC   1-Z	0.834	0
+MATCH	O    |17   |ALC   2-Z	O    |17   |ALC   2-Z	0.93	0
+MATCH	CA   |18   |GLC   5-Z	CA   |18   |GLC   5-Z	0.299	0
+MATCH	CA   |19   |GLC   5-Z	CA   |19   |GLC   5-Z	0.299	0
+MATCH	CA   |20   |GLC   5-Z	CA   |20   |GLC   5-Z	0.299	0
+MATCH	CA   |21   |GLC   5-Z	CA   |21   |GLC   5-Z	0.299	0
+MATCH	CA   |22   |GLC   5-Z	CA   |22   |GLC   5-Z	0.299	0
+MATCH	Zn   |23   |ZIC   7-Z	Zn   |23   |ZIC   7-Z	1	0
+#############
+#############
+SCORE	0.845081
+SumCl	0.445229
+RMSD	0.00316228
+LIG	7
+CENT	8
+PROT	8
+MATCH	Ref Ints Point		Comp Ints Point	Pair	Weight	distance 
+MATCH	N    |1    |SEL   1-Z	N    |1    |SEL   1-Z	0.834	0
+MATCH	O    |2    |ALL   2-Z	O    |2    |ALL   2-Z	0.93	0
+MATCH	CA   |3    |GLL   5-Z	CA   |3    |GLL   5-Z	0.299	0
+MATCH	CA   |4    |GLL   5-Z	CA   |4    |GLL   5-Z	0.299	0
+MATCH	CA   |5    |GLL   5-Z	CA   |5    |GLL   5-Z	0.299	0
+MATCH	CA   |6    |GLL   5-Z	CA   |6    |GLL   5-Z	0.299	0
+MATCH	Zn   |7    |ZIL   7-Z	Zn   |7    |ZIL   7-Z	1	0
+MATCH	N    |8    |SEP   1-Z	N    |8    |SEP   1-Z	0.834	0
+MATCH	O    |9    |ALP   2-Z	O    |9    |ALP   2-Z	0.93	0
+MATCH	CA   |10   |GLP   5-Z	CA   |10   |GLP   5-Z	0.299	0
+MATCH	CA   |11   |GLP   5-Z	CA   |11   |GLP   5-Z	0.299	0
+MATCH	CA   |12   |GLP   5-Z	CA   |12   |GLP   5-Z	0.299	0
+MATCH	CA   |13   |GLP   5-Z	CA   |13   |GLP   5-Z	0.299	0
+MATCH	CA   |14   |GLP   5-Z	CA   |14   |GLP   5-Z	0.299	0
+MATCH	Zn   |15   |ZIP   7-Z	Zn   |15   |ZIP   7-Z	1	0
+MATCH	N    |16   |SEC   1-Z	N    |16   |SEC   1-Z	0.834	0
+MATCH	O    |17   |ALC   2-Z	O    |17   |ALC   2-Z	0.93	0
+MATCH	CA   |18   |GLC   5-Z	CA   |18   |GLC   5-Z	0.299	0
+MATCH	CA   |19   |GLC   5-Z	CA   |19   |GLC   5-Z	0.299	0
+MATCH	CA   |20   |GLC   5-Z	CA   |20   |GLC   5-Z	0.299	0
+MATCH	CA   |21   |GLC   5-Z	CA   |21   |GLC   5-Z	0.299	0
+MATCH	CA   |22   |GLC   5-Z	CA   |22   |GLC   5-Z	0.299	0
+MATCH	Zn   |23   |ZIC   7-Z	Zn   |23   |ZIC   7-Z	1	0
+#############
+#############
+SCORE	0.845081
+SumCl	0.445229
+RMSD	0.00316228
+LIG	7
+CENT	8
+PROT	8
+MATCH	Ref Ints Point		Comp Ints Point	Pair	Weight	distance 
+MATCH	N    |1    |SEL   1-Z	N    |1    |SEL   1-Z	0.834	0
+MATCH	O    |2    |ALL   2-Z	O    |2    |ALL   2-Z	0.93	0
+MATCH	CA   |3    |GLL   5-Z	CA   |3    |GLL   5-Z	0.299	0
+MATCH	CA   |4    |GLL   5-Z	CA   |4    |GLL   5-Z	0.299	0
+MATCH	CA   |5    |GLL   5-Z	CA   |5    |GLL   5-Z	0.299	0
+MATCH	CA   |6    |GLL   5-Z	CA   |6    |GLL   5-Z	0.299	0
+MATCH	Zn   |7    |ZIL   7-Z	Zn   |7    |ZIL   7-Z	1	0
+MATCH	N    |8    |SEP   1-Z	N    |8    |SEP   1-Z	0.834	0
+MATCH	O    |9    |ALP   2-Z	O    |9    |ALP   2-Z	0.93	0
+MATCH	CA   |10   |GLP   5-Z	CA   |10   |GLP   5-Z	0.299	0
+MATCH	CA   |11   |GLP   5-Z	CA   |11   |GLP   5-Z	0.299	0
+MATCH	CA   |12   |GLP   5-Z	CA   |12   |GLP   5-Z	0.299	0
+MATCH	CA   |13   |GLP   5-Z	CA   |13   |GLP   5-Z	0.299	0
+MATCH	CA   |14   |GLP   5-Z	CA   |14   |GLP   5-Z	0.299	0
+MATCH	Zn   |15   |ZIP   7-Z	Zn   |15   |ZIP   7-Z	1	0
+MATCH	N    |16   |SEC   1-Z	N    |16   |SEC   1-Z	0.834	0
+MATCH	O    |17   |ALC   2-Z	O    |17   |ALC   2-Z	0.93	0
+MATCH	CA   |18   |GLC   5-Z	CA   |18   |GLC   5-Z	0.299	0
+MATCH	CA   |19   |GLC   5-Z	CA   |19   |GLC   5-Z	0.299	0
+MATCH	CA   |20   |GLC   5-Z	CA   |20   |GLC   5-Z	0.299	0
+MATCH	CA   |21   |GLC   5-Z	CA   |21   |GLC   5-Z	0.299	0
+MATCH	CA   |22   |GLC   5-Z	CA   |22   |GLC   5-Z	0.299	0
+MATCH	Zn   |23   |ZIC   7-Z	Zn   |23   |ZIC   7-Z	1	0
+#############
+#############
+SCORE	0.845081
+SumCl	0.445229
+RMSD	0.00316228
+LIG	7
+CENT	8
+PROT	8
+MATCH	Ref Ints Point		Comp Ints Point	Pair	Weight	distance 
+MATCH	N    |1    |SEL   1-Z	N    |1    |SEL   1-Z	0.834	0
+MATCH	O    |2    |ALL   2-Z	O    |2    |ALL   2-Z	0.93	0
+MATCH	CA   |3    |GLL   5-Z	CA   |3    |GLL   5-Z	0.299	0
+MATCH	CA   |4    |GLL   5-Z	CA   |4    |GLL   5-Z	0.299	0
+MATCH	CA   |5    |GLL   5-Z	CA   |5    |GLL   5-Z	0.299	0
+MATCH	CA   |6    |GLL   5-Z	CA   |6    |GLL   5-Z	0.299	0
+MATCH	Zn   |7    |ZIL   7-Z	Zn   |7    |ZIL   7-Z	1	0
+MATCH	N    |8    |SEP   1-Z	N    |8    |SEP   1-Z	0.834	0
+MATCH	O    |9    |ALP   2-Z	O    |9    |ALP   2-Z	0.93	0
+MATCH	CA   |10   |GLP   5-Z	CA   |10   |GLP   5-Z	0.299	0
+MATCH	CA   |11   |GLP   5-Z	CA   |11   |GLP   5-Z	0.299	0
+MATCH	CA   |12   |GLP   5-Z	CA   |12   |GLP   5-Z	0.299	0
+MATCH	CA   |13   |GLP   5-Z	CA   |13   |GLP   5-Z	0.299	0
+MATCH	CA   |14   |GLP   5-Z	CA   |14   |GLP   5-Z	0.299	0
+MATCH	Zn   |15   |ZIP   7-Z	Zn   |15   |ZIP   7-Z	1	0
+MATCH	N    |16   |SEC   1-Z	N    |16   |SEC   1-Z	0.834	0
+MATCH	O    |17   |ALC   2-Z	O    |17   |ALC   2-Z	0.93	0
+MATCH	CA   |18   |GLC   5-Z	CA   |18   |GLC   5-Z	0.299	0
+MATCH	CA   |19   |GLC   5-Z	CA   |19   |GLC   5-Z	0.299	0
+MATCH	CA   |20   |GLC   5-Z	CA   |20   |GLC   5-Z	0.299	0
+MATCH	CA   |21   |GLC   5-Z	CA   |21   |GLC   5-Z	0.299	0
+MATCH	CA   |22   |GLC   5-Z	CA   |22   |GLC   5-Z	0.299	0
+MATCH	Zn   |23   |ZIC   7-Z	Zn   |23   |ZIC   7-Z	1	0
+#############
+#############
+SCORE	0.845081
+SumCl	0.445229
+RMSD	0.00316228
+LIG	7
+CENT	8
+PROT	8
+MATCH	Ref Ints Point		Comp Ints Point	Pair	Weight	distance 
+MATCH	N    |1    |SEL   1-Z	N    |1    |SEL   1-Z	0.834	0
+MATCH	O    |2    |ALL   2-Z	O    |2    |ALL   2-Z	0.93	0
+MATCH	CA   |3    |GLL   5-Z	CA   |3    |GLL   5-Z	0.299	0
+MATCH	CA   |4    |GLL   5-Z	CA   |4    |GLL   5-Z	0.299	0
+MATCH	CA   |5    |GLL   5-Z	CA   |5    |GLL   5-Z	0.299	0
+MATCH	CA   |6    |GLL   5-Z	CA   |6    |GLL   5-Z	0.299	0
+MATCH	Zn   |7    |ZIL   7-Z	Zn   |7    |ZIL   7-Z	1	0
+MATCH	N    |8    |SEP   1-Z	N    |8    |SEP   1-Z	0.834	0
+MATCH	O    |9    |ALP   2-Z	O    |9    |ALP   2-Z	0.93	0
+MATCH	CA   |10   |GLP   5-Z	CA   |10   |GLP   5-Z	0.299	0
+MATCH	CA   |11   |GLP   5-Z	CA   |11   |GLP   5-Z	0.299	0
+MATCH	CA   |12   |GLP   5-Z	CA   |12   |GLP   5-Z	0.299	0
+MATCH	CA   |13   |GLP   5-Z	CA   |13   |GLP   5-Z	0.299	0
+MATCH	CA   |14   |GLP   5-Z	CA   |14   |GLP   5-Z	0.299	0
+MATCH	Zn   |15   |ZIP   7-Z	Zn   |15   |ZIP   7-Z	1	0
+MATCH	N    |16   |SEC   1-Z	N    |16   |SEC   1-Z	0.834	0
+MATCH	O    |17   |ALC   2-Z	O    |17   |ALC   2-Z	0.93	0
+MATCH	CA   |18   |GLC   5-Z	CA   |18   |GLC   5-Z	0.299	0
+MATCH	CA   |19   |GLC   5-Z	CA   |19   |GLC   5-Z	0.299	0
+MATCH	CA   |20   |GLC   5-Z	CA   |20   |GLC   5-Z	0.299	0
+MATCH	CA   |21   |GLC   5-Z	CA   |21   |GLC   5-Z	0.299	0
+MATCH	CA   |22   |GLC   5-Z	CA   |22   |GLC   5-Z	0.299	0
+MATCH	Zn   |23   |ZIC   7-Z	Zn   |23   |ZIC   7-Z	1	0
+#############
+#############
+SCORE	0.845081
+SumCl	0.445229
+RMSD	0.00316228
+LIG	7
+CENT	8
+PROT	8
+MATCH	Ref Ints Point		Comp Ints Point	Pair	Weight	distance 
+MATCH	N    |1    |SEL   1-Z	N    |1    |SEL   1-Z	0.834	0
+MATCH	O    |2    |ALL   2-Z	O    |2    |ALL   2-Z	0.93	0
+MATCH	CA   |3    |GLL   5-Z	CA   |3    |GLL   5-Z	0.299	0
+MATCH	CA   |4    |GLL   5-Z	CA   |4    |GLL   5-Z	0.299	0
+MATCH	CA   |5    |GLL   5-Z	CA   |5    |GLL   5-Z	0.299	0
+MATCH	CA   |6    |GLL   5-Z	CA   |6    |GLL   5-Z	0.299	0
+MATCH	Zn   |7    |ZIL   7-Z	Zn   |7    |ZIL   7-Z	1	0
+MATCH	N    |8    |SEP   1-Z	N    |8    |SEP   1-Z	0.834	0
+MATCH	O    |9    |ALP   2-Z	O    |9    |ALP   2-Z	0.93	0
+MATCH	CA   |10   |GLP   5-Z	CA   |10   |GLP   5-Z	0.299	0
+MATCH	CA   |11   |GLP   5-Z	CA   |11   |GLP   5-Z	0.299	0
+MATCH	CA   |12   |GLP   5-Z	CA   |12   |GLP   5-Z	0.299	0
+MATCH	CA   |13   |GLP   5-Z	CA   |13   |GLP   5-Z	0.299	0
+MATCH	CA   |14   |GLP   5-Z	CA   |14   |GLP   5-Z	0.299	0
+MATCH	Zn   |15   |ZIP   7-Z	Zn   |15   |ZIP   7-Z	1	0
+MATCH	N    |16   |SEC   1-Z	N    |16   |SEC   1-Z	0.834	0
+MATCH	O    |17   |ALC   2-Z	O    |17   |ALC   2-Z	0.93	0
+MATCH	CA   |18   |GLC   5-Z	CA   |18   |GLC   5-Z	0.299	0
+MATCH	CA   |19   |GLC   5-Z	CA   |19   |GLC   5-Z	0.299	0
+MATCH	CA   |20   |GLC   5-Z	CA   |20   |GLC   5-Z	0.299	0
+MATCH	CA   |21   |GLC   5-Z	CA   |21   |GLC   5-Z	0.299	0
+MATCH	CA   |22   |GLC   5-Z	CA   |22   |GLC   5-Z	0.299	0
+MATCH	Zn   |23   |ZIC   7-Z	Zn   |23   |ZIC   7-Z	1	0

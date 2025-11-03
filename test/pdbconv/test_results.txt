@@ -1,0 +1,92 @@
+pdbconv
++-->| 1eou
+    +-->| 01
+        +->| Input files
+        +->| Production command
+        +->| Test command
+        +->| Same number of files
+        +-> FAILED   DIFFERENT files
+        +->| Missing expected files
+        +-> FAILED   _descriptor.txt DOES NOT EXIST
+        +->| Extra files
+        +-> FAILED   Usefull_Site.cav IS NOT an expected file
+        +->| Ref files in comp dir
+        +->| File difference
++-->| 2rh1
+    +-->| 01
+        +->| Input files
+        +->| Production command
+        +->| Test command
+        +->| Same number of files
+        +-> FAILED   DIFFERENT files
+        +->| Missing expected files
+        +->| Extra files
+        +-> FAILED   pdbc_4_CLR_CAVITY_N1_ALL.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_2_CLR_CAVITY_N1_4.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_2_CLR_CAVITY_N1_12.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_2_CLR_FULL.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_2_CLR_PROT.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_2_CLR_CAVITY_N1_8.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_2_CLR_CAVITY_N1_ALL.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_4_CLR_CAVITY_N1_12.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_4_CLR_CAVITY_N1_6.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_4_CLR.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_4_CLR_PROT.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_4_CLR_CAVITY_N1_8.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_2_CLR.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_2_CLR_SITE.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_4_CLR_CAVITY_N1_4.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_4_CLR_FULL.mol2 IS NOT an expected file
+        +-> FAILED   Usefull_Site.cav IS NOT an expected file
+        +-> FAILED   pdbc_2_CLR_CAVITY_N1_6.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_4_CLR_SITE.mol2 IS NOT an expected file
+        +->| Ref files in comp dir
+        +->| File difference
++-->| 2zx7
+    +-->| 01
+        +->| Input files
+        +->| Production command
+        +->| Test command
+        +->| Same number of files
+        +-> FAILED   DIFFERENT files
+        +->| Missing expected files
+        +-> FAILED   _descriptor.txt DOES NOT EXIST
+        +->| Extra files
+        +-> FAILED   pdbc_2_ZX7_FULL.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_2_ZX7_CAVITY_N1_4.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_2_ZX7_CAVITY_N1_12.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_2_ZX7_CAVITY_N1_8.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_2_ZX7_PROT.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_2_ZX7_CAVITY_N1_ALL.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_2_ZX7_SITE.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_2_ZX7_CAVITY_N1_6.mol2 IS NOT an expected file
+        +-> FAILED   pdbc_2_ZX7.mol2 IS NOT an expected file
+        +->| Ref files in comp dir
+        +->| File difference
++-->| 3gbb
+    +-->| 01
+        +->| Input files
+        +->| Production command
+        +->| Test command
+        +->| Same number of files
+        +->| Missing expected files
+        +-> FAILED   _descriptor.txt DOES NOT EXIST
+        +-> FAILED   pdbc_1_[A-Z0-9]{3}.mol2 DOES NOT EXIST
+        +-> FAILED   pdbc_1_[A-Z0-9]{3}_PROT.mol2 DOES NOT EXIST
+        +-> FAILED   pdbc_1_[A-Z0-9]{3}_SITE.mol2 DOES NOT EXIST
+        +-> FAILED   pdbc_1_[A-Z0-9]{3}_FULL.mol2 DOES NOT EXIST
+        +-> FAILED   pdbc_1_[A-Z0-9]{3}_CAVITY_N1_ALL.mol2 DOES NOT EXIST
+        +-> FAILED   pdbc_1_[A-Z0-9]{3}_CAVITY_N1_[0-9]{1,2}.mol2 DOES NOT EXIST
+        +->| Extra files
+        +->| Ref files in comp dir
+        +->| File difference
++-->| 4d3j
+    +-->| 01
+        +->| Input files
+        +->| Production command
+        +->| Test command
+        +->| Same number of files
+        +->| Missing expected files
+        +->| Extra files
+        +->| Ref files in comp dir
+        +->| File difference

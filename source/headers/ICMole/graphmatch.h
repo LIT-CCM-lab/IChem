@@ -83,8 +83,8 @@ private:
 
 public:
     GraphMatch(CliqueData&);
-    void createMatrix() throw(MoleExcept);
-    void runSearchAllMaxCliques(const bool verbose) throw(MoleExcept);
+    void createMatrix() ;
+    void runSearchAllMaxCliques(const bool verbose) ;
     void cliqueSearch(std::vector<bool>& Candidates,
                       std::vector<int> & Clique,
                       const int& level);

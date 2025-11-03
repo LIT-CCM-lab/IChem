@@ -234,7 +234,6 @@ namespace ICMole {
       * @param interResult Container where the interaction will be recorded
       * @param NInter Running interaction counter
       */
->>>>>>> feature/integrate-neighboring-algorithm
       void checkMetalInteractions(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const;
 
       /**
@@ -566,7 +565,7 @@ namespace ICMole {
        *
        * Default : PI/3 (60 degrees) - The range by default is 90 +/- 60
        */
-      void setAngl_Tol_AromEF(double angl) { params.AngT_AromFF = angl; }
+      void setAngl_Tol_AromEF(double angl) { params.AngT_AromEF = angl; }
 
 
       /**
@@ -680,7 +679,7 @@ namespace ICMole {
        * @brief Tolerance for the edge to face interaction angle.
        * @return
        */
-      double getAngl_Tol_AromEF() const { return params.AngT_AromFF; }
+      double getAngl_Tol_AromEF() const { return params.AngT_AromEF; }
 
 
       // inline ICMole::Grid& getGrid() { return grid; }

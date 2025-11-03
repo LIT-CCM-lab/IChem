@@ -1,0 +1,1 @@
+/home/neddaoudi/Desktop/IChem/test/../build/IChem sims /home/neddaoudi/Desktop/IChem/test/dataset/protlig/2zx7/fp.txt /home/neddaoudi/Desktop/IChem/test/dataset/protlig/2zx7/compare/refdock/docked_ifp.txt

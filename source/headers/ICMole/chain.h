@@ -25,8 +25,8 @@ class Chain
     ///////////////// CONSTRUCTORS /////////////////
     ////////////////////////////////////////////////
     ////////////////////////////////////////////////
-    Chain(Molecule &molecule, const std::string& Name) throw(MoleExcept);
-    Chain( Molecule * const molecule, const std::string& Name) throw(MoleExcept);
+    Chain(Molecule &molecule, const std::string& Name) ;
+    Chain( Molecule * const molecule, const std::string& Name) ;
 
 
 
@@ -44,11 +44,11 @@ class Chain
 ////////////////////////////////////////////////////////////////////////////////
 
     /*!< \brief Add a residu to this chain */
-    void addResidu(Residu* const res) throw(MoleExcept);
+    void addResidu(Residu* const res) ;
 
 
     /*!< \brief Delete a residu from this chain */
-    void delResidu(Residu* const res) throw(MoleExcept);
+    void delResidu(Residu* const res) ;
 
 
 public:
@@ -107,7 +107,7 @@ void setName(const std::string& new_name){name=new_name;}
     ItRes  last()             {return residus.end();}
 
 
-    Residu& getResidu(const size_t& pos) const throw(MoleExcept);
+    Residu& getResidu(const size_t& pos) const ;
 
 
 
