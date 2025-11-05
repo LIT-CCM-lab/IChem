@@ -42,7 +42,7 @@ Bond:: Bond(Atom  &nAtom1,
    *
    *  Will delete Bond pointer from each Atom.
    */
-Bond::~Bond() noexcept {
+Bond::~Bond() {
   try {
 
     ItBond ited = find(atom1.links.begin(),atom1.links.end(),this);
