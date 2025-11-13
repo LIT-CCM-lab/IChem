@@ -391,19 +391,6 @@ void IChemSwitch::IFP() const
                 delete[] interRes;
             }
         }
-        /*
-    static const int intToPos[4][NB_INTTYPE]=
-        {{-1,3,4,5,6, 0,-1, 1, 2,-1,-1,-1,-1},
-         {-1,0,1,2,3,-1,-1,-1,-1,-1,-1,-1,-1},
-         {-1,3,4,5,6, 0,10, 1, 2, 9, 7, 8,-1},
-         {-1,0,1,2,3,-1,7,-1,-1, 6, 4, 5,-1}};
-    static const short length[4]={7,4,11,8};
-    //     U ,H,H,I,I, H,M , A, A
-    //     N ,B,B,O,O, Y,E , R, R
-    //     D ,P,L,P,L, D,T , F, E
-    //     E , , , , ,  ,  , F, F
-    //     F
-*/
     }
     catch (MoleExcept &e)
     {
