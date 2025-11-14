@@ -1,26 +1,74 @@
 cmake_minimum_required(VERSION 3.13)
 
-project(IChem VERSION 5.3.5)
+# Project definition:
+# * Name: IChem
+# * Version: 5.3.5
+# * Languages: C and C++
+project(IChem VERSION 5.3.5 LANGUAGES C CXX)
+
+# CMake normally has NO build type set
+# This forces a debug build
+if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type: Debug or Release" FORCE)
+endif()
+
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w")
 
-# Optimization 
+# STATIC_ANALYSIS : enable/disable -fanalyzer and clang-tidy
+# ICHEM_DEBUG : project debug
+option(STATIC_ANALYSIS "Enable static analysis (clang-tidy / GCC -fanalyzer)" ON)
+# -DICHEM_DEBUG=ON
+option(ICHEM_DEBUG    "Enable additional IChem debug code (ICHEM_DEBUG=1)"    OFF)
+
+# Debug : no optimization, full debug info
+# Release : O3 + LTO + -march=native
+set(CMAKE_CXX_FLAGS_DEBUG   "-g -O0")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -flto")
 
-# Debug
-# set(CMAKE_CXX_FLAGS_DEBUG "-g -O3")
+# Strict flags for development, can be commented when code is cleaner
+set(STRICT_WARNING_FLAGS "")
 
-if (ICHEM_DEBUG)
-    add_definitions(-DICHEM_DEBUG=1)
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    set(STRICT_WARNING_FLAGS
+        -Wall
+        -Wextra
+        -Wpedantic
+        -Wshadow
+        -Wold-style-cast
+        -Wzero-as-null-pointer-constant
+        # We enable later:
+        # -Wconversion
+        # -Wsign-conversion
+        # -Wnull-dereference
+    )
 endif()
 
-# Enable OpenMP
-# find_package(OpenMP REQUIRED)
-# if(OpenMP_CXX_FOUND)
-#     message(STATUS "OpenMP found")
-# endif()
+# Static analysis configuration:
+# If using GCC: append -fanalyzer to warning flags
+# Clang-tidy is ran during the build if installed
+# Toggle with: -DSTATIC_ANALYSIS=ON/OFF
+if(STATIC_ANALYSIS)
+    message(STATUS "Static analysis: ON")
+
+    # GCC static analyzer
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        message(STATUS "  GCC: enabling -fanalyzer")
+        list(APPEND STRICT_WARNING_FLAGS -fanalyzer)
+    endif()
+
+    # If Clang-Tidy found on the system
+    find_program(CLANG_TIDY_EXE NAMES clang-tidy)
+    if(CLANG_TIDY_EXE)
+        message(STATUS "  clang-tidy: ${CLANG_TIDY_EXE}")
+        set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_EXE};-checks=clang-analyzer-*,modernize-*,bugprone-*,performance-*,readability-*,cppcoreguidelines-*,-clang-analyzer-alpha.*")
+    else()
+        message(STATUS "  clang-tidy is not found, skipping")
+    endif()
+else()
+    message(STATUS "Static analysis: OFF")
+endif()
 
 
 set(SOURCES
@@ -87,23 +135,40 @@ set(SOURCES
     source/sources/ICTools/test.cpp
 )
 
-include_directories(
-    source
-    source/headers/ICMole
-    source/headers/ICTools
-    source/headers/ICPars
-    source/headers/ICCalcs
-    source/headers/ICRSA
-    source/headers/ICCalcs
-    source/headers/ICSVM
-    source/external/nanoflann
-)
+# Executable target IChem
 add_executable(IChem ${SOURCES})
 
-find_package(Threads REQUIRED)
-target_link_libraries(IChem PRIVATE Threads::Threads)
+target_include_directories(IChem
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/source
+        ${CMAKE_CURRENT_SOURCE_DIR}/source/headers/ICMole
+        ${CMAKE_CURRENT_SOURCE_DIR}/source/headers/ICTools
+        ${CMAKE_CURRENT_SOURCE_DIR}/source/headers/ICPars
+        ${CMAKE_CURRENT_SOURCE_DIR}/source/headers/ICCalcs
+        ${CMAKE_CURRENT_SOURCE_DIR}/source/headers/ICRSA
+        ${CMAKE_CURRENT_SOURCE_DIR}/source/headers/ICSVM
+        ${CMAKE_CURRENT_SOURCE_DIR}/source/external/nanoflann
+)
+
+# Enable with -DICHEM_DEBUG=ON
+if(ICHEM_DEBUG)
+    target_compile_definitions(IChem PRIVATE ICHEM_DEBUG=1)
+endif()
 
 
-# if(OpenMP_CXX_FOUND)
-#     target_link_libraries(IChem PRIVATE OpenMP::OpenMP_CXX)
+# We have c files (SVM code), restrict STRICT_WARNING to C++ compilation units
+# No strict warnings for now
+# if(STRICT_WARNING_FLAGS)
+#     target_compile_options(IChem PRIVATE
+#         $<$<COMPILE_LANGUAGE:CXX>:${STRICT_WARNING_FLAGS}>
+#     )
 # endif()
+
+
+# Treat warnings as errors in the debug build
+# target_compile_options(IChem PRIVATE
+#     $<$<AND:$<CONFIG:Debug>,$<COMPILE_LANGUAGE:CXX>>:-Werror>
+# )
+
+# find_package(Threads REQUIRED)
+# target_link_libraries(IChem PRIVATE Threads::Threads)
