@@ -178,9 +178,9 @@ inline void configureResidueRules(const IFPOptions& opt) {
 void computeIFPForLigand(Interactions& interactions, Molecule& ligand, const IFPOptions& options, InterResults& output) {
    
     // RingDetection not run yet
-    // if (ligand.firstCycle() == ligand.lastCycle()) {
-    //     ligand.ringPerception();
-    // }
+    if (ligand.firstCycle() == ligand.lastCycle()) {
+        ligand.ringPerception();
+    }
 
     interactions.detectInteractions(ligand, output, true, options.oldHydrophobic);
     interactions.genIFP(output, options.layoutIndex);
@@ -200,8 +200,7 @@ void processReferenceMode(const std::string& ligandFile, const std::string& refL
     while (!reader.isEOF()) {
         Molecule ligand;
         reader.loadNextMolecule(ligand, MoleType::LIGAND);
-        //delete
-        ligand.ringPerception();
+        ligand.checkMOL2();
 
         InterResults result;
         computeIFPForLigand(interactions, ligand, options, result);
@@ -220,8 +219,7 @@ void processReferenceMode(const std::string& ligandFile, const std::string& refL
     while (!reader.isEOF()) {
         Molecule ligand;
         reader.loadNextMolecule(ligand, MoleType::LIGAND);
-        //delete
-        ligand.ringPerception();
+        ligand.checkMOL2();
 
         InterResults result;
         computeIFPForLigand(interactions, ligand, options, result);
@@ -292,6 +290,7 @@ void processLigandMode(const std::string& ligandFile, Complex& complex, Interact
         while (!reader.isEOF()) {
             Molecule ligand;
             reader.loadNextMolecule(ligand, MoleType::LIGAND);
+            ligand.checkMOL2();
 
             InterResults res;
             computeIFPForLigand(interactions, ligand, options, res);
