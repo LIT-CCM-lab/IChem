@@ -166,11 +166,11 @@ IFPOptions parseIFPOptions(const OptionMap& optionsValues) {
 }
 
 // Apply residue rules once
-inline void configureResidueRules(const IFPOptions& opt) {
-    if (opt.includeSolvent) {
+inline void configureResidueRules(const IFPOptions& options) {
+    if (options.includeSolvent) {
         Residu::Rules[MoleType::PROTEIN][ResType::WATER] = MoleType::PROTEIN;
     }
-    if (opt.includeCofactor) {
+    if (options.includeCofactor) {
         Residu::Rules[MoleType::PROTEIN][ResType::COFACTOR] = MoleType::PROTEIN;
     }
 }
@@ -200,7 +200,7 @@ void processReferenceMode(const std::string& ligandFile, const std::string& refL
     while (!reader.isEOF()) {
         Molecule ligand;
         reader.loadNextMolecule(ligand, MoleType::LIGAND);
-        ligand.checkMOL2();
+        ligand.checkMOL2(); // Thought it redundant, but HETLIST is loaded in loadloadNextMolecule so it's an update
 
         InterResults result;
         computeIFPForLigand(interactions, ligand, options, result);
@@ -219,7 +219,7 @@ void processReferenceMode(const std::string& ligandFile, const std::string& refL
     while (!reader.isEOF()) {
         Molecule ligand;
         reader.loadNextMolecule(ligand, MoleType::LIGAND);
-        ligand.checkMOL2();
+        ligand.checkMOL2(); // Thought it redundant, but HETLIST is loaded in loadloadNextMolecule so it's an update
 
         InterResults result;
         computeIFPForLigand(interactions, ligand, options, result);
