@@ -83,24 +83,24 @@ struct InteractionOverrides {
     bool has_at_Pic = false; double at_Pic = 0.0;
 };
 
-inline void applyOverrides(Interactions& interactions, const InteractionOverrides& o) {
+inline void applyOverrides(Interactions& interactions, const InteractionOverrides& overrideInteractionParams) {
     // Distances
-    if (o.has_D_Hb)   interactions.setDist_H(o.D_Hb);
-    if (o.has_D_Hyd)  interactions.setDist_Hyd(o.D_Hyd);
-    if (o.has_D_Io)   interactions.setDist_Ionic(o.D_Io);
-    if (o.has_D_Me)   interactions.setDist_Metal(o.D_Me);
-    if (o.has_D_Ar)   interactions.setDist_Arom(o.D_Ar);
-    if (o.has_D_Pic)  interactions.setDist_PICation(o.D_Pic);
+    if (overrideInteractionParams.has_D_Hb)   interactions.setDist_H(overrideInteractionParams.D_Hb);
+    if (overrideInteractionParams.has_D_Hyd)  interactions.setDist_Hyd(overrideInteractionParams.D_Hyd);
+    if (overrideInteractionParams.has_D_Io)   interactions.setDist_Ionic(overrideInteractionParams.D_Io);
+    if (overrideInteractionParams.has_D_Me)   interactions.setDist_Metal(overrideInteractionParams.D_Me);
+    if (overrideInteractionParams.has_D_Ar)   interactions.setDist_Arom(overrideInteractionParams.D_Ar);
+    if (overrideInteractionParams.has_D_Pic)  interactions.setDist_PICation(overrideInteractionParams.D_Pic);
 
     // Angles
-    if (o.has_a_H)      interactions.setAngl_H(o.a_H);
-    if (o.has_at_H)     interactions.setAngl_Tol_H(o.at_H);
-    if (o.has_a_ArFF)   interactions.setAngl_AromFF(o.a_ArFF);
-    if (o.has_at_ArFF)  interactions.setAngl_Tol_AromFF(o.at_ArFF);
-    if (o.has_a_ArEF)   interactions.setAngl_AromEF(o.a_ArEF);
-    if (o.has_at_ArEF)  interactions.setAngl_Tol_AromEF(o.at_ArEF);
-    if (o.has_a_Pic)    interactions.setAngl_PICation(o.a_Pic);
-    if (o.has_at_Pic)   interactions.setAngl_Tol_PICation(o.at_Pic);
+    if (overrideInteractionParams.has_a_H)      interactions.setAngl_H(overrideInteractionParams.a_H);
+    if (overrideInteractionParams.has_at_H)     interactions.setAngl_Tol_H(overrideInteractionParams.at_H);
+    if (overrideInteractionParams.has_a_ArFF)   interactions.setAngl_AromFF(overrideInteractionParams.a_ArFF);
+    if (overrideInteractionParams.has_at_ArFF)  interactions.setAngl_Tol_AromFF(overrideInteractionParams.at_ArFF);
+    if (overrideInteractionParams.has_a_ArEF)   interactions.setAngl_AromEF(overrideInteractionParams.a_ArEF);
+    if (overrideInteractionParams.has_at_ArEF)  interactions.setAngl_Tol_AromEF(overrideInteractionParams.at_ArEF);
+    if (overrideInteractionParams.has_a_Pic)    interactions.setAngl_PICation(overrideInteractionParams.a_Pic);
+    if (overrideInteractionParams.has_at_Pic)   interactions.setAngl_Tol_PICation(overrideInteractionParams.at_Pic);
 }
 
 struct IFPOptions {
@@ -241,8 +241,8 @@ void processReferenceMode(const std::string& ligandFile, const std::string& refL
         }
     }
 
-    // similarity matrix:
-    // refs = [0..numReferences-1], compare each ref i with j from i..total-1 using Tanimoto
+    // similarity matrix
+    // refs = [0..numReferences-1] and compare each ref i with j from i..total-1 using Tanimoto
     Similarity sims(false);
     for (std::size_t i = 0; i < numReferences; ++i) {
         sims.setRef(entries[i].fp);
@@ -270,6 +270,7 @@ void processLigandMode(const std::string& ligandFile, Complex& complex, Interact
             throw MoleExcept(9020102, "IChem::IFP", "No ligand found in " + ligandFile);
 
         Molecule& ligand = *complex.getMole(MoleType::LIGAND);
+        ligand.checkMOL2();
 
         InterResults interRes;
         computeIFPForLigand(interactions, ligand, options, interRes);
