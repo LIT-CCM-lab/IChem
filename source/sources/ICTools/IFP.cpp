@@ -247,7 +247,7 @@ void processReferenceMode(const std::string& ligandFile, const std::string& refL
     for (std::size_t i = 0; i < numReferences; ++i) {
         sims.setRef(entries[i].fp);
         for (std::size_t j = i; j < total; ++j) {
-            sims.setComp(entries[j].fp);
+            sims.setComp(entries[j].fp);    
             cout << entries[i].name << '\t'
                  << entries[j].name << '\t'
                  << sims.Tanimoto() << '\n';
@@ -277,8 +277,8 @@ void processLigandMode(const std::string& ligandFile, Complex& complex, Interact
 
         cout << interactions.toString(interRes) << '\n';
         if (options.outputBitstring) {
-            cout << interRes.IFPString << '\n'
-                 << interRes.IFP.toString() << '\n';
+            cout << interRes.IFPString << '\n' // Residue list
+                 << interRes.IFP.toString() << '\n'; // IFP
         }
     }
     else {
