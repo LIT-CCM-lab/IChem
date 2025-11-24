@@ -110,7 +110,6 @@ struct IFPOptions {
     bool extended = false;
     bool includeSolvent = true;
     bool includeCofactor = true;
-    bool includeNucleic = true;
     bool oldHydrophobic  = true;
     bool ligandDebug = false; // I should remove
     bool outputBitstring = true;
@@ -139,7 +138,6 @@ IFPOptions parseIFPOptions(const OptionMap& optionsValues) {
         else if (key == "--extended")     options.extended        = true;
         else if (key == "--solvent")      options.includeSolvent  = false;
         else if (key == "--cofactor")     options.includeCofactor = false;
-        else if (key == "--nucleic")      options.includeNucleic  = false;
         else if (key == "--newH")         options.oldHydrophobic  = false;
         else if (key == "--ligD")         options.ligandDebug     = true;   // Currently unused
         else if (key == "--bitstringOFF") options.outputBitstring = false;
@@ -174,9 +172,6 @@ inline void configureResidueRules(const IFPOptions& options) {
     }
     if (options.includeCofactor) {
         Residu::Rules[MoleType::PROTEIN][ResType::COFACTOR] = MoleType::PROTEIN;
-    }
-    if (options.includeNucleic) {
-        Residu::Rules[MoleType::PROTEIN][ResType::NUCLEIC] = MoleType::PROTEIN;
     }
 }
 
@@ -323,7 +318,6 @@ void processLigandMode(const std::string& ligandFile, Complex& complex, Interact
 
 void IChemSwitch::IFP() const {
 
-    
     const std::size_t inputSize = Input_Values.size();
     const bool withReference = (inputSize == 3);
 
@@ -337,6 +331,10 @@ void IChemSwitch::IFP() const {
     const IFPOptions options = parseIFPOptions(Opt_Values);
 
     try {
+        // Initialization of default rules
+        Residu::loadRules();
+        Molecule::loadRules();
+
         // set residue rules
         configureResidueRules(options);
 
