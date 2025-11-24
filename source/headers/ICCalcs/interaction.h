@@ -99,7 +99,6 @@ namespace ICMole {
   class Interactions {
 
     Complex& complex;
-    // Grid &grid;
 
     InteractionParameters params;
 
