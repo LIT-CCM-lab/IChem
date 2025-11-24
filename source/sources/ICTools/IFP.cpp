@@ -110,6 +110,7 @@ struct IFPOptions {
     bool extended = false;
     bool includeSolvent = true;
     bool includeCofactor = true;
+    bool includeNucleic = true;
     bool oldHydrophobic  = true;
     bool ligandDebug = false; // I should remove
     bool outputBitstring = true;
@@ -138,6 +139,7 @@ IFPOptions parseIFPOptions(const OptionMap& optionsValues) {
         else if (key == "--extended")     options.extended        = true;
         else if (key == "--solvent")      options.includeSolvent  = false;
         else if (key == "--cofactor")     options.includeCofactor = false;
+        else if (key == "--nucleic")      options.includeNucleic  = false;
         else if (key == "--newH")         options.oldHydrophobic  = false;
         else if (key == "--ligD")         options.ligandDebug     = true;   // Currently unused
         else if (key == "--bitstringOFF") options.outputBitstring = false;
@@ -173,6 +175,9 @@ inline void configureResidueRules(const IFPOptions& options) {
     if (options.includeCofactor) {
         Residu::Rules[MoleType::PROTEIN][ResType::COFACTOR] = MoleType::PROTEIN;
     }
+    if (options.includeNucleic) {
+        Residu::Rules[MoleType::PROTEIN][ResType::NUCLEIC] = MoleType::PROTEIN;
+    }
 }
 
 void computeIFPForLigand(Interactions& interactions, Molecule& ligand, const IFPOptions& options, InterResults& output) {
@@ -200,7 +205,7 @@ void processReferenceMode(const std::string& ligandFile, const std::string& refL
     while (!reader.isEOF()) {
         Molecule ligand;
         reader.loadNextMolecule(ligand, MoleType::LIGAND);
-        ligand.checkMOL2(); // Thought it redundant, but HETLIST is loaded in loadloadNextMolecule so it's an update
+        ligand.checkMOL2();
 
         InterResults result;
         computeIFPForLigand(interactions, ligand, options, result);
@@ -219,7 +224,7 @@ void processReferenceMode(const std::string& ligandFile, const std::string& refL
     while (!reader.isEOF()) {
         Molecule ligand;
         reader.loadNextMolecule(ligand, MoleType::LIGAND);
-        ligand.checkMOL2(); // Thought it redundant, but HETLIST is loaded in loadloadNextMolecule so it's an update
+        ligand.checkMOL2();
 
         InterResults result;
         computeIFPForLigand(interactions, ligand, options, result);
@@ -265,6 +270,8 @@ void processLigandMode(const std::string& ligandFile, Complex& complex, Interact
     if (numLigands == 1) {
         // Single ligand, loaded in the complex
         reader.loadInComplex(complex, MoleType::LIGAND);
+        complex.genGrid(4.5);
+        // Residu::loadRules(true);
 
         if (complex.getMole(MoleType::LIGAND) == nullptr)
             throw MoleExcept(9020102, "IChem::IFP", "No ligand found in " + ligandFile);
@@ -316,6 +323,7 @@ void processLigandMode(const std::string& ligandFile, Complex& complex, Interact
 
 void IChemSwitch::IFP() const {
 
+    
     const std::size_t inputSize = Input_Values.size();
     const bool withReference = (inputSize == 3);
 
