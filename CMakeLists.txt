@@ -20,7 +20,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # ICHEM_DEBUG : project debug
 option(STATIC_ANALYSIS "Enable static analysis (clang-tidy / GCC -fanalyzer)" ON)
 # -DICHEM_DEBUG=ON
-option(ICHEM_DEBUG    "Enable additional IChem debug code (ICHEM_DEBUG=1)"    OFF)
+option(ICHEM_DEBUG "Enable additional IChem debug code (ICHEM_DEBUG=1)" OFF)
 
 # Debug : no optimization, full debug info
 # Release : O3 + LTO + -march=native
@@ -109,6 +109,7 @@ set(SOURCES
     source/sources/ICTools/realign.cpp
     source/sources/ICTools/genKey.cpp
     source/sources/ICTools/IFP.cpp
+    source/sources/ICTools/ifp_module.cpp
     source/sources/ICTools/BSAcalc.cpp
     source/sources/ICCalcs/grim.cpp
     source/sources/ICMole/similarity.cpp
