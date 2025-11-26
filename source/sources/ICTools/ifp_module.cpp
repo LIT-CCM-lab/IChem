@@ -270,6 +270,10 @@ void processLigandMode(const std::string& ligandFile, Complex& complex, Interact
 
 } // anonymous namespace
 
+unsigned chooseIFPType_forTests(bool polarOnly, bool extended, bool metalOnly) {
+    return chooseIFPType(polarOnly, extended, metalOnly);
+}
+
 namespace IFPModule {
 
 void runIFP(const std::vector<std::string> &Input_Values, const OptionMap &Opt_Values) {
