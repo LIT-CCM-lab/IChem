@@ -4,8 +4,7 @@
 extern unsigned chooseIFPType_forTests(bool polarOnly, bool extended, bool metalOnly);
 
 // Check all 8 combinations
-static void test_chooseIFPType_truth_table()
-{
+static void test_chooseIFPType_truth_table() {
     // 000: standard
     assert(chooseIFPType_forTests(false, false, false) == 0u);
 
@@ -31,8 +30,7 @@ static void test_chooseIFPType_truth_table()
     assert(chooseIFPType_forTests(true,  true,  true)  == 4u);
 }
 
-int main()
-{
+int main() {
     test_chooseIFPType_truth_table();
 
     std::cout << "[OK] chooseIFPType tests passed\n";
