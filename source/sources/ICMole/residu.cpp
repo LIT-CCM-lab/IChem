@@ -249,7 +249,7 @@ void Residu::loadRules(const bool& force)
     
     Rules[MoleType::PROTEIN][ResType::WATER   ] = MoleType::UNDEFINED;
     Rules[MoleType::PROTEIN][ResType::COFACTOR] = MoleType::UNDEFINED;
-    Rules[MoleType::PROTEIN][ResType::NUCLEIC ] = MoleType::UNDEFINED;
+    Rules[MoleType::PROTEIN][ResType::NUCLEIC ] = MoleType::PROTEIN;
 
     Rules[MoleType::LIGAND] [ResType::STD_AA  ] = MoleType::LIGAND;
     Rules[MoleType::LIGAND] [ResType::MOD_AA  ] = MoleType::LIGAND;
