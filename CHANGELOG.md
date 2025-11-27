@@ -9,75 +9,76 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-Refactoring IFP module:
-    - IFP module refactor in `ICTools/ifp_module.cpp` and `headers/ICTools/ifp_module.hpp`:
-        - New entry point `IFPModule::runIFP(const std::vector<std::string>& inputValues, const OptionMap& optValues)` called from `IChemSwitch::IFP()`
-        - New configuration structures:
-        - `IFPOptions` global IFP configuration
-        - `InteractionOverrides` (distance / angle overrides for interactions)
-        - New per ligand container `IFPEntry` storing ligand name, `Fingerprint` and bitstring (`fpString`)
-        - Internal helper functions that structure the IFP pipeline:
-        - `parseIFPOptions()` : parses CLI options (`Opt_Values`) into an `IFPOptions` instance
-        - `configureResidueRules()` : applies solvent / cofactor rules based on `IFPOptions`
-        - `computeIFPForLigand()` : runs `Interactions::detectInteractions()` and `genIFP()` on a single ligand
-        - `processLigandMode()` : handles the 2 argument mode (protein + ligand file, 1 or many ligands)
-        - `processReferenceMode()` : handles the 3 argument mode (protein, docked ligands, reference ligands)
-        - `processFourArgMode()` : handles the 4 argument mode (two protein ligand ensembles)
-        - `computeIFPsFromFiles()` : utility to compute all IFPs for a pair (protein file, ligand file)
-        
-    - Extended IFP CLI: 4 argument mode
-    - New usage:
-        - `IChem IFP protein1.mol2 ligand1.mol2 protein2.mol2 ligand2.mol2`
-            - `(protein1, ligand1)` is treated as the **docked** set
-            - `(protein2, ligand2)` is treated as the **reference** set
-        - Both ligand files may contain **multiple molecules**; the code computes IFPs for all ligands on both sides and prints:
-            - All DOCKED bitstrings (protein1/ligand1)
-            - Then all REF bitstrings (protein2/ligand2)
-            - Then all pairwise Tanimoto similarities `DOCKED  REF  score`
-    - Fingerprint size mismatches are detected and reported via an error  instead of silently comparing incompatible fingerprints
+- Refactoring IFP module:
+  - IFP module refactor in `ICTools/ifp_module.cpp` and `headers/ICTools/ifp_module.hpp`:
+    - New entry point `IFPModule::runIFP(const std::vector<std::string>& inputValues, const OptionMap& optValues)` called from `IChemSwitch::IFP()`
+    - New configuration structures:
+      - `IFPOptions` global IFP configuration
+      - `InteractionOverrides` (distance / angle overrides for interactions)
+    - New per ligand container `IFPEntry` storing ligand name, `Fingerprint` and bitstring (`fpString`)
+    - Internal helper functions that structure the IFP pipeline:
+      - `parseIFPOptions()` : parses CLI options (`Opt_Values`) into an `IFPOptions` instance
+      - `configureResidueRules()` : applies solvent / cofactor rules based on `IFPOptions`
+      - `computeIFPForLigand()` : runs `Interactions::detectInteractions()` and `genIFP()` on a single ligand
+      - `processLigandMode()` : handles the 2 argument mode (protein + ligand file, 1 or many ligands)
+      - `processReferenceMode()` : handles the 3 argument mode (protein, docked ligands, reference ligands)
+      - `processFourArgMode()` : handles the 4 argument mode (two protein ligand ensembles)
+      - `computeIFPsFromFiles()` : utility to compute all IFPs for a pair (protein file, ligand file)
 
-    - Unit test infrastructure:
-        - New top level directory `unit_tests/` with its own `CMakeLists.txt`
-        - New test target `ifp_unit_tests` in `unit_tests/ICTools/ifp_test.cpp`:
-            - Exposes `chooseIFPType_forTests(bool polarOnly, bool extended, bool metalOnly)`
-            - Verifies the full truth table of combinations for `--polar`, `--extended`, `--metal`
-        - Tests are integrated with CTest:
-            - `add_test(NAME ICTools_ifp_unit COMMAND ifp_unit_tests)` in `unit_tests/CMakeLists.txt`
+- Extended IFP CLI: 4 argument mode
+  - New usage:
+    - `IChem IFP protein1.mol2 ligand1.mol2 protein2.mol2 ligand2.mol2`
+      - `(protein1, ligand1)` is treated as the **docked** set
+      - `(protein2, ligand2)` is treated as the **reference** set
+  - Both ligand files may contain **multiple molecules**; the code computes IFPs for all ligands on both sides and prints:
+    - All DOCKED bitstrings (protein1/ligand1)
+    - Then all REF bitstrings (protein2/ligand2)
+    - Then all pairwise Tanimoto similarities `DOCKED  REF  score`
+  - Fingerprint size mismatches are detected and reported via an error instead of silently comparing incompatible fingerprints
+
+- Unit test infrastructure:
+  - New top level directory `unit_tests/` with its own `CMakeLists.txt`
+  - New test target `ifp_unit_tests` in `unit_tests/ICTools/ifp_test.cpp`:
+    - Exposes `chooseIFPType_forTests(bool polarOnly, bool extended, bool metalOnly)`
+    - Verifies the full truth table of combinations for `--polar`, `--extended`, `--metal`
+  - Tests are integrated with CTest:
+    - `add_test(NAME ICTools_ifp_unit COMMAND ifp_unit_tests)` in `unit_tests/CMakeLists.txt`
 
 ### Changed
-    - Language and toolchain:
-    - Project migrated from **C++11** to **C++20**:
-        - `set(CMAKE_CXX_STANDARD 20)` in the top-level `CMakeLists.txt`
-        - Updated compiler / standard requirements in the build configuration
-        - Added `STATIC_ANALYSIS` CMake option to toggle GCC `-fanalyzer` and `clang-tidy`
 
-    - Build structure:
-        - Core sources are now built into a reusable static library target **`ichem_core`**
-        - The main **`IChem`** executable links against `ichem_core` instead of compiling every source directly
-        - Unit test binaries under `unit_tests/` also link against `ichem_core`, so tests use exactly the same core code as the production binary
+- Language and toolchain:
+  - Project migrated from **C++11** to **C++20**:
+    - `set(CMAKE_CXX_STANDARD 20)` in the top-level `CMakeLists.txt`
+    - Updated compiler / standard requirements in the build configuration
+  - Added `STATIC_ANALYSIS` CMake option to toggle GCC `-fanalyzer` and `clang-tidy`
 
-    - IFP command line and behaviour:
-        - `IChemSwitch::helpIFP()` updated:
-            - Documents the 4 argument mode: `IChem [options] IFP protein1 ligand1 protein2 ligand2`
-            - Document `--bitstringOFF` option added 
-        - The choice of IFP layout (standard / polar / extended / extended polar / metal) is centralized in:
-            - `chooseIFPType(bool polarOnly, bool extended, bool metalOnly)`
-            - with the result stored once in `IFPOptions::layoutIndex`
-    
-    - Output ordering of IFP bitstrings and similarity lines is now consistent:
-        - 3 argument and 4 argument modes both print all **docked/query** ligands first, then all **reference** ligands
-        - Similarity lines always follow the pattern:
-            - `DOCKED_LIGAND_NAME REF_LIGAND_NAME Tanimoto`
+- Build structure:
+  - Core sources are now built into a reusable static library target `ichem_core`
+  - The main `IChem` executable links against `ichem_core` instead of compiling every source directly
+  - Unit test binaries under `unit_tests/` also link against `ichem_core`, so tests use exactly the same core code as the production binary
+
+- IFP command line and behaviour:
+  - `IChemSwitch::helpIFP()` updated:
+    - Documents the 4 argument mode: `IChem [options] IFP protein1 ligand1 protein2 ligand2`
+    - Document `--bitstringOFF` option added
+  - The choice of IFP layout (standard / polar / extended / extended polar / metal) is centralized in:
+    - `chooseIFPType(bool polarOnly, bool extended, bool metalOnly)`
+    - with the result stored once in `IFPOptions::layoutIndex`
+
+- Output ordering of IFP bitstrings and similarity lines is now consistent:
+  - 3 argument and 4 argument modes both print all **docked/query** ligands first, then all **reference** ligands
+  - Similarity lines always follow the pattern:
+    - `DOCKED_LIGAND_NAME REF_LIGAND_NAME Tanimoto`
 
 ### Fixed
 
-    - Miscellaneous bugs (from the previous `[Unreleased]` section, now part of this release):
-        - The function `getAngl_Tol_AromEF()` returning `AngT_AromFF` instead of `AngT_AromEF`
-        - The function `setAngl_Tol_AromEF()` instanciating `AngT_AromFF` instead of `AngT_AromEF`
-        - `Bond::~Bond()` destructor, no throwing errors and redirect the logs into the error standard
-        - `Atom::getResiduName()` returns invalid reference, fixed
-        - Warning implicit conversion from char to unsigned corrected
-        - Return default value added in function `Molecule::getalpha()`
+- Miscellaneous bugs (from the previous `[Unreleased]` section, now part of this release):
+  - The function `getAngl_Tol_AromEF()` returning `AngT_AromFF` instead of `AngT_AromEF`
+  - The function `setAngl_Tol_AromEF()` instanciating `AngT_AromFF` instead of `AngT_AromEF`
+  - `Bond::~Bond()` destructor, no throwing errors and redirect the logs into the error standard
+  - `Atom::getResiduName()` returns invalid reference, fixed
+  - Warning implicit conversion from char to unsigned corrected
+  - Return default value added in function `Molecule::getalpha()`
 
 
 ## [IChem_5.3.5] - 2025-09-05
