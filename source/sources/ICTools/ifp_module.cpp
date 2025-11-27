@@ -144,33 +144,14 @@ void computeIFPForLigand(Interactions& interactions, Molecule& ligand, const IFP
 
 // 3 arguments mode (protein, ligand, ligand_ref)
 // We compute IFPs for all reference ligands first, then all query ligands
-void processReferenceMode(const std::string& ligandFile, const std::string& refLigandFile, Interactions& interactions, const IFPOptions& options) {
-    std::vector<IFPEntry> entries;
-    entries.reserve(128);
+void processReferenceMode(const std::string& ligandFile, const std::string& refLigandFile, Interactions& interactions, const IFPOptions& options)
+{
+    std::vector<IFPEntry> docked; // ligandFile
+    std::vector<IFPEntry> refs;   // refLigandFile
 
     MoleReader reader;
-    std::size_t numReferences = 0;
 
-    // Reference ligands
-    reader.loadNewFile(refLigandFile);
-    while (!reader.isEOF()) {
-        Molecule ligand;
-        reader.loadNextMolecule(ligand, MoleType::LIGAND);
-        ligand.checkMOL2();
-
-        InterResults result;
-        computeIFPForLigand(interactions, ligand, options, result);
-
-        entries.push_back(IFPEntry{
-            ligand.getName(),
-            result.IFP,
-            result.IFPString
-        });
-
-        ++numReferences;
-    }
-
-    // Query ligands
+    // docked ligands
     reader.loadNewFile(ligandFile);
     while (!reader.isEOF()) {
         Molecule ligand;
@@ -180,36 +161,57 @@ void processReferenceMode(const std::string& ligandFile, const std::string& refL
         InterResults result;
         computeIFPForLigand(interactions, ligand, options, result);
 
-        entries.push_back(IFPEntry{
+        docked.push_back(IFPEntry{
+            ligand.getName(),   // e.g. "REF" in your current example
+            result.IFP,
+            result.IFPString
+        });
+    }
+
+    // reference ligands
+    reader.loadNewFile(refLigandFile);
+    while (!reader.isEOF()) {
+        Molecule ligand;
+        reader.loadNextMolecule(ligand, MoleType::LIGAND);
+        ligand.checkMOL2();
+
+        InterResults result;
+        computeIFPForLigand(interactions, ligand, options, result);
+
+        refs.push_back(IFPEntry{
             ligand.getName(),
             result.IFP,
             result.IFPString
         });
     }
 
-    const std::size_t total = entries.size();
-
-    // print per-ligand IFP bitstrings if requested
+    // 3) Print all IFPs if requested
     if (options.outputBitstring) {
-        for (const auto& entry : entries) {
-            cout << entry.name << '\t' << entry.fpString << '\n'
-                 << entry.name << '\t' << entry.fp.toString() << '\n';
+        // docked ligands
+        for (const auto& d : docked) {
+            cout << d.name << '\t' << d.fpString     << '\n'
+                 << d.name << '\t' << d.fp.toString() << '\n';
+        }
+        // all references
+        for (const auto& r : refs) {
+            cout << r.name << '\t' << r.fpString     << '\n'
+                 << r.name << '\t' << r.fp.toString() << '\n';
         }
     }
 
-    // similarity matrix
-    // refs = [0..numReferences-1] and compare each ref i with j from i..total-1 using Tanimoto
+    // 4) Similarities: each docked vs ref
     Similarity sims(false);
-    for (std::size_t i = 0; i < numReferences; ++i) {
-        sims.setRef(entries[i].fp);
-        for (std::size_t j = i; j < total; ++j) {
-            sims.setComp(entries[j].fp);    
-            cout << entries[i].name << '\t'
-                 << entries[j].name << '\t'
+    for (const auto& d : docked) {
+        sims.setRef(d.fp);
+        for (const auto& r : refs) {
+            sims.setComp(r.fp);
+            cout << d.name << '\t'
+                 << r.name << '\t'
                  << sims.Tanimoto() << '\n';
         }
     }
 }
+
 
 // 2 arguments mode: protein + ligand file (single or multi ligand)
 void processLigandMode(const std::string& ligandFile, Complex& complex, Interactions& interactions, const IFPOptions& options) {
@@ -268,6 +270,103 @@ void processLigandMode(const std::string& ligandFile, Complex& complex, Interact
     }
 }
 
+std::vector<IFPEntry> computeIFPsFromFiles(const std::string& proteinFile, const std::string& ligandFile, const IFPOptions&  options) {
+    
+    std::vector<IFPEntry> entries;
+
+    // Protein
+    Complex complex;
+    MoleReader proteinReader;
+
+    proteinReader.loadNewFile(proteinFile);
+    proteinReader.get_format_file();
+    proteinReader.loadInComplex(complex, MoleType::PROTEIN);
+
+    if (complex.getMole(MoleType::PROTEIN) == nullptr)
+        throw MoleExcept(9020102, "IChem::IFP", "No protein found in " + proteinFile);
+    
+    // Interactions object for this protein
+    Interactions interactions(complex);
+    applyOverrides(interactions, options.overrides);
+
+    // 1 ou many ligands
+    MoleReader ligandReader;
+    ligandReader.loadNewFile(ligandFile);
+
+    while (!ligandReader.isEOF()) {
+        
+        Molecule ligand;
+        ligandReader.loadNextMolecule(ligand, MoleType::LIGAND);
+        ligand.checkMOL2();
+
+        InterResults result;
+        computeIFPForLigand(interactions, ligand, options, result);
+
+        IFPEntry entry;
+        entry.name = ligand.getName();
+        entry.fp = result.IFP;
+        entry.fpString = result.IFPString;
+
+        entries.push_back(std::move(entry));
+    }
+
+    if (entries.empty()) {
+        throw MoleExcept(9020102, "IChem::IFP", "No ligand found in " + ligandFile);
+    }
+
+    return entries;
+}
+
+
+void processFourArgMode(const std::string& protein1File, const std::string& ligand1File, const std::string& protein2File, const std::string& ligand2File, const IFPOptions&  options) {
+    
+    // Convention:
+    // (protein1, ligand1) = DOCKED (query)
+    // (protein2, ligand2) = REF (reference)
+
+    std::vector<IFPEntry> dockedEntries = computeIFPsFromFiles(protein1File, ligand1File, options);
+    std::vector<IFPEntry> refEntries = computeIFPsFromFiles(protein2File, ligand2File, options);
+
+    const std::size_t numDocked = dockedEntries.size();
+    const std::size_t numRef = refEntries.size();
+
+    if (options.outputBitstring) {
+        // DOCKED block
+        for (const auto& entry : dockedEntries) {
+            std::cout << entry.name << '\t' << entry.fpString      << '\n'
+                      << entry.name << '\t' << entry.fp.toString() << '\n';
+        }
+
+        // REF block
+        for (const auto& entry : refEntries) {
+            std::cout << entry.name << '\t' << entry.fpString      << '\n'
+                      << entry.name << '\t' << entry.fp.toString() << '\n';
+        }
+    }
+
+    // Similarity
+    Similarity sims(false);
+
+    for (std::size_t i = 0; i < numDocked; ++i) {
+        const auto& docked = dockedEntries[i];
+
+        for (std::size_t j = 0; j < numRef; ++j) {
+            const auto& ref = refEntries[j];
+
+            // Fingerprint lengths must match
+            if (docked.fpString.size() != ref.fpString.size())
+                throw MoleExcept( 9020105, "IChem::IFP", "Cannot compare fingerprints with different sizes in 4-argument mode");
+
+            sims.setRef(ref.fp);
+            sims.setComp(docked.fp);
+
+            std::cout << docked.name << '\t' << ref.name    << '\t' << sims.Tanimoto() << '\n';
+        }
+    }
+}
+
+
+
 } // anonymous namespace
 
 unsigned chooseIFPType_forTests(bool polarOnly, bool extended, bool metalOnly) {
@@ -277,31 +376,38 @@ unsigned chooseIFPType_forTests(bool polarOnly, bool extended, bool metalOnly) {
 namespace IFPModule {
 
 void runIFP(const std::vector<std::string> &Input_Values, const OptionMap &Opt_Values) {
-
+    
     const std::size_t inputSize = Input_Values.size();
-    const bool withReference = (inputSize == 3);
 
-    if (inputSize != 2 && !withReference)
-        throw MoleExcept(9020101, "IChem::IFP", "Number of parameters must be 2 or 3");
+    if (inputSize < 2 || inputSize > 4)
+        throw MoleExcept(9020101, "IChem::IFP", "Number of parameters must be 2, 3 or 4");
 
-    const std::string& proteinFile = Input_Values.at(0);
-    const std::string& ligandFile  = Input_Values.at(1);
-
-    // Parse CLI options once into a config struct
     const IFPOptions options = parseIFPOptions(Opt_Values);
 
     try {
-        // Initialization of default rules
+        // Global rules, once per call
         Residu::loadRules();
         Molecule::loadRules();
-
-        // set residue rules
         configureResidueRules(options);
 
-        // load protein into complex
+        // 4 argument mode
+        if (inputSize == 4) {
+            const std::string& protein1File = Input_Values[0];
+            const std::string& ligand1File  = Input_Values[1];
+            const std::string& protein2File = Input_Values[2];
+            const std::string& ligand2File  = Input_Values[3];
+
+            processFourArgMode(protein1File, ligand1File, protein2File, ligand2File, options);
+            return;
+        }
+
+        // 2 and 3 argument modes
+        const std::string& proteinFile = Input_Values.at(0);
+        const std::string& ligandFile = Input_Values.at(1);
+        const bool withReference = (inputSize == 3);
+
         Complex complex;
         MoleReader proteinReader;
-
         proteinReader.loadNewFile(proteinFile);
         proteinReader.get_format_file();
         proteinReader.loadInComplex(complex, MoleType::PROTEIN);
@@ -309,7 +415,6 @@ void runIFP(const std::vector<std::string> &Input_Values, const OptionMap &Opt_V
         if (complex.getMole(MoleType::PROTEIN) == nullptr)
             throw MoleExcept(9020102, "IChem::IFP", "No protein found in " + proteinFile);
 
-        // One interactions engine per protein
         Interactions interactions(complex);
         applyOverrides(interactions, options.overrides);
 

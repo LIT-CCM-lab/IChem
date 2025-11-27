@@ -8,6 +8,7 @@ void IChemSwitch::helpIFP() const {
         << "IFP - Interaction FingerPrint\n"
         << "Usage: IChem [options] IFP protein ligand\n"
         << "       IChem [options] IFP protein ligand ligand_ref\n"
+        << "       IChem [options] IFP protein1 ligand1 protein2 ligand2\n"
         << "\n"
         << "Description:\n"
         << "  Compute interaction fingerprints between a protein and a ligand\n"
