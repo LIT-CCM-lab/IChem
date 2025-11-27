@@ -162,7 +162,7 @@ void processReferenceMode(const std::string& ligandFile, const std::string& refL
         computeIFPForLigand(interactions, ligand, options, result);
 
         docked.push_back(IFPEntry{
-            ligand.getName(),   // e.g. "REF" in your current example
+            ligand.getName(),
             result.IFP,
             result.IFPString
         });
@@ -185,7 +185,7 @@ void processReferenceMode(const std::string& ligandFile, const std::string& refL
         });
     }
 
-    // 3) Print all IFPs if requested
+    // Print all IFPs
     if (options.outputBitstring) {
         // docked ligands
         for (const auto& d : docked) {
@@ -199,7 +199,7 @@ void processReferenceMode(const std::string& ligandFile, const std::string& refL
         }
     }
 
-    // 4) Similarities: each docked vs ref
+    // Similarities: each docked vs ref
     Similarity sims(false);
     for (const auto& d : docked) {
         sims.setRef(d.fp);
@@ -240,7 +240,7 @@ void processLigandMode(const std::string& ligandFile, Complex& complex, Interact
         }
     }
     else {
-        // Multi-ligand file, not loaded in the complex
+        // Multi ligand file, not loaded in the complex
         reader.loadNewFile(ligandFile);
 
         std::vector<IFPEntry> entries;
