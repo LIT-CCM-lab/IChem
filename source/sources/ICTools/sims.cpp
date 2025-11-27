@@ -31,41 +31,6 @@ void IChemSwitch::helpFGPS() const {
         << "---------------------------------------------------------------------------" << endl;
 }
 
-
-Fingerprint Fingerprint::generateIFP(const std::string& protein_file, const std::string& ligand_file, bool numeric) {
-    
-    using namespace ICMole;
-
-    Complex complex;
-    MoleReader reader;
-
-    reader.loadNewFile(protein_file);
-    reader.get_format_file();
-    reader.loadInComplex(complex, MoleType::PROTEIN);
-
-    reader.loadNewFile(ligand_file);
-    reader.loadInComplex(complex, MoleType::LIGAND);
-
-    Molecule* ligand = complex.getMole(MoleType::LIGAND);
-    if (!ligand) {
-        throw MoleExcept(9020102, "generateIFPfromFiles", "No ligand found in " + ligand_file);
-    }
-
-    ligand->checkMOL2();
-    ligand->ringPerception();
-
-    Interactions ints(complex);
-    InterResults res;
-    ints.detectInteractions(*ligand, res, true, true);  
-
-    ints.genIFP(res, 0);
-
-    res.IFP.setName(ligand->getName());
-
-    return res.IFP;
-}
-
-
 void IChemSwitch::runFGPS() const 
 {
 

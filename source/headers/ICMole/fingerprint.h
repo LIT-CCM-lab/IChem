@@ -73,9 +73,6 @@ public:
     void loadCompressFile(const std::string& _fname);
     void loadFile        (const std::string& _fname);
     void loadSVM_File    (const std::string& _fname);
-    static Fingerprint generateIFP(const std::string& protein_file, const std::string& ligand_file, bool numeric);
-
-
 
     std::vector<unsigned int>::iterator first() {return bitstring.begin();}
     std::vector<unsigned int>::iterator end() {return bitstring.end();}
