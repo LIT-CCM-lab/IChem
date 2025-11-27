@@ -23,7 +23,7 @@ option(ICHEM_DEBUG "Enable additional IChem debug code (ICHEM_DEBUG=1)" OFF)
 # Debug : no optimization, full debug info
 # Release : O3 + LTO + -march=native
 set(CMAKE_CXX_FLAGS_DEBUG   "-g -O0")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -flto")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native")
 
 # Strict flags for development, can be commented when code is cleaner
 set(STRICT_WARNING_FLAGS "")
