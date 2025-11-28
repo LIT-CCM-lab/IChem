@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.13)
 # * Name: IChem
 # * Version: 5.3.5
 # * Languages: C and C++
-project(IChem VERSION 5.3.5 LANGUAGES C CXX)
+project(IChem VERSION 5.3.6 LANGUAGES C CXX)
 
 # CMake normally has NO build type set
 # This forces a debug build
@@ -23,7 +23,7 @@ option(ICHEM_DEBUG "Enable additional IChem debug code (ICHEM_DEBUG=1)" OFF)
 # Debug : no optimization, full debug info
 # Release : O3 + LTO + -march=native
 set(CMAKE_CXX_FLAGS_DEBUG   "-g -O0")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -flto")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native")
 
 # Strict flags for development, can be commented when code is cleaner
 set(STRICT_WARNING_FLAGS "")
@@ -65,6 +65,8 @@ if(STATIC_ANALYSIS)
 else()
     message(STATUS "Static analysis: OFF")
 endif()
+
+find_package(Threads REQUIRED)
 
 # Core library: all the IChem code except main.cpp
 set(ICHEM_CORE_SOURCES
@@ -152,6 +154,11 @@ target_include_directories(ichem_core
         ${CMAKE_CURRENT_SOURCE_DIR}/source/headers/ICRSA
         ${CMAKE_CURRENT_SOURCE_DIR}/source/headers/ICSVM
         ${CMAKE_CURRENT_SOURCE_DIR}/source/external/nanoflann
+)
+
+target_link_libraries(ichem_core
+    PUBLIC 
+        Threads::Threads
 )
 
 # Enable debug macro on the core
