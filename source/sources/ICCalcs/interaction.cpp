@@ -1378,19 +1378,14 @@ Fingerprint& Interactions::generateTriplets(InterResults& interResult,const bool
 void Interactions::genIFP(InterResults& interResult, const unsigned int& fgpType) const {
 
     static const int intToPos[5][NB_INTTYPE]= {
-        {-1,3,4,5,6, 0,-1, 1, 2,-1,-1,-1,-1,-1},
-        {-1,0,1,2,3,-1,4,-1,-1,-1,-1,-1,-1,-1},
-        {-1,3,4,5,6, 0,8, 1, 2, 7, -1, -1,-1,-1},
-        {-1,0,1,2,3,-1,7,-1,-1, 6, 4, 5,-1,-1},
-        {-1,-1,-1,-1,-1,-1,0,-1,-1,-1,-1,-1,-1}
+        {-1,3,4,5,6, 0,-1, 1, 2,-1,-1,-1,-1,-1}, // standard 7 bits
+        {-1,0,1,2,3,-1,4,-1,-1,-1,-1,-1,-1,-1}, // polar 5 bits
+        {-1,3,4,5,6, 0,8, 1, 2, 7, -1, -1,-1,-1}, // extended 9 bits
+        {-1,0,1,2,3,-1,7,-1,-1, 6, 4, 5,-1,-1}, // polar extended 8 bits
+        {-1,-1,-1,-1,-1,-1,0,-1,-1,-1,-1,-1,-1} // metal 1 bit
     };
 
     static const short length[5]={7,5,9,8,1};
-    //     U ,H,H,I,I, H,M , A, A
-    //     N ,B,B,O,O, Y,E , R, R
-    //     D ,P,L,P,L, D,T , F, E
-    //     E , , , , ,  ,  , F, F
-    //     F
     
     map<int,Residu*> NumtoRes;
     for (ItCRes itR = complex.firstResidu();itR != complex.lastResidu();++itR) 
