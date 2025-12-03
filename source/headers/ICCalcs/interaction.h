@@ -26,6 +26,8 @@ namespace ICMole {
     double dist_Ionic = 2.3; // Ionic minimal distance
     double dist_Metal = 1.8; // Metal/Acceptor minimal distance
     double dist_Arom = 3.2; // Aromatic minimal distance between center
+    double dist_WHBond = 2.3; // Minimal distance of weakhbond
+    double dist_PiCation = 3.0; // Minimal distance of pi-cation
     
     
     // Angles
@@ -418,102 +420,26 @@ namespace ICMole {
       }
 
 
-      /**
-       * @brief Maximum distance allowed between the acceptor and the donor in an Hydrogen Bond.
-       * @param dist : threshold in Angstroem
-       * Default : 4.5 Angstroem
-      */
-      void setDist_H(double dist) { params.Dist_H = dist; } 
+      
+       // Setters for maximal distances
+      void setDist_H(double d)         { params.Dist_H        = d; }
+      void setDist_Hyd(double d)       { params.Dist_Hyd      = d; }
+      void setDist_Ionic(double d)     { params.Dist_Ionic    = d; }
+      void setDist_Metal(double d)     { params.Dist_Metal    = d; }
+      void setDist_Arom(double d)      { params.Dist_Arom     = d; }
+      void setDist_PICation(double d)  { params.Dist_PiCation = d; }
+      void setDist_WHBond(double d)    { params.Dist_WHBond   = d; } 
+
+      // Setters for minimal distances
+      void setMinDist_H(double d)        { params.dist_H        = d; }
+      void setMinDist_Hyd(double d)      { params.dist_Hyd      = d; }
+      void setMinDist_Ionic(double d)    { params.dist_Ionic    = d; }
+      void setMinDist_Metal(double d)    { params.dist_Metal    = d; }
+      void setMinDist_Arom(double d)     { params.dist_Arom     = d; }
+      void setMinDist_PICation(double d) { params.dist_PiCation = d; }
+      void setMinDist_WHBond(double d)   { params.dist_WHBond   = d; }
 
 
-      /**
-       * @brief Maximum distance allowed between two hydrophobic atoms.
-       * @param dist : in Angstroems
-       * Default : 4.5 Angstroem
-       */
-      void setDist_Hyd(double dist) { params.Dist_Hyd = dist; } /*!<  */
-
-
-      /**
-       * @brief Maximum distance allowed between an anion and a cation.
-       * @param dist : in Angstroems
-       * Default : 4 Angstroems
-       */
-      void setDist_Ionic(double dist) { params.Dist_Ionic = dist; } /*!<  */
-
-
-      /**
-       * @brief Maximum distance allowed between a metal and an acceptor.
-       * @param dist : in Angstroems
-       *  Default : 2.8 Angstroem
-       */
-      void setDist_Metal(double dist) { params.Dist_Metal = dist; }
-
-
-      /**
-       * @brief Maximum distance allowed between centers of two aromatic rings.
-       * @param dist : in Angstroems
-       *  Default : 4 Angstroem
-       */
-      void setDist_Arom(double dist) { params.Dist_Arom = dist; }
-
-
-      /**
-       * @brief Maximum distance allowed between the acceptor and the donor in an Hydrogen Bond.
-       * @param dist : threshold in Angstroem
-       * Default : 4.5 Angstroem
-       */
-      void setdist_H(double dist) { params.dist_H = dist; }
-
-
-      /**
-       * @brief Maximum distance allowed between two hydrophobic atoms.
-       * @param dist : in Angstroems
-       * Default : 4.5 Angstroem
-       */
-      void setdist_Hyd(double dist) { params.dist_Hyd = dist; } /*!<  */
-
-
-      /**
-       * @brief Maximum distance allowed between an anion and a cation.
-       * @param dist : in Angstroems
-       * Default : 4 Angstroems
-       */
-      void setdist_Ionic(double dist) { params.dist_Ionic = dist; } /*!<  */
-
-
-      /**
-       * @brief Maximum distance allowed between a metal and an acceptor.
-       * @param dist : in Angstroems
-       *  Default : 2.8 Angstroem
-       */
-      void setdist_Metal(double dist) { params.dist_Metal = dist; }
-
-
-      /**
-       * @brief Maximum distance allowed between centers of two aromatic rings.
-       * @param dist : in Angstroems
-       *
-       *  Default : 4 Angstroem
-       */
-      void setdist_Arom(double dist) { params.dist_Arom = dist; }
-
-
-      /**
-       * @brief Maximum distance allowed between the acceptor and the donor atom in weak H-Bond
-       * @param dist : in Angstroems
-       *
-       * Default: 2.8 Angstreoms
-       */
-      void setdist_WHBond(double dist){ params.Dist_WHBond = dist; }
-
-      /**
-       * @brief Maximum distance allowed between the cation and the aromatic center
-       * @param dist : in Angstroems
-       *
-       * Default: 4 Angstreoms
-       */
-      void setDist_PICation(double dist){ params.Dist_PiCation = dist; }
 
       /**
        * @brief Angle between the donor, the hydrogen and the acceptor atoms for an hydrogen bond.
