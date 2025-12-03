@@ -2,8 +2,8 @@
 #define SWITCH_H
 #include "ichemo.h"
 
-#define ICHEM_VERSION "5.3.6"
-#define ICHEM_RELEASE "2025-11-27"
+#define ICHEM_VERSION "5.3.7"
+#define ICHEM_RELEASE "2025-12-03"
 #define ICHEM_TOOLS   14
 
 namespace IChemTools
