@@ -120,11 +120,11 @@ void IChemSwitch::ints() const
 
 
             //-type -name fgps -format -name -a_H -at_H -a_ArFF -at_ArFF -a_ArEF -at_ArEF --noMerge
-            if (opt_name.compare("-d_Hb")          == 0) ins.setdist_H         (atof(value.c_str()));
-            else if (opt_name.compare("-d_Hyd")    == 0) ins.setdist_Hyd       (atof(value.c_str()));
-            else if (opt_name.compare("-d_Io")     == 0) ins.setdist_Ionic     (atof(value.c_str()));
-            else if (opt_name.compare("-d_Me")     == 0) ins.setdist_Metal     (atof(value.c_str()));
-            else if (opt_name.compare("-d_Ar")     == 0) ins.setdist_Arom      (atof(value.c_str()));
+            if (opt_name.compare("-d_Hb")          == 0) ins.setMinDist_H         (atof(value.c_str()));
+            else if (opt_name.compare("-d_Hyd")    == 0) ins.setMinDist_Hyd       (atof(value.c_str()));
+            else if (opt_name.compare("-d_Io")     == 0) ins.setMinDist_Ionic     (atof(value.c_str()));
+            else if (opt_name.compare("-d_Me")     == 0) ins.setMinDist_Metal     (atof(value.c_str()));
+            else if (opt_name.compare("-d_Ar")     == 0) ins.setMinDist_Arom      (atof(value.c_str()));
             else if (opt_name.compare("-D_Hb")     == 0) ins.setDist_H         (atof(value.c_str()));
             else if (opt_name.compare("-D_Hyd")    == 0) ins.setDist_Hyd       (atof(value.c_str()));
             else if (opt_name.compare("-D_Io")     == 0) ins.setDist_Ionic     (atof(value.c_str()));

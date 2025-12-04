@@ -77,8 +77,8 @@ void Interactions::detectInteractions(Molecule& ligand, InterResults& interResul
     
     double dist;
     int NInter = 0;
-    double min_allowed_dist = 1.5;
-    double max_allowed_dist = std::max({ params.Dist_H, params.Dist_Hyd, params.Dist_Ionic, params.Dist_Metal, params.Dist_Arom, params.Dist_PiCation });
+    double min_allowed_dist = params.dist_Arom;
+    double max_allowed_dist = std::max({ params.Dist_H, params.Dist_Hyd, params.Dist_Ionic, params.Dist_Metal, params.Dist_Arom, params.Dist_PiCation, params.Dist_WHBond });
 
     
     // Build KD-tree on protein atoms
@@ -311,57 +311,75 @@ void Interactions::checkHydrogenBondLigandDonor(Atom& atomL, Atom& atomP, double
 
 void Interactions::checkWeakHydrogenBondLigandAcceptor(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const {
     
-    if (wInterType[InterType::WHBOND_PROT] && atomP.props.isweakDonor() && dist <= params.Dist_WHBond) {
-        for (size_t i=0; i < atomP.getNumBond(); ++i) {
-            
-            const Atom &atomP2 = atomP.getAtomLinked(i);
-            double angle = atomP2.fixpos.calcAngle(atomP.fixpos,  atomL.fixpos);
+    if (!wInterType[InterType::WHBOND_PROT])
+        return;
 
-            if (!atomP2.isHydrogen())     
-                continue;
+    if (!atomP.props.isweakDonor())
+        return;
 
-            if (angle <= params.Angl_WHBond - params.AngT_WHBond || angle >= params.Angl_WHBond + params.AngT_WHBond)  
-                continue;
+    if (dist < params.dist_WHBond || dist > params.Dist_WHBond)
+        return;
 
-            addInteraction(interResult, atomP, atomL, dist, NInter, &angle, InterType::WHBOND_PROT);
-        }
+    for (size_t i = 0; i < atomP.getNumBond(); ++i) {
+        const Atom& atomP2 = atomP.getAtomLinked(i);
+        double angle = atomP2.fixpos.calcAngle(atomP.fixpos, atomL.fixpos);
+
+        if (!atomP2.isHydrogen())
+            continue;
+
+        if (angle <= params.Angl_WHBond - params.AngT_WHBond || angle >= params.Angl_WHBond + params.AngT_WHBond)
+            continue;
+
+        addInteraction(interResult, atomP, atomL, dist, NInter, &angle, InterType::WHBOND_PROT);
     }
 }
 
 void Interactions::checkWeakHydrogenBondLigandWeakAcceptor(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const {
     
-    if (atomL.props.isweakAcceptor() && wInterType[InterType::WHBOND_PROT] && dist < params.Dist_WHBond && (atomP.props.isweakDonor() || atomP.props.isDonor())) {
-        
-        for (size_t i=0; i < atomP.getNumBond(); ++i) {
-            const Atom &atomP2 = atomP.getAtomLinked(i);
-            double angle = atomP2.fixpos.calcAngle(atomP.fixpos,  atomL.fixpos);
+    if (!atomL.props.isweakAcceptor())
+        return;
+    if (!wInterType[InterType::WHBOND_PROT])
+        return;
+    if (!(atomP.props.isweakDonor() || atomP.props.isDonor()))
+        return;
+    if (dist < params.dist_WHBond || dist > params.Dist_WHBond)
+        return;
 
-            if (!atomP2.isHydrogen())     
-                continue;
+    for (size_t i = 0; i < atomP.getNumBond(); ++i) {
+        const Atom& atomP2 = atomP.getAtomLinked(i);
+        double angle = atomP2.fixpos.calcAngle(atomP.fixpos, atomL.fixpos);
 
-            if (angle <= params.Angl_WHBond - params.AngT_WHBond || angle >= params.Angl_WHBond + params.AngT_WHBond)
-                continue;
+        if (!atomP2.isHydrogen())
+            continue;
 
-            addInteraction(interResult, atomP, atomL, dist, NInter, &angle, InterType::WHBOND_PROT);
-        }
+        if (angle <= params.Angl_WHBond - params.AngT_WHBond ||
+            angle >= params.Angl_WHBond + params.AngT_WHBond)
+            continue;
+
+        addInteraction(interResult, atomP, atomL, dist, NInter, &angle, InterType::WHBOND_PROT);
     }
 }
 
 void Interactions::checkWeakHydrogenBondLigandDonorProteinWeakAcceptor(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const {
+    
+    if (!wInterType[InterType::WHBOND_LIG])
+        return;
+    if (!atomP.props.isweakAcceptor())
+        return;
+    if (dist < params.dist_WHBond || dist > params.Dist_WHBond)
+        return;
 
-    if (wInterType[InterType::WHBOND_LIG] && atomP.props.isweakAcceptor() && dist <= params.Dist_WHBond) {
-        for (size_t i=0; i< atomL.getNumBond(); ++i) {
-            const Atom &atomL2 = atomL.getAtomLinked(i);
-            double angle = atomL2.fixpos.calcAngle(atomP.fixpos,  atomL.fixpos);
+    for (size_t i = 0; i < atomL.getNumBond(); ++i) {
+        const Atom& atomL2 = atomL.getAtomLinked(i);
+        double angle = atomL2.fixpos.calcAngle(atomP.fixpos, atomL.fixpos);
 
-            if (!atomL2.isHydrogen())     
-                continue;
+        if (!atomL2.isHydrogen())
+            continue;
 
-            if (angle <= params.Angl_WHBond - params.AngT_WHBond || angle >= params.Angl_WHBond + params.AngT_WHBond) 
-                continue;
-            
-            addInteraction(interResult, atomP, atomL, dist, NInter, &angle, InterType::WHBOND_LIG);
-        }
+        if (angle <= params.Angl_WHBond - params.AngT_WHBond || angle >= params.Angl_WHBond + params.AngT_WHBond)
+            continue;
+
+        addInteraction(interResult, atomP, atomL, dist, NInter, &angle, InterType::WHBOND_LIG);
     }
 }
 
@@ -373,20 +391,18 @@ void Interactions::checkWeakHydrogenBondLigandWeakDonorProteinAcceptor(Atom& ato
         return;
     if (!(atomP.props.isAcceptor() || atomP.props.isweakAcceptor()))
         return;
-    if (dist > params.Dist_WHBond) 
+    if (dist < params.dist_WHBond || dist > params.Dist_WHBond)
         return;
 
     for (size_t i = 0; i < atomL.getNumBond(); ++i) {
         const Atom& atomL2 = atomL.getAtomLinked(i);
         double angle = atomL2.fixpos.calcAngle(atomP.fixpos, atomL.fixpos);
 
-        if (!atomL2.isHydrogen()) 
+        if (!atomL2.isHydrogen())
             continue;
 
-        if (angle <= params.Angl_WHBond - params.AngT_WHBond || 
-            angle >= params.Angl_WHBond + params.AngT_WHBond) {
+        if (angle <= params.Angl_WHBond - params.AngT_WHBond || angle >= params.Angl_WHBond + params.AngT_WHBond)
             continue;
-        }
 
         addInteraction(interResult, atomP, atomL, dist, NInter, &angle, InterType::WHBOND_LIG);
     }
@@ -423,7 +439,7 @@ void Interactions::checkPiCationInteraction(Atom& atomL, Atom& atomP, double dis
         return;
     if (atomP.getName() != "DuCy") 
         return;
-    if (dist >= params.Dist_PiCation) 
+    if (dist < params.dist_PiCation || dist > params.Dist_PiCation) 
         return;
 
     Cycle* cycleP = atomP.getParent().getCycleFromCenter(&atomP);
@@ -1374,103 +1390,234 @@ Fingerprint& Interactions::generateTriplets(InterResults& interResult,const bool
 }
 
 
-// Map of residue pointers used to build the fingerprint IFP, we iterate over residues in NumToRes and turn detected interactions into bits // our problem for NA sodium is that the size of NumToRes = 0
-void Interactions::genIFP(InterResults& interResult, const unsigned int& fgpType) const {
+void Interactions::genIFP(InterResults& interResult, const unsigned int& activeBits) const {
+    
+    // New "standard" layout: 11 bits per residue
+    static constexpr short BITS_PER_RESIDUE_NEW = 11;
 
-    static const int intToPos[5][NB_INTTYPE]= {
-        {-1,3,4,5,6, 0,-1, 1, 2,-1,-1,-1,-1,-1},
-        {-1,0,1,2,3,-1,4,-1,-1,-1,-1,-1,-1,-1},
-        {-1,3,4,5,6, 0,8, 1, 2, 7, -1, -1,-1,-1},
-        {-1,0,1,2,3,-1,7,-1,-1, 6, 4, 5,-1,-1},
-        {-1,-1,-1,-1,-1,-1,0,-1,-1,-1,-1,-1,-1}
+    // Must match the FLAG_OLD_LAYOUT used in parseIFPOptions
+    static constexpr unsigned FLAG_OLD_LAYOUT = 1u << 31;
+
+    // Is this an "old" 7-bit fingerprint?
+    const bool isOldLayout = (activeBits & FLAG_OLD_LAYOUT) != 0u;
+
+    // Mask of real interaction bits (0..10), without the layout flag
+    const unsigned coreBits = activeBits & ~FLAG_OLD_LAYOUT;
+
+    // Number of bits per residue actually used
+    const short bitsPerResidue = isOldLayout ? 7 : BITS_PER_RESIDUE_NEW;
+
+    // Map interaction type value → base bit index (0..10), or -1 if not encoded
+    auto mapInterTypeToBit = [](unsigned int inter) -> int {
+        switch (inter) {
+            case InterType::HYDROPHOBIC:   return 0;  // [0] hydrophobic
+            case InterType::ARFACEFACE:    return 1;  // [1] aromatic F-F
+            case InterType::AREDGEFACE:    return 2;  // [2] aromatic E-F
+            case InterType::HBOND_PROT:    return 3;  // [3] HBond protein
+            case InterType::HBOND_LIG:     return 4;  // [4] HBond ligand
+            case InterType::IONIC_PROT:    return 5;  // [5] Ionic protein
+            case InterType::IONIC_LIG:     return 6;  // [6] Ionic ligand
+            case InterType::PICATION:      return 7;  // [7] Pi-cation
+            case InterType::METAL:         return 8;  // [8] Metal
+            case InterType::WHBOND_PROT:   return 9;  // [9] Weak HBond protein
+            case InterType::WHBOND_LIG:    return 10; // [10] Weak HBond ligand
+
+            // Not encoded in the 11 bits:
+            // InterType::UNDEFINED
+            // InterType::EXCLUSION
+            // InterType::METAL_ACC
+            default:
+                return -1;
+        }
     };
 
-    static const short length[5]={7,5,9,8,1};
-    //     U ,H,H,I,I, H,M , A, A
-    //     N ,B,B,O,O, Y,E , R, R
-    //     D ,P,L,P,L, D,T , F, E
-    //     E , , , , ,  ,  , F, F
-    //     F
-    
-    map<int,Residu*> NumtoRes;
-    for (ItCRes itR = complex.firstResidu();itR != complex.lastResidu();++itR) 
-    {
-        Residu *res =*itR;
+    std::map<int,Residu*> NumtoRes;
+    for (ItCRes itR = complex.firstResidu(); itR != complex.lastResidu(); ++itR) {
+        Residu *res = *itR;
 
-        
+        if (!res->isUsed() ||
+            res->getParent()->getMoleType() == MoleType::LIGAND)
+            continue;
 
-        if (!res->isUsed() || res->getParent()->getMoleType()== MoleType::LIGAND) 
+        if (Residu::Rules[res->getParent()->getMoleType()][res->getResType()] == MoleType::UNDEFINED ||
+            Molecule::Rules[res->getParent()->getMoleType()] == MoleType::UNDEFINED)
             continue;
-        
-        if (Residu::Rules[res->getParent()->getMoleType()][res->getResType()] == MoleType::UNDEFINED || Molecule::Rules[res->getParent()->getMoleType()] == MoleType::UNDEFINED)
-            continue;
-        
-        NumtoRes.insert(pair<int,Residu*>(res->getNum(),res));
+
+        NumtoRes.insert(std::pair<int,Residu*>(res->getNum(), res));
     }
 
+    std::multimap<Residu*,InterPoint*> listRes;
 
-    multimap<Residu*,InterPoint*> listRes;
-
-    for (size_t i=0; i< interResult.listInters.size();++i)
-    {
+    for (size_t i = 0; i < interResult.listInters.size(); ++i) {
         InterPoint& interP = interResult.listInters.at(i);
-        if (interP.merged_to != -1)continue;
-        Residu *res =interP.Prot_Ref->getResidu();
-        if (interP.interaction==InterType::AREDGEFACE || interP.interaction==InterType::ARFACEFACE)
+        if (interP.merged_to != -1) continue;
+
+        Residu *res = interP.Prot_Ref->getResidu();
+        if (interP.interaction == InterType::AREDGEFACE ||
+            interP.interaction == InterType::ARFACEFACE)
         {
-            Cycle* cyc=interP.Prot_Ref->getParent().getCycleFromCenter(interP.Prot_Ref);
-            res=cyc->getAtom(0)->getResidu();
-
+            Cycle* cyc = interP.Prot_Ref->getParent().getCycleFromCenter(interP.Prot_Ref);
+            res = cyc->getAtom(0)->getResidu();
         }
-        listRes.insert(pair<Residu*,InterPoint*>(res,&interP));
-
+        listRes.insert(std::pair<Residu*,InterPoint*>(res, &interP));
     }
 
-    interResult.IFP=Fingerprint(NumtoRes.size()*length[fgpType]);
-    int NRes=0;
-    ostringstream oss;
-    for (map<int,Residu*>::iterator it =NumtoRes.begin(); it != NumtoRes.end();++it ) {
+    // Length = number of residues * bitsPerResidue
+    interResult.IFP = Fingerprint(NumtoRes.size() * bitsPerResidue);
 
-        std::pair <std::multimap<Residu*,InterPoint*>::iterator, std::multimap<Residu*,InterPoint*>::iterator> ret;
-        ret = listRes.equal_range((*it).second);
+    int NRes = 0;
+    std::ostringstream oss;
 
-        for (std::multimap<Residu*,InterPoint*>::iterator it2=ret.first; it2!=ret.second; ++it2) {
-            if (intToPos[fgpType][(*it2).second->interaction] == -1)
+    for (std::map<int,Residu*>::iterator it = NumtoRes.begin(); it != NumtoRes.end(); ++it) {
+        auto ret = listRes.equal_range((*it).second);
+
+        for (std::multimap<Residu*,InterPoint*>::iterator it2 = ret.first; it2 != ret.second; ++it2) {
+            InterPoint* ip = (*it2).second;
+
+            int basePos = mapInterTypeToBit(ip->interaction);
+            if (basePos < 0)
+                continue; // type not encoded in our 11-slot scheme
+
+            // coreBits is the 11-bit mask from --all/--basic/... (without layout flag)
+            if ((coreBits & (1u << basePos)) == 0u)
+                continue; // interaction disabled in this profile
+
+            // Should never happen, but safe for old 7-bit layout vs indices >=7
+            if (basePos >= bitsPerResidue)
                 continue;
 
-            interResult.IFP.bitOn(NRes*length[fgpType]+intToPos[fgpType][(*it2).second->interaction]);
+            interResult.IFP.bitOn(NRes * bitsPerResidue + basePos);
         }
-        interResult.IFPString+="|";
-        oss.str("");
-        if ((*it).second->getResType() == ResType::STD_AA)
-        {
-            bool found=false;
-            for (size_t pData=0;pData <NBAA;++pData)
-            {
 
-                if (AAcid[pData].name==(*it).second->getName())
-                {
+        interResult.IFPString += "|";
+        oss.str("");
+        oss.clear();
+
+        if ((*it).second->getResType() == ResType::STD_AA) {
+            bool found = false;
+            for (size_t pData = 0; pData < NBAA; ++pData) {
+                if (AAcid[pData].name == (*it).second->getName()) {
                     oss << AAcid[pData].code << (*it).second->getFNum();
-                    found=true;
+                    found = true;
                     break;
                 }
             }
-            if (!found){
+            if (!found) {
                 oss << (*it).second->getName() << (*it).second->getFNum();
             }
         }
-        else {      oss <<(*it).second->getName()<<(*it).second->getFNum();
+        else {
+            oss << (*it).second->getName() << (*it).second->getFNum();
         }
-        //        cout << oss.str() << endl;
-        interResult.IFPString+=(*it).second->getChainName();
-        for (int ni=0; ni < length[fgpType]-(int)oss.str().length()-2;ni++)
+
+        interResult.IFPString += (*it).second->getChainName();
+
+        // spacing: width == bitsPerResidue (7 for old, 11 for new)
+        for (int ni = 0; ni < bitsPerResidue - static_cast<int>(oss.str().length()) - 2; ++ni) {
             interResult.IFPString += " ";
+        }
+
         interResult.IFPString += oss.str();
 
-
-        NRes++;
+        ++NRes;
     }
 }
+
+
+
+
+// Map of residue pointers used to build the fingerprint IFP, we iterate over residues in NumToRes and turn detected interactions into bits // our problem for NA sodium is that the size of NumToRes = 0
+// void Interactions::genIFP(InterResults& interResult, const unsigned int& fgpType) const {
+
+//     static const int intToPos[5][NB_INTTYPE]= {
+//         {-1,3,4,5,6, 0,-1, 1, 2,-1,-1,-1,-1,-1}, // standard 7 bits
+//         {-1,0,1,2,3,-1,4,-1,-1,-1,-1,-1,-1,-1}, // polar 5 bits
+//         {-1,3,4,5,6, 0,8, 1, 2, 7, -1, -1,-1,-1}, // extended 9 bits
+//         {-1,0,1,2,3,-1,7,-1,-1, 6, 4, 5,-1,-1}, // polar extended 8 bits
+//         {-1,-1,-1,-1,-1,-1,0,-1,-1,-1,-1,-1,-1} // metal 1 bit
+//     };
+
+//     static const short length[5]={7,5,9,8,1};
+    
+//     map<int,Residu*> NumtoRes;
+//     for (ItCRes itR = complex.firstResidu();itR != complex.lastResidu();++itR) 
+//     {
+//         Residu *res =*itR;
+
+        
+
+//         if (!res->isUsed() || res->getParent()->getMoleType()== MoleType::LIGAND) 
+//             continue;
+        
+//         if (Residu::Rules[res->getParent()->getMoleType()][res->getResType()] == MoleType::UNDEFINED || Molecule::Rules[res->getParent()->getMoleType()] == MoleType::UNDEFINED)
+//             continue;
+        
+//         NumtoRes.insert(pair<int,Residu*>(res->getNum(),res));
+//     }
+
+
+//     multimap<Residu*,InterPoint*> listRes;
+
+//     for (size_t i=0; i< interResult.listInters.size();++i)
+//     {
+//         InterPoint& interP = interResult.listInters.at(i);
+//         if (interP.merged_to != -1)continue;
+//         Residu *res =interP.Prot_Ref->getResidu();
+//         if (interP.interaction==InterType::AREDGEFACE || interP.interaction==InterType::ARFACEFACE)
+//         {
+//             Cycle* cyc=interP.Prot_Ref->getParent().getCycleFromCenter(interP.Prot_Ref);
+//             res=cyc->getAtom(0)->getResidu();
+
+//         }
+//         listRes.insert(pair<Residu*,InterPoint*>(res,&interP));
+
+//     }
+
+//     interResult.IFP=Fingerprint(NumtoRes.size()*length[fgpType]);
+//     int NRes=0;
+//     ostringstream oss;
+//     for (map<int,Residu*>::iterator it =NumtoRes.begin(); it != NumtoRes.end();++it ) {
+
+//         std::pair <std::multimap<Residu*,InterPoint*>::iterator, std::multimap<Residu*,InterPoint*>::iterator> ret;
+//         ret = listRes.equal_range((*it).second);
+
+//         for (std::multimap<Residu*,InterPoint*>::iterator it2=ret.first; it2!=ret.second; ++it2) {
+//             if (intToPos[fgpType][(*it2).second->interaction] == -1)
+//                 continue;
+
+//             interResult.IFP.bitOn(NRes*length[fgpType]+intToPos[fgpType][(*it2).second->interaction]);
+//         }
+//         interResult.IFPString+="|";
+//         oss.str("");
+//         if ((*it).second->getResType() == ResType::STD_AA)
+//         {
+//             bool found=false;
+//             for (size_t pData=0;pData <NBAA;++pData)
+//             {
+
+//                 if (AAcid[pData].name==(*it).second->getName())
+//                 {
+//                     oss << AAcid[pData].code << (*it).second->getFNum();
+//                     found=true;
+//                     break;
+//                 }
+//             }
+//             if (!found){
+//                 oss << (*it).second->getName() << (*it).second->getFNum();
+//             }
+//         }
+//         else {      oss <<(*it).second->getName()<<(*it).second->getFNum();
+//         }
+//         //        cout << oss.str() << endl;
+//         interResult.IFPString+=(*it).second->getChainName();
+//         for (int ni=0; ni < length[fgpType]-(int)oss.str().length()-2;ni++)
+//             interResult.IFPString += " ";
+//         interResult.IFPString += oss.str();
+
+
+//         NRes++;
+//     }
+// }
 
 
 
