@@ -42,7 +42,7 @@ void IChemSwitch::helpIFP() const {
         << "  -d_Io    N (2.3)\n"
         << "  -d_Me    N (1.8)\n"
         << "  -d_Ar    N (3.2)\n"
-        << "  -d_Pic   N (3.0)\n"
+        << "  -d_Pic   N (2.3)\n"
         << "  -d_WHb   N (2.3)\n"
         << "\n"
         << "Angles (degrees):\n"

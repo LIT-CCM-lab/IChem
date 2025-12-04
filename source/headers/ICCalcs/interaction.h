@@ -27,7 +27,7 @@ namespace ICMole {
     double dist_Metal = 1.8; // Metal/Acceptor minimal distance
     double dist_Arom = 3.2; // Aromatic minimal distance between center
     double dist_WHBond = 2.3; // Minimal distance of weakhbond
-    double dist_PiCation = 3.0; // Minimal distance of pi-cation
+    double dist_PiCation = 2.3; // Minimal distance of pi-cation
     
     
     // Angles
