@@ -5,6 +5,103 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [IChem_5.3.7] - 2025-12-03
+
+### Added
+
+- IFP numeric threshold overrides (in `ICTools/ifp_module.cpp`):
+  - Distances (maximum):
+    - `-D_WHb`  : max weak H-bond distance
+  - Distances (minimum):
+    - `-d_Hb`, `-d_Hyd`, `-d_Io`, `-d_Me`, `-d_Ar`, `-d_Pic`, `-d_WHb`
+
+- IFP “profiles” and 11 bit fingerprint layout:
+  - New mandatory, mutually exclusive profile options:
+    - `--all`   : activate all 11 bits (basic + pi-cation + metal + weak H-bonds)
+    - `--basic` : only the basic 7 bits (hydrophobic, aromatic FF/EF, H-bond P/L, ionic P/L)
+    - `--picat` : only the pi-cation bit
+    - `--metal` : only the metal/acceptor bit
+    - `--weakh` : only the weak H-bond bits
+    - `--old`   : basic interactions, but using the legacy 7 bit layout
+  - Internally, `parseIFPOptions()` computes an 11-bit mask:
+    - bit 0 : hydrophobic  
+    - bit 1 : aromatic face-to-face  
+    - bit 2 : aromatic edge-to-face  
+    - bit 3 : H-bond protein  
+    - bit 4 : H-bond ligand  
+    - bit 5 : ionic protein  
+    - bit 6 : ionic ligand  
+    - bit 7 : Pi-cation  
+    - bit 8 : metal  
+    - bit 9 : weak H-bond protein  
+    - bit 10: weak H-bond ligand  
+  - A dedicated flag bit (`FLAG_OLD_LAYOUT = 1u << 31`) is used to request the legacy 7 bit (basic interactions)
+
+- Strict numeric parsing helper for IFP thresholds:
+  - New function `parseIFPNumeric(const std::string& value, const std::string& optName)`:
+    - Enforces at most **3 digits after the decimal point**
+    - Requires at least one digit before the decimal point
+    - Rejects inputs such as `"3."`, `".5"`, `"3.12345"`, `"abc"`, `"+"`, `"-"`, or garbage values
+  - All distance and angle options in `parseIFPOptions()` now go through `parseIFPNumeric()`, and invalid values throw an exception
+
+### Changed
+
+- IFP help and documentation (`ICTools/IFP.cpp`):
+  - `IChemSwitch::helpIFP()` has been fully rewritten to match the new IFP interface:
+    - Documents all three modes:
+      - `IChem [options] IFP protein ligand`
+      - `IChem [options] IFP protein ligand ligand_ref`
+      - `IChem [options] IFP protein1 ligand1 protein2 ligand2`
+    - States that **all options must appear before the keyword `IFP`**
+    - Documents that **distance thresholds accept at most 3 decimals**, matching `parseIFPNumeric()`
+    - Describes the 11 bit vs legacy 7 bit formats and their relation to `--old`
+    - Lists the new profile options (`--all`, `--basic`, `--picat`, `--metal`, `--weakh`, `--old`) and their effects
+    - Lists default values for all distance and angle overrides, grouped by:
+      - maximum distances (`-D_*`),
+      - minimum distances (`-d_*`),
+      - angle / tolerance options (`-a_*`, `-at_*`).
+    - Adds concrete usage examples for 2-, 3- and 4argument modes with thresholds and profiles combined
+
+- IFP options parsing (`ICTools/ifp_module.cpp`):
+  - `parseIFPOptions()` now:
+    - Requires **exactly one** of `--all`, `--basic`, `--weakh`, `--picat`, `--metal`, or `--old`.  
+      - If none is given, it throws `MoleExcept(9020101, "IChem::IFP", "You must specify one of ...")`.  
+      - If more than one profile is specified, it throws a “mutually exclusive” error.
+    - Populates `IFPOptions::bitMask` according to the chosen profile (basic/all/weakH/Pi-cation/metal/old) using the 11 bit layout and `FLAG_OLD_LAYOUT` for legacy output
+    - Validates every min/max distance pair via a `checkInterval()` helper:
+      - If both `-d_*` and `-D_*` are provided and `min > max`, an error is raised:
+        - `"For H-bond (-d_Hb / -D_Hb) minimal distance (...) is greater than maximal distance (...)"`.
+      - This is applied for H-bond, hydrophobic, ionic, metal, aromatic, Pi-cation, and weak H-bond distances
+  - Unknown IFP options are no longer silently ignored:
+    - Any option key not matched by the explicit `if/else if` chain now triggers:
+      - `MoleExcept(9020101, "IChem::IFP", "Unknown IFP option: ... Allowed options include: --all, --basic, --weakh, --picat, --metal, --old, --solvent, --cofactor, --newH, -name, -D_*, -d_*, -a_*, -at_*")`.
+
+- IChem front-end CLI parsing (`ICTools/switch.cpp`):
+  - Both `IChemSwitch` constructors (`(int argc, char** argv)` and `(int argc, const std::vector<std::string>& argv)`) now treat **unknown tokens before the tool name** as hard errors:
+    - After checking:
+      - long options (`--...`),
+      - short options (`-...` with value),
+      - and known tool names (`IFP`, `grim`, `volsite`, etc.),
+    - any remaining token in the “options zone” (before the tool name is seen) triggers:
+      ```cpp
+      std::ostringstream oss;
+      oss << "Unknown option or misplaced token before tool name: '"
+          << tmpStr << "'";
+      throw MoleExcept(9010106, "IChem::CONSTRUCTOR", oss.str());
+      ```
+  - Once a valid tool name is encountered, `opts` is set to `false` and all following tokens are treated strictly as input parameters (`Input_Values`) for that tool.
+
+### Fixed
+
+- CLI robustness and error reporting:
+  - Typographical errors where a user forgets the leading dash on an option are now correctly reported instead of being silently misinterpreted. For example:
+    - `./IChem --weakh d_WHb 2.4 IFP protein.mol2 ligand.mol2`
+    - `d_WHb` (without `-`) is no longer consumed as a value for the previous option; it is rejected with `MoleExcept(9010106, "IChem::CONSTRUCTOR", "Unknown option or misplaced token before tool name: 'd_WHb'")`
+  - Unknown IFP options or misspelled option names (e.g. `-D_WHbb`, `-D_XXX`) now produce a clear `MoleExcept(9020101, "IChem::IFP", "Unknown IFP option: ...")` instead of silently doing nothing
+  - Inconsistent min/max distance overrides (e.g. `-d_Hb 4.0 -D_Hb 3.0`) are now detected and rejected early, preventing nonsensical threshold configurations from reaching the interaction engine.
+
+---
+
 ## [IChem_5.3.6] - 2025-11-27
 
 ### Added
@@ -80,6 +177,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Warning implicit conversion from char to unsigned corrected
   - Return default value added in function `Molecule::getalpha()`
 
+---
 
 ## [IChem_5.3.5] - 2025-09-05
 
@@ -199,7 +297,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
      + (We need to add the change for everything we added as functions and how they are named)
 - CalcInteractionPpi() removed from interaction.cpp
 - The function mergeSpeInts() removed as it is used within calcInteractionsppi() function
- 
+
+---
+
 ## [IChem_5.3.4] - 2025-06-02
 
 ### Added
