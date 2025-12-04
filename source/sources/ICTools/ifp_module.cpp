@@ -3,6 +3,11 @@
 #include "headers/ICMole/similarity.h"
 #include "ichemo.h"
 
+// #include <map>
+// #include <vector>
+// #include <string>
+// #include <sstream>
+
 using namespace std;
 using namespace ICMole;
 
@@ -10,45 +15,68 @@ namespace {
 
 using OptionMap = IFPModule::OptionMap;
 
-inline unsigned chooseIFPType(bool polarOnly, bool extended, bool metalOnly) {
-    // 0 - standard
-    // 1 - polar only
-    // 2 - extended
-    // 3 - extended polar
-    // 4 - metal only
-    if (!polarOnly && !extended && !metalOnly) return 0;
-    if ( polarOnly && !extended)               return 1;
-    if (!polarOnly &&  extended)               return 2;
-    if ( metalOnly)                            return 4;
-    return 3;
-}
+// inline unsigned chooseIFPType(bool polarOnly, bool extended, bool metalOnly) {
+//     // 0 - standard
+//     // 1 - polar only
+//     // 2 - extended
+//     // 3 - extended polar
+//     // 4 - metal only
+//     if (!polarOnly && !extended && !metalOnly) return 0;
+//     if ( polarOnly && !extended)               return 1;
+//     if (!polarOnly &&  extended)               return 2;
+//     if ( metalOnly)                            return 4;
+//     return 3;
+// }
 
 struct InteractionOverrides {
-    bool has_D_Hb   = false; double D_Hb = 0.0;
+     // Max distances
+    bool has_D_Hb   = false; double D_Hb  = 0.0;
     bool has_D_Hyd  = false; double D_Hyd = 0.0;
-    bool has_D_Io   = false; double D_Io = 0.0;
-    bool has_D_Me   = false; double D_Me = 0.0;
-    bool has_D_Ar   = false; double D_Ar = 0.0;
+    bool has_D_Io   = false; double D_Io  = 0.0;
+    bool has_D_Me   = false; double D_Me  = 0.0;
+    bool has_D_Ar   = false; double D_Ar  = 0.0;
     bool has_D_Pic  = false; double D_Pic = 0.0;
+    bool has_D_WHb  = false; double D_WHb = 0.0;
 
-    bool has_a_H    = false; double a_H = 0.0;
-    bool has_at_H   = false; double at_H = 0.0;
+    // Min distances
+    bool has_d_Hb   = false; double d_Hb  = 0.0;
+    bool has_d_Hyd  = false; double d_Hyd = 0.0;
+    bool has_d_Io   = false; double d_Io  = 0.0;
+    bool has_d_Me   = false; double d_Me  = 0.0;
+    bool has_d_Ar   = false; double d_Ar  = 0.0;
+    bool has_d_Pic  = false; double d_Pic = 0.0;
+    bool has_d_WHb  = false; double d_WHb = 0.0;
+
+    // Angles
+    bool has_a_H    = false; double a_H    = 0.0;
+    bool has_at_H   = false; double at_H   = 0.0;
     bool has_a_ArFF = false; double a_ArFF = 0.0;
-    bool has_at_ArFF= false; double at_ArFF = 0.0;
+    bool has_at_ArFF= false; double at_ArFF= 0.0;
     bool has_a_ArEF = false; double a_ArEF = 0.0;
-    bool has_at_ArEF= false; double at_ArEF = 0.0;
-    bool has_a_Pic  = false; double a_Pic = 0.0;
+    bool has_at_ArEF= false; double at_ArEF= 0.0;
+    bool has_a_Pic  = false; double a_Pic  = 0.0;
     bool has_at_Pic = false; double at_Pic = 0.0;
 };
 
 inline void applyOverrides(Interactions& interactions, const InteractionOverrides& overrideInteractionParams) {
-    // Distances
+    
+    // Max distances
     if (overrideInteractionParams.has_D_Hb)   interactions.setDist_H(overrideInteractionParams.D_Hb);
     if (overrideInteractionParams.has_D_Hyd)  interactions.setDist_Hyd(overrideInteractionParams.D_Hyd);
     if (overrideInteractionParams.has_D_Io)   interactions.setDist_Ionic(overrideInteractionParams.D_Io);
     if (overrideInteractionParams.has_D_Me)   interactions.setDist_Metal(overrideInteractionParams.D_Me);
     if (overrideInteractionParams.has_D_Ar)   interactions.setDist_Arom(overrideInteractionParams.D_Ar);
+    if (overrideInteractionParams.has_D_WHb)  interactions.setDist_WHBond(overrideInteractionParams.D_WHb);
     if (overrideInteractionParams.has_D_Pic)  interactions.setDist_PICation(overrideInteractionParams.D_Pic);
+
+    // Min distances
+    if (overrideInteractionParams.has_d_Hb)   interactions.setMinDist_H(overrideInteractionParams.d_Hb);
+    if (overrideInteractionParams.has_d_Hyd)  interactions.setMinDist_Hyd(overrideInteractionParams.d_Hyd);
+    if (overrideInteractionParams.has_d_Io)   interactions.setMinDist_Ionic(overrideInteractionParams.d_Io);
+    if (overrideInteractionParams.has_d_Me)   interactions.setMinDist_Metal(overrideInteractionParams.d_Me);
+    if (overrideInteractionParams.has_d_Ar)   interactions.setMinDist_Arom(overrideInteractionParams.d_Ar);
+    if (overrideInteractionParams.has_d_WHb)  interactions.setMinDist_WHBond(overrideInteractionParams.d_WHb);
+    if (overrideInteractionParams.has_d_Pic)  interactions.setMinDist_PICation(overrideInteractionParams.d_Pic);
 
     // Angles
     if (overrideInteractionParams.has_a_H)      interactions.setAngl_H(overrideInteractionParams.a_H);
@@ -63,15 +91,26 @@ inline void applyOverrides(Interactions& interactions, const InteractionOverride
 
 struct IFPOptions {
     std::string fingerprintName;
-    bool polarOnly = false;
-    bool metalOnly = false;
-    bool extended = false;
+
     bool includeSolvent = true;
     bool includeCofactor = true;
     bool oldHydrophobic  = true;
-    bool ligandDebug = false; // I should remove
     bool outputBitstring = true;
-    unsigned layoutIndex = 0;
+
+    // 11 bit mask controlling which interaction types are encoded:
+    // bit 0 : hydrophobic
+    // bit 1 : aromatic face-to-face
+    // bit 2 : aromatic edge-to-face
+    // bit 3 : H-bond protein
+    // bit 4 : H-bond ligand
+    // bit 5 : ionic protein
+    // bit 6 : ionic ligand
+    // bit 7 : pi-cation
+    // bit 8 : metal
+    // bit 9 : weak H-bond protein
+    // bit 10: weak H-bond ligand
+    unsigned bitMask = 0;
+
     InteractionOverrides overrides;
 };
 
@@ -81,43 +120,419 @@ struct IFPEntry {
     std::string fpString;
 };
 
+
+// At most 3 digits after the decimal point
+double parseIFPNumeric(const std::string& value, const std::string& optName)
+{
+    if (value.empty()) {
+        std::ostringstream oss;
+        oss << "Option " << optName << " requires a numeric value";
+        throw MoleExcept(9020101, "IChem::IFP", oss.str());
+    }
+
+    std::size_t i = 0;
+    const std::size_t n = value.size();
+
+    // Optional leading sign
+    if (value[i] == '+' || value[i] == '-') {
+        ++i;
+        if (i == n) {
+            std::ostringstream oss;
+            oss << "Option " << optName << " has an invalid numeric value: " << value;
+            throw MoleExcept(9020101, "IChem::IFP", oss.str());
+        }
+    }
+
+    bool hasDigitsBeforeDot = false;
+    while (i < n && std::isdigit(static_cast<unsigned char>(value[i]))) {
+        hasDigitsBeforeDot = true;
+        ++i;
+    }
+
+    // We require at least one digit before the decimal point
+    if (!hasDigitsBeforeDot) {
+        std::ostringstream oss;
+        oss << "Option " << optName
+            << " has an invalid numeric value (expected digits before decimal point): "
+            << value;
+        throw MoleExcept(9020101, "IChem::IFP", oss.str());
+    }
+
+    bool hasDot = false;
+    int  decCount = 0;
+
+    if (i < n && value[i] == '.') {
+        hasDot = true;
+        ++i;
+
+        // At least one digit after the dot, and at most 3
+        while (i < n && std::isdigit(static_cast<unsigned char>(value[i])) && decCount < 3) {
+            ++decCount;
+            ++i;
+        }
+
+        if (decCount == 0) {
+            std::ostringstream oss;
+            oss << "Option " << optName
+                << " has an invalid numeric value (expected digits after decimal point): "
+                << value;
+            throw MoleExcept(9020101, "IChem::IFP", oss.str());
+        }
+
+        if (i < n && std::isdigit(static_cast<unsigned char>(value[i]))) {
+            // There are more than 3 decimal digits
+            std::ostringstream oss;
+            oss << "Option " << optName
+                << " accepts at most 3 digits after the decimal point: " << value;
+            throw MoleExcept(9020101, "IChem::IFP", oss.str());
+        }
+    }
+
+    // No extra garbage characters allowed
+    if (i != n) {
+        std::ostringstream oss;
+        oss << "Option " << optName
+            << " has an invalid numeric value: " << value;
+        throw MoleExcept(9020101, "IChem::IFP", oss.str());
+    }
+
+    return std::stod(value);
+}
+
+
 // Parse Opt_Values into an IFPOptions struct
 IFPOptions parseIFPOptions(const OptionMap& optionsValues) {
     IFPOptions options;
 
+    // For the profile, one is mandatory
+    enum class Profile {
+        None,   // no profile picked yet
+        Basic,
+        All,
+        WeakH,
+        PiCat,
+        Metal,
+        Old
+    };
+
+    Profile profile = Profile::None;
+
+    auto selectProfile = [&](Profile p, const std::string& optName) {
+        if (profile != Profile::None) {
+            throw MoleExcept(9020101,"IChem::IFP","Options --all, --weakh, --picat, --metal, --basic and --old are mutually exclusive");
+        }
+        profile = p;
+    };
+
     for (const auto& [key, vals] : optionsValues) {
-        const std::string value = vals.empty() ? std::string{} : vals.front();
+        const bool hasValue = !vals.empty();
+        const std::string value = hasValue ? vals.front() : std::string{};
 
-        if      (key == "-name")          options.fingerprintName = value;
-        else if (key == "--polar")        options.polarOnly       = true;
-        else if (key == "--metal")        options.metalOnly       = true;
-        else if (key == "--extended")     options.extended        = true;
-        else if (key == "--solvent")      options.includeSolvent  = false;
-        else if (key == "--cofactor")     options.includeCofactor = false;
-        else if (key == "--newH")         options.oldHydrophobic  = false;
-        else if (key == "--ligD")         options.ligandDebug     = true;   // Currently unused
-        else if (key == "--bitstringOFF") options.outputBitstring = false;
+        // Options
+        if (key == "-name") {
+            if (!hasValue || value.empty()) {
+                throw MoleExcept(9020101,"IChem::IFP","Option -name requires a non-empty value");
+            }
+            options.fingerprintName = value;
+        }
+        else if (key == "--solvent") {
+            options.includeSolvent  = false;
+        }
+        else if (key == "--cofactor") {
+            options.includeCofactor = false;
+        }
+        else if (key == "--newH") {
+            options.oldHydrophobic  = false;
+        }
 
-        // distances
-        else if (key == "-D_Hb")   { options.overrides.has_D_Hb   = true; options.overrides.D_Hb   = std::stod(value); }
-        else if (key == "-D_Hyd")  { options.overrides.has_D_Hyd  = true; options.overrides.D_Hyd  = std::stod(value); }
-        else if (key == "-D_Io")   { options.overrides.has_D_Io   = true; options.overrides.D_Io   = std::stod(value); }
-        else if (key == "-D_Me")   { options.overrides.has_D_Me   = true; options.overrides.D_Me   = std::stod(value); }
-        else if (key == "-D_Ar")   { options.overrides.has_D_Ar   = true; options.overrides.D_Ar   = std::stod(value); }
-        else if (key == "-D_Pic")  { options.overrides.has_D_Pic  = true; options.overrides.D_Pic  = std::stod(value); }
+        // Profiles (exactly one, can't have two at the same time)
+        else if (key == "--all") {
+            selectProfile(Profile::All, key);
+        }
+        else if (key == "--weakh") {
+            selectProfile(Profile::WeakH, key);
+        }
+        else if (key == "--picat") {
+            selectProfile(Profile::PiCat, key);
+        }
+        else if (key == "--metal") {
+            selectProfile(Profile::Metal, key);
+        }
+        else if (key == "--basic") {
+            selectProfile(Profile::Basic, key);
+        }
+        else if (key == "--old") {
+            selectProfile(Profile::Old, key);
+        }
 
-        // angles
-        else if (key == "-a_H")      { options.overrides.has_a_H    = true; options.overrides.a_H    = std::stod(value); }
-        else if (key == "-at_H")     { options.overrides.has_at_H   = true; options.overrides.at_H   = std::stod(value); }
-        else if (key == "-a_ArFF")   { options.overrides.has_a_ArFF = true; options.overrides.a_ArFF = std::stod(value); }
-        else if (key == "-at_ArFF")  { options.overrides.has_at_ArFF= true; options.overrides.at_ArFF= std::stod(value); }
-        else if (key == "-a_ArEF")   { options.overrides.has_a_ArEF = true; options.overrides.a_ArEF = std::stod(value); }
-        else if (key == "-at_ArEF")  { options.overrides.has_at_ArEF= true; options.overrides.at_ArEF= std::stod(value); }
-        else if (key == "-a_Pic")    { options.overrides.has_a_Pic  = true; options.overrides.a_Pic  = std::stod(value); }
-        else if (key == "-at_Pic")   { options.overrides.has_at_Pic = true; options.overrides.at_Pic = std::stod(value); }
+        // Distances max
+        else if (key == "-D_Hb") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -D_Hb requires a numeric value");
+            }
+            options.overrides.has_D_Hb = true;
+            options.overrides.D_Hb = parseIFPNumeric(value, key);
+        }
+        else if (key == "-D_Hyd") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -D_Hyd requires a numeric value");
+            }
+            options.overrides.has_D_Hyd = true;
+            options.overrides.D_Hyd = parseIFPNumeric(value, key);
+        }
+        else if (key == "-D_Io") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -D_Io requires a numeric value");
+            }
+            options.overrides.has_D_Io = true;
+            options.overrides.D_Io = parseIFPNumeric(value, key);
+        }
+        else if (key == "-D_Me") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -D_Me requires a numeric value");
+            }
+            options.overrides.has_D_Me = true;
+            options.overrides.D_Me = parseIFPNumeric(value, key);
+        }
+        else if (key == "-D_Ar") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -D_Ar requires a numeric value");
+            }
+            options.overrides.has_D_Ar = true;
+            options.overrides.D_Ar = parseIFPNumeric(value, key);
+        }
+        else if (key == "-D_Pic") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -D_Pic requires a numeric value");
+            }
+            options.overrides.has_D_Pic = true;
+            options.overrides.D_Pic = parseIFPNumeric(value, key);
+        }
+
+        else if (key == "-D_WHb") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -D_WHb requires a numeric value");
+            }
+            options.overrides.has_D_WHb = true;
+            options.overrides.D_WHb = parseIFPNumeric(value, key);
+        }
+
+        // Distances min
+        else if (key == "-d_Hb") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -d_Hb requires a numeric value");
+            }
+            options.overrides.has_d_Hb = true;
+            options.overrides.d_Hb = parseIFPNumeric(value, key);
+        }
+        else if (key == "-d_Hyd") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -d_Hyd requires a numeric value");
+            }
+            options.overrides.has_d_Hyd = true;
+            options.overrides.d_Hyd = parseIFPNumeric(value, key);
+        }
+        else if (key == "-d_Io") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -d_Io requires a numeric value");
+            }
+            options.overrides.has_d_Io = true;
+            options.overrides.d_Io = parseIFPNumeric(value, key);
+        }
+        else if (key == "-d_Me") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -d_Me requires a numeric value");
+            }
+            options.overrides.has_d_Me = true;
+            options.overrides.d_Me = parseIFPNumeric(value, key);
+        }
+        else if (key == "-d_Ar") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -d_Ar requires a numeric value");
+            }
+            options.overrides.has_d_Ar = true;
+            options.overrides.d_Ar = parseIFPNumeric(value, key);
+        }
+
+        else if (key == "-d_Pic") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -d_Pic requires a numeric value");
+            }
+            options.overrides.has_d_Pic = true;
+            options.overrides.d_Pic = parseIFPNumeric(value, key);
+        }
+
+        else if (key == "-d_WHb") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -d_WHb requires a numeric value");
+            }
+            options.overrides.has_d_WHb = true;
+            options.overrides.d_WHb = parseIFPNumeric(value, key);
+        }
+
+        // Angles
+        else if (key == "-a_H") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -a_H requires a numeric value");
+            }
+            options.overrides.has_a_H = true;
+            options.overrides.a_H = parseIFPNumeric(value, key);
+        }
+        else if (key == "-at_H") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -at_H requires a numeric value");
+            }
+            options.overrides.has_at_H = true;
+            options.overrides.at_H = parseIFPNumeric(value, key);
+        }
+        else if (key == "-a_ArFF") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -a_ArFF requires a numeric value");
+            }
+            options.overrides.has_a_ArFF = true;
+            options.overrides.a_ArFF = parseIFPNumeric(value, key);
+        }
+        else if (key == "-at_ArFF") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -at_ArFF requires a numeric value");
+            }
+            options.overrides.has_at_ArFF = true;
+            options.overrides.at_ArFF = parseIFPNumeric(value, key);
+        }
+        else if (key == "-a_ArEF") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -a_ArEF requires a numeric value");
+            }
+            options.overrides.has_a_ArEF = true;
+            options.overrides.a_ArEF = parseIFPNumeric(value, key);
+        }
+        else if (key == "-at_ArEF") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -at_ArEF requires a numeric value");
+            }
+            options.overrides.has_at_ArEF = true;
+            options.overrides.at_ArEF = parseIFPNumeric(value, key);
+        }
+        else if (key == "-a_Pic") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -a_Pic requires a numeric value");
+            }
+            options.overrides.has_a_Pic = true;
+            options.overrides.a_Pic = parseIFPNumeric(value, key);
+        }
+        else if (key == "-at_Pic") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -at_Pic requires a numeric value");
+            }
+            options.overrides.has_at_Pic = true;
+            options.overrides.at_Pic = parseIFPNumeric(value, key);
+        }
+
+        // Unknown option => return exception
+        else {
+            std::ostringstream oss;
+            oss << "Unknown IFP option: " << key
+                << ". Allowed options include: "
+                << "--all, --basic, --weakh, --picat, --metal, --old, "
+                << "--solvent, --cofactor, --newH, "
+                << "-name, -D_*, -d_*, -a_*, -at_*";
+            throw MoleExcept(9020101, "IChem::IFP", oss.str());
+        }
     }
 
-    options.layoutIndex = chooseIFPType(options.polarOnly, options.extended, options.metalOnly);
+    // Build the 11 bit mask according to the chosen profile
+    constexpr unsigned BIT_HYDRO   = 1u << 0;
+    constexpr unsigned BIT_AR_FF   = 1u << 1;
+    constexpr unsigned BIT_AR_EF   = 1u << 2;
+    constexpr unsigned BIT_HB_P    = 1u << 3;
+    constexpr unsigned BIT_HB_L    = 1u << 4;
+    constexpr unsigned BIT_ION_P   = 1u << 5;
+    constexpr unsigned BIT_ION_L   = 1u << 6;
+    constexpr unsigned BIT_PIC     = 1u << 7;
+    constexpr unsigned BIT_METAL   = 1u << 8;
+    constexpr unsigned BIT_WH_P    = 1u << 9;
+    constexpr unsigned BIT_WH_L    = 1u << 10;
+
+    constexpr unsigned MASK_BASE   = BIT_HYDRO | BIT_AR_FF | BIT_AR_EF
+                                   | BIT_HB_P  | BIT_HB_L
+                                   | BIT_ION_P | BIT_ION_L;
+
+    constexpr unsigned MASK_WEAKH  = BIT_WH_P | BIT_WH_L;
+    constexpr unsigned MASK_PIC    = BIT_PIC;
+    constexpr unsigned MASK_METAL  = BIT_METAL;
+    constexpr unsigned MASK_ALL    = MASK_BASE | MASK_PIC | MASK_METAL | MASK_WEAKH;
+
+    // old 7 bit layout
+    constexpr unsigned FLAG_OLD_LAYOUT = 1u << 31;
+
+    switch (profile) {
+        case Profile::None:
+            // If no profile: forbidden: the user MUST pick one interaction profile
+            throw MoleExcept(9020101,"IChem::IFP","You must specify one of --all, --basic, --weakh, --picat, --metal or --old");
+        case Profile::Basic:
+            // 11-bit layout, only base bits allowed
+            options.bitMask = MASK_BASE;
+            break;
+        case Profile::All:
+            options.bitMask = MASK_ALL;
+            break;
+        case Profile::WeakH:
+            options.bitMask = MASK_WEAKH;
+            break;
+        case Profile::PiCat:
+            options.bitMask = MASK_PIC;
+            break;
+        case Profile::Metal:
+            options.bitMask = MASK_METAL;
+            break;
+        case Profile::Old:
+            // Same base interactions, but mark that we want the old 7 bit layout
+            options.bitMask = MASK_BASE | FLAG_OLD_LAYOUT;
+            break;
+    }
+
+        // Check consistency of min/max pairs when both are provided => min can't be > to max
+    auto checkInterval = [&](bool hasMin, double minVal,
+                             bool hasMax, double maxVal,
+                             const char* label) {
+        if (hasMin && hasMax && minVal > maxVal) {
+            std::ostringstream oss;
+            oss << "For " << label
+                << " minimal distance (" << minVal
+                << ") is greater than maximal distance (" << maxVal << ")";
+            throw MoleExcept(9020101, "IChem::IFP", oss.str());
+        }
+    };
+
+    checkInterval(options.overrides.has_d_Hb,  options.overrides.d_Hb,
+                  options.overrides.has_D_Hb,  options.overrides.D_Hb,
+                  "H-bond (-d_Hb / -D_Hb)");
+
+    checkInterval(options.overrides.has_d_Hyd, options.overrides.d_Hyd,
+                  options.overrides.has_D_Hyd, options.overrides.D_Hyd,
+                  "Hydrophobic (-d_Hyd / -D_Hyd)");
+
+    checkInterval(options.overrides.has_d_Io,  options.overrides.d_Io,
+                  options.overrides.has_D_Io,  options.overrides.D_Io,
+                  "Ionic (-d_Io / -D_Io)");
+
+    checkInterval(options.overrides.has_d_Me,  options.overrides.d_Me,
+                  options.overrides.has_D_Me,  options.overrides.D_Me,
+                  "Metal (-d_Me / -D_Me)");
+
+    checkInterval(options.overrides.has_d_Ar,  options.overrides.d_Ar,
+                  options.overrides.has_D_Ar,  options.overrides.D_Ar,
+                  "Aromatic (-d_Ar / -D_Ar)");
+
+    checkInterval(options.overrides.has_d_Pic,  options.overrides.d_Pic,
+                  options.overrides.has_D_Pic,  options.overrides.D_Pic,
+                  "Aromatic (-d_Pic / -D_Pic)");
+
+    checkInterval(options.overrides.has_d_WHb,  options.overrides.d_WHb,
+                  options.overrides.has_D_WHb,  options.overrides.D_WHb,
+                  "Weak H-bond (-d_WHb / -D_WHb)"); 
+                             
+
     return options;
 }
 
@@ -139,7 +554,7 @@ void computeIFPForLigand(Interactions& interactions, Molecule& ligand, const IFP
     }
 
     interactions.detectInteractions(ligand, output, true, options.oldHydrophobic);
-    interactions.genIFP(output, options.layoutIndex);
+    interactions.genIFP(output, options.bitMask);
 }
 
 // 3 arguments mode (protein, ligand, ligand_ref)
@@ -270,6 +685,7 @@ void processLigandMode(const std::string& ligandFile, Complex& complex, Interact
     }
 }
 
+// Used for the 4 argument mode
 std::vector<IFPEntry> computeIFPsFromFiles(const std::string& proteinFile, const std::string& ligandFile, const IFPOptions&  options) {
     
     std::vector<IFPEntry> entries;
@@ -369,9 +785,9 @@ void processFourArgMode(const std::string& protein1File, const std::string& liga
 
 } // anonymous namespace
 
-unsigned chooseIFPType_forTests(bool polarOnly, bool extended, bool metalOnly) {
-    return chooseIFPType(polarOnly, extended, metalOnly);
-}
+// unsigned chooseIFPType_forTests(bool polarOnly, bool extended, bool metalOnly) {
+//     return chooseIFPType(polarOnly, extended, metalOnly);
+// }
 
 namespace IFPModule {
 

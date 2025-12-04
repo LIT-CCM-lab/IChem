@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.13)
 # * Name: IChem
 # * Version: 5.3.5
 # * Languages: C and C++
-project(IChem VERSION 5.3.6 LANGUAGES C CXX)
+project(IChem VERSION 5.3.7 LANGUAGES C CXX)
 
 # CMake normally has NO build type set
 # This forces a debug build

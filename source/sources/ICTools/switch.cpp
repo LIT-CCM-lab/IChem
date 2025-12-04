@@ -1,4 +1,5 @@
 #include "headers/ICTools/switch.h"
+#include <sstream>
 
 using namespace std;
 using namespace ICMole;
@@ -146,7 +147,13 @@ IChemSwitch::IChemSwitch(const int& argc, char *argv[])
                     find(possPrgs.begin(),possPrgs.end(), tmpStr);
             if (pos != possPrgs.end())
             {
-                TaskType = std::distance(possPrgs.begin(),pos); opts=false;
+                TaskType = std::distance(possPrgs.begin(),pos);
+                opts=false;
+            }
+            else {
+                std::ostringstream oss;
+                oss << "Unknown option or misplaced token before tool name: '" << tmpStr << "'";
+                throw MoleExcept(9010106, "IChem::CONSTRUCTOR", oss.str());
             }
         }
 
@@ -266,7 +273,13 @@ IChemSwitch::IChemSwitch(const int &argc,const std::vector<std::string>& argv)
                     find(possPrgs.begin(),possPrgs.end(), tmpStr);
             if (pos != possPrgs.end())
             {
-                TaskType = std::distance(possPrgs.begin(),pos); opts=false;
+                TaskType = std::distance(possPrgs.begin(),pos); 
+                opts=false;
+            }
+            else {
+                std::ostringstream oss;
+                oss << "Unknown option or misplaced token before tool name: '" << tmpStr << "'";
+                throw MoleExcept(9010106, "IChem::CONSTRUCTOR", oss.str());
             }
         }
 
