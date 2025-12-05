@@ -99,8 +99,13 @@ void Residu::delAtom(const Atom& atom)
  * @brief Residu::getChainName
  * @return the name of the chain. Call chain->getName() function
  */
-const std::string& Residu::getChainName() const
-{
+const std::string& Residu::getChainName() const {
+    
+    static const std::string empty_chain_name;
+    
+    if(chain == nullptr)
+        return empty_chain_name;
+    
     return chain->getName();
 }
 
