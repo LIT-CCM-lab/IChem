@@ -1,6 +1,6 @@
 #include "headers/ICTools/ifp_engine.hpp"
 
-#include "headers/ICMole/similarity.h" // if needed elsewhere
+#include "headers/ICMole/similarity.h"
 #include <sstream>
 #include <cctype>
 
@@ -424,8 +424,8 @@ std::vector<IFPEntry> computeIFPsFromFiles(const std::string& proteinFile, const
         computeIFPForLigand(interactions, ligand, options, result);
 
         IFPEntry entry;
-        entry.name     = ligand.getName();
-        entry.fp       = result.IFP;
+        entry.name = ligand.getName();
+        entry.fp = result.IFP;
         entry.fpString = result.IFPString;
 
         entries.push_back(std::move(entry));
