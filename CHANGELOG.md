@@ -210,8 +210,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - any remaining token in the “options zone” (before the tool name is seen) triggers:
       ```cpp
       std::ostringstream oss;
-      oss << "Unknown option or misplaced token before tool name: '"
-          << tmpStr << "'";
+      oss << "Unknown option or misplaced token before tool name: '" << tmpStr << "'";
       throw MoleExcept(9010106, "IChem::CONSTRUCTOR", oss.str());
       ```
   - Once a valid tool name is encountered, `opts` is set to `false` and all following tokens are treated strictly as input parameters (`Input_Values`) for that tool.
