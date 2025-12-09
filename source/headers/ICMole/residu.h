@@ -123,7 +123,7 @@ public:
       Chain* getChain() const {return chain;}
 
 
-    /*!< \brief Return the name of the residu */
+    /*!< \brief Return the name of the chain */
       const std::string& getChainName() const;
 
 

@@ -281,6 +281,7 @@ void setMOL2Type  (const std::string&  MOL2);
 Residu* getResidu() const {return residu;}
 
 const std::string getResiduName() const;
+const std::string getChainName() const;
 
 
 

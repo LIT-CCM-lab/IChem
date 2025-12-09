@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.13)
 # * Name: IChem
 # * Version: 5.3.5
 # * Languages: C and C++
-project(IChem VERSION 5.3.7 LANGUAGES C CXX)
+project(IChem VERSION 5.3.8 LANGUAGES C CXX)
 
 # CMake normally has NO build type set
 # This forces a debug build
@@ -113,6 +113,8 @@ set(ICHEM_CORE_SOURCES
     source/sources/ICTools/genKey.cpp
     source/sources/ICTools/IFP.cpp
     source/sources/ICTools/ifp_module.cpp
+    source/sources/ICTools/ifp_engine.cpp
+    source/sources/ICTools/ifp_api.cpp
     source/sources/ICTools/BSAcalc.cpp
     source/sources/ICTools/grimcalc.cpp
     source/sources/ICTools/volcalc.cpp
@@ -142,6 +144,9 @@ set(ICHEM_CORE_SOURCES
 )
 
 add_library(ichem_core ${ICHEM_CORE_SOURCES})
+
+# we can link ichem_core into a Python extension module cleanly
+set_target_properties(ichem_core PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 # Give ichem_core access to "headers/..."
 target_include_directories(ichem_core
@@ -177,6 +182,36 @@ endif()
 # Main executable IChem
 add_executable(IChem
     source/main.cpp
+)
+
+# ----------------------------------------------------------
+# Python bindings for IFP via pybind11
+# ----------------------------------------------------------
+
+# Bring in pybind11 from external/pybind11
+add_subdirectory(external/pybind11)
+
+# Build the Python extension module "ichem_ifp"
+pybind11_add_module(ichem_ifp
+    source/bindings/ichem_ifp_py.cpp
+)
+
+# Use the existing core library
+target_link_libraries(ichem_ifp
+    PRIVATE
+        ichem_core
+)
+
+# Include IChem headers for the module as well
+target_include_directories(ichem_ifp
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/source
+        ${CMAKE_CURRENT_SOURCE_DIR}/source/headers
+)
+# Make sure we stay in C++20 for this target too
+set_target_properties(ichem_ifp PROPERTIES
+    CXX_STANDARD 20
+    CXX_STANDARD_REQUIRED ON
 )
 
 target_link_libraries(IChem

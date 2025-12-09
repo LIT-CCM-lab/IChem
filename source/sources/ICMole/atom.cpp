@@ -848,10 +848,14 @@ bool Atom::isSulfur()     const {return (atomicNum == 16)? true:false;}
 
 bool Atom::isHydrogen()   const {return (atomicNum == 1) ? true:false;}
 
-const std::string Atom::getResiduName() const
-{
+const std::string Atom::getResiduName() const {
     if (residu == nullptr) return "";
     return residu->getName();
+}
+
+const std::string Atom::getChainName() const {
+    if (residu == nullptr) return "";
+    return residu->getChainName();
 }
 
 
