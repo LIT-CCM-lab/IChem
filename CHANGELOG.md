@@ -5,6 +5,131 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [IChem_5.3.8] - 2025-12-08
+
+### Added
+
+- High-level C++ API for IFP (`ICTools/ifp_api.cpp`, `headers/ICTools/ifp_api.hpp`):
+  - New namespace `IFPAPI` providing a structured, programmatic API to the IFP engine, decoupled from the CLI
+  - New configuration and data structures:
+    - `IFPConfig`  
+      - Mirrors the IFP CLI options in a single struct:
+        - profile flags: `basic`, `weakh`, `picat`, `metal`, `old_layout`  
+        - rules: `includeSolvent`, `includeCofactor`, `oldHydrophobic`  
+        - optional distance overrides: `D_Hb`, `D_Hyd`, `D_Io`, `D_Me`, `D_Ar`, `D_Pic`, `D_WHb`  
+        - optional minimum distances: `d_Hb`, `d_Hyd`, `d_Io`, `d_Me`, `d_Ar`, `d_Pic`, `d_WHb`  
+        - optional angles and tolerances: `a_H`, `at_H`, `a_ArFF`, `at_ArFF`, `a_ArEF`, `at_ArEF`, `a_Pic`, `at_Pic`
+    - `InteractionRecord`  
+      - One interaction between protein and ligand:
+        - `type_interaction`  
+        - `atom_prot`, `id_atom_prot`  
+        - `residue`, `chain`  
+        - `atom_lig`, `id_atom_lig`  
+        - `distance`
+    - `LigandInteractions`  
+      - Per-ligand container:
+        - `ligand_name`  
+        - `interactions`: `std::vector<InteractionRecord>`
+    - `LigandFingerprint`  
+      - Per-ligand fingerprint representation:
+        - `ligand_name`  
+        - `residues`: string with the list of interacting residues  
+        - `bitstring`: IFP bitstring corresponding to the active profile
+    - `TanimotoScore`  
+      - Pairwise similarity container:
+        - `ligand`, `ligand_residues`, `ligand_bitstring`  
+        - `reference`, `reference_residues`, `reference_bitstring`  
+        - `tanimoto` (double)
+
+- New C++ entry points built on top of the IFP engine:
+  - `std::vector<LigandInteractions> compute_ifp_interactions(const std::string& protein_file, const std::string& ligand_file, const IFPConfig& cfg = IFPConfig());`  
+    - Compute all protein–ligand interactions for a protein and a (possibly multi-ligand) file  
+    - Returns one `LigandInteractions` for each ligand in `ligand_file`.
+  - `std::vector<LigandFingerprint> compute_ifp_fingerprints(const std::string& protein_file, const std::string& ligand_file, const IFPConfig& cfg = IFPConfig());`  
+    - Compute IFP bitstrings for each ligand in `ligand_file` against the same protein
+    - Each entry exposes the residues string and the bitstring, mirroring the IChem CLI output
+  - `std::vector<TanimotoScore> compute_ifp_tanimoto(const std::string& protein_file, const std::string& ligand_file, const std::string& reference_file, const IFPConfig& cfg = IFPConfig());`  
+    - One-protein, two-ligand-files mode:
+      - `ligand_file`   : docked ligands  
+      - `reference_file`: reference ligands  
+    - Returns all pairwise similarities with full residue/bitstring context
+  - `std::vector<TanimotoScore> compute_ifp_tanimoto_ensembles(const std::string& protein1_file, const std::string& ligand1_file, const std::string& protein2_file, const std::string& ligand2_file, const IFPConfig& cfg = IFPConfig());`  
+    - Two-protein, two-ligand-files “ensemble” mode, matching the 4 argument CLI  
+    - Returns all docked vs reference scores with associated residues and bitstrings
+
+- Python bindings for the IFP API (`source/bindings/ichem_ifp_py.cpp`):
+  - New Python extension module `ichem_ifp` built with pybind11, wrapping the C++ `IFPAPI` layer
+  - Exposed Python classes:
+    - `IFPConfig`  
+      - Same fields as the C++ struct, accessible as attributes:
+        - `basic`, `weakh`, `picat`, `metal`, `old`  
+        - `includeSolvent`, `includeCofactor`, `oldHydrophobic`  
+        - `D_Hb`, `D_Hyd`, `D_Io`, `D_Me`, `D_Ar`, `D_Pic`, `D_WHb`  
+        - `d_Hb`, `d_Hyd`, `d_Io`, `d_Me`, `d_Ar`, `d_Pic`, `d_WHb`  
+        - `a_H`, `at_H`, `a_ArFF`, `at_ArFF`, `a_ArEF`, `at_ArEF`, `a_Pic`, `at_Pic`
+    - `InteractionRecord`  
+      - Read-only view of a single interaction:
+        - `type_interaction`, `atom_prot`, `id_atom_prot`,  
+          `residue`, `chain`,  
+          `atom_lig`, `id_atom_lig`,  
+          `distance`
+    - `LigandInteractions`  
+      - Read-only container:
+        - `ligand_name`  
+        - `interactions` (list of `InteractionRecord`)
+    - `LigandFingerprint`  
+      - Read-only container:
+        - `ligand_name`  
+        - `residues`  
+        - `bitstring`
+    - `TanimotoScore`  
+      - Read-only container:
+        - `ligand`, `ligand_residues`, `ligand_bitstring`  
+        - `reference`, `reference_residues`, `reference_bitstring`  
+        - `tanimoto`
+  - Exposed Python functions:
+    - `ichem_ifp.compute_ifp_interactions(protein_file, ligand_file, cfg=IFPConfig())`  
+      - Returns a list of `LigandInteractions`
+    - `ichem_ifp.compute_ifp_fingerprints(protein_file, ligand_file, cfg=IFPConfig())`  
+      - Returns a list of `LigandFingerprint`
+    - `ichem_ifp.compute_ifp_tanimoto(protein_file, ligand_file, reference_file, cfg=IFPConfig())`  
+      - Returns a list of `TanimotoScore` for a single protein and two ligand sets
+    - `ichem_ifp.compute_ifp_tanimoto_ensembles(protein1_file, ligand1_file, protein2_file, ligand2_file, cfg=IFPConfig())`  
+      - Returns a list of `TanimotoScore` for two protein/ligand ensembles
+
+### Changed
+
+- IFP engine and module layering (`ICTools/ifp_module.cpp`, `ICTools/ifp_engine.cpp`, `headers/ICTools/ifp_engine.hpp`, `headers/ICTools/ifp_module.hpp`):
+  - The IFP code is now split into three logical layers:
+    - IFP front-end (`IFPModule::runIFP` in `ifp_module.cpp`):
+      - Responsible only for:
+        - CLI argument dispatch (2/3/4 argument modes)
+        - printing interaction/fingerprint/similarity results to stdout
+      - Reuses the shared engine functions instead of embedding the full logic
+    - IFP engine (`IFPInternal` namespace in `ifp_engine.cpp` / `ifp_engine.hpp`):
+      - Hosts the core reusable building blocks:
+        - `IFPOptions` and `InteractionOverrides`  
+        - `parseIFPOptions()`  
+        - `parseIFPNumeric()`  
+        - `applyOverrides()`  
+        - `configureResidueRules()`  
+        - `computeIFPForLigand()`  
+        - `computeIFPsFromFiles()`
+      - This layer is used by both the CLI (`IFPModule::runIFP`) and the new C++/Python APIs
+    - IFP high-level API (`IFPAPI` namespace in `ifp_api.cpp` / `ifp_api.hpp`):
+      - Bridges the engine with external code (C++ or Python):
+        - converts `IFPConfig` into `IFPOptions` via `makeIFPOptionsFromConfig()`  
+        - builds `InteractionRecord`, `LigandInteractions`, `LigandFingerprint` and `TanimotoScore` structures  
+        - keeps the CLI behaviour (profiles, thresholds, residue rules) consistent in all entry points
+
+- Error reporting for API consumers:
+  - All `IFPAPI` entry points (`compute_ifp_interactions`, `compute_ifp_fingerprints`, `compute_ifp_tanimoto`, `compute_ifp_tanimoto_ensembles`) now:
+    - catch `MoleExcept`,  
+    - append an API-specific trace (e.g: `"IFPAPI::compute_ifp_interactions"`),  
+    - and rethrow as `std::runtime_error` with a message of the form: `"IChem::IFP error <code> - <details>"`
+  - This preserves the IChem error codes and messages while making the failures visible as standard exceptions to C++ callers and Python users
+
+
 ## [IChem_5.3.7] - 2025-12-03
 
 ### Added
@@ -64,17 +189,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - IFP options parsing (`ICTools/ifp_module.cpp`):
   - `parseIFPOptions()` now:
-    - Requires **exactly one** of `--all`, `--basic`, `--weakh`, `--picat`, `--metal`, or `--old`.  
-      - If none is given, it throws `MoleExcept(9020101, "IChem::IFP", "You must specify one of ...")`.  
+    - Requires **exactly one** of `--all`, `--basic`, `--weakh`, `--picat`, `--metal`, or `--old`
+      - If none is given, it throws `MoleExcept(9020101, "IChem::IFP", "You must specify one of ...")` 
       - If more than one profile is specified, it throws a “mutually exclusive” error.
     - Populates `IFPOptions::bitMask` according to the chosen profile (basic/all/weakH/Pi-cation/metal/old) using the 11 bit layout and `FLAG_OLD_LAYOUT` for legacy output
     - Validates every min/max distance pair via a `checkInterval()` helper:
       - If both `-d_*` and `-D_*` are provided and `min > max`, an error is raised:
-        - `"For H-bond (-d_Hb / -D_Hb) minimal distance (...) is greater than maximal distance (...)"`.
+        - `"For H-bond (-d_Hb / -D_Hb) minimal distance (...) is greater than maximal distance (...)"`
       - This is applied for H-bond, hydrophobic, ionic, metal, aromatic, Pi-cation, and weak H-bond distances
   - Unknown IFP options are no longer silently ignored:
     - Any option key not matched by the explicit `if/else if` chain now triggers:
-      - `MoleExcept(9020101, "IChem::IFP", "Unknown IFP option: ... Allowed options include: --all, --basic, --weakh, --picat, --metal, --old, --solvent, --cofactor, --newH, -name, -D_*, -d_*, -a_*, -at_*")`.
+      - `MoleExcept(9020101, "IChem::IFP", "Unknown IFP option: ... Allowed options include: --all, --basic, --weakh, --picat, --metal, --old, --solvent, --cofactor, --newH, -name, -D_*, -d_*, -a_*, -at_*")`
 
 - IChem front-end CLI parsing (`ICTools/switch.cpp`):
   - Both `IChemSwitch` constructors (`(int argc, char** argv)` and `(int argc, const std::vector<std::string>& argv)`) now treat **unknown tokens before the tool name** as hard errors:
@@ -85,20 +210,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - any remaining token in the “options zone” (before the tool name is seen) triggers:
       ```cpp
       std::ostringstream oss;
-      oss << "Unknown option or misplaced token before tool name: '"
-          << tmpStr << "'";
+      oss << "Unknown option or misplaced token before tool name: '" << tmpStr << "'";
       throw MoleExcept(9010106, "IChem::CONSTRUCTOR", oss.str());
       ```
-  - Once a valid tool name is encountered, `opts` is set to `false` and all following tokens are treated strictly as input parameters (`Input_Values`) for that tool.
+  - Once a valid tool name is encountered, `opts` is set to `false` and all following tokens are treated strictly as input parameters (`Input_Values`) for that tool
 
 ### Fixed
 
 - CLI robustness and error reporting:
   - Typographical errors where a user forgets the leading dash on an option are now correctly reported instead of being silently misinterpreted. For example:
     - `./IChem --weakh d_WHb 2.4 IFP protein.mol2 ligand.mol2`
-    - `d_WHb` (without `-`) is no longer consumed as a value for the previous option; it is rejected with `MoleExcept(9010106, "IChem::CONSTRUCTOR", "Unknown option or misplaced token before tool name: 'd_WHb'")`
+    - `d_WHb` (without `-`) is no longer consumed as a value for the previous option, it is rejected with `MoleExcept(9010106, "IChem::CONSTRUCTOR", "Unknown option or misplaced token before tool name: 'd_WHb'")`
   - Unknown IFP options or misspelled option names (e.g. `-D_WHbb`, `-D_XXX`) now produce a clear `MoleExcept(9020101, "IChem::IFP", "Unknown IFP option: ...")` instead of silently doing nothing
-  - Inconsistent min/max distance overrides (e.g. `-d_Hb 4.0 -D_Hb 3.0`) are now detected and rejected early, preventing nonsensical threshold configurations from reaching the interaction engine.
+  - Inconsistent min/max distance overrides (e.g: `-d_Hb 4.0 -D_Hb 3.0`) are now detected and rejected early, preventing nonsensical threshold configurations from reaching the interaction engine
 
 ---
 
@@ -339,7 +463,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Change parameters for calcInteractions() - update in all files using it (IFP-Grim-Ints)
 - minimum distance of ionic and hydrogen bond is set to 2.3 from 2.5
 - props.setWeakAcceptor(true) changed to props.setWeakDonor(true) in atom.cpp for aromatic
-- Sending the warnings to stderr: to prevent the pollution of warning messages while parsing mol2 files. 
+- Sending the warnings to stderr: to prevent the pollution of warning messages while parsing mol2 files
 - Change menu ints for aromatic and Pi-cation interaction length set to 5.0
 - Dist_Arom and Dist_PiCation set to 5.0 from 4.0
 
