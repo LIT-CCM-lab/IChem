@@ -221,9 +221,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CLI robustness and error reporting:
   - Typographical errors where a user forgets the leading dash on an option are now correctly reported instead of being silently misinterpreted. For example:
     - `./IChem --weakh d_WHb 2.4 IFP protein.mol2 ligand.mol2`
-    - `d_WHb` (without `-`) is no longer consumed as a value for the previous option; it is rejected with `MoleExcept(9010106, "IChem::CONSTRUCTOR", "Unknown option or misplaced token before tool name: 'd_WHb'")`
+    - `d_WHb` (without `-`) is no longer consumed as a value for the previous option, it is rejected with `MoleExcept(9010106, "IChem::CONSTRUCTOR", "Unknown option or misplaced token before tool name: 'd_WHb'")`
   - Unknown IFP options or misspelled option names (e.g. `-D_WHbb`, `-D_XXX`) now produce a clear `MoleExcept(9020101, "IChem::IFP", "Unknown IFP option: ...")` instead of silently doing nothing
-  - Inconsistent min/max distance overrides (e.g. `-d_Hb 4.0 -D_Hb 3.0`) are now detected and rejected early, preventing nonsensical threshold configurations from reaching the interaction engine.
+  - Inconsistent min/max distance overrides (e.g: `-d_Hb 4.0 -D_Hb 3.0`) are now detected and rejected early, preventing nonsensical threshold configurations from reaching the interaction engine.
 
 ---
 
