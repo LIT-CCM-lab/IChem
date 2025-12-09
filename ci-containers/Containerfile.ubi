@@ -1,7 +1,9 @@
 FROM registry.access.redhat.com/ubi8/ubi:8.8
 
 RUN dnf install -y \
-    gcc-c++ \
-    cmake \
-    make \
-  && dnf clean all
+        gcc-c++ \
+        cmake \
+        make \
+        python3 \
+        python3-devel \
+    && dnf clean all

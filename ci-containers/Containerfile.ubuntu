@@ -1,6 +1,11 @@
 FROM ubuntu:22.04
 
 RUN apt-get update && \
-    apt-get install -y cmake g++ make && \
-    apt-get clean && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+        cmake \
+        g++ \
+        make \
+        python3 \
+        python3-dev \
+    && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
