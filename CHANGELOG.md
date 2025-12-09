@@ -5,6 +5,131 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [IChem_5.3.8] - 2025-12-08
+
+### Added
+
+- High-level C++ API for IFP (`ICTools/ifp_api.cpp`, `headers/ICTools/ifp_api.hpp`):
+  - New namespace `IFPAPI` providing a structured, programmatic API to the IFP engine, decoupled from the CLI.
+  - New configuration and data structures:
+    - `IFPConfig`  
+      - Mirrors the IFP CLI options in a single struct:
+        - profile flags: `basic`, `weakh`, `picat`, `metal`, `old_layout`  
+        - rules: `includeSolvent`, `includeCofactor`, `oldHydrophobic`  
+        - optional distance overrides: `D_Hb`, `D_Hyd`, `D_Io`, `D_Me`, `D_Ar`, `D_Pic`, `D_WHb`  
+        - optional minimum distances: `d_Hb`, `d_Hyd`, `d_Io`, `d_Me`, `d_Ar`, `d_Pic`, `d_WHb`  
+        - optional angles and tolerances: `a_H`, `at_H`, `a_ArFF`, `at_ArFF`, `a_ArEF`, `at_ArEF`, `a_Pic`, `at_Pic`
+    - `InteractionRecord`  
+      - One interaction between protein and ligand:
+        - `type_interaction`  
+        - `atom_prot`, `id_atom_prot`  
+        - `residue`, `chain`  
+        - `atom_lig`, `id_atom_lig`  
+        - `distance`
+    - `LigandInteractions`  
+      - Per-ligand container:
+        - `ligand_name`  
+        - `interactions`: `std::vector<InteractionRecord>`
+    - `LigandFingerprint`  
+      - Per-ligand fingerprint representation:
+        - `ligand_name`  
+        - `residues`: string with the list of interacting residues  
+        - `bitstring`: IFP bitstring corresponding to the active profile
+    - `TanimotoScore`  
+      - Pairwise similarity container:
+        - `ligand`, `ligand_residues`, `ligand_bitstring`  
+        - `reference`, `reference_residues`, `reference_bitstring`  
+        - `tanimoto` (double)
+
+- New C++ entry points built on top of the IFP engine:
+  - `std::vector<LigandInteractions> compute_ifp_interactions(const std::string& protein_file, const std::string& ligand_file, const IFPConfig& cfg = IFPConfig());`  
+    - Compute all protein–ligand interactions for a protein and a (possibly multi-ligand) file.  
+    - Returns one `LigandInteractions` for each ligand in `ligand_file`.
+  - `std::vector<LigandFingerprint> compute_ifp_fingerprints(const std::string& protein_file, const std::string& ligand_file, const IFPConfig& cfg = IFPConfig());`  
+    - Compute IFP bitstrings for each ligand in `ligand_file` against the same protein.  
+    - Each entry exposes the residues string and the bitstring, mirroring the IChem CLI output.
+  - `std::vector<TanimotoScore> compute_ifp_tanimoto(const std::string& protein_file, const std::string& ligand_file, const std::string& reference_file, const IFPConfig& cfg = IFPConfig());`  
+    - One-protein, two-ligand-files mode:
+      - `ligand_file`   : docked ligands  
+      - `reference_file`: reference ligands  
+    - Returns all pairwise similarities with full residue/bitstring context.
+  - `std::vector<TanimotoScore> compute_ifp_tanimoto_ensembles(const std::string& protein1_file, const std::string& ligand1_file, const std::string& protein2_file, const std::string& ligand2_file, const IFPConfig& cfg = IFPConfig());`  
+    - Two-protein, two-ligand-files “ensemble” mode, matching the 4 argument CLI.  
+    - Returns all docked vs reference scores with associated residues and bitstrings.
+
+- Python bindings for the IFP API (`source/bindings/ichem_ifp_py.cpp`):
+  - New Python extension module `ichem_ifp` built with pybind11, wrapping the C++ `IFPAPI` layer.
+  - Exposed Python classes:
+    - `IFPConfig`  
+      - Same fields as the C++ struct, accessible as attributes:
+        - `basic`, `weakh`, `picat`, `metal`, `old`  
+        - `includeSolvent`, `includeCofactor`, `oldHydrophobic`  
+        - `D_Hb`, `D_Hyd`, `D_Io`, `D_Me`, `D_Ar`, `D_Pic`, `D_WHb`  
+        - `d_Hb`, `d_Hyd`, `d_Io`, `d_Me`, `d_Ar`, `d_Pic`, `d_WHb`  
+        - `a_H`, `at_H`, `a_ArFF`, `at_ArFF`, `a_ArEF`, `at_ArEF`, `a_Pic`, `at_Pic`
+    - `InteractionRecord`  
+      - Read-only view of a single interaction:
+        - `type_interaction`, `atom_prot`, `id_atom_prot`,  
+          `residue`, `chain`,  
+          `atom_lig`, `id_atom_lig`,  
+          `distance`
+    - `LigandInteractions`  
+      - Read-only container:
+        - `ligand_name`  
+        - `interactions` (list of `InteractionRecord`)
+    - `LigandFingerprint`  
+      - Read-only container:
+        - `ligand_name`  
+        - `residues`  
+        - `bitstring`
+    - `TanimotoScore`  
+      - Read-only container:
+        - `ligand`, `ligand_residues`, `ligand_bitstring`  
+        - `reference`, `reference_residues`, `reference_bitstring`  
+        - `tanimoto`
+  - Exposed Python functions:
+    - `ichem_ifp.compute_ifp_interactions(protein_file, ligand_file, cfg=IFPConfig())`  
+      - Returns a list of `LigandInteractions`.
+    - `ichem_ifp.compute_ifp_fingerprints(protein_file, ligand_file, cfg=IFPConfig())`  
+      - Returns a list of `LigandFingerprint`.
+    - `ichem_ifp.compute_ifp_tanimoto(protein_file, ligand_file, reference_file, cfg=IFPConfig())`  
+      - Returns a list of `TanimotoScore` for a single protein and two ligand sets.
+    - `ichem_ifp.compute_ifp_tanimoto_ensembles(protein1_file, ligand1_file, protein2_file, ligand2_file, cfg=IFPConfig())`  
+      - Returns a list of `TanimotoScore` for two protein/ligand ensembles.
+
+### Changed
+
+- IFP engine and module layering (`ICTools/ifp_module.cpp`, `ICTools/ifp_engine.cpp`, `headers/ICTools/ifp_engine.hpp`, `headers/ICTools/ifp_module.hpp`):
+  - The IFP code is now split into three logical layers:
+    - IFP front-end (`IFPModule::runIFP` in `ifp_module.cpp`):
+      - Responsible only for:
+        - CLI argument dispatch (2/3/4 argument modes)
+        - printing interaction/fingerprint/similarity results to stdout
+      - Reuses the shared engine functions instead of embedding the full logic.
+    - IFP engine (`IFPInternal` namespace in `ifp_engine.cpp` / `ifp_engine.hpp`):
+      - Hosts the core reusable building blocks:
+        - `IFPOptions` and `InteractionOverrides`  
+        - `parseIFPOptions()`  
+        - `parseIFPNumeric()`  
+        - `applyOverrides()`  
+        - `configureResidueRules()`  
+        - `computeIFPForLigand()`  
+        - `computeIFPsFromFiles()`
+      - This layer is used by both the CLI (`IFPModule::runIFP`) and the new C++/Python APIs.
+    - IFP high-level API (`IFPAPI` namespace in `ifp_api.cpp` / `ifp_api.hpp`):
+      - Bridges the engine with external code (C++ or Python):
+        - converts `IFPConfig` into `IFPOptions` via `makeIFPOptionsFromConfig()`  
+        - builds `InteractionRecord`, `LigandInteractions`, `LigandFingerprint` and `TanimotoScore` structures  
+        - keeps the CLI behaviour (profiles, thresholds, residue rules) consistent in all entry points.
+
+- Error reporting for API consumers:
+  - All `IFPAPI` entry points (`compute_ifp_interactions`, `compute_ifp_fingerprints`, `compute_ifp_tanimoto`, `compute_ifp_tanimoto_ensembles`) now:
+    - catch `MoleExcept`,  
+    - append an API-specific trace (e.g: `"IFPAPI::compute_ifp_interactions"`),  
+    - and rethrow as `std::runtime_error` with a message of the form: `"IChem::IFP error <code> - <details>"`.
+  - This preserves the IChem error codes and messages while making the failures visible as standard exceptions to C++ callers and Python users.
+
+
 ## [IChem_5.3.7] - 2025-12-03
 
 ### Added
