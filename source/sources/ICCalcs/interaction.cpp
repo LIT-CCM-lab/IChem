@@ -443,8 +443,6 @@ void Interactions::checkPiCationInteraction(Atom& atomL, Atom& atomP, double dis
     if (dist < params.dist_PiCation || dist > params.Dist_PiCation) 
         return;
 
-    cout << "All conditions passed" << endl;
-
     Cycle* cycleP = atomP.getParent().getCycleFromCenter(&atomP);
     if (cycleP == nullptr) 
         return;
