@@ -435,12 +435,15 @@ void Interactions::checkIonicLigandInteractions(Atom& atomL, Atom& atomP, double
 }
 
 void Interactions::checkPiCationInteraction(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const {
+
     if (!wInterType[InterType::PICATION]) 
         return;
-    if (atomP.getName() != "DuCy") 
+    if (atomP.getName() != "DuAr") 
         return;
     if (dist < params.dist_PiCation || dist > params.Dist_PiCation) 
         return;
+
+    cout << "All conditions passed" << endl;
 
     Cycle* cycleP = atomP.getParent().getCycleFromCenter(&atomP);
     if (cycleP == nullptr) 
