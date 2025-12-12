@@ -5,10 +5,25 @@
 #include "headers/ICMole/molecule.h"
 #include "headers/ICMole/atom.h"
 #include "headers/ICMole/bond.h"
-//#define ICHEM_DEBUG // Debug pas refait, merci Jeremy
-//# ICHEM_DEBUG2
+
 using namespace std;
 using namespace ICMole;
+
+namespace {
+
+    inline std::string trim_whitespace(std::string s) {
+        
+        constexpr char whitespace_chars[] = " \t\r\n";
+        const auto first_non_ws = s.find_first_not_of(whitespace_chars);
+
+        if (first_non_ws == std::string::npos)
+            return "";
+
+        const auto last_non_ws = s.find_last_not_of(whitespace_chars);
+
+        return s.substr(first_non_ws, last_non_ws - first_non_ws + 1);
+    }
+}
 
 
 void MoleReader::loadNextMolecule(Molecule &molecule,
@@ -86,7 +101,13 @@ void MoleReader::loadNextMolecule(Molecule &molecule,
             molecule.Atoms.reserve(NbrAt);
             molecule.Bonds.reserve(NbrBd);
             molecule.Residues.reserve(NbrSubst);
-            molecule.name=name.substr(0,40);
+            // molecule.name=name.substr(0,40);
+            molecule.name = trim_copy(name);
+            static constexpr std::size_t MAX_MOL2_NAME_LEN = 200;
+            if(molecule.name.size() > MAX_MOL2_NAME_LEN) {
+                    throw MoleExcept(2020400, "MoleReader::loadNextMolecule", "Invalid MOL2: molecule name longer than 200 characters'");
+                
+            }
 
 
 #ifdef ICHEM_DEBUG
@@ -630,29 +651,31 @@ void  MoleReader::readMOL2Atom(const unsigned int NbrAt,
         ITTI = mapRes.find(oss.str());
 
         if (ITTI == mapRes.end()) {
-            ostringstream error;
-            cerr << "Residue " << former_name << "/" << atm_resId << " was not found for the atom " << atm_Name << "/" << atm_Id;
+            // ostringstream error;
+            // cerr << "Residue " << former_name << "/" << atm_resId << " was not found for the atom " << atm_Name << "/" << atm_Id;
             
-            switch (Moleaccess) {
-            case Levels::NONE:
-                break;
-            case Levels::NOTICE:
-                cerr << "WARNING|" << error.str() << "\n"; 
-                break;
-            case Levels::WARNING:
-                cerr << "ERROR|" << error.str() << "\n";
-                break;
-            case Levels::STRICT:
-            case Levels::FATAL:
-                throw MoleExcept(2020703,"MoleReader::readMOL2Atom", error.str());
-                break;
-            }// END SWITCH
+            // switch (Moleaccess) {
+            // case Levels::NONE:
+            //     break;
+            // case Levels::NOTICE:
+            //     cerr << "WARNING|" << error.str() << "\n"; 
+            //     break;
+            // case Levels::WARNING:
+            //     cerr << "ERROR|" << error.str() << "\n";
+            //     break;
+            // case Levels::STRICT:
+            // case Levels::FATAL:
+            //     throw MoleExcept(2020703,"MoleReader::readMOL2Atom", error.str());
+            //     break;
+            // }// END SWITCH
 
-            res = &mole.unknownRes;
+            res = &mole.unknownRes; // silent, no warnings
         }
-        else res=(*ITTI).second;
+        else {
+            res = ITTI->second;
+        }
 
-        atom->residu=res;
+        atom->residu = res;
         res->atoms.push_back(atom);
 
 
