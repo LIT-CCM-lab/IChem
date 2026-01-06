@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Not released yet
+  * Keep the name of the molecule extended (limited to 40 chacraters before)
+  * Adding helper function to remove whitespace in molecule's name
+
 ## [IChem_5.3.8] - 2025-12-08
 
 ### Added
