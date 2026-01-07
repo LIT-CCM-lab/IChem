@@ -1423,10 +1423,6 @@ void Interactions::genIFP(InterResults& interResult, const unsigned int& activeB
             case InterType::WHBOND_PROT:   return 9;  // [9] Weak HBond protein
             case InterType::WHBOND_LIG:    return 10; // [10] Weak HBond ligand
 
-            // Not encoded in the 11 bits:
-            // InterType::UNDEFINED
-            // InterType::EXCLUSION
-            // InterType::METAL_ACC
             default:
                 return -1;
         }
