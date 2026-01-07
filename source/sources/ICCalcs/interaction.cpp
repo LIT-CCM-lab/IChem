@@ -1393,7 +1393,7 @@ Fingerprint& Interactions::generateTriplets(InterResults& interResult,const bool
 
 void Interactions::genIFP(InterResults& interResult, const unsigned int& activeBits) const {
     
-    // New "standard" layout: 11 bits per residue
+    // 11 bits per residue
     static constexpr short BITS_PER_RESIDUE_NEW = 11;
 
     // Must match the FLAG_OLD_LAYOUT used in parseIFPOptions
@@ -1408,7 +1408,7 @@ void Interactions::genIFP(InterResults& interResult, const unsigned int& activeB
     // Number of bits per residue actually used
     const short bitsPerResidue = isOldLayout ? 7 : BITS_PER_RESIDUE_NEW;
 
-    // Map interaction type value → base bit index (0..10), or -1 if not encoded
+    // Map interaction type value: base bit index (0..10), or -1 if not encoded
     auto mapInterTypeToBit = [](unsigned int inter) -> int {
         switch (inter) {
             case InterType::HYDROPHOBIC:   return 0;  // [0] hydrophobic
@@ -1473,9 +1473,9 @@ void Interactions::genIFP(InterResults& interResult, const unsigned int& activeB
 
             int basePos = mapInterTypeToBit(ip->interaction);
             if (basePos < 0)
-                continue; // type not encoded in our 11-slot scheme
+                continue; // type not encoded in our 11 slot scheme
 
-            // coreBits is the 11-bit mask from --all/--basic/... (without layout flag)
+            // coreBits is the 11-bit mask from --all/--basic/...
             if ((coreBits & (1u << basePos)) == 0u)
                 continue; // interaction disabled in this profile
 
