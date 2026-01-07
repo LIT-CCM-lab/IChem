@@ -1393,7 +1393,7 @@ Fingerprint& Interactions::generateTriplets(InterResults& interResult,const bool
 
 void Interactions::genIFP(InterResults& interResult, const unsigned int& activeBits) const {
     
-    // New "standard" layout: 11 bits per residue
+    // 11 bits per residue
     static constexpr short BITS_PER_RESIDUE_NEW = 11;
 
     // Must match the FLAG_OLD_LAYOUT used in parseIFPOptions
@@ -1408,7 +1408,7 @@ void Interactions::genIFP(InterResults& interResult, const unsigned int& activeB
     // Number of bits per residue actually used
     const short bitsPerResidue = isOldLayout ? 7 : BITS_PER_RESIDUE_NEW;
 
-    // Map interaction type value → base bit index (0..10), or -1 if not encoded
+    // Map interaction type value: base bit index (0..10), or -1 if not encoded
     auto mapInterTypeToBit = [](unsigned int inter) -> int {
         switch (inter) {
             case InterType::HYDROPHOBIC:   return 0;  // [0] hydrophobic
@@ -1423,10 +1423,6 @@ void Interactions::genIFP(InterResults& interResult, const unsigned int& activeB
             case InterType::WHBOND_PROT:   return 9;  // [9] Weak HBond protein
             case InterType::WHBOND_LIG:    return 10; // [10] Weak HBond ligand
 
-            // Not encoded in the 11 bits:
-            // InterType::UNDEFINED
-            // InterType::EXCLUSION
-            // InterType::METAL_ACC
             default:
                 return -1;
         }
@@ -1477,9 +1473,9 @@ void Interactions::genIFP(InterResults& interResult, const unsigned int& activeB
 
             int basePos = mapInterTypeToBit(ip->interaction);
             if (basePos < 0)
-                continue; // type not encoded in our 11-slot scheme
+                continue; // type not encoded in our 11 slot scheme
 
-            // coreBits is the 11-bit mask from --all/--basic/... (without layout flag)
+            // coreBits is the 11-bit mask from --all/--basic/...
             if ((coreBits & (1u << basePos)) == 0u)
                 continue; // interaction disabled in this profile
 
@@ -1523,102 +1519,6 @@ void Interactions::genIFP(InterResults& interResult, const unsigned int& activeB
         ++NRes;
     }
 }
-
-
-
-
-// Map of residue pointers used to build the fingerprint IFP, we iterate over residues in NumToRes and turn detected interactions into bits // our problem for NA sodium is that the size of NumToRes = 0
-// void Interactions::genIFP(InterResults& interResult, const unsigned int& fgpType) const {
-
-//     static const int intToPos[5][NB_INTTYPE]= {
-//         {-1,3,4,5,6, 0,-1, 1, 2,-1,-1,-1,-1,-1}, // standard 7 bits
-//         {-1,0,1,2,3,-1,4,-1,-1,-1,-1,-1,-1,-1}, // polar 5 bits
-//         {-1,3,4,5,6, 0,8, 1, 2, 7, -1, -1,-1,-1}, // extended 9 bits
-//         {-1,0,1,2,3,-1,7,-1,-1, 6, 4, 5,-1,-1}, // polar extended 8 bits
-//         {-1,-1,-1,-1,-1,-1,0,-1,-1,-1,-1,-1,-1} // metal 1 bit
-//     };
-
-//     static const short length[5]={7,5,9,8,1};
-    
-//     map<int,Residu*> NumtoRes;
-//     for (ItCRes itR = complex.firstResidu();itR != complex.lastResidu();++itR) 
-//     {
-//         Residu *res =*itR;
-
-        
-
-//         if (!res->isUsed() || res->getParent()->getMoleType()== MoleType::LIGAND) 
-//             continue;
-        
-//         if (Residu::Rules[res->getParent()->getMoleType()][res->getResType()] == MoleType::UNDEFINED || Molecule::Rules[res->getParent()->getMoleType()] == MoleType::UNDEFINED)
-//             continue;
-        
-//         NumtoRes.insert(pair<int,Residu*>(res->getNum(),res));
-//     }
-
-
-//     multimap<Residu*,InterPoint*> listRes;
-
-//     for (size_t i=0; i< interResult.listInters.size();++i)
-//     {
-//         InterPoint& interP = interResult.listInters.at(i);
-//         if (interP.merged_to != -1)continue;
-//         Residu *res =interP.Prot_Ref->getResidu();
-//         if (interP.interaction==InterType::AREDGEFACE || interP.interaction==InterType::ARFACEFACE)
-//         {
-//             Cycle* cyc=interP.Prot_Ref->getParent().getCycleFromCenter(interP.Prot_Ref);
-//             res=cyc->getAtom(0)->getResidu();
-
-//         }
-//         listRes.insert(pair<Residu*,InterPoint*>(res,&interP));
-
-//     }
-
-//     interResult.IFP=Fingerprint(NumtoRes.size()*length[fgpType]);
-//     int NRes=0;
-//     ostringstream oss;
-//     for (map<int,Residu*>::iterator it =NumtoRes.begin(); it != NumtoRes.end();++it ) {
-
-//         std::pair <std::multimap<Residu*,InterPoint*>::iterator, std::multimap<Residu*,InterPoint*>::iterator> ret;
-//         ret = listRes.equal_range((*it).second);
-
-//         for (std::multimap<Residu*,InterPoint*>::iterator it2=ret.first; it2!=ret.second; ++it2) {
-//             if (intToPos[fgpType][(*it2).second->interaction] == -1)
-//                 continue;
-
-//             interResult.IFP.bitOn(NRes*length[fgpType]+intToPos[fgpType][(*it2).second->interaction]);
-//         }
-//         interResult.IFPString+="|";
-//         oss.str("");
-//         if ((*it).second->getResType() == ResType::STD_AA)
-//         {
-//             bool found=false;
-//             for (size_t pData=0;pData <NBAA;++pData)
-//             {
-
-//                 if (AAcid[pData].name==(*it).second->getName())
-//                 {
-//                     oss << AAcid[pData].code << (*it).second->getFNum();
-//                     found=true;
-//                     break;
-//                 }
-//             }
-//             if (!found){
-//                 oss << (*it).second->getName() << (*it).second->getFNum();
-//             }
-//         }
-//         else {      oss <<(*it).second->getName()<<(*it).second->getFNum();
-//         }
-//         //        cout << oss.str() << endl;
-//         interResult.IFPString+=(*it).second->getChainName();
-//         for (int ni=0; ni < length[fgpType]-(int)oss.str().length()-2;ni++)
-//             interResult.IFPString += " ";
-//         interResult.IFPString += oss.str();
-
-
-//         NRes++;
-//     }
-// }
 
 
 
