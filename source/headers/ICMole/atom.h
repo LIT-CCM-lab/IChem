@@ -344,6 +344,7 @@ ItCBond            lastC() {return links.end();}
 const std::string  toString        (const bool &no_Bond=false,
                                     const bool &full_data=false) const;
 const std::string  getIdentifier()const;
+const std::string residueAndChain() const;
 
         void  assignBits();
 

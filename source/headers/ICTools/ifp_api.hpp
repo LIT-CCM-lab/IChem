@@ -12,7 +12,7 @@ struct InteractionRecord {
     std::string type_interaction;  // Hydrophobic, Hbond
     std::string atom_prot;
     int id_atom_prot;
-    std::string residue;
+    std::string residue_identifier;
     std::string chain;
     std::string atom_lig;
     int id_atom_lig;

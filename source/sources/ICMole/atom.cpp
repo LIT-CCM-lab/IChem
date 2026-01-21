@@ -950,6 +950,16 @@ const std::string Atom::getIdentifier()const
 
 }
 
+const std::string Atom::residueAndChain() const {
+    
+    ostringstream oss;
+
+    if (residu != nullptr) {
+        return residu->getIdentifier();
+    }
+    return "";
+}
+
 
 
 
