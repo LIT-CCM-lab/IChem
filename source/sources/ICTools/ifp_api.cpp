@@ -8,9 +8,25 @@
 
 #include <stdexcept> // std::runtime_error
 #include <sstream>
+#include <algorithm>
 
 using namespace std;
 using namespace ICMole;
+
+namespace {
+
+// Hydrophobic marks with -1
+static void pruneMergedInteractions(ICMole::InterResults& res) {
+    auto& v = res.listInters;
+    v.erase(std::remove_if(v.begin(), v.end(), [](const ICMole::InterPoint& ip) {
+        return ip.merged_to != -1;
+    }),v.end());
+
+    // Maybe I will remove this
+    for (auto& ip : v) ip.merged_to = -1;
+}
+
+} 
 
 namespace {
 
@@ -142,27 +158,58 @@ static std::string interactionTypeToString(unsigned int interactionType)
 
 // Extract all interactions for one ligand into API records
 static IFPAPI::LigandInteractions buildLigandInteractions(const ICMole::Molecule& ligand, const ICMole::InterResults& interRes) {
-    
     IFPAPI::LigandInteractions out;
     out.ligand_name = ligand.getName();
+    out.interactions.reserve(interRes.listInters.size());
 
-    const std::size_t n = interRes.listInters.size();
-    out.interactions.reserve(n);
+    auto isCycleCenter = [](const ICMole::Atom* atom) -> bool {
+        if (!atom) return false;
+        const std::string& nameAtom = atom->getName();
+        return (nameAtom == "DuAr");
+    };
 
-    for (std::size_t i = 0; i < n; ++i) {
-        const ICMole::InterPoint& ip = interRes.listInters[i];
+    // Residue identifier and chain
+    auto resolveResidueAndChain = [&](ICMole::Atom* atom, std::string& residueOut, std::string& chainOut) {
+        residueOut.clear();
+        chainOut.clear();
+        if (!atom) return;
+
+        // If it's a center dummy
+        if (isCycleCenter(atom)) {
+            ICMole::Cycle* cyc = atom->getParent().getCycleFromCenter(atom);
+            if (cyc) {
+                ICMole::Atom* atomCycle = cyc->getAtom(0);
+                if (atomCycle && atomCycle->getResidu() != nullptr) {
+                    residueOut = atomCycle->getResidu()->getIdentifier();
+                    chainOut = atomCycle->getChainName();
+                    return;
+                }
+            }
+        }
+
+        // Normal atom
+        if (atom->getResidu() != nullptr) {
+            residueOut = atom->getResidu()->getIdentifier();
+            chainOut = atom->getChainName();
+        }
+    };
+
+    for (const auto& ip : interRes.listInters) {
+
+        if (ip.merged_to != -1)
+            continue;
+
         IFPAPI::InteractionRecord rec;
-
-        // Type of interaction
         rec.type_interaction = interactionTypeToString(ip.interaction);
+        rec.distance = ip.dist;
 
         // Protein side
         if (ip.Prot_Ref) {
             rec.atom_prot = ip.Prot_Ref->getName();
-            rec.id_atom_prot = ip.Prot_Ref->getNum();
-            rec.residue_identifier = ip.Prot_Ref->residueAndChain();
-            rec.chain = ip.Prot_Ref->getChainName();
+            resolveResidueAndChain(ip.Prot_Ref, rec.residue_identifier, rec.chain);
 
+            // centers = -1 for id
+            rec.id_atom_prot = isCycleCenter(ip.Prot_Ref) ? -1 : ip.Prot_Ref->getNum();
         } else {
             rec.atom_prot.clear();
             rec.id_atom_prot = -1;
@@ -173,20 +220,18 @@ static IFPAPI::LigandInteractions buildLigandInteractions(const ICMole::Molecule
         // Ligand side
         if (ip.Lig_Ref) {
             rec.atom_lig = ip.Lig_Ref->getName();
-            rec.id_atom_lig = ip.Lig_Ref->getNum();
+            rec.id_atom_lig = isCycleCenter(ip.Lig_Ref) ? -1 : ip.Lig_Ref->getNum();
         } else {
             rec.atom_lig.clear();
             rec.id_atom_lig = -1;
         }
-
-        // distance
-        rec.distance = ip.dist;
 
         out.interactions.push_back(std::move(rec));
     }
 
     return out;
 }
+
 
 
 // For 2 argument mode, with possible multi-ligand file
@@ -218,6 +263,27 @@ static std::vector<IFPAPI::LigandInteractions> computeInteractionsForLigandFile(
     MoleReader ligandReader;
     ligandReader.loadNewFile(ligandFile);
 
+    const std::size_t numLigands = ligandReader.getNumMolecules();
+
+    if (numLigands == 1) {
+        ligandReader.loadInComplex(complex, MoleType::LIGAND);
+
+        auto* ligPtr = complex.getMole(MoleType::LIGAND);
+        if (!ligPtr) {
+            throw MoleExcept(9020102, "IChem::IFP", "No ligand found in " + ligandFile);
+        }
+        ligPtr->checkMOL2();
+
+        InterResults interRes;
+        computeIFPForLigand(interactions, *ligPtr, options, interRes);
+
+        // Same as toString()
+        pruneMergedInteractions(interRes);
+
+        results.push_back(buildLigandInteractions(*ligPtr, interRes));
+        return results;
+    }
+
     while (!ligandReader.isEOF()) {
         Molecule ligand;
         ligandReader.loadNextMolecule(ligand, MoleType::LIGAND);
@@ -225,7 +291,7 @@ static std::vector<IFPAPI::LigandInteractions> computeInteractionsForLigandFile(
 
         InterResults interRes;
         computeIFPForLigand(interactions, ligand, options, interRes);
-
+        pruneMergedInteractions(interRes);
         results.push_back(buildLigandInteractions(ligand, interRes));
     }
 
