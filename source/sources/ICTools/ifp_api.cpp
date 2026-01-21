@@ -160,13 +160,13 @@ static IFPAPI::LigandInteractions buildLigandInteractions(const ICMole::Molecule
         if (ip.Prot_Ref) {
             rec.atom_prot = ip.Prot_Ref->getName();
             rec.id_atom_prot = ip.Prot_Ref->getNum();
-            rec.residue = ip.Prot_Ref->getResiduName();
+            rec.residue_identifier = ip.Prot_Ref->residueAndChain();
             rec.chain = ip.Prot_Ref->getChainName();
 
         } else {
             rec.atom_prot.clear();
             rec.id_atom_prot = -1;
-            rec.residue.clear();
+            rec.residue_identifier.clear();
             rec.chain.clear();
         }
 
@@ -327,13 +327,13 @@ std::vector<TanimotoScore> compute_ifp_tanimoto(const std::string& protein_file,
                 TanimotoScore ts;
                 // Docked side
                 ts.ligand = d.name;
-                ts.ligand_residues = d.fp.toString();
-                ts.ligand_bitstring = d.fpString;
+                ts.ligand_residues = d.fpString;
+                ts.ligand_bitstring = d.fp.toString();
 
                 // Reference side
                 ts.reference = r.name;
-                ts.reference_residues = r.fp.toString();
-                ts.reference_bitstring = r.fpString;
+                ts.reference_residues = r.fpString;
+                ts.reference_bitstring = r.fp.toString();
 
                 ts.tanimoto = sims.Tanimoto();
 
@@ -393,12 +393,12 @@ std::vector<TanimotoScore> compute_ifp_tanimoto_ensembles(const std::string& pro
 
                 TanimotoScore ts;
                 ts.ligand           = d.name;
-                ts.ligand_residues  = d.fp.toString();
-                ts.ligand_bitstring = d.fpString;
+                ts.ligand_residues  = d.fpString;
+                ts.ligand_bitstring = d.fp.toString();
 
                 ts.reference = r.name;
-                ts.reference_residues = r.fp.toString();
-                ts.reference_bitstring = r.fpString;
+                ts.reference_residues = r.fpString;
+                ts.reference_bitstring = r.fp.toString();
 
                 ts.tanimoto = sims.Tanimoto();
 

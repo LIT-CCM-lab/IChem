@@ -79,7 +79,7 @@ Python bindings for IChem IFP module:
         .def_readonly("type_interaction",&InteractionRecord::type_interaction, "Interaction type")
         .def_readonly("atom_prot",&InteractionRecord::atom_prot, "Protein atom name")
         .def_readonly("id_atom_prot",&InteractionRecord::id_atom_prot, "Protein atom index")
-        .def_readonly("residue",&InteractionRecord::residue, "Residue identifier")
+        .def_readonly("residue_identifier",&InteractionRecord::residue_identifier, "Residue identifier")
         .def_readonly("chain",&InteractionRecord::chain, "Chain id")
         .def_readonly("atom_lig",&InteractionRecord::atom_lig, "Ligand atom name")
         .def_readonly("id_atom_lig",&InteractionRecord::id_atom_lig, "Ligand atom index")
