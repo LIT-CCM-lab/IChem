@@ -203,6 +203,13 @@ static IFPAPI::LigandInteractions buildLigandInteractions(const ICMole::Molecule
         rec.type_interaction = interactionTypeToString(ip.interaction);
         rec.distance = ip.dist;
 
+        // Angle
+        if (ip.angle != -100000) {
+            rec.angle = ip.angle * 180.0 / M_PI;
+        } else {
+            rec.angle = std::nullopt;
+        }
+
         // Protein side
         if (ip.Prot_Ref) {
             rec.atom_prot = ip.Prot_Ref->getName();
@@ -231,6 +238,7 @@ static IFPAPI::LigandInteractions buildLigandInteractions(const ICMole::Molecule
 
     return out;
 }
+
 
 
 

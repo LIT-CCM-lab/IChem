@@ -17,6 +17,7 @@ struct InteractionRecord {
     std::string atom_lig;
     int id_atom_lig;
     double distance;
+    std::optional<double> angle;
 };
 
 // One ligand's interactions (for multi-ligand files)

@@ -83,7 +83,9 @@ Python bindings for IChem IFP module:
         .def_readonly("chain",&InteractionRecord::chain, "Chain id")
         .def_readonly("atom_lig",&InteractionRecord::atom_lig, "Ligand atom name")
         .def_readonly("id_atom_lig",&InteractionRecord::id_atom_lig, "Ligand atom index")
-        .def_readonly("distance",&InteractionRecord::distance,"Atom-atom distance (Å)");
+        .def_readonly("distance",&InteractionRecord::distance,"Atom-atom distance (Å)")
+        .def_readonly("angle",&InteractionRecord::angle,"angle (°)");
+
 
     // LigandInteractions
     py::class_<LigandInteractions>(m,"LigandInteractions","All interactions for one ligand")
