@@ -1,0 +1,105 @@
+name: Build & Release
+
+on:
+  workflow_dispatch: {}
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build_all:
+    name: Build binaries (ubi/ubuntu/debian)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: ubi
+            image: ichem-dev:ubi8
+            containerfile: ci-containers/Containerfile.ubi
+            out: IChem_ubi
+          - name: ubuntu
+            image: ichem-dev:ubuntu
+            containerfile: ci-containers/Containerfile.ubuntu
+            out: IChem_ubuntu
+          - name: debian
+            image: ichem-dev:debian
+            containerfile: ci-containers/Containerfile.debian
+            out: IChem_debian
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Podman
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y podman
+
+      - name: Build container image (${{ matrix.name }})
+        run: |
+          podman build -f "${{ matrix.containerfile }}" -t "${{ matrix.image }}" .
+
+      - name: Build IChem inside container (${{ matrix.name }})
+        run: |
+          set -e
+          rm -rf build
+          mkdir -p build
+
+          podman run --rm \
+            -v "${{ github.workspace }}:/IChem" \
+            -w "/IChem/build" \
+            "${{ matrix.image }}" \
+            bash -c 'cmake -DCMAKE_BUILD_TYPE=Release .. && make -j$(nproc) && cp IChem "/IChem/${{ matrix.out }}"'
+
+          rm -rf build
+
+      - name: Upload binary artifact (${{ matrix.out }})
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.out }}
+          path: ${{ matrix.out }}
+          if-no-files-found: error
+          retention-days: 90
+
+  release:
+    name: Create GitHub Release (tag only)
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: [build_all]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+
+      - name: Prepare assets
+        run: |
+          set -e
+          ls -R dist
+          mkdir -p release
+          # Each artifact is downloaded into its own directory
+          cp dist/IChem_ubi/IChem_ubi release/
+          cp dist/IChem_ubuntu/IChem_ubuntu release/
+          cp dist/IChem_debian/IChem_debian release/
+
+          # Optional: checksums (recommended)
+          (cd release && sha256sum IChem_* > SHA256SUMS.txt)
+          ls -la release
+
+      - name: Publish GitHub Release and upload assets
+        uses: softprops/action-gh-release@v2
+        with:
+          name: IChem ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          body: |
+            Automated build for tag ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+          files: |
+            release/IChem_ubi
+            release/IChem_ubuntu
+            release/IChem_debian
+            release/SHA256SUMS.txt
