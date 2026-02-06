@@ -31,16 +31,16 @@ jobs:
         with:
           path: site
 
-deploy:
-  needs: build
-  runs-on: ubuntu-latest
-  environment:
-    name: github-pages
-  steps:
-    - id: deployment
-      uses: actions/deploy-pages@v4
-    - name: Show deployed URL + commit
-      run: |
-        echo "URL: ${{ steps.deployment.outputs.page_url }}"
-        echo "COMMIT: ${{ github.sha }}"
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Show deployed URL and commit
+        run: |
+          echo "URL: ${{ steps.deployment.outputs.page_url }}"
+          echo "COMMIT: ${{ github.sha }}"
 
