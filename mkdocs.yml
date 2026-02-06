@@ -1,4 +1,5 @@
 site_name: IChem
+
 nav:
   - Home: index.md
   - Commands:
@@ -11,6 +12,5 @@ nav:
       - realign: commands/realign.md
       - sims: commands/sims.md
       - utils: commands/utils.md
-  - Reference:
 theme:
   name: material
