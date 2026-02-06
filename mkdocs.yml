@@ -1,4 +1,4 @@
-site_name: IChem
+site_name: IChem_lets_try
 nav:
   - Home: index.md
 theme:
