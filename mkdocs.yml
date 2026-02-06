@@ -13,4 +13,6 @@ nav:
       - sims: commands/sims.md
       - utils: commands/utils.md
 theme:
+  palette:
+    scheme: slate
   name: material
