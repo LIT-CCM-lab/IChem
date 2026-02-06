@@ -14,5 +14,6 @@ nav:
       - utils: commands/utils.md
 theme:
   palette:
+    primary: deep orange
     scheme: slate
   name: material
