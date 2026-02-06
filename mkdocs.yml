@@ -16,4 +16,5 @@ theme:
   palette:
     primary: deep orange
     scheme: slate
+    font: Roboto
   name: material
