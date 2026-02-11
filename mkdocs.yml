@@ -1,23 +1,39 @@
-site_name: IChem
+  site_name: IChem
 
-nav:
-  - Home: index.md
-  - Commands:
-      - Overview: commands/index.md
-      - IFP: commands/ifp.md
-      - ints: commands/ints.md
-      - AtomProps: commands/AtomProps.md
-      - grim: commands/grim.md
-      - Volsite: commands/volsite.md
-      - pdbconv: commands/pdbconv.md
-      - realign: commands/realign.md
-      - sims: commands/sims.md
-      - utils: commands/utils.md
-  - Python API:
-      - Overview: python-api/index.md
+  nav:
+    - Home: index.md
+
+    - Getting started:
+        - Install: getting-started/install.md
+        - Quickstart: getting-started/quickstart.md
+        - Examples: getting-started/examples.md
+
+    - Commands:
+        - Overview: commands/index.md
+        - IFP: commands/ifp.md
+        - ints: commands/ints.md
+        - AtomProps: commands/AtomProps.md
+        - grim: commands/grim.md
+        - Volsite: commands/volsite.md
+        - pdbconv: commands/pdbconv.md
+        - realign: commands/realign.md
+        - sims: commands/sims.md
+        - utils: commands/utils.md
+      
+    - Concepts:
+        - Overview: concepts/index.md
+
+    - Reference:
+        - Overview: reference/index.md
+        
+    - Python API:
+        - Overview: python-api/index.md
+
 theme:
-  palette:
-    primary: deep orange
-    scheme: slate
-    font: Roboto
   name: material
+  palette:
+    - scheme: slate
+      primary: deep orange
+  font:
+    text: Roboto
+    code: Roboto Mono
