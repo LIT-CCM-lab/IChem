@@ -10,7 +10,7 @@
 
     - Commands:
         - Overview: commands/index.md
-        - IFP: commands/ifp.md
+        - IFP - Interaction Fingerprint : commands/ifp.md
         - ints: commands/ints.md
         - AtomProps: commands/AtomProps.md
         - grim: commands/grim.md
