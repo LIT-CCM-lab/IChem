@@ -118,14 +118,17 @@ IChem -d_Hyd 3.34 -D_Hyd 4.81 --basic IFP site.mol2 ligand.mol2
 
 ### Fingerprint formats
 
-The IFP has a default format of 11 bits using the main options as described above.
+The IFP has a default format of 11 bits using the main options as described above
+
 - **Default**: **11-bit** fixed structure format: `[basic][pi-cation][metal][weakh]`
 
 We kept also the old version that is coded in 7 bits:
+
 - `--old` : legacy **7-bit** format: `[basic]`
 
-Note:
-- Note that in old version, pi-cation, metal and weakHbond interactions are not detected
+Notes:
+
+- Note that in old version, pi-cation, metal and weak H-bond interactions are not detected
 - The structure is **always kept** (unused bits = `0`)
 
 ### Bit layout per residue
@@ -251,10 +254,10 @@ The program produces three sections:
    - Angle (°): Interaction angle
 
 2. **Ligand Aromatic Cycle atoms** if aromatic interactions exist
-   List of ligand atoms involved in aromatic interactions
+    - List of ligand atoms involved in aromatic interactions
 
 3. **Binary Interaction Fingerprint**  
-   A 0/1 string representing interaction presence for each protein residue
+    - A 0/1 string representing interaction presence for each protein residue
 
 ---
 
