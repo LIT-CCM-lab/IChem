@@ -117,7 +117,7 @@ IChem -d_Hyd 3.34 -D_Hyd 4.81 --basic IFP site.mol2 ligand.mol2
 
 ### Fingerprint formats
 
-The IFP has a default format of 11 bits using the main options as described above. 
+The IFP has a default format of 11 bits using the main options as described above.
 - **Default**: **11-bit** fixed structure format: `[basic][pi-cation][metal][weakh]`
 
 We kept also the old version that is coded in 7 bits:
