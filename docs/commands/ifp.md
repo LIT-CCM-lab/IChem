@@ -11,13 +11,13 @@ The IFP is executed from the command line using one of the following syntaxes:
 
 ```text
 IChem [options] IFP protein ligand
-# Single complex analysis: Computes the interaction fingerprint of one protein-ligand complex
+# Single complex analysis: computes the interaction fingerprint of one protein-ligand complex
 
 IChem [options] IFP protein ligand ligand_ref
-# Comparison with a reference ligand: Computes the fingerprint and compares it to a reference ligand
+# Comparison with a reference ligand: computes the fingerprint and compares it to a reference ligand
 
 IChem [options] IFP protein1 ligand1 protein2 ligand2
-# Comparison of two complexes: Computes and compares the interaction fingerprints of two protein-ligand complexes
+# Comparison of two complexes: computes and compares the interaction fingerprints of two protein-ligand complexes
 ```
 
 **Parameters**
