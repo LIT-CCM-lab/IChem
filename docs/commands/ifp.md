@@ -40,7 +40,7 @@ Note:
 
 In the option, there are main options in the IFP as follows:
 
-### Main interaction modes (one at a time)
+### Main interaction modes
 
 One of these options has to be used necessary, but restricted to only one option:
 
