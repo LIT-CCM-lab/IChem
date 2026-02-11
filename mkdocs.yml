@@ -13,6 +13,8 @@ nav:
       - realign: commands/realign.md
       - sims: commands/sims.md
       - utils: commands/utils.md
+  - Python API:
+      - Overview: python-api/index.md
 theme:
   palette:
     primary: deep orange
