@@ -1,7 +1,7 @@
 # IFP — Interaction FingerPrint
 
 
-`IChem IFP` detects protein-ligand interactions between a (**binding site**) and a (**ligand**), then encodes them as an **interaction fingerprint**. It can also compute similarity against reference ligand, and can compare two protein-ligand pairs.
+`IChem IFP` detects protein-ligand interactions between a **binding site** and a **ligand**, then encodes them as an **interaction fingerprint**. It can also compute similarity against reference ligand, and can compare two protein-ligand pairs.
 
 ---
 
