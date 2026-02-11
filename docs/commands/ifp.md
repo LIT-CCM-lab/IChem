@@ -10,15 +10,15 @@
 1. Input one (or two) protein-ligand pairs in MOL2
 2. Detect interactions using **geometric rules** (optionally min/max distance and angles can be changed)
 3. Encode interactions into a **fixed fingerprint structure**:
-   * default: **11 bits per residue** (`IChem --basic IFP protein ligand`)
-   * legacy: **7 bits per residue** using the subcommand (`IChem --old IFP protein ligand`)
+    - default: **11 bits per residue** (`IChem --basic IFP protein ligand`)
+    - legacy: **7 bits per residue** using the subcommand (`IChem --old IFP protein ligand`)
 4. Output:
-   * an interaction table
-   * residue header
-   * fingerprint bit strings
-   * similarity scores if using the reference the following commands:
-        * (`IChem --basic IFP protein ligand reference_ligand `)
-        * (`IChem --basic IFP protein1 ligand1 protein2 ligand2 `)
+    - an interaction table
+    - residue header
+    - fingerprint bit strings
+    - similarity scores if using the reference the following commands:
+        1. (`IChem --basic IFP protein ligand reference_ligand `)
+        2. (`IChem --basic IFP protein1 ligand1 protein2 ligand2 `)
 
 
 ---
