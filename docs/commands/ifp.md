@@ -31,6 +31,7 @@ IChem [options] IFP protein1 ligand1 protein2 ligand2
 - **protein1 ligand1 protein2 ligand2**: Two protein-ligand complexes used to compute and compare their interaction fingerprints
 
 Note:
+
 - Ligand files can be **multi-mol2**
 
 ---
@@ -41,7 +42,7 @@ In the option, there are main options in the IFP as follows:
 
 ### Main interaction modes (one at a time)
 
-One of these options has to be used necessary, but restricted to only one option
+One of these options has to be used necessary, but restricted to only one option:
 
 | Option    | Meaning                                                          |
 | --------- | ---------------------------------------------------------------- |
