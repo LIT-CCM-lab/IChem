@@ -6,6 +6,7 @@ nav:
       - Overview: commands/index.md
       - IFP: commands/ifp.md
       - ints: commands/ints.md
+      - AtomProps: commands/AtomProps.md
       - grim: commands/grim.md
       - Volsite: commands/volsite.md
       - pdbconv: commands/pdbconv.md

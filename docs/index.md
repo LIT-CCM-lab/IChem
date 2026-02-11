@@ -4,3 +4,10 @@ IChem is a multi-task program for detecting, analyzing, and comparing protein–
 
 ---
 
+## IChem usage
+
+### Syntax
+
+### Help command
+
+
