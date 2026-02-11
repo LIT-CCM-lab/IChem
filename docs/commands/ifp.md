@@ -239,19 +239,18 @@ Notes:
 The program produces three sections:
 
 1. **Interaction Table**  
-   Lists all detected protein-ligand interactions
-
-   Columns:
-   - interaction_type: HBond_PROT, HBond_LIG, Hydrophobic, Ionic_LIG, Aromatic_Edge/Face
-   - prot_atom: Protein atom involved
-   - prot_atom_id: Protein atom index
-   - prot_residue_index: Protein residue name and index
-   - lig_atom: Ligand atom involved
-   - lig_atom_id: Ligand atom index
-   - lig_residue_index: Ligand residue name and index
-   - interaction_id: Interaction id
-   - distance (Å): Interatomic distance
-   - Angle (°): Interaction angle
+    - Lists all detected protein-ligand interactions
+    - Columns:
+        - interaction_type: HBond_PROT, HBond_LIG, Hydrophobic, Ionic_LIG, Aromatic_Edge/Face
+        - prot_atom: Protein atom involved
+        - prot_atom_id: Protein atom index
+        - prot_residue_index: Protein residue name and index
+        - lig_atom: Ligand atom involved
+        - lig_atom_id: Ligand atom index
+        - lig_residue_index: Ligand residue name and index
+        - interaction_id: Interaction id
+        - distance (Å): Interatomic distance
+        - Angle (°): Interaction angle
 
 2. **Ligand Aromatic Cycle atoms** if aromatic interactions exist
     - List of ligand atoms involved in aromatic interactions
