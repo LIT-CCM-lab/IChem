@@ -62,13 +62,13 @@ IChem --weakh IFP protein.mol2 ligand.mol2
 IChem --old   IFP protein.mol2 ligand.mol2
 ```
 
-## Detection rules (geometry)
+## Detection rules
 
 Interactions are detected when the distance is within the allowed window:
 
 > **min ≤ distance ≤ max**, plus angle constraints when applicable
 
-### Thresholds (maximum distances, Å)
+### Maximum thresholds distances Å
 
 | Option     | Default | Interaction    |
 | ---------- | ------: | -------------- |
@@ -80,7 +80,7 @@ Interactions are detected when the distance is within the allowed window:
 | `-D_Pic N` |     5.0 | Pi-cation      |
 | `-D_WHb N` |     3.5 | Weak H-bond    |
 
-### Thresholds (minimum distances, Å)
+### Minimum thresholds distances Å
 
 | Option     | Default | Interaction    |
 | ---------- | ------: | -------------- |
@@ -92,7 +92,7 @@ Interactions are detected when the distance is within the allowed window:
 | `-d_Pic N` |     2.3 | Pi-cation      |
 | `-d_WHb N` |     2.3 | Weak H-bond    |
 
-### Angles (degrees)
+### Angles in degrees
 
 | Option       | Default | Meaning                |
 | ------------ | ------: | ---------------------- |
