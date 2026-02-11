@@ -29,11 +29,11 @@
     - Python API:
         - Overview: python-api/index.md
 
-theme:
-  name: material
-  palette:
-    - scheme: slate
-      primary: deep orange
-  font:
-    text: Roboto
-    code: Roboto Mono
+  theme:
+    name: material
+    palette:
+      - scheme: slate
+        primary: deep orange
+    font:
+      text: Roboto
+      code: Roboto Mono
