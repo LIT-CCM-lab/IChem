@@ -86,3 +86,6 @@
         line_spans: __span
         pygments_lang_class: true
     - pymdownx.details
+
+  extra:
+    generator: false
