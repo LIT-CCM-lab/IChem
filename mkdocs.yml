@@ -36,8 +36,12 @@
   theme:
     name: material
     palette:
+      - scheme: material
+        primary: blue
+        accent: teal
       - scheme: slate
-        primary: deep orange
+        primary: blue
+        toggle: true
     font:
       text: Roboto
       code: Roboto Mono
