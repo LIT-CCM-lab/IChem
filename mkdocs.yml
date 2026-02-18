@@ -61,6 +61,7 @@
       - search.share
       - content.code.copy
       - content.tabs.link
+      - footer
 
     footer:
       text: "© 2026 TEST LIT-CNRS"
