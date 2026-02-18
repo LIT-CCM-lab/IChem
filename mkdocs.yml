@@ -1,5 +1,6 @@
   site_name: IChem
-
+  site_description: IChem Documentation
+  site_author: IChem Team
   nav:
     - Home: index.md
 
@@ -33,22 +34,61 @@
         - Configuration: python-api/config.md
 
 
+  # theme:
+  #   name: material
+  #   palette:
+  #     - scheme: material
+  #       primary: blue
+  #       accent: teal
+  #     - scheme: slate
+  #       primary: blue
+  #       toggle: true
+  #   font:
+  #     text: Roboto
+  #     code: Roboto Mono
+  # markdown_extensions:
+  #   - admonition
+  #   - toc:
+  #       permalink: true
+  #   - pymdownx.superfences
+  #   - pymdownx.tabbed
+  #   - pymdownx.inlinehilite
+
   theme:
     name: material
+
     palette:
-      - scheme: material
-        primary: blue
-        accent: teal
-      - scheme: slate
-        primary: blue
-        toggle: true
+      scheme: default
+      primary: blue
+      accent: teal
     font:
       text: Roboto
       code: Roboto Mono
+
+    features:
+      - navigation.instant
+      - navigation.tracking
+      - navigation.sections
+      - navigation.expand
+      - navigation.top
+      - search.highlight
+      - search.share
+      - content.code.copy
+      - content.tabs.link
+
+    language: en
+
+  plugins:
+    - search
+
   markdown_extensions:
     - admonition
     - toc:
         permalink: true
     - pymdownx.superfences
-    - pymdownx.tabbed
+    - pymdownx.tabbed:
+        alternate_style: true
     - pymdownx.inlinehilite
+    - pymdownx.highlight:
+        anchor_linenums: true
+    - pymdownx.details
