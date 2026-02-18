@@ -50,7 +50,7 @@ if __name__ == "__main__":
 ```
 #### Output
 
-![Detected protein–ligand interactions](images/output_interactions.png)
+![Detected protein-ligand interactions](images/output_interactions.png)
 
 ### 2) Fingerprints
 
