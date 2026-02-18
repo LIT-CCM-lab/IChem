@@ -41,3 +41,10 @@
     font:
       text: Roboto
       code: Roboto Mono
+  markdown_extensions:
+    - admonition
+    - toc:
+        permalink: true
+    - pymdownx.superfences
+    - pymdownx.tabbed
+    - pymdownx.inlinehilite
