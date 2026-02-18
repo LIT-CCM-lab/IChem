@@ -100,7 +100,7 @@ def main():
 
     protein = "teo/Tyr145_prot.mol2"
     dockeds = "teo/aromatic.mol2" # Single or multi-ligand MOL2
-    refs    = "teo/LSN_ref.mol2" # Reference ligand, it can be single or multi-ligand MOL2
+    refs = "teo/LSN_ref.mol2" # Reference ligand, it can be single or multi-ligand MOL2
 
     # Compute Tanimoto similarity scores
     try:
@@ -198,6 +198,5 @@ if __name__ == "__main__":
 !!! note "Angle field"
     `InteractionRecord.angle` can be `None`
     It is computed for H-bonds, aromatic and pi-cation interactions
-
 
 
