@@ -72,33 +72,33 @@ See: **Python API section Install**
 ## Data model - returned objects
 
 - **`LigandInteractions`**
-  - `ligand_name`: ligand name
-  - `interactions`: list of `InteractionRecord`
+    - `ligand_name`: ligand name
+    - `interactions`: list of `InteractionRecord`
 
 - **`InteractionRecord`**
-  - `type_interaction`: interaction type
-  - `atom_prot`: protein atom name
-  - `id_atom_prot`: protein atom index
-  - `residue_identifier`: protein residue identifier
-  - `chain`: chain id
-  - `atom_lig`: ligand atom name
-  - `id_atom_lig`: ligand atom index
-  - `distance`: distance (Å)
-  - `angle` : angle (°) *(mainly meaningful for HBond / Aromatic / Pi-cation. It returns `None` for other interaction types)*
+    - `type_interaction`: interaction type
+    - `atom_prot`: protein atom name
+    - `id_atom_prot`: protein atom index
+    - `residue_identifier`: protein residue identifier
+    - `chain`: chain id
+    - `atom_lig`: ligand atom name
+    - `id_atom_lig`: ligand atom index
+    - `distance`: distance (Å)
+    - `angle` : angle (°) *(mainly meaningful for HBond / Aromatic / Pi-cation. It returns `None` for other interaction types)*
 
 - **`LigandFingerprint`**
-  - `ligand_name` : ligand name
-  - `residues`: residue list used to build the fingerprint layout
-  - `bitstring`: binary fingerprint string
+    - `ligand_name` : ligand name
+    - `residues`: residue list used to build the fingerprint layout
+    - `bitstring`: binary fingerprint string
 
 - **`TanimotoScore`**
-  - `ligand` : ligand
-  - `ligand_residues` : ligand residues
-  - `ligand_bitstring` : ligand binary fingerprint string
-  - `reference` : reference
-  - `reference_residues` : reference residues
-  - `reference_bitstring` : reference binary fingerprint string
-  - `tanimoto` : similarity
+    - `ligand` : ligand
+    - `ligand_residues` : ligand residues
+    - `ligand_bitstring` : ligand binary fingerprint string
+    - `reference` : reference
+    - `reference_residues` : reference residues
+    - `reference_bitstring` : reference binary fingerprint string
+    - `tanimoto` : similarity
 
 ---
 
