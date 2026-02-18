@@ -84,7 +84,7 @@ if __name__ == "__main__":
     main()
 ```
 
-#### Output fingerprint
+#### Output fingerprint:
 ![Fingerprint computed](images/output_fingerprint.png)
 
 ### 3) Tanimoto (ligands vs references, same protein)
@@ -93,18 +93,37 @@ if __name__ == "__main__":
 ```python
 import ichem_ifp
 
-cfg = ichem_ifp.IFPConfig()
-cfg.basic = True
+def main():
+    # Config
+    cfg = ichem_ifp.IFPConfig()
+    cfg.basic = True
 
-protein   = "site.mol2"
-dockeds   = "dockeds.mol2"  # one or many ligands (multi-MOL2 supported)
-refs      = "refs.mol2"     # one or many reference ligands
+    protein = "teo/Tyr145_prot.mol2"
+    dockeds = "teo/aromatic.mol2" # Single or multi-ligand MOL2
+    refs    = "teo/LSN_ref.mol2" # Reference ligand, it can be single or multi-ligand MOL2
 
-scores = ichem_ifp.compute_ifp_tanimoto(protein, dockeds, refs, cfg)
+    # Compute Tanimoto similarity scores
+    try:
+        scores = ichem_ifp.compute_ifp_tanimoto(protein, dockeds, refs, cfg)
+    except Exception as e:
+        print(f"Error computing Tanimoto scores: {e}")
+        return
 
-for s in scores:
-    print(f"{s.reference}\t{s.ligand}\t{s.tanimoto:.3f}")
+    if not scores:
+        print("No Tanimoto scores were computed")
+        return
+
+    # Displaying results
+    for s in scores:
+        print(f"Reference: {s.reference} | Ligand: {s.ligand} | Tanimoto: {s.tanimoto:.3f}")
+
+
+if __name__ == "__main__":
+    main()
 ```
+
+#### Output tanimoto:
+![Tanimoto computed](images/output_tanimoto.png)
 
 ### 4) Tanimoto between two ensembles
 
