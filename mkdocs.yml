@@ -62,6 +62,9 @@
       - content.code.copy
       - content.tabs.link
 
+    footer:
+      text: "© 2026 TEST LIT-CNRS"
+
     language: en
 
   extra_css:
@@ -83,6 +86,3 @@
         line_spans: __span
         pygments_lang_class: true
     - pymdownx.details
-
-  extra:
-    copyright: "© 2026 TEST LIT-CNRS"
