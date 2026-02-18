@@ -33,27 +33,6 @@
         - Quickstart: python-api/quickstart.md
         - Configuration: python-api/config.md
 
-
-  # theme:
-  #   name: material
-  #   palette:
-  #     - scheme: material
-  #       primary: blue
-  #       accent: teal
-  #     - scheme: slate
-  #       primary: blue
-  #       toggle: true
-  #   font:
-  #     text: Roboto
-  #     code: Roboto Mono
-  # markdown_extensions:
-  #   - admonition
-  #   - toc:
-  #       permalink: true
-  #   - pymdownx.superfences
-  #   - pymdownx.tabbed
-  #   - pymdownx.inlinehilite
-
   theme:
     name: material
 
