@@ -43,7 +43,7 @@ Note:
 
 ## IFP Options
 
-In the option, there are main options in the IFP as follows:
+<!-- In the option, there are main options in the IFP as follows: -->
 
 ### Main interaction modes
 
