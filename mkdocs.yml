@@ -35,6 +35,7 @@
 
   theme:
     name: material
+    logo: docs/python-api/images/output_interactions.png
 
     palette:
       - scheme: default
