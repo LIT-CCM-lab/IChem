@@ -37,9 +37,15 @@
     name: material
 
     palette:
-      scheme: default
-      primary: blue
-      accent: teal
+      - scheme: default
+        primary: grey
+        accent: blue
+      - scheme: slate
+        primary: grey
+        accent: blue
+        toggle:
+          icon: material/weather-sunny
+          name: Switch to light mode
     font:
       text: Roboto
       code: Roboto Mono
@@ -70,4 +76,6 @@
     - pymdownx.inlinehilite
     - pymdownx.highlight:
         anchor_linenums: true
+        line_spans: __span
+        pygments_lang_class: true
     - pymdownx.details
