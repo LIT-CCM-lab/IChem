@@ -28,6 +28,10 @@
         
     - Python API:
         - Overview: python-api/index.md
+        - Installation: python-api/installation.md
+        - Quickstart: python-api/quickstart.md
+        - Configuration: python-api/config.md
+
 
   theme:
     name: material
