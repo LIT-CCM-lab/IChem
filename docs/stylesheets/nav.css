@@ -1,0 +1,15 @@
+/* Left sidebar separator */
+.md-sidebar {
+    border-right: 1px solid #ddd;
+}
+
+/* Right sidebar separator */
+.md-sidebar--secondary {
+    border-left: 1px solid #ddd;
+}
+
+/* Adding some padding to content */
+.md-main {
+    padding-left: 20px;
+    padding-right: 20px;
+}
