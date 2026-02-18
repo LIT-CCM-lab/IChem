@@ -131,18 +131,58 @@ if __name__ == "__main__":
 ```python
 import ichem_ifp
 
-cfg = ichem_ifp.IFPConfig()
-cfg.basic = True
+def main():
+    # Config
+    config = ichem_ifp.IFPConfig()
+    config.basic = True
 
-scores = ichem_ifp.compute_ifp_tanimoto_ensembles(
-    "site1.mol2", "ligands1.mol2",
-    "site2.mol2", "ligands2.mol2",
-    cfg
-)
+    # Ensemble input files
+    protein1 = "site.mol2"
+    ligands1 = "ligand1.mol2"
 
-for s in scores:
-    print(f"{s.reference}\t{s.ligand}\t{s.tanimoto:.3f}")
+    protein2 = "site.mol2"
+    ligands2 = "ligand2.mol2"
+
+    # Compute Tanimoto similarity scores between ensembles
+    try:
+        scores = ichem_ifp.compute_ifp_tanimoto_ensembles(
+            protein1,
+            ligands1,
+            protein2,
+            ligands2,
+            config,
+        )
+    except Exception as e:
+        print(f"Error computing ensemble Tanimoto scores: {e}")
+        return
+
+    if not scores:
+        print("No ensemble Tanimoto scores were computed")
+        return
+
+    # Displaying results
+    for s in scores:
+        # Reference (ensemble 2)
+        print("Reference residues:")
+        print(f"\t{s.reference_residues}")
+        print("Reference bitstring:")
+        print(f"\t{s.reference_bitstring}")
+
+        # Docked (ensemble 1)
+        print("Ligand residues:")
+        print(f"\t{s.ligand_residues}")
+        print("Ligand bitstring:")
+        print(f"\t{s.ligand_bitstring}")
+
+        # Tanimoto
+        print(f"Tanimoto score: {s.reference} \t {s.ligand} \t {s.tanimoto:.3f}")
+        print()
+
+if __name__ == "__main__":
+    main()
 ```
+#### Output tanimoto ensembles:
+![Tanimoto ensembles computed](images/output_tanimoto_ensembles.png)
 
 ---
 
@@ -158,5 +198,6 @@ for s in scores:
 !!! note "Angle field"
     `InteractionRecord.angle` can be `None`
     It is computed for H-bonds, aromatic and pi-cation interactions
+
 
 
