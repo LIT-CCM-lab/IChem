@@ -1,10 +1,10 @@
 /* Left sidebar separator */
-.md-sidebar {
+.md-sidebar .md-nav {
     border-right: 1px solid #ddd;
 }
 
 /* Right sidebar separator */
-.md-sidebar--secondary {
+.md-sidebar--secondary .md-nav {
     border-left: 1px solid #ddd;
 }
 
