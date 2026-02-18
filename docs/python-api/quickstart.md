@@ -48,7 +48,7 @@ if __name__ == "__main__":
     main()
 
 ```
-#### Output
+#### Output interactions:
 
 ![Detected protein-ligand interactions](images/output_interactions.png)
 
@@ -57,16 +57,35 @@ if __name__ == "__main__":
 ```python
 import ichem_ifp
 
-cfg = ichem_ifp.IFPConfig()
-cfg.basic = True
+def main():
+    # Config
+    cfg = ichem_ifp.IFPConfig()
+    cfg.basic = True
 
-fps = ichem_ifp.compute_ifp_fingerprints("site.mol2", "ligands.mol2", cfg)
+    # # Compute fingerprints
+    try:
+        fps = ichem_ifp.compute_ifp_fingerprints("site.mol2", "ligand.mol2", cfg)
+    except Exception as e:
+        print(f"Error computing fingerprints: {e}")
+        return
 
-for fp in fps:
-    print("Ligand:", fp.ligand_name)
-    print("Residues layout:", fp.residues)
-    print("Bitstring:", fp.bitstring)
+    # Displaying results
+    if not fps:
+        print("No fingerprints were computed")
+        return
+
+    for fp in fps:
+        print(f"Ligand: {fp.ligand_name}")
+        print(f"Residues layout: {fp.residues}")
+        print(f"Bitstring: {fp.bitstring}\n")
+
+
+if __name__ == "__main__":
+    main()
 ```
+
+#### Output fingerprint
+![Fingerprint computed](images/output_fingerprint.png)
 
 ### 3) Tanimoto (ligands vs references, same protein)
 
