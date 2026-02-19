@@ -14,28 +14,33 @@
     padding-right: 20px;
 }
 
+/* Remove indentation for top-level navigation items */
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link {
+    padding-left: 0.8rem !important;
+}
+
 /* Increase indentation for nested sidebar items */
-.md-nav__item--nested .md-nav__link {
+.md-nav--primary .md-nav__item .md-nav__item .md-nav__link {
     padding-left: 2.2rem !important;
 }
 
 /* Add vertical spacing between sidebar items */
-.md-nav__list > .md-nav__item {
+.md-nav--primary .md-nav__list > .md-nav__item {
     margin-bottom: 0.35rem;
 }
 
-/* Disable click only for section titles */
-.md-nav__item--section > .md-nav__link {
+/* Disable click on top-level section titles */
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link {
     pointer-events: none;
     cursor: default;
 }
 
-/* Remove underline for section titles */
-.md-nav__item--section > .md-nav__link:hover {
+/* Remove underline for top-level section titles */
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link:hover {
     text-decoration: none !important;
 }
 
 /* Underline link on hover in the sidebar */
-.md-nav__item:not(.md-nav__item--section) > .md-nav__link:hover {
+.md-nav--primary .md-nav__item .md-nav__item > .md-nav__link:hover {
     text-decoration: underline !important;
 }
