@@ -14,7 +14,8 @@
     padding-right: 20px;
 }
 
-/* Toggle for the main titles */
-.md-nav__toggle {
-  display: block !important;
+/* Show expand arrow even when navigation.expand is enabled */
+.md-nav__item--section > .md-nav__link::after {
+  display: inline-block !important;
+  opacity: 1 !important;
 }
