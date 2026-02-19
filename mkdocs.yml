@@ -56,7 +56,7 @@
       - navigation.tabs
       - navigation.instant
       - navigation.tracking
-      - navigation.sections
+      # - navigation.sections
       # - navigation.expand
       - navigation.top
       - navigation.indexes
