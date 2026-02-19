@@ -24,18 +24,18 @@
     margin-bottom: 0.35rem;
 }
 
-/* Disable click on top level section titles */
-.md-nav__list > .md-nav__item > .md-nav__link {
+/* Disable click only for section titles */
+.md-nav__item--section > .md-nav__link {
     pointer-events: none;
     cursor: default;
 }
 
-/* Remove underline for top level section titles */
-.md-nav__list > .md-nav__item > .md-nav__link:hover {
+/* Remove underline for section titles */
+.md-nav__item--section > .md-nav__link:hover {
     text-decoration: none !important;
 }
 
 /* Underline link on hover in the sidebar */
-.md-nav__item--nested .md-nav__link:hover {
+.md-nav__item:not(.md-nav__item--section) > .md-nav__link:hover {
     text-decoration: underline !important;
 }
