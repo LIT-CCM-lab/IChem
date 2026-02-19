@@ -6,7 +6,7 @@
 /* Right sidebar separator */
 .md-sidebar--secondary .md-nav {
     border-left: 1px solid #ddd;
-} 
+}
 
 /* Adding some padding to content */
 .md-main {
@@ -14,13 +14,23 @@
     padding-right: 20px;
 }
 
-/* Remove indentation for top-level navigation items */
-.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link {
-    padding-left: 0.8rem !important;
+/* Reset sidebar padding to align with header and logo */
+.md-sidebar--primary,
+.md-sidebar--primary .md-sidebar__inner,
+.md-sidebar--primary .md-nav {
+    padding-left: 0 !important;
 }
 
-/* Increase indentation for nested sidebar items */
-.md-nav--primary .md-nav__item .md-nav__item .md-nav__link {
+/* Top-level nav items aligned with logo */
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link {
+    padding-left: 1rem !important;
+    pointer-events: none; /* non clickable */
+    cursor: default;
+    text-decoration: none !important; /* remove underline */
+}
+
+/* Nested items indentation */
+.md-nav--primary .md-nav__item .md-nav__item > .md-nav__link {
     padding-left: 2.2rem !important;
 }
 
@@ -29,37 +39,7 @@
     margin-bottom: 0.35rem;
 }
 
-/* Disable click on top-level section titles */
-.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link {
-    pointer-events: none;
-    cursor: default;
-}
-
-/* Remove underline for top-level section titles */
-.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link:hover {
-    text-decoration: none !important;
-}
-
-/* Underline link on hover in the sidebar */
+/* Hover underline only on real links */
 .md-nav--primary .md-nav__item .md-nav__item > .md-nav__link:hover {
     text-decoration: underline !important;
-}
-
-/* Align primary sidebar content with logo */
-.md-sidebar--primary {
-    padding-left: 0 !important;
-}
-
-/* Remove internal nav left padding */
-.md-sidebar--primary .md-nav {
-    padding-left: 0 !important;
-}
-
-/* Align top-level navigation items with logo */
-.md-sidebar--primary 
-.md-nav--primary 
-> .md-nav__list 
-> .md-nav__item 
-> .md-nav__link {
-    padding-left: 1rem !important;
 }
