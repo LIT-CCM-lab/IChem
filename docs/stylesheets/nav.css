@@ -1,25 +1,38 @@
 /* Left sidebar separator */
-.md-sidebar .md-nav {
+/* .md-sidebar .md-nav {
     border-right: 1px solid #ddd;
-}
+} */
 
 /* Right sidebar separator */
-.md-sidebar--secondary .md-nav {
+/* .md-sidebar--secondary .md-nav {
     border-left: 1px solid #ddd;
-}
+} */
 
 /* Adding some padding to content */
-.md-main {
+/* .md-main {
     padding-left: 20px;
     padding-right: 20px;
-}
+} */
 
 /* Expand all primary nav sections by default */
-.md-nav--primary .md-nav__item--section > nav {
+/* .md-nav--primary .md-nav__item--section > nav {
   display: block;
-}
+} */
 
 /* Keep arrows visible */
-.md-nav__item--section > .md-nav__link::after {
+/* .md-nav__item--section > .md-nav__link::after {
   opacity: 1;
+} */ */
+
+/* Expand all first-level sections by default */
+.md-nav--primary
+  > .md-nav__list
+  > .md-nav__item--section
+  > .md-nav {
+    display: block !important;
+}
+
+/* Ensure arrows are visible */
+.md-nav__item--section > .md-nav__link::after {
+  opacity: 1 !important;
 }
