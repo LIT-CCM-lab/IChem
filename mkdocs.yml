@@ -53,6 +53,7 @@
       code: Roboto Mono
 
     features:
+      - navigation.tabs
       - navigation.instant
       - navigation.tracking
       - navigation.sections

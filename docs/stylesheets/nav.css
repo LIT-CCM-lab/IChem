@@ -12,16 +12,5 @@
 .md-main {
     padding-left: 20px;
     padding-right: 20px;
-} 
-
-/* Expand all primary nav sections by default */
-/* .md-nav--primary .md-nav__item--section > nav {
-  display: block;
-}  */
-
-/* Keep arrows visible */
-/* .md-nav__item--section > .md-nav__link::after {
-  opacity: 1;
-}   */
-
+}
 
