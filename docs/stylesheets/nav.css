@@ -44,3 +44,22 @@
 .md-nav--primary .md-nav__item .md-nav__item > .md-nav__link:hover {
     text-decoration: underline !important;
 }
+
+/* Align primary sidebar content with logo */
+.md-sidebar--primary {
+    padding-left: 0 !important;
+}
+
+/* Remove internal nav left padding */
+.md-sidebar--primary .md-nav {
+    padding-left: 0 !important;
+}
+
+/* Align top-level navigation items with logo */
+.md-sidebar--primary 
+.md-nav--primary 
+> .md-nav__list 
+> .md-nav__item 
+> .md-nav__link {
+    padding-left: 1rem !important;
+}
