@@ -14,7 +14,7 @@
         - Overview: commands/index.md
         - IFP - Interaction Fingerprint : commands/ifp.md
         - ints: commands/ints.md
-        - atomprops: commands/AtomProps.md
+        - atomprops: commands/atomprops.md
         - grim: commands/grim.md
         - volsite: commands/volsite.md
         - pdbconv: commands/pdbconv.md
@@ -56,7 +56,7 @@
       - navigation.instant
       - navigation.tracking
       - navigation.sections
-      - navigation.expand
+      # - navigation.expand
       - navigation.top
       - navigation.indexes
       - search.highlight
