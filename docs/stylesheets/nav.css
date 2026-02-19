@@ -13,3 +13,8 @@
     padding-left: 20px;
     padding-right: 20px;
 }
+
+/* Toggle for the main titles */
+.md-nav__toggle {
+  display: block !important;
+}
