@@ -39,7 +39,7 @@
 
     palette:
       - scheme: default
-        primary: grey
+        primary: indigo
         accent: blue
       - scheme: slate
         primary: grey
@@ -57,6 +57,7 @@
       - navigation.sections
       - navigation.expand
       - navigation.top
+      - navigation.indexes
       - search.highlight
       - search.share
       - content.code.copy
