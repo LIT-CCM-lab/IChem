@@ -1,4 +1,4 @@
-# IChem Documentation
+<!-- # IChem Documentation
 
 ## Description
 
@@ -10,4 +10,4 @@
 
 ### Help command
 
-
+ -->
