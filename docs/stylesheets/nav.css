@@ -20,14 +20,14 @@
 }
 
 /* Indent deeper levels in the sidebar */
-.md-nav__item--nested .md-nav__link {
+/* .md-nav__item--nested .md-nav__link {
     padding-left: 1.8rem !important;
-}
+} */
 
-.md-nav__item--nested .md-nav__item--nested .md-nav__link {
+/* .md-nav__item--nested .md-nav__item--nested .md-nav__link {
     padding-left: 2.6rem !important;
 }
 
 .md-nav__item--nested .md-nav__item--nested .md-nav__item--nested .md-nav__link {
     padding-left: 3.4rem !important;
-}
+} */
