@@ -6,7 +6,7 @@
 /* Right sidebar separator */
 .md-sidebar--secondary .md-nav {
     border-left: 1px solid #ddd;
-}
+} 
 
 /* Adding some padding to content */
 .md-main {
@@ -14,32 +14,41 @@
     padding-right: 20px;
 }
 
-/* Reset sidebar padding to align with header and logo */
+/* Reset padding of primary sidebar container to align with header/logo */
 .md-sidebar--primary,
 .md-sidebar--primary .md-sidebar__inner,
 .md-sidebar--primary .md-nav {
     padding-left: 0 !important;
 }
 
-/* Top-level nav items aligned with logo */
-.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link {
-    padding-left: 1rem !important;
-    pointer-events: none; /* non clickable */
+/* Align top level nav items (Getting started, Commands, etc.) with logo */
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__container {
+    padding-left: 1rem !important; /* Adjust this value to match logo alignment */
+}
+
+/* Disable click and remove underline for top level titles */
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__container > a {
+    pointer-events: none;
     cursor: default;
-    text-decoration: none !important; /* remove underline */
+    text-decoration: none !important;
 }
 
-/* Nested items indentation */
+/* Increase indentation for nested sidebar items */
 .md-nav--primary .md-nav__item .md-nav__item > .md-nav__link {
-    padding-left: 2.2rem !important;
+    padding-left: 2.2rem !important; /* Adjust for hierarchy */
 }
 
-/* Add vertical spacing between sidebar items */
+/* Add vertical spacing between all sidebar items */
 .md-nav--primary .md-nav__list > .md-nav__item {
     margin-bottom: 0.35rem;
 }
 
-/* Hover underline only on real links */
+/* Underline nested links on hover only */
 .md-nav--primary .md-nav__item .md-nav__item > .md-nav__link:hover {
     text-decoration: underline !important;
+}
+
+/* Slight hover effect on container for visual feedback */
+.md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__container:hover {
+    background-color: rgba(0, 0, 0, 0.03);
 }
