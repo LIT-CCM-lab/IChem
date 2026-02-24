@@ -46,6 +46,7 @@ nav:
 
 theme:
   name: material
+  language: en
   custom_dir: overrides
   logo: assets/logo_IChem.svg
   favicon: assets/logo_IChem.svg
@@ -85,8 +86,6 @@ theme:
     - search.share
     - content.code.copy
     - content.tabs.link
-
-language: en
 
 copyright: "© 2026 LIT-CNRS - IChem"
 
