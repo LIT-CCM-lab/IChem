@@ -1,96 +1,120 @@
-  site_name: IC Documentation
-  site_description: IChem Documentation
-  site_author: IChem Team
-  nav:
-    - Home: index.md
+site_name: IChem
+site_description: IChem Documentation
+site_author: IChem Team
+# site_url: https://ichem.fr/
 
-    - Getting started:
-        - Overview: getting-started/index.md
-        - Install: getting-started/install.md
-        - Quickstart: getting-started/quickstart.md
-        - Examples: getting-started/examples.md
+nav:
+  - Home: index.md
+  - Install: getting-started/install.md
 
-    - Commands:
-        - Overview: commands/index.md
-        - IFP - Interaction Fingerprint : commands/ifp.md
-        - ints: commands/ints.md
-        - atomprops: commands/atomprops.md
-        - grim: commands/grim.md
-        - volsite: commands/volsite.md
-        - pdbconv: commands/pdbconv.md
-        - realign: commands/realign.md
-        - sims: commands/sims.md
-        - utils: commands/utils.md
-      
-    - Concepts:
-        - Overview: concepts/index.md
+  - Documentation:
+      # - Overview: getting-started/index.md
 
-    - Reference:
-        - Overview: reference/index.md
-        
-    - Python API:
-        - Overview: python-api/index.md
-        - Installation: python-api/installation.md
-        - Quickstart: python-api/quickstart.md
-        - Configuration: python-api/config.md
+      - Getting started:
+          - Overview: getting-started/index.md
+          - Install: getting-started/install.md
+          - Quickstart: getting-started/quickstart.md
+          - Examples: getting-started/examples.md
 
-  theme:
-    name: material
-    logo: python-api/images/output_interactions.png
+      - Commands:
+          - Overview: commands/index.md
+          - IFP: commands/ifp.md
+          - ints: commands/ints.md
+          - atomprops: commands/atomprops.md
+          - grim: commands/grim.md
+          - volsite: commands/volsite.md
+          - pdbconv: commands/pdbconv.md
+          - realign: commands/realign.md
+          - sims: commands/sims.md
+          - utils: commands/utils.md
 
-    palette:
-      - scheme: default
-        primary: indigo
-        accent: blue
-      - scheme: slate
-        primary: grey
-        accent: blue
-        toggle:
-          icon: material/weather-sunny
-          name: Switch to light mode
-    font:
-      text: Roboto
-      code: Roboto Mono
+      - Concepts:
+          - Overview: concepts/index.md
 
-    features:
-      - navigation.path
-      - navigation.tabs
-      - navigation.instant
-      - navigation.tracking
-      # - navigation.sections
-      # - navigation.expand
-      - navigation.top
-      - navigation.indexes
-      - search.highlight
-      - search.share
-      - content.code.copy
-      - content.tabs.link
-      - footer
+      - Python API:
+          - Overview: python-api/index.md
+          - Installation: python-api/installation.md
+          - Quickstart: python-api/quickstart.md
+          - Configuration: python-api/config.md
 
-    footer:
-      text: "© 2026 TEST LIT-CNRS"
+      - Reference:
+          - Overview: reference/index.md
+  
+  - Building from source: build/index.md
+  - Development: dev/index.md
+  - Release notes: release/index.md
 
-    language: en
+theme:
+  name: material
+  custom_dir: overrides
+  logo: assets/logo_IChem.svg
+  favicon: assets/logo_IChem.svg
 
-  extra_css:
-    - stylesheets/nav.css
+  palette:
+    - scheme: default
+      primary: blue grey
+      accent: light blue
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: grey
+      accent: blue
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
 
-  plugins:
-    - search
+  font: false
+    # text: Inter
+    # code: JetBrains Mono
 
-  markdown_extensions:
-    - admonition
-    - toc:
-        permalink: true
-    - pymdownx.superfences
-    - pymdownx.tabbed:
-        alternate_style: true
-    - pymdownx.inlinehilite
-    - pymdownx.highlight:
-        anchor_linenums: true
-        line_spans: __span
-        pygments_lang_class: true
-    - pymdownx.details
 
-  extra:
-    generator: false
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    # - navigation.expand
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    - navigation.tracking
+    - navigation.top
+    - navigation.indexes
+    - search.highlight
+    - search.suggest
+    - search.share
+    - content.code.copy
+    - content.tabs.link
+
+language: en
+
+copyright: "© 2026 LIT-CNRS - IChem"
+
+extra_css:
+  - stylesheets/nav.css
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+      toc_depth: 2-3 # For the table of contents in the right
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.inlinehilite
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra:
+  generator: false

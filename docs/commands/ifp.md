@@ -74,7 +74,7 @@ Interactions are detected when the distance is within the allowed window:
 
 > **min ≤ distance ≤ max**, plus angle constraints when applicable
 
-### Maximum thresholds distances Å
+### Max distance thresholds (Å)
 
 | Option     | Default | Interaction    |
 | ---------- | ------: | -------------- |

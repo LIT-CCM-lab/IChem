@@ -1,15 +1,262 @@
-/* Left sidebar separator */
-.md-sidebar .md-nav {
-    border-right: 1px solid #ddd;
+/* Fonts */
+:root {
+  --md-text-font: system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+                  "Segoe UI Symbol", "Noto Color Emoji";
+
+  --md-code-font: ui-monospace, "Cascadia Code", "Source Code Pro", "Menlo",
+                  "Consolas", "DejaVu Sans Mono", monospace;
+
+  /* Your header is taller than Material's default after moving tabs into it */
+  --ichem-header-offset: 1.3rem; /* tune this if needed */
 }
 
-/* Right sidebar separator */
-.md-sidebar--secondary .md-nav {
-    border-left: 1px solid #ddd;
-} 
+/* Anchor offsets for the headers */
+html { scroll-padding-top: calc(var(--ichem-header-offset) + 0.25rem); }
+.md-main .md-typeset :is(h2,h3,h4)[id] {
+  scroll-margin-top: calc(var(--ichem-header-offset) + 0.25rem);
+}
 
-/* Adding some padding to content */
-.md-main {
-    padding-left: 20px;
-    padding-right: 20px;
+/* 
+  === Sidebars separators, light and dark
+   - Left sidebar separator stays on the container
+   - Right sidebar separator is handled later (TOC section) to follow content height 
+  ===
+*/
+
+.md-sidebar--primary {
+  border-right: 1px solid rgba(0,0,0,.08);
+}
+
+[data-md-color-scheme="slate"] .md-sidebar--primary {
+  border-right-color: rgba(255,255,255,.10);
+}
+
+/*  === Header tabs, injected via overrides/header.html) ===  */
+
+@media screen and (min-width: 60em) {
+  .md-header__inner {
+    flex-wrap: nowrap !important;
+  }
+
+  .ichem-header-tabs {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .ichem-header-tabs .md-tabs {
+    background: transparent !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: auto !important;
+  }
+
+  .ichem-header-tabs .md-tabs > .md-grid {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 .4rem !important;
+    display: flex !important;
+    align-items: center;
+  }
+
+  .ichem-header-tabs .md-tabs__list {
+    display: flex !important;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: .2rem;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+  }
+
+  .ichem-header-tabs .md-tabs__list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ichem-header-tabs .md-tabs__link {
+    padding: 0 .55rem !important;
+    line-height: var(--md-header-height);
+    white-space: nowrap;
+    opacity: .95;
+  }
+}
+
+/* Footer */
+.md-footer-meta {
+  padding: .2rem 0;
+}
+
+/* === Content / Typography (main content only) === */
+
+.md-main .md-grid {
+  max-width: 1350px;
+}
+
+.md-main .md-typeset {
+  font-size: 0.88rem;
+  line-height: 1.52;
+}
+
+.md-main .md-typeset h1 {
+  font-size: 1.65rem;
+  letter-spacing: -0.02em;
+  margin-top: .55rem;
+  margin-bottom: .22rem;
+  color: rgba(0,0,0,.78);
+  font-weight: 700;
+}
+
+[data-md-color-scheme="slate"] .md-main .md-typeset h1 {
+  color: rgba(255,255,255,.9);
+}
+
+.md-main .md-typeset h2 {
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+  margin-top: 1.25rem;
+}
+
+.md-main .md-typeset h3 {
+  font-size: 1.08rem;
+  margin-top: 1rem;
+}
+
+.md-main .md-typeset p {
+  margin-top: .32rem;
+  margin-bottom: .6rem;
+}
+
+.md-main .md-typeset code {
+  font-size: 0.86em;
+}
+
+.md-main .md-typeset pre code {
+  font-size: 0.80rem;
+  line-height: 1.42;
+}
+
+.md-main .md-typeset ul li,
+.md-main .md-typeset ol li {
+  margin: .12rem 0;
+}
+
+/* Buttons */
+.md-main .md-typeset a.md-button {
+  border-radius: 999px;
+  padding: .52rem .85rem;
+  font-weight: 600;
+  margin-right: .4rem;
+  margin-top: .4rem;
+}
+
+/* === Home cards (main content only) === */
+
+.md-main .grid.cards > ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media screen and (max-width: 59.999em) {
+  .md-main .grid.cards > ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+.md-main .grid.cards > ul > li {
+  border: 1px solid rgba(0,0,0,.12) !important;
+  border-radius: 18px;
+  padding: 1rem 1.1rem;
+  background: rgba(255,255,255,.6);
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+}
+
+[data-md-color-scheme="slate"] .md-main .grid.cards > ul > li {
+  border: 1px solid rgba(255,255,255,.16) !important;
+  background: rgba(255,255,255,.03);
+}
+
+.md-main .grid.cards > ul > li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px rgba(0,0,0,.12);
+  border-color: rgba(0,0,0,.18) !important;
+}
+
+[data-md-color-scheme="slate"] .md-main .grid.cards > ul > li:hover {
+  border-color: rgba(255,255,255,.24) !important;
+}
+
+.md-main .grid.cards > ul > li > p:first-child {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: .35rem;
+}
+
+.md-main .grid.cards > ul > li a.md-button {
+  padding: .42rem .7rem;
+  font-weight: 600;
+  border-radius: 999px;
+  margin-top: .32rem;
+}
+
+.md-main hr {
+  margin: 1.1rem 0;
+  opacity: .25;
+}
+
+/* === Right sidebar (TOC): title and full-height separator and active indicator === */
+
+/* Border follows TOC content height */
+.md-sidebar--secondary {
+  border-left: none !important;
+}
+
+.md-sidebar--secondary .md-sidebar__inner {
+  border-left: 1px solid rgba(0,0,0,.08);
+  padding-left: 1.1rem;
+}
+
+[data-md-color-scheme="slate"] .md-sidebar--secondary .md-sidebar__inner {
+  border-left-color: rgba(255,255,255,.10);
+}
+
+/* Replace "Table of contents" with "≡ On this page" */
+.md-nav--secondary > .md-nav__title {
+  font-size: 0 !important;
+  line-height: 0 !important;
+  margin-bottom: .4rem;
+}
+
+.md-nav--secondary > .md-nav__title::before {
+  content: "≡ On this page";
+  font-size: .82rem;
+  line-height: 1.2;
+  font-weight: 700;
+  opacity: .9;
+  display: inline-block;
+}
+
+/* Active item indicator, right TOC only */
+.md-nav--secondary .md-nav__link--active {
+  position: relative;
+  font-weight: 700;
+}
+
+.md-nav--secondary .md-nav__link--active::before {
+  content: "";
+  position: absolute;
+  left: -0.75rem;
+  top: 0.10rem;     /* taller upwards */
+  width: 3px;
+  height: 1.17rem;  /* taller upwards, bottom stays similar */
+  background: currentColor;
+  border-radius: 3px;
+  opacity: .65;
 }
