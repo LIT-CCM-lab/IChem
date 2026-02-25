@@ -40,7 +40,7 @@ nav:
       - Reference:
           - Overview: reference/index.md
   
-  - Building from source: build/index.md
+  - Building from source: build-soft/index.md
   - Development: dev/index.md
   - Release notes: release/index.md
 
