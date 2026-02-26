@@ -260,3 +260,15 @@ html { scroll-padding-top: calc(var(--ichem-header-offset) + 0.25rem); }
   border-radius: 3px;
   opacity: .65;
 }
+
+
+ /* Home ( first element) is hidden */
+@media screen and (min-width: 60em) {
+  .ichem-header-tabs .md-tabs__list > .md-tabs__item:first-child {
+    display: none !important;
+  }
+}
+.md-nav--primary > .md-nav__list > .md-nav__item:first-child {
+  display: none !important;
+}
+

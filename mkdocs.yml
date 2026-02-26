@@ -5,28 +5,26 @@ site_author: IChem Team
 
 nav:
   - Home: index.md
-  - Install: getting-started/install.md
-
-  - Documentation:
+  - User Guide:
       # - Overview: getting-started/index.md
 
       - Getting started:
           - Overview: getting-started/index.md
-          - Install: getting-started/install.md
+          - Download: getting-started/download.md
           - Quickstart: getting-started/quickstart.md
           - Examples: getting-started/examples.md
 
       - Commands:
           - Overview: commands/index.md
-          - IFP: commands/ifp.md
-          - ints: commands/ints.md
-          - atomprops: commands/atomprops.md
-          - grim: commands/grim.md
-          - volsite: commands/volsite.md
-          - pdbconv: commands/pdbconv.md
-          - realign: commands/realign.md
-          - sims: commands/sims.md
-          - utils: commands/utils.md
+          - ifp - interaction fingerPrint: commands/ifp.md
+          - ints - interaction generator: commands/ints.md
+          - atomprops - atom descriptor: commands/atomprops.md
+          - grim - graph interaction: commands/grim.md
+          - volsite - cavity detection: commands/volsite.md
+          - pdbconv - PDB process: commands/pdbconv.md
+          - realign - molecular alignment: commands/realign.md
+          - sims - fingerprint similarity: commands/sims.md
+          - utils - bsa and fragmentation: commands/utils.md
 
       - Concepts:
           - Overview: concepts/index.md
@@ -39,10 +37,12 @@ nav:
 
       - Reference:
           - Overview: reference/index.md
-  
+
+  - Download: getting-started/download.md
   - Building from source: build-soft/index.md
   - Development: dev/index.md
   - Release notes: release/index.md
+  - Why IChem: why/index.md
 
 theme:
   name: material
