@@ -86,7 +86,7 @@ jobs:
           cp dist/IChem_ubuntu/IChem_ubuntu release/
           cp dist/IChem_debian/IChem_debian release/
 
-          # Optional: checksums (recommended)
+          # Create checksum file for released binaries
           (cd release && sha256sum IChem_* > SHA256SUMS.txt)
           ls -la release
 
