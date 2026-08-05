@@ -1,8 +1,58 @@
-# Ignore test repository
-# test/
-
-# Ignore vscode conf
-.vscode/
-
-# Ignore build-test
+# ---- Build output ----
 build/
+build-*/
+new_build/
+cmake-build-*/
+out/
+dist/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+install_manifest.txt
+compile_commands.json
+
+# Compiled objects / libraries / executables
+*.o
+*.obj
+*.a
+*.so
+*.so.*
+*.dylib
+*.dll
+*.lib
+*.exe
+
+# ---- Prebuilt IChem binaries ----
+# Release binaries are produced by CI (.github/workflows/release.yml)
+# and must NOT be committed. distrib/ used to hold committed binaries.
+distrib/
+# CI build outputs at repo root (see release.yml)
+/IChem
+/IChem_ubi
+/IChem_ubuntu
+/IChem_debian
+
+# ---- Editors / IDEs ----
+.vscode/
+.idea/
+*.swp
+*~
+
+# ---- OS cruft ----
+.DS_Store
+Thumbs.db
+
+# ---- Python (test harness) ----
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# ---- Claude Code / AI assistant local files ----
+# Machine-local settings must not be committed. If you later want to share
+# team-wide Claude config, commit .claude/settings.json explicitly and keep
+# this ignore on the .local variant.
+.claude/
+CLAUDE.local.md
