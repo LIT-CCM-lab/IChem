@@ -19,4 +19,4 @@ jobs:
           ssh_private_key: ${{ secrets.ICHEMFR_SFTP_KEY }}
           sftp_only: true
           local_path: './.github/workflows/deploy-docs.yml'
-          remote_path: '/www'
+          remote_path: '/home/ichemfn'
