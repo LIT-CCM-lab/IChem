@@ -1,0 +1,22 @@
+name: Test SFTP deploy
+
+on:
+  workflow_dispatch:  # déclenchement manuel uniquement pour l'instant
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
+        with:
+          username: ${{ secrets.ICHEMFR_SFTP_USER }}
+          server: ${{ secrets.ICHEMFR_SFTP_HOST }}
+          port: ${{ secrets.ICHEMFR_SFTP_PORT }}
+          ssh_private_key: ${{ secrets.ICHEMFR_SFTP_KEY }}
+          sftp_only: true
+          local_path: './.github/workflows/deploy-docs.yml'
+          remote_path: '/www'
