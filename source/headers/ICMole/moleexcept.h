@@ -106,7 +106,6 @@ namespace ICMole{
  *   PDBConvert : 303xxxx
  * ICTools: 9xxxxxx
  *  switch :    901xxxx
- *  genKey :    902xxxx
  *  BSACalc:    903xxxx
  *  ints   :    904xxxx
  *  grim   :    905xxxx

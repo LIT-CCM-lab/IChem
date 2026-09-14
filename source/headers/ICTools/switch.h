@@ -4,24 +4,22 @@
 
 #define ICHEM_VERSION "5.3.8"
 #define ICHEM_RELEASE "2025-12-08"
-#define ICHEM_TOOLS   14
+#define ICHEM_TOOLS   12
 
 namespace IChemTools
 {
-    const unsigned int GENKEY  =0;
-    const unsigned int REALIGN =1;
-    const unsigned int BSACalc =2;
-    const unsigned int IFP =3;
-    const unsigned int ints=4;
-    const unsigned int Grim =5;
-    const unsigned int volsite =6;
-    const unsigned int pdbconv=7;
-    const unsigned int patch=8;
-    const unsigned int utils=9;
-    const unsigned int sims=10;
-    const unsigned int scoring=11;
-    const unsigned int atomProps = 12;
-//    const unsigned int cavLig=13;
+    const unsigned int REALIGN =0;
+    const unsigned int BSACalc =1;
+    const unsigned int IFP =2;
+    const unsigned int ints=3;
+    const unsigned int Grim =4;
+    const unsigned int volsite =5;
+    const unsigned int pdbconv=6;
+    const unsigned int patch=7;
+    const unsigned int utils=8;
+    const unsigned int sims=9;
+    const unsigned int scoring=10;
+    const unsigned int atomProps = 11;
 }
 class IChemSwitch;
 
@@ -36,11 +34,6 @@ class IChemSwitch
         static pf1 listFunc[ICHEM_TOOLS];
         static pf1 listHelp[ICHEM_TOOLS];
         static bool verbose;                  /*!< Verbose mode used for standard output */
-        static bool licence_loaded;           /*!< Boolean to check whether the licence is loaded */
-        static bool allowed[ICHEM_TOOLS];     /*!< Boolean array. True when the tool is allowed. False when not */
-        const static std::string moduluskeys;              /*!< For RSA Encryption */
-        const static std::string privatexp;                /*!< For RSA Encryption */
-        const static std::string publicexp;                /*!< For RSA Encryption */
         const static std::string possInputs;               /*!< List of possible arguments and options, separated by spaces before AND after */
         const static std::vector<std::string> possPrgs;                 /*!< List of possible tools separated by spaces before AND after */
         std::map<std::string,std::vector<std::string> > Opt_Values;               /*!< List of Options given by the user (before the tool name) */
@@ -51,7 +44,6 @@ class IChemSwitch
         void helpAtomProps() const;
         void printAtomInfo(const ICMole::Atom& atom) const;
         
-        void helpGenKey()    const;
         void helpRealign()   const;
         void helpBSAcalc()   const;
         void helpIFP()       const;
@@ -70,7 +62,6 @@ class IChemSwitch
         void helpTest() const;
 //                      void helpGrScreen() const;
 
-        void genKey()    const  ;
         void realign()   const ;
         void BSAcalc()   const ;
         void IFP()       const ;
@@ -87,9 +78,6 @@ class IChemSwitch
         void pharma() const ;
         void convertCav() const ;
 //                      void GrScreen() const ;
-
-        void checkLicence()    ;
-        void yourlicence();
 
         static const std::vector<std::string> FetchPossInput() ;
     public:

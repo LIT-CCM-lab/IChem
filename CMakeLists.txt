@@ -100,17 +100,9 @@ set(ICHEM_CORE_SOURCES
     source/sources/ICCalcs/grim.cpp
     source/sources/ICCalcs/fragments.cpp
 
-    source/sources/ICRSA/RSA.cpp
-    source/sources/ICRSA/PrimeGenerator.cpp
-    source/sources/ICRSA/KeyPair.cpp
-    source/sources/ICRSA/Key.cpp
-    source/sources/ICRSA/EasyCrypt.cpp
-    source/sources/ICRSA/BigInt.cpp
-
     source/sources/ICTools/switch.cpp
     source/sources/ICTools/atom_properties.cpp
     source/sources/ICTools/realign.cpp
-    source/sources/ICTools/genKey.cpp
     source/sources/ICTools/IFP.cpp
     source/sources/ICTools/ifp_module.cpp
     source/sources/ICTools/ifp_engine.cpp
