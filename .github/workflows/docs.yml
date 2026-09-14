@@ -2,7 +2,7 @@ name: Documentation
 
 on:
   push:
-    branches: ["test/documentation"]
+    branches: ["feature/documentation"]
   workflow_dispatch: {}
 
 permissions:
