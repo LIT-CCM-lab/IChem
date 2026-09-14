@@ -216,7 +216,7 @@ static IFPAPI::LigandInteractions buildLigandInteractions(const ICMole::Molecule
             resolveResidueAndChain(ip.Prot_Ref, rec.residue_identifier, rec.chain);
 
             // centers = -1 for id
-            rec.id_atom_prot = isCycleCenter(ip.Prot_Ref) ? -1 : ip.Prot_Ref->getNum();
+            rec.id_atom_prot = isCycleCenter(ip.Prot_Ref) ? -1 : ip.Prot_Ref->getFNum();
         } else {
             rec.atom_prot.clear();
             rec.id_atom_prot = -1;
@@ -227,7 +227,7 @@ static IFPAPI::LigandInteractions buildLigandInteractions(const ICMole::Molecule
         // Ligand side
         if (ip.Lig_Ref) {
             rec.atom_lig = ip.Lig_Ref->getName();
-            rec.id_atom_lig = isCycleCenter(ip.Lig_Ref) ? -1 : ip.Lig_Ref->getNum();
+            rec.id_atom_lig = isCycleCenter(ip.Lig_Ref) ? -1 : ip.Lig_Ref->getFNum();
         } else {
             rec.atom_lig.clear();
             rec.id_atom_lig = -1;
