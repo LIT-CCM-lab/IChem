@@ -5,6 +5,7 @@ on:
   push:
     tags:
       - "v*"
+      - "IChem_*"
 
 permissions:
   contents: write
