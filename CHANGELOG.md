@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Keep the name of the molecule extended (limited to 40 chacraters before)
   * Adding helper function to remove whitespace in molecule's name
 
+## [IChem_5.3.9] - 2026-09-16
+
+### Removed
+
+- `IChem utils water` subcommand (water extraction near a ligand from a PDB
+  file). The feature was unreliable; removed rather than fixed. The shared
+  `Complex::selectWater()` helper is kept (still used by `pdbconv --SELWAT`).
+- License / key-generation subsystem (`genKey`, `license` commands) and the
+  RSA crypto module (`ICRSA`), obsolete since the project became open source.
+
+### Changed
+
+- Atom IDs in the IFP Python API (`id_atom_prot` / `id_atom_lig`) are now
+  1-based, matching the MOL2 file and the CLI output, instead of the internal
+  0-based index.
+
+
 ## [IChem_5.3.8] - 2025-12-08
 
 ### Added
