@@ -9,7 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Keep the name of the molecule extended (limited to 40 chacraters before)
   * Adding helper function to remove whitespace in molecule's name
 
-## [IChem_5.3.9] - 2026-09-16
+## [IChem_5.3.9] - 2026-09-17
+
+### Fixed
+
+- Release binaries are now built with a portable ISA baseline
+  (`-O3 -march=x86-64-v2`) instead of `-march=native`. The `native` flag
+  baked in the CI runner's instruction set (AVX2/AVX-512) and caused
+  `SIGILL` (illegal instruction, core dumped) on older CPUs.
 
 ### Removed
 

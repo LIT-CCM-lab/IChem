@@ -3,7 +3,7 @@
 #include "ichemo.h"
 
 #define ICHEM_VERSION "5.3.9"
-#define ICHEM_RELEASE "2026-09-16"
+#define ICHEM_RELEASE "2026-09-17"
 #define ICHEM_TOOLS   12
 
 namespace IChemTools
