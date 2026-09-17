@@ -14,9 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Release binaries are now built with a portable ISA baseline
-  (`-O3 -march=x86-64-v2`) instead of `-march=native`. The `native` flag
-  baked in the CI runner's instruction set (AVX2/AVX-512) and caused
-  `SIGILL` (illegal instruction, core dumped) on older CPUs.
+  (`-O3 -march=nehalem -mtune=generic`, i.e. the SSE4.2 / x86-64-v2 level)
+  instead of `-march=native`. The `native` flag baked in the CI runner's
+  instruction set (AVX2/AVX-512) and caused `SIGILL` (illegal instruction,
+  core dumped) on older CPUs.
 
 ### Removed
 

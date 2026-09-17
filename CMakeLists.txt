@@ -24,9 +24,12 @@ option(ICHEM_DEBUG "Enable additional IChem debug code (ICHEM_DEBUG=1)" OFF)
 # Release : O3 with a portable ISA baseline.
 # NB: do NOT use -march=native for distributed binaries: it bakes in the build
 # machine's instruction set (e.g. AVX2/AVX-512 on CI runners) and crashes with
-# SIGILL on older CPUs. x86-64-v2 (SSE4.2, ~2009+) runs on virtually all hosts.
+# SIGILL on older CPUs. We target the SSE4.2 baseline via -march=nehalem (2008+),
+# which is equivalent to x86-64-v2 but understood by older compilers too
+# (the x86-64-v2 name needs GCC 11+, while the UBI8 image ships GCC 8).
+# -mtune=generic keeps instruction scheduling tuned for modern CPUs.
 set(CMAKE_CXX_FLAGS_DEBUG   "-g -O0")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=x86-64-v2")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=nehalem -mtune=generic")
 
 # Strict flags for development, can be commented when code is cleaner
 set(STRICT_WARNING_FLAGS "")
