@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include "headers/ICMole/box.h"
 #include "headers/ICMole/complex.h"
 #include "headers/ICMole/molecule.h"
@@ -145,6 +146,34 @@ void Grid::prepareMatrix(const Coords& center,
             F = vect_k.y,
             I = vect_k.z;
     const double detA = A*E*I+B*F*G+C*D*H-C*E*G-F*H*A-I*B*D;
+
+    // The three axes are built from successive cross products of vectors seeded
+    // by the mass centre, inertial moment and first atom (getNormal). For some
+    // inputs those seeds are near-collinear, so a cross product vanishes:
+    // getNormal then divides by a zero norm (NaN axis), or the axes become
+    // near-coplanar and M=[vect_i,vect_j,vect_k] is singular (detA ~ 0). With
+    // FMA the rounding leaves a tiny non-zero value and the code limps on; under
+    // strict IEEE detA rounds to exactly 0, the inverse below yields NaN box
+    // coordinates, and cavity detection silently fails. When the frame is
+    // degenerate, fall back to an axis-aligned orthonormal frame: grid
+    // construction is then always well defined and identical on every CPU.
+    const bool degenerate =
+            !std::isfinite(detA) || std::fabs(detA) < 1e-6 ||
+            !std::isfinite(A) || !std::isfinite(D) || !std::isfinite(G) ||
+            !std::isfinite(B) || !std::isfinite(E) || !std::isfinite(H) ||
+            !std::isfinite(C) || !std::isfinite(F) || !std::isfinite(I);
+
+    if (degenerate)
+    {
+        vect_i.setCoords(1,0,0);
+        vect_j.setCoords(0,1,0);
+        vect_k.setCoords(0,0,1);
+        rotMatrix[0]=1; rotMatrix[1]=0; rotMatrix[2]=0;
+        rotMatrix[3]=0; rotMatrix[4]=1; rotMatrix[5]=0;
+        rotMatrix[6]=0; rotMatrix[7]=0; rotMatrix[8]=1;
+        return;
+    }
+
     rotMatrix[0] = (E*I-F*H)/detA;
     rotMatrix[1] = (C*H-B*I)/detA;
     rotMatrix[2] = (B*F-C*E)/detA;

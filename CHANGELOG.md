@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Keep the name of the molecule extended (limited to 40 chacraters before)
   * Adding helper function to remove whitespace in molecule's name
 
+## [IChem_5.3.10] - 2026-09-23
+
+### Fixed
+
+- VolSite: robust grid orientation for degenerate structures. The grid axes
+  are built from cross products of vectors seeded by the mass centre, inertial
+  moment and first atom; for some inputs (e.g. the 1F1T RNA) these seeds are
+  near-collinear, making the axis matrix singular. Its determinant then rounded
+  to a tiny value under FMA (giving a result) but to exactly 0 under strict
+  IEEE, producing NaN box coordinates and no detected cavities — so the same
+  binary gave different cavity counts depending on the CPU/compiler. VolSite now
+  detects the degenerate/singular frame and falls back to an axis-aligned
+  orthonormal grid, giving well-defined, CPU-independent results. Verified
+  against the 5-protein VolSite regression set (unchanged) plus the previously
+  failing RNA case (now consistently detected).
+
 ## [IChem_5.3.9] - 2026-09-17
 
 ### Fixed
