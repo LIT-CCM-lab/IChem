@@ -10,23 +10,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [IChem_5.3.11] - 2026-09-25
 
 **Behaviour change:** aromatic ring perception changed on both the ligand and
-the receptor side, so IFP / ints results can differ from 5.3.10 (mostly new
-aromatic interactions, see below). `--oldAro` restores the legacy aromaticity
-criterion.
+the receptor side, and stackings between fused ring systems are now merged by
+default, so IFP / ints results can differ from 5.3.10 (mostly new aromatic
+interactions, see below). `--oldAro` restores the legacy aromaticity criterion
+and `-mergeStack noMerge` reports every ring-ring stacking as before.
+
+(This release was re-issued on the same day: the first 5.3.11 build did not
+merge stackings by default, did not expose the new options in the Python API
+and was built with GCC 8 on UBI 8 and with Debian 12 for the "ubuntu" binary.)
 
 ### Added
 
-- `-mergeStack closest|center` option (IFP and ints) to report a single
-  stacking when a fused ligand ring system stacks on a fused receptor ring
-  system (e.g. a naphthalene on a TRP or a purine), instead of one stacking per
-  ring pair. Stackings are grouped per (ligand fused ring system, receptor
-  residue fused ring system, interaction type). `closest` keeps the shortest
-  centre-centre stacking; `center` replaces a Face/Face group by one stacking
-  between the planes fitted on all the rings that individually passed the
-  stacking criteria (Edge/Face groups always use `closest`). Off by default;
-  fingerprint bits are not affected.
+- Stackings between fused ring systems are merged: when a fused ligand ring
+  system stacks on a fused receptor ring system (e.g. a naphthalene on a TRP or
+  a purine), one stacking is reported instead of one per ring pair. Stackings
+  are grouped per (ligand fused ring system, receptor residue fused ring
+  system, interaction type). By default a Face/Face group is replaced by one
+  stacking between the planes fitted on all the rings that individually passed
+  the stacking criteria (distance between the two centroids, angle between the
+  planes); Edge/Face groups keep their shortest stacking. The IFP and ints
+  option `-mergeStack` selects another behaviour: `closest` keeps the shortest
+  centre-centre stacking of each group, `noMerge` reports every ring-ring
+  stacking. Fingerprint bits are not affected.
 - `--oldAro` global option: legacy aromaticity criterion (ring double /
   aromatic bond count).
+- Python API (`IFPConfig`): `oldAro` (legacy aromaticity, set for the
+  duration of each call) and `mergeStack` (`None` = default merging,
+  `"closest"`, `"noMerge"`), same behaviour as the CLI options.
 
 ### Changed
 
@@ -42,8 +52,13 @@ criterion.
   longer trusted: RNA / DNA with any residue naming (A G C U DA ...), modified
   bases, HIS variants and cofactors now get their rings, and the TRP
   5-membered ring is now perceived (new TRP stackings).
-- Ring perception is much faster on large molecules (the chain-end pruning
-  step was quadratic in the number of atoms); perceived rings are unchanged.
+- Ring perception is fast on large molecules: the chain-end pruning step and
+  graph edge deletion were quadratic in the number of atoms (IFP on a 21k-atom
+  receptor: 0.25 s, about the 5.3.10 time); perceived rings are unchanged.
+- Release binaries: the UBI 8 binary is now built with GCC 13
+  (gcc-toolset-13) instead of the system GCC 8, still for the RHEL 8 run-time
+  baseline, and the "ubuntu" binary is now really built on Ubuntu 22.04 LTS
+  (it was a second Debian 12 build).
 
 ### Fixed
 
