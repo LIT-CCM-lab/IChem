@@ -25,7 +25,7 @@ Edge:: Edge( Vertex  &nV1,
             const unsigned int& num,
             Graph& par)
             : vertex1(nV1),vertex2(nV2),graph(par),
-              bond((Bond*)NULL),weight(1),label(""),num(num)
+              bond((Bond*)NULL),weight(1),label(""),num(num),pos(0)
 
 {
 

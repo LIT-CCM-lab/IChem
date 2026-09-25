@@ -20,6 +20,7 @@ private:
         double  weight;         /*!< Weight of the edge, if necessary. Default 1 */
    std::string  label;          /*!< Label of the edge*/
    unsigned int  num;            /*!< Id of the edge, as defined by the program*/
+         size_t  pos;            /*!< Position in the parent graph edge list (set by Graph) */
 
 
 

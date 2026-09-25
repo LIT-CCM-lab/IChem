@@ -21,6 +21,12 @@ protected:
   unsigned int  maxNumVe;         /*!< \brief Maximum Id for vertex - Automatically updated when adding or deleting a vertex */
   unsigned int  maxNumEd;         /*!< \brief Maximum Id for edge - Automatically updated when adding or deleting an edge */
 
+    /*!< \brief Remove an edge from the edge list in constant time: the last edge
+     *   takes its place, so deleting edges does not preserve the order of the
+     *   graph edge list (vertex links keep their order). Deletes the edge.
+     *   \throw 1040702 if the edge is not part of this graph */
+    void eraseEdge(const Edge* const edge);
+
 public:
 
   ////// Constructors :

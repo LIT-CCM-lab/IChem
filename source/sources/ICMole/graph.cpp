@@ -280,6 +280,7 @@ Edge& Graph::addEdge(Vertex &vertex1, Vertex &vertex2)
         vertex1.links.push_back(ed);
         vertex2.links.push_back(ed);
         maxNumEd++;
+        ed->pos = edges.size();
         edges.push_back(ed);
         return *ed;
     }
@@ -306,8 +307,7 @@ void Graph::delEdge(const Edge* const edge)
     if (edge == (Edge*)NULL) throw MoleExcept(1040701,"Graph::delEdge","No edge given");
     const unsigned int NumEd= edge->getNum();
 // Check edge existence
-    const ItEdge itPED=find(edges.begin(), edges.end(),edge); // Deletion if it finds in edges the corresponding edge
-    if (itPED == edges.end())throw MoleExcept(1040702,"Graph::delEdge","This graph doesn't contains the following edge : "+edge->toString());
+    if (edge->pos >= edges.size() || edges[edge->pos] != edge)throw MoleExcept(1040702,"Graph::delEdge","This graph doesn't contains the following edge : "+edge->toString());
 
     try
     {
@@ -328,8 +328,7 @@ void Graph::delEdge(const Edge* const edge)
 
 
 // Deleting the edge from Graph :
-    delete *itPED;
-    edges.erase(itPED);
+    eraseEdge(edge);
 
 
 // Updating the maxNumEd - Unecessary if the edge num is not the maxNumEd
@@ -347,13 +346,14 @@ void Graph::delEdge(const Edge* const edge)
 void Graph::delEdge(const EdgeList& EdList) 
 {
     const size_t n=EdList.size();
+    bool maxDeleted=false;
     for (size_t i=0; i < n; i++)
     {
         const Edge* const edge=EdList.at(0);
         if (edge == (Edge*)NULL) throw MoleExcept(1040801,"Graph::delEdge","No edge given");
         // Check edge existence
-        const ItEdge itPED=find(edges.begin(), edges.end(),edge); // Deletion if it finds in edges the corresponding edge
-        if (itPED == edges.end())throw MoleExcept(1040802,"Graph::delEdge","This graph doesn't contains the following edge : "+edge->toString());
+        if (edge->pos >= edges.size() || edges[edge->pos] != edge)throw MoleExcept(1040802,"Graph::delEdge","This graph doesn't contains the following edge : "+edge->toString());
+        if (edge->getNum()+1 == maxNumEd) maxDeleted=true;
 
         try
         {
@@ -373,12 +373,13 @@ void Graph::delEdge(const EdgeList& EdList)
         }
 
         // Deleting the edge from Graph :
-        delete *itPED;
-        edges.erase(itPED);
+        eraseEdge(edge);
 
     }
 
 // Updating the maxNumEd - Unecessary if the edge num is not the maxNumEd
+// (rescanning all edges at each call made vertex deletion quadratic)
+    if (!maxDeleted) return;
     maxNumEd=1;
     bool zer=false;
     for(ItEdge it2 = edges.begin(); it2 != edges.end(); it2++)
@@ -403,8 +404,7 @@ void  Graph::delEdge(const       Edge &  edge)
   const unsigned int NumEd= edge.getNum();
 
   // Check edge existence
-  const ItEdge itPED=find(edges.begin(), edges.end(),&edge); // Deletion if it finds in edges the corresponding edge
-  if (itPED == edges.end())throw MoleExcept(1040901,"Graph::delEdge","This graph doesn't contains the following edge : "+edge.toString());
+  if (edge.pos >= edges.size() || edges[edge.pos] != &edge)throw MoleExcept(1040901,"Graph::delEdge","This graph doesn't contains the following edge : "+edge.toString());
   try
   {
       Vertex& ve1= edge.vertex1;
@@ -421,8 +421,7 @@ void  Graph::delEdge(const       Edge &  edge)
       Moleaccess=Levels::FATAL;
       throw;
   }
-  delete *itPED;
-  edges.erase(itPED);
+  eraseEdge(&edge);
 
   // Updating the maxNumEd - Unecessary if the edge num is not the maxNumEd
   if (NumEd+1 != maxNumEd) return;
@@ -436,6 +435,18 @@ void  Graph::delEdge(const       Edge &  edge)
 }
 
 
+
+
+void Graph::eraseEdge(const Edge* const edge)
+{
+    const size_t pos = edge->pos;
+    if (pos >= edges.size() || edges[pos] != edge)
+        throw MoleExcept(1040702,"Graph::eraseEdge","This graph doesn't contains the following edge : "+edge->toString());
+    edges[pos] = edges.back();
+    edges[pos]->pos = pos;
+    edges.pop_back();
+    delete edge;
+}
 
 
 /** \fn void Graph::renumEdge()
