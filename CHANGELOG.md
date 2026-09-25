@@ -5,9 +5,53 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Not released yet
-  * Keep the name of the molecule extended (limited to 40 chacraters before)
-  * Adding helper function to remove whitespace in molecule's name
+## [Unreleased]
+
+## [IChem_5.3.11] - 2026-09-25
+
+**Behaviour change:** aromatic ring perception changed on both the ligand and
+the receptor side, so IFP / ints results can differ from 5.3.10 (mostly new
+aromatic interactions, see below). `--oldAro` restores the legacy aromaticity
+criterion.
+
+### Added
+
+- `-mergeStack closest|center` option (IFP and ints) to report a single
+  stacking when a fused ligand ring system stacks on a fused receptor ring
+  system (e.g. a naphthalene on a TRP or a purine), instead of one stacking per
+  ring pair. Stackings are grouped per (ligand fused ring system, receptor
+  residue fused ring system, interaction type). `closest` keeps the shortest
+  centre-centre stacking; `center` replaces a Face/Face group by one stacking
+  between the planes fitted on all the rings that individually passed the
+  stacking criteria (Edge/Face groups always use `closest`). Off by default;
+  fingerprint bits are not affected.
+- `--oldAro` global option: legacy aromaticity criterion (ring double /
+  aromatic bond count).
+
+### Changed
+
+- Ring aromaticity is now decided by an sp2 + planarity rule: a ring is
+  aromatic when all its atoms are sp2 / conjugated (aromatic or sp2 MOL2 type,
+  planar N, ring or exocyclic double / aromatic bond, or one lone-pair donor
+  such as thiophene S or furan O between sp2 atoms) and the ring is planar. This
+  finds heteroaromatic rings the bond-count rule missed (e.g. the guanine
+  6-membered ring, xanthylium dyes, fused thiophenes).
+- Receptor rings are now found by the same graph ring perception as the
+  ligand rings, instead of a hardcoded list of residue names (PHE TYR HIS TRP
+  dA dG rA rG dC dT rC rU). Residue and atom names from the input file are no
+  longer trusted: RNA / DNA with any residue naming (A G C U DA ...), modified
+  bases, HIS variants and cofactors now get their rings, and the TRP
+  5-membered ring is now perceived (new TRP stackings).
+- Ring perception is much faster on large molecules (the chain-end pruning
+  step was quadratic in the number of atoms); perceived rings are unchanged.
+
+### Fixed
+
+- No pi-stacking was ever detected with nucleic-acid receptors (RNA / DNA).
+- Legacy aromaticity rule: impossible ring bond counts corrected (a 5-membered
+  ring now needs 5 aromatic bonds, not 10; unreachable 6- and 4-membered
+  branches removed).
+- Ring perception no longer fails on a hydrogen atom without any bond.
 
 ## [IChem_5.3.10] - 2026-09-23
 
@@ -48,6 +92,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Atom IDs in the IFP Python API (`id_atom_prot` / `id_atom_lig`) are now
   1-based, matching the MOL2 file and the CLI output, instead of the internal
   0-based index.
+- MOL2 molecule names are no longer truncated to 40 characters (up to 200),
+  and leading / trailing whitespace is removed from them.
 
 
 ## [IChem_5.3.8] - 2025-12-08
