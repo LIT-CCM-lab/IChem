@@ -10,14 +10,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [IChem_5.3.11] - 2026-09-25
 
 **Behaviour change:** aromatic ring perception changed on both the ligand and
-the receptor side, and stackings between fused ring systems are now merged by
-default, so IFP / ints results can differ from 5.3.10 (mostly new aromatic
-interactions, see below). `--oldAro` restores the legacy aromaticity criterion
-and `-mergeStack noMerge` reports every ring-ring stacking as before.
+the receptor side, the default maximal pi-stacking distance is now 5.5 A and
+stackings between fused ring systems are merged by default, so IFP / ints /
+grim results can differ from 5.3.10 (mostly new aromatic interactions, see
+below). `--oldAro` restores the legacy aromaticity criterion,
+`-mergeStack noMerge` reports every ring-ring stacking and `-D_Ar 5.0` restores
+the former distance.
 
 (This release was re-issued on the same day: the first 5.3.11 build did not
-merge stackings by default, did not expose the new options in the Python API
-and was built with GCC 8 on UBI 8 and with Debian 12 for the "ubuntu" binary.)
+merge stackings by default, kept 5.0 A for pi-stacking, did not expose the
+ints options in grim nor the new options in the Python API, and was built with
+GCC 8 on UBI 8 and with Debian 12 for the "ubuntu" binary.)
 
 ### Added
 
@@ -28,10 +31,15 @@ and was built with GCC 8 on UBI 8 and with Debian 12 for the "ubuntu" binary.)
   system, interaction type). By default a Face/Face group is replaced by one
   stacking between the planes fitted on all the rings that individually passed
   the stacking criteria (distance between the two centroids, angle between the
-  planes); Edge/Face groups keep their shortest stacking. The IFP and ints
-  option `-mergeStack` selects another behaviour: `closest` keeps the shortest
-  centre-centre stacking of each group, `noMerge` reports every ring-ring
-  stacking. Fingerprint bits are not affected.
+  planes); Edge/Face groups keep their shortest stacking. The IFP, ints and
+  grim option `-mergeStack` selects another behaviour: `closest` keeps the
+  shortest centre-centre stacking of each group, `noMerge` reports every
+  ring-ring stacking. Fingerprint bits are not affected.
+- grim with structure inputs (`refProt refLig compProt compLig` or
+  `refProt refFile dockFile`), where it detects the interactions itself, now
+  accepts the ints interaction options with the same defaults: `-mergeStack`,
+  distance thresholds `-D_*` / `-d_*`, angles `-a_*` / `-at_*`, `--solvent`
+  and `--cofactor`.
 - `--oldAro` global option: legacy aromaticity criterion (ring double /
   aromatic bond count).
 - Python API (`IFPConfig`): `oldAro` (legacy aromaticity, set for the
@@ -40,6 +48,10 @@ and was built with GCC 8 on UBI 8 and with Debian 12 for the "ubuntu" binary.)
 
 ### Changed
 
+- Default maximal pi-stacking (aromatic) distance `-D_Ar`: 5.5 A instead of
+  5.0 A, for all tools. On the test set this about doubles the number of
+  aromatic interactions reported by IFP (fingerprints changed for 128 of 374
+  complexes).
 - Ring aromaticity is now decided by an sp2 + planarity rule: a ring is
   aromatic when all its atoms are sp2 / conjugated (aromatic or sp2 MOL2 type,
   planar N, ring or exocyclic double / aromatic bond, or one lone-pair donor
@@ -67,6 +79,10 @@ and was built with GCC 8 on UBI 8 and with Debian 12 for the "ubuntu" binary.)
   ring now needs 5 aromatic bonds, not 10; unreachable 6- and 4-membered
   branches removed).
 - Ring perception no longer fails on a hydrogen atom without any bond.
+- ints: `-D_Pic` (maximal pi-cation distance, as documented) was rejected and
+  `-d_Pic` set the maximal distance; `-D_Pic` / `-d_Pic` now set the maximal /
+  minimal distance. `-D_WHb` / `-d_WHb` are also accepted, and a non-numeric
+  threshold or angle value is now an error instead of being read as 0.
 
 ## [IChem_5.3.10] - 2026-09-23
 
