@@ -49,10 +49,11 @@ namespace ICMole {
    * residue fused ring system, interaction type) group.
    */
   enum class StackMerge {
-    NONE,     /*!< Report every ring-ring stacking (default) */
+    NONE,     /*!< Report every ring-ring stacking (-mergeStack noMerge) */
     CLOSEST,  /*!< Keep only the shortest centre-centre stacking */
     CENTER    /*!< Face/Face: one stacking between the planes fitted on all the
-                   stacking rings of each system. Edge/Face: as CLOSEST */
+                   stacking rings of each system. Edge/Face: as CLOSEST.
+                   Default of the IFP and ints tools */
   };
 
   struct resbest {
@@ -148,7 +149,8 @@ namespace ICMole {
     void mergeInteractions(InterResults& interResult)const;
 
     /**
-     * @brief Redundant aromatic stacking handling, see StackMerge
+     * @brief Redundant aromatic stacking handling, see StackMerge. The IFP and
+     * ints tools set CENTER by default; other users keep every stacking.
      */
     StackMerge stackMerge = StackMerge::NONE;
 
@@ -468,7 +470,7 @@ namespace ICMole {
       StackMerge getStackMerge() const    { return stackMerge; }
 
       /**
-       * @brief Parse a -mergeStack value ("closest" or "center")
+       * @brief Parse a -mergeStack value ("center", "closest" or "noMerge")
        * @throw MoleExcept on any other value
        */
       static StackMerge parseStackMerge(const std::string& value);

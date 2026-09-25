@@ -36,9 +36,10 @@ void IChemSwitch::helpints() const {
         << "  --newH         Stricter hydrophobic definition: only kept if >50% of nearby" << endl
         << "                 protein atoms are hydrophobic" << endl
         << "  --stdout       Write results to standard output" << endl
-        << "  -mergeStack M  Merge the stackings between two fused ring systems:" << endl
-        << "                 closest (shortest one) or center (Face/Face: one stacking" << endl
-        << "                 between the planes of all stacking rings; Edge/Face: closest)" << endl
+        << "  -mergeStack M  Stackings between two fused ring systems. Default: one" << endl
+        << "                 Face/Face stacking between the planes of all stacking rings" << endl
+        << "                 (Edge/Face: shortest). M = closest (keep the shortest one)" << endl
+        << "                 or noMerge (report every ring-ring stacking)" << endl
         << "  --oldAro       Legacy ring aromaticity perception (ring bond count)" << endl
         << "                 Default: all ring atoms sp2 AND ring planar" << endl
         << endl
@@ -112,6 +113,7 @@ void IChemSwitch::ints() const
         cplx.genGrid(4.5);
 
         Interactions ins(cplx);
+        ins.setStackMerge(StackMerge::CENTER);   // default, -mergeStack to change
 
         if (verbose) cout <<"# SETTING PARAMETERS"<<endl;
         for (std::map<std::string,vector<std::string> >::const_iterator it = Opt_Values.begin(); it != Opt_Values.end(); it++)

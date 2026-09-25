@@ -772,10 +772,11 @@ void fitPlane(const AtomList& atoms, Coords& centroid, Coords& normal)
 
 StackMerge Interactions::parseStackMerge(const std::string& value)
 {
-    if (value == "closest") return StackMerge::CLOSEST;
     if (value == "center")  return StackMerge::CENTER;
+    if (value == "closest") return StackMerge::CLOSEST;
+    if (value == "noMerge") return StackMerge::NONE;
     throw MoleExcept(3020102, "Interactions::parseStackMerge",
-                     "-mergeStack value must be 'closest' or 'center', got '" + value + "'");
+                     "-mergeStack value must be 'closest' or 'noMerge' (default: center), got '" + value + "'");
 }
 
 

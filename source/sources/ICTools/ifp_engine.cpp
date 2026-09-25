@@ -155,7 +155,7 @@ IFPOptions parseIFPOptions(const OptionMap& optionsValues) {
         }
         else if (key == "-mergeStack") {
             if (!hasValue) {
-                throw MoleExcept(9020101, "IChem::IFP", "Option -mergeStack requires a value: closest or center");
+                throw MoleExcept(9020101, "IChem::IFP", "Option -mergeStack requires a value: closest or noMerge");
             }
             options.stackMerge = Interactions::parseStackMerge(value);
         }

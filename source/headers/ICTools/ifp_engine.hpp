@@ -60,8 +60,8 @@ struct IFPOptions {
     // 11 bit mask
     unsigned bitMask = 0;
 
-    // Redundant fused-ring stacking handling (-mergeStack)
-    ICMole::StackMerge stackMerge = ICMole::StackMerge::NONE;
+    // Redundant fused-ring stacking handling (-mergeStack), merged by default
+    ICMole::StackMerge stackMerge = ICMole::StackMerge::CENTER;
 
     InteractionOverrides overrides;
 };
