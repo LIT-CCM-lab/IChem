@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <cmath>
 #include "headers/ICMole/molecule.h"
 #include "headers/ICMole/graph.h"
 #include "headers/ICMole/bond.h"
@@ -226,32 +227,45 @@ void Molecule::ringPerception()
     if (typemol == MoleType::PROTEIN)
     {
         const string AA_AROM =  " PHE TYR HIS TRP dA dG rA rG dC dT rC rU ";
-        string list;
         AtomList alist;
 
         for (ItCRes itR = Residues.begin(); itR != Residues.end(); itR++)
             {
             Residu *res = *itR;
-//            cout << res->getIdentifier() << endl;
-                if (AA_AROM.find(res->getName().substr(0,3)) == string::npos){ continue;}
-                if (res->getName().find("PHE") != string::npos) list=" CD1 CE1 CZ CE2 CD2 CG ";
-                else if (res->getName().find("TYR") != string::npos) list=" CD1 CE1 CZ CE2 CD2 CG ";
-                else if (res->getName().find("HIS") != string::npos) list=" CG CD2 ND1 CE1 NE2 ";
-                else if (res->getName().find("TRP") != string::npos) list=" CD2 CE2 CZ2 CE3 CH2 CZ3 ";
-                else if (res->getName().find("dA dG rA rG") != string::npos) list=" N1 C2 N3 C4 N9 C8 N7 C5 C6 ";
-                else if (res->getName().find("dC dT rC rU") != string::npos) list=" N1 C2 N3 C4 C5 C6 ";
-                alist.clear();
+                const string resName = res->getName();
+                if (AA_AROM.find(resName.substr(0,3)) == string::npos){ continue;}
 
-                for (ItCAtom itA = res->firstAtom(); itA != res->lastAtom();itA++)
+                // One entry per aromatic ring to build for this residue. Purine
+                // bases (dA/dG/rA/rG) are two fused aromatic rings, so they add
+                // both a 6- and a 5-membered ring; everything else adds one ring.
+                // NB: the nucleic-acid cases previously used
+                // res->getName().find("dA dG rA rG"), which searched for that
+                // whole literal string and never matched, so nucleic-acid rings
+                // were never perceived as aromatic (no pi-stacking on RNA/DNA).
+                std::vector<std::string> rings;
+                if (resName.find("PHE") != string::npos) rings.push_back(" CD1 CE1 CZ CE2 CD2 CG ");
+                else if (resName.find("TYR") != string::npos) rings.push_back(" CD1 CE1 CZ CE2 CD2 CG ");
+                else if (resName.find("HIS") != string::npos) rings.push_back(" CG CD2 ND1 CE1 NE2 ");
+                else if (resName.find("TRP") != string::npos) rings.push_back(" CD2 CE2 CZ2 CE3 CH2 CZ3 ");
+                else if (string(" dA dG rA rG ").find(" "+resName+" ") != string::npos)
+                {
+                    rings.push_back(" N1 C2 N3 C4 C5 C6 ");   // 6-membered ring
+                    rings.push_back(" C4 C5 N7 C8 N9 ");       // 5-membered ring
+                }
+                else if (string(" dC dT rC rU ").find(" "+resName+" ") != string::npos)
+                    rings.push_back(" N1 C2 N3 C4 C5 C6 ");
+
+                for (const string& ring : rings)
+                {
+                    alist.clear();
+                    for (ItCAtom itA = res->firstAtom(); itA != res->lastAtom();itA++)
                     {
-                    Atom *atm = *itA;
-                        if (list.find(" "+atm->getName()+" ") == string::npos) continue;
+                        Atom *atm = *itA;
+                        if (ring.find(" "+atm->getName()+" ") == string::npos) continue;
                         alist.push_back(atm);
-
                     }
-
-                if (alist.size() < 3) continue;
-                addCycle(alist);
+                    if (alist.size() >= 3) addCycle(alist);
+                }
             }
         return;
     }
@@ -534,6 +548,78 @@ void Molecule::ringPerception()
 
 
 
+namespace {
+
+// True if the atom is sp2 / contributes to a (hetero)aromatic pi system:
+// an aromatic or sp2 MOL2 atom type, a planar lone-pair heteroatom (amide /
+// planar N), or an atom carrying a double/aromatic bond (ring OR exocyclic, so
+// a ring carbon bearing a =O such as guanine C6 still counts).
+bool atomIsSp2(const Atom& a)
+{
+    const string& t = a.getMOL2Type();
+    if (t.find(".ar") != string::npos) return true;              // *.ar
+    if (t=="C.2" || t=="N.2" || t=="O.2" || t=="S.2" ||          // sp2
+        t=="C.cat" || t=="O.co2" || t=="N.pl3" || t=="N.am")     // conjugating
+        return true;
+    for (size_t i=0; i<a.getNumBond(); ++i)
+    {
+        const Bond* b = a.getBond(i);
+        if (!b) continue;
+        const unsigned int bt = b->getBondType();
+        if (bt==BondType::DOUBLE || bt==BondType::AROMATIC) return true;
+    }
+    return false;
+}
+
+// sp3-typed heteroatom whose lone pair can join a ring pi system (thiophene S,
+// furan O, pyrrole N typed N.3).
+bool isLonePairDonor(const Atom& a)
+{
+    const string& t = a.getMOL2Type();
+    return t=="S.3" || t=="O.3" || t=="N.3";
+}
+
+// True if every ring atom bonded to a is sp2.
+bool ringNeighboursSp2(const Atom& a, const AtomList& ring)
+{
+    for (const Atom* b : ring)
+        if (b != &a && a.hasBondWith(*b) && !atomIsSp2(*b)) return false;
+    return true;
+}
+
+// A ring is planar if every atom lies within tol (Angstrom) of the best-fit
+// plane through the ring centroid. The normal is taken from the largest cross
+// product of centroid vectors, which recovers the true plane normal for a planar
+// ring independently of the atom ordering.
+bool ringIsPlanar(const AtomList& ring, double tol=0.5)
+{
+    const size_t n = ring.size();
+    if (n < 3) return false;
+    Coords c(0,0,0);
+    for (const Atom* a : ring) { c.x+=a->fixpos.x; c.y+=a->fixpos.y; c.z+=a->fixpos.z; }
+    c.x/=n; c.y/=n; c.z/=n;
+    double nx=0, ny=0, nz=0, best=0;
+    for (size_t i=0;i<n;++i) for (size_t j=i+1;j<n;++j)
+    {
+        const double ax=ring[i]->fixpos.x-c.x, ay=ring[i]->fixpos.y-c.y, az=ring[i]->fixpos.z-c.z;
+        const double bx=ring[j]->fixpos.x-c.x, by=ring[j]->fixpos.y-c.y, bz=ring[j]->fixpos.z-c.z;
+        const double cx=ay*bz-az*by, cy=az*bx-ax*bz, cz=ax*by-ay*bx;
+        const double m=cx*cx+cy*cy+cz*cz;
+        if (m>best){best=m; nx=cx; ny=cy; nz=cz;}
+    }
+    if (best < 1e-9) return false;                                // collinear/degenerate
+    const double norm=std::sqrt(nx*nx+ny*ny+nz*nz); nx/=norm; ny/=norm; nz/=norm;
+    double maxdev=0;
+    for (const Atom* a : ring)
+    {
+        const double d=std::fabs((a->fixpos.x-c.x)*nx+(a->fixpos.y-c.y)*ny+(a->fixpos.z-c.z)*nz);
+        if (d>maxdev) maxdev=d;
+    }
+    return maxdev < tol;
+}
+
+} // namespace
+
 void Molecule::addCycle(const AtomList &ListAt)
 {
 
@@ -572,12 +658,40 @@ void Molecule::addCycle(const AtomList &ListAt)
 #ifdef ICHEM_DEBUG
     cout << NbrAtm<< " " << NbrDouble << " " << NbrArom<<endl;
 #endif
-    if ((NbrAtm == 6 && (NbrDouble==3|| NbrArom ==6))// CHECK
-            || (NbrAtm == 6 && (NbrDouble==4 || NbrArom == 8))
-            || (NbrAtm == 4 && (NbrDouble==4 || NbrArom == 8))
-            || (NbrAtm == 5 && (NbrDouble==2 && NbrArom == 2))
-            || (NbrAtm == 5 &&  NbrDouble==2 && NbrArom == 0)// CHECK
-            || (NbrAtm == 5 &&  NbrDouble==0 && NbrArom ==10))
+    // Legacy bond-count heuristic (benzene/pyridine-oriented, --oldAro): counts
+    // ring double / aromatic bonds. Each ring bond is counted once, so a ring of
+    // n atoms has at most n of them; the original impossible branches (6-ring
+    // with 4 doubles or 8 aromatic bonds, 4-ring with 4 doubles or 8 aromatic
+    // bonds, 5-ring with 10 aromatic bonds) are dropped / corrected to 5.
+    const bool bondCountAromatic =
+               (NbrAtm == 6 && (NbrDouble==3 || NbrArom==6))
+            || (NbrAtm == 5 &&  NbrDouble==2 && (NbrArom==0 || NbrArom==2))
+            || (NbrAtm == 5 &&  NbrDouble==0 &&  NbrArom==5);
+
+    // Default perception: a ring is aromatic when every atom is sp2 / part of a
+    // conjugated pi system (double bond ring or exocyclic, aromatic/planar atom
+    // type, or lone-pair heteroatom) AND the ring is planar. This catches
+    // heteroaromatic rings the bond-count rule misses, e.g. guanine's 6-membered
+    // ring (two ring double bonds + the exocyclic C6=O6 carbonyl).
+    // One sp3-typed lone-pair donor (S.3 / O.3 / N.3: thiophene S, furan O,
+    // pyrrole N) is accepted when both its ring neighbours are sp2; two such
+    // donors (dibenzodioxin, thianthrene: 8 pi electrons) are not aromatic.
+    bool isAromatic = bondCountAromatic;
+    if (aromaticityMode == AromaticityMode::SP2_PLANAR)
+    {
+        bool allSp2 = (NbrAtm >= 3);
+        size_t NbrDonor = 0;
+        for (ItCAtom itA = ListAt.begin(); allSp2 && itA != ListAt.end(); ++itA)
+        {
+            if (atomIsSp2(**itA)) continue;
+            if (isLonePairDonor(**itA) && ++NbrDonor == 1
+                    && ringNeighboursSp2(**itA, ListAt)) continue;
+            allSp2 = false;
+        }
+        isAromatic = allSp2 && ringIsPlanar(ListAt);
+    }
+
+    if (isAromatic)
     {
         cycle->setAromatic(true);
         aromaticRes.addAtom(cycle->getCenter());

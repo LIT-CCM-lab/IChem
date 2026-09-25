@@ -12,6 +12,7 @@ using namespace ICMole;
 
  unsigned int Molecule::Rules[NB_MOLETYPE];
  bool Molecule::rules_loaded=false;
+ AromaticityMode Molecule::aromaticityMode=AromaticityMode::SP2_PLANAR;
 
 
 void Molecule::loadRules()

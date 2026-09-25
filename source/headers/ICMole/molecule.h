@@ -10,6 +10,13 @@ namespace ICMole
 {
 struct templateData;
 
+/*!< \brief Ring aromaticity perception model (process-wide, see Molecule::setAromaticityMode) */
+enum class AromaticityMode
+{
+    SP2_PLANAR,   /*!< Default: every ring atom sp2 / conjugated AND ring planar */
+    BOND_COUNT    /*!< Legacy (--oldAro): count ring double / aromatic bonds */
+};
+
 
 class Molecule
 {
@@ -18,6 +25,7 @@ class Molecule
 private:
 
     static bool rules_loaded;
+    static AromaticityMode aromaticityMode;
 
     Molecule(Molecule const &);           // No definition
     Molecule& operator=(Molecule const &);// No definition
@@ -71,6 +79,8 @@ public:
    Coords extremL;
    static unsigned int Rules[NB_MOLETYPE];
    static void loadRules();
+   static void setAromaticityMode(const AromaticityMode mode){aromaticityMode=mode;}
+   static AromaticityMode getAromaticityMode(){return aromaticityMode;}
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////// CONSTRUCTORS ////////////////////////////////

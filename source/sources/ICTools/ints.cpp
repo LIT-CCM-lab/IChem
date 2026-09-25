@@ -36,6 +36,8 @@ void IChemSwitch::helpints() const {
         << "  --newH         Stricter hydrophobic definition: only kept if >50% of nearby" << endl
         << "                 protein atoms are hydrophobic" << endl
         << "  --stdout       Write results to standard output" << endl
+        << "  --oldAro       Legacy ring aromaticity perception (ring bond count)" << endl
+        << "                 Default: all ring atoms sp2 AND ring planar" << endl
         << endl
         << "Thresholds and angles:" << endl
         << "  -D_Hb    N (3.5)  H-bond length (Å)" << endl

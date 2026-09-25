@@ -75,7 +75,9 @@ IChemSwitch::IChemSwitch(const int& argc, char *argv[])
 {
     if (argc == 1) {help();return;}
 
-
+    // Global aromaticity model: reset on every invocation (-F batch mode reuses
+    // the process), --oldAro switches back to the legacy bond-count rules.
+    Molecule::setAromaticityMode(AromaticityMode::SP2_PLANAR);
 
     int TaskType=-1;
     std::string tmpStr,tmpStr2;bool opts=true;
@@ -89,6 +91,11 @@ IChemSwitch::IChemSwitch(const int& argc, char *argv[])
         if (tmpStr.substr(0,2)=="--")
         {
             if (tmpStr =="--verb") {verbose=true;continue;}
+            if (tmpStr =="--oldAro")
+            {
+                Molecule::setAromaticityMode(AromaticityMode::BOND_COUNT);
+                continue;
+            }
             options.clear();
             options.push_back("TRUE");
             Opt_Values.insert(pair<string,vector<string> >(tmpStr,options));
@@ -194,7 +201,9 @@ IChemSwitch::IChemSwitch(const int &argc,const std::vector<std::string>& argv)
 {
     if (argc == 1) {help();return;}
 
-
+    // Global aromaticity model: reset on every invocation (-F batch mode reuses
+    // the process), --oldAro switches back to the legacy bond-count rules.
+    Molecule::setAromaticityMode(AromaticityMode::SP2_PLANAR);
 
     int TaskType=-1;
     std::string tmpStr,tmpStr2;bool opts=true;
@@ -208,6 +217,11 @@ IChemSwitch::IChemSwitch(const int &argc,const std::vector<std::string>& argv)
         if (tmpStr.substr(0,2)=="--")
         {
             if (tmpStr =="--verb") {verbose=true;continue;}
+            if (tmpStr =="--oldAro")
+            {
+                Molecule::setAromaticityMode(AromaticityMode::BOND_COUNT);
+                continue;
+            }
             options.clear();
             options.push_back("TRUE");
             Opt_Values.insert(pair<string,vector<string> >(tmpStr,options));
@@ -315,6 +329,11 @@ void IChemSwitch::help()
 {
     cout << "IChem Version : " << ICHEM_VERSION <<endl;
     cout << "Date : " << ICHEM_RELEASE << endl<<endl;
+    cout << "Global options (before the tool name):" << endl
+         << "  --verb     Verbose output" << endl
+         << "  --oldAro   Legacy ring aromaticity perception (ring double/aromatic" << endl
+         << "             bond count). Default: all ring atoms sp2 AND ring planar" << endl
+         << endl;
     for (size_t i=0; i< ICHEM_TOOLS;i++)
     {
 
