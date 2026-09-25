@@ -1,14 +1,22 @@
 FROM registry.access.redhat.com/ubi8/ubi:8.8
 
-# Python (3.9) and dev headers
+# Toolchain: GCC 13 from gcc-toolset-13. The UBI 8 system compiler is GCC 8,
+# too old for the C++20 code base. Binaries built with a gcc-toolset only need
+# the stock RHEL 8 libstdc++ at run time (newer parts are linked statically),
+# so the RHEL 8 run-time baseline is kept.
+# Python (3.9) and dev headers for the pybind11 module.
 RUN dnf module enable -y python39 && \
     dnf install -y \
-        gcc-c++ \
+        gcc-toolset-13-gcc-c++ \
         cmake \
         make \
         python39 \
         python39-devel \
     && dnf clean all
+
+ENV PATH=/opt/rh/gcc-toolset-13/root/usr/bin:$PATH \
+    CC=/opt/rh/gcc-toolset-13/root/usr/bin/gcc \
+    CXX=/opt/rh/gcc-toolset-13/root/usr/bin/g++
 
 # We make sure /usr/bin/python3 is Python 3.9
 RUN ln -sf /usr/bin/python3.9 /usr/bin/python3
