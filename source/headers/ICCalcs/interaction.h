@@ -16,7 +16,7 @@ namespace ICMole {
     double Dist_Hyd = 4.5; // Hydrophobic maximal distance
     double Dist_Ionic = 4.0; // Ionic maximal distance
     double Dist_Metal = 2.8; // Metal/Acceptor maximal distance
-    double Dist_Arom = 5.0; // Aromatic maximal distance between center
+    double Dist_Arom = 5.0; // Aromatic (pi-stacking) maximal distance
     double Dist_PiCation = 5.0; // PI-Cation maximal distance
     double Dist_WHBond = 3.5; // Weak H-Bond maximal distance
     
@@ -54,6 +54,24 @@ namespace ICMole {
     CENTER    /*!< Face/Face: one stacking between the planes fitted on all the
                    stacking rings of each system. Edge/Face: as CLOSEST.
                    Default of the IFP and ints tools */
+  };
+
+  /**
+   * @brief Interaction detection settings given on the command line of the ints
+   * tool, also used by grim when it detects the interactions itself (structure
+   * inputs): distance thresholds (Angstrom), angles (radian), stacking merge.
+   */
+  struct InteractionSettings {
+    InteractionParameters params;
+    StackMerge stackMerge = StackMerge::CENTER;
+
+    /**
+     * @brief Read one command line option (-d_Hb ... -D_WHb, -a_H ... -at_Pic,
+     * -mergeStack)
+     * @return false when the option is not an interaction setting
+     * @throw MoleExcept on an invalid value
+     */
+    bool parseOption(const std::string& name, const std::string& value);
   };
 
   struct resbest {
@@ -465,6 +483,12 @@ namespace ICMole {
 
 
       
+      // Thresholds, angles and stacking merge in one go (ints / grim options)
+      void applySettings(const InteractionSettings& settings) {
+          params = settings.params;
+          stackMerge = settings.stackMerge;
+      }
+
       // Redundant stacking merging (-mergeStack)
       void setStackMerge(StackMerge mode) { stackMerge = mode; }
       StackMerge getStackMerge() const    { return stackMerge; }

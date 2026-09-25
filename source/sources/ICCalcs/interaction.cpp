@@ -1,6 +1,8 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include <cstdlib>
+#include <map>
 #include <numeric>
 #include <algorithm>
 #include <tuple>
@@ -768,6 +770,39 @@ void fitPlane(const AtomList& atoms, Coords& centroid, Coords& normal)
 }
 
 } // namespace
+
+
+bool InteractionSettings::parseOption(const std::string& name, const std::string& value)
+{
+    if (name == "-mergeStack") {
+        stackMerge = Interactions::parseStackMerge(value);
+        return true;
+    }
+
+    static const std::map<std::string, double InteractionParameters::*> numeric = {
+        {"-D_Hb",  &InteractionParameters::Dist_H},      {"-d_Hb",  &InteractionParameters::dist_H},
+        {"-D_Hyd", &InteractionParameters::Dist_Hyd},    {"-d_Hyd", &InteractionParameters::dist_Hyd},
+        {"-D_Io",  &InteractionParameters::Dist_Ionic},  {"-d_Io",  &InteractionParameters::dist_Ionic},
+        {"-D_Me",  &InteractionParameters::Dist_Metal},  {"-d_Me",  &InteractionParameters::dist_Metal},
+        {"-D_Ar",  &InteractionParameters::Dist_Arom},   {"-d_Ar",  &InteractionParameters::dist_Arom},
+        {"-D_Pic", &InteractionParameters::Dist_PiCation}, {"-d_Pic", &InteractionParameters::dist_PiCation},
+        {"-D_WHb", &InteractionParameters::Dist_WHBond}, {"-d_WHb", &InteractionParameters::dist_WHBond},
+        {"-a_H",    &InteractionParameters::Angl_H},       {"-at_H",    &InteractionParameters::AngT_H},
+        {"-a_ArFF", &InteractionParameters::Angl_AromFF},  {"-at_ArFF", &InteractionParameters::AngT_AromFF},
+        {"-a_ArEF", &InteractionParameters::Angl_AromEF},  {"-at_ArEF", &InteractionParameters::AngT_AromEF},
+        {"-a_Pic",  &InteractionParameters::Angl_PiCation},{"-at_Pic",  &InteractionParameters::AngT_PiCation}};
+
+    const auto it = numeric.find(name);
+    if (it == numeric.end()) return false;
+
+    char* end = nullptr;
+    const double number = std::strtod(value.c_str(), &end);
+    if (value.empty() || *end != '\0' || !std::isfinite(number))
+        throw MoleExcept(3020103, "InteractionSettings::parseOption",
+                         "Invalid numeric value for " + name + ": '" + value + "'");
+    params.*(it->second) = number;
+    return true;
+}
 
 
 StackMerge Interactions::parseStackMerge(const std::string& value)

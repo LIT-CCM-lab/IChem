@@ -30,6 +30,18 @@ void IChemSwitch::helpgrim() const {
         << "  --newH         Stricter hydrophobic definition: only kept if >50% of nearby" << endl
         << "                 protein atoms are hydrophobic" << endl
         << endl
+        << "Interaction detection (structure inputs: refProt refLig compProt compLig" << endl
+        << "or refProt refFile dockFile), same options and defaults as ints:" << endl
+        << "  -mergeStack M  Stackings between two fused ring systems. Default: one" << endl
+        << "                 Face/Face stacking between the planes of all stacking rings" << endl
+        << "                 (Edge/Face: shortest). M = closest or noMerge" << endl
+        << "  --noMerge      Don't merge overlapping hydrophobic interactions" << endl
+        << "  --solvent      Remove water residues   --cofactor  Remove cofactors" << endl
+        << "  -D_Hb (3.5) -D_Hyd (4.5) -D_Io (4.0) -D_Me (2.8) -D_Ar (5.0) -D_Pic (5.0)" << endl
+        << "  -D_WHb (3.5)   Maximal lengths (Å); -d_* (same suffixes) minimal lengths" << endl
+        << "  -a_H -at_H -a_ArFF -at_ArFF -a_ArEF -at_ArEF -a_Pic -at_Pic N" << endl
+        << "                 Angles and tolerances (rad), see ints" << endl
+        << endl
         << "Alignment options:" << endl
         << "  -max N (1)     Maximum number of output cliques" << endl
         << "  -size N (3)    Minimum clique size" << endl
@@ -64,8 +76,10 @@ void IChemSwitch::grim() const
     ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
 
-    Residu::Rules[MoleType::PROTEIN][ResType::WATER]=MoleType::PROTEIN;
-    Residu::Rules[MoleType::PROTEIN][ResType::COFACTOR]=MoleType::PROTEIN;
+    // Interaction detection settings (ints options), used when grim detects
+    // the interactions itself from structures (3 or 4 input files)
+    InteractionSettings intsSettings;
+    bool sol=true, cof=true;   // keep solvent / cofactors as protein (--solvent / --cofactor)
 
 
 
@@ -187,6 +201,9 @@ void IChemSwitch::grim() const
             else if (opt_name.compare("--multim2")      == 0) { multimol2=true;}
             else if (opt_name.compare("--noMerge")      == 0) { merge=false;}
             else if (opt_name.compare("--newH")         == 0) { oldh=false;}
+            else if (opt_name.compare("--solvent")      == 0) { sol=false;}
+            else if (opt_name.compare("--cofactor")     == 0) { cof=false;}
+            else if (intsSettings.parseOption(opt_name, value)) {}
             else if (opt_name.compare("--v")            == 0) { verbose2=true;}
             else if (opt_name.compare("--vv")           == 0) { verbose=true;}
             else if (opt_name.compare("-dsame")         == 0) { dif_dsame = atof(value.c_str());}
@@ -249,6 +266,9 @@ void IChemSwitch::grim() const
         }
     }
 
+    if (sol) Residu::Rules[MoleType::PROTEIN][ResType::WATER]=MoleType::PROTEIN;
+    if (cof) Residu::Rules[MoleType::PROTEIN][ResType::COFACTOR]=MoleType::PROTEIN;
+
     if (!multimol2){
         if (InputSize != 3){
             if (InputSize == 4)   // Case where we have protein/ligand file
@@ -290,8 +310,11 @@ void IChemSwitch::grim() const
                 if (CName.length()==0) CName=complexC.getMole(MoleType::PROTEIN)->getName();
 
                 Interactions interR(complexR);
+
+                interR.applySettings(intsSettings);
                 interR.detectInteractions(*complexR.getMole(MoleType::LIGAND),reference,merge,oldh);
                 Interactions interC(complexC);
+                interC.applySettings(intsSettings);
                 interC.detectInteractions(*complexC.getMole(MoleType::LIGAND),comparison,merge,oldh);
 
                 interR.interToMOL2(reference,match_lig,match_prot,match_cent,match_merg);
@@ -576,6 +599,8 @@ void IChemSwitch::grim() const
                 if (RName.length() == 0) RName = complexR.getMole(MoleType::PROTEIN)->getName();
 
                 Interactions interR(complexR);
+
+                interR.applySettings(intsSettings);
                 interR.detectInteractions(*complexR.getMole(MoleType::LIGAND),reference,merge,oldh);
 
                 interR.interToMOL2(reference,match_lig,match_prot,match_cent,match_merg);
@@ -607,6 +632,8 @@ void IChemSwitch::grim() const
                     complexC.genGrid(4.5);
 
                     Interactions interC(complexC);
+
+                    interC.applySettings(intsSettings);
                     interC.detectInteractions(*complexC.getMole(MoleType::LIGAND),comparison,merge,oldh);
                     interC.interToMOL2(comparison,match_lig,match_prot,match_cent,match_merg);
 
@@ -817,6 +844,7 @@ void IChemSwitch::grim() const
                     complexC.genGrid(1.5);
                     complexC.genGrid(4.5);
                     Interactions interC(complexC);
+                    interC.applySettings(intsSettings);
                     InterResults *interRes= new InterResults[nLigand+1];
                     std::vector<string> names;
                     size_t currLig=0;
@@ -1016,6 +1044,7 @@ void IChemSwitch::grim() const
                         ligand.checkMOL2();
                         ligand.ringPerception();
                         Interactions interR(complexR);
+                        interR.applySettings(intsSettings);
                         interR.detectInteractions(ligand, reference, merge, oldh);
                         interR.interToMOL2(reference, match_lig, match_prot, match_cent, match_merg);
                         if (verbose) {
@@ -1049,6 +1078,8 @@ void IChemSwitch::grim() const
                             complexC.genGrid(4.5);
 
                             Interactions interC(complexC);
+
+                            interC.applySettings(intsSettings);
                             interC.detectInteractions(*complexR.getMole(MoleType::LIGAND), comparison, merge, oldh);
                             interC.interToMOL2(comparison, match_lig, match_prot, match_cent, match_merg);
 
@@ -1268,6 +1299,7 @@ void IChemSwitch::grim() const
                             complexC.genGrid(1.5);
                             complexC.genGrid(4.5);
                             Interactions interC(complexC);
+                            interC.applySettings(intsSettings);
                             InterResults *interRes = new InterResults[nLigand + 1];
                             std::vector <string> names;
                             size_t currLig = 0;
@@ -1505,6 +1537,7 @@ void IChemSwitch::grim() const
                 ligand.checkMOL2();
                 ligand.ringPerception();
                 Interactions interR(complexR);
+                interR.applySettings(intsSettings);
                 interR.detectInteractions(ligand,referenceM,merge,oldh);
                 interR.interToMOL2(referenceM,match_lig,match_prot,match_cent,match_merg);
                 if (verbose){
@@ -1538,6 +1571,7 @@ void IChemSwitch::grim() const
                     complexMC.genGrid(1.5);
                     complexMC.genGrid(4.5);
                     Interactions interC(complexMC);
+                    interC.applySettings(intsSettings);
                     interC.detectInteractions(LigandC,comparisonM,merge,oldh);
                     interC.interToMOL2(comparisonM,match_lig,match_prot,match_cent,match_merg);
 

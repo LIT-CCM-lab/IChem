@@ -50,6 +50,8 @@ void IChemSwitch::helpints() const {
         << "  -D_Me    N (2.8)  Metal/Acceptor length (Å)" << endl
         << "  -D_Ar    N (5.0)  Aromatic interaction length (Å)" << endl
         << "  -D_Pic   N (5.0)  Pi-Cation interaction length (Å)" << endl
+        << "  -D_WHb   N (3.5)  Weak H-bond length (Å)" << endl
+        << "  -d_Hb -d_Hyd -d_Io -d_Me -d_Ar -d_Pic -d_WHb N  Minimal lengths (Å)" << endl
         << "  -a_H     N (Pi)   H-bond angle (rad)" << endl
         << "  -at_H    N (Pi/3) H-bond tolerance (rad)" << endl
         << "  -a_ArFF  N (Pi)   Aromatic Face-to-Face angle (rad)" << endl
@@ -113,7 +115,7 @@ void IChemSwitch::ints() const
         cplx.genGrid(4.5);
 
         Interactions ins(cplx);
-        ins.setStackMerge(StackMerge::CENTER);   // default, -mergeStack to change
+        InteractionSettings settings;   // thresholds, angles, stacking merge
 
         if (verbose) cout <<"# SETTING PARAMETERS"<<endl;
         for (std::map<std::string,vector<std::string> >::const_iterator it = Opt_Values.begin(); it != Opt_Values.end(); it++)
@@ -127,31 +129,14 @@ void IChemSwitch::ints() const
 
 
             //-type -name fgps -format -name -a_H -at_H -a_ArFF -at_ArFF -a_ArEF -at_ArEF --noMerge
-            if (opt_name.compare("-d_Hb")          == 0) ins.setMinDist_H         (atof(value.c_str()));
-            else if (opt_name.compare("-d_Hyd")    == 0) ins.setMinDist_Hyd       (atof(value.c_str()));
-            else if (opt_name.compare("-d_Io")     == 0) ins.setMinDist_Ionic     (atof(value.c_str()));
-            else if (opt_name.compare("-d_Me")     == 0) ins.setMinDist_Metal     (atof(value.c_str()));
-            else if (opt_name.compare("-d_Ar")     == 0) ins.setMinDist_Arom      (atof(value.c_str()));
-            else if (opt_name.compare("-D_Hb")     == 0) ins.setDist_H         (atof(value.c_str()));
-            else if (opt_name.compare("-D_Hyd")    == 0) ins.setDist_Hyd       (atof(value.c_str()));
-            else if (opt_name.compare("-D_Io")     == 0) ins.setDist_Ionic     (atof(value.c_str()));
-            else if (opt_name.compare("-D_Me")     == 0) ins.setDist_Metal     (atof(value.c_str()));
-            else if (opt_name.compare("-D_Ar")     == 0) ins.setDist_Arom      (atof(value.c_str()));
-            else if (opt_name.compare("-a_H")      == 0) ins.setAngl_H         (atof(value.c_str()));
-            else if (opt_name.compare("-at_H")     == 0) ins.setAngl_Tol_H     (atof(value.c_str()));
-            else if (opt_name.compare("-d_Pic")    == 0) ins.setDist_PICation  (atof(value.c_str()));
-            else if (opt_name.compare("-a_Pic")    == 0) ins.setAngl_PICation  (atof(value.c_str()));
-            else if (opt_name.compare("-at_Pic")   == 0) ins.setAngl_Tol_PICation(atof(value.c_str()));
-            else if (opt_name.compare("-a_ArFF")   == 0) ins.setAngl_AromFF    (atof(value.c_str()));
-            else if (opt_name.compare("-at_ArFF")  == 0) ins.setAngl_Tol_AromFF(atof(value.c_str()));
-            else if (opt_name.compare("-a_ArEF")   == 0) ins.setAngl_AromEF    (atof(value.c_str()));
-            else if (opt_name.compare("-at_ArEF")  == 0) ins.setAngl_Tol_AromEF(atof(value.c_str()));
-            else if (opt_name.compare("-name")     == 0) out_name=value;
+            // -d_* -D_* -a_* -at_* thresholds and -mergeStack
+            if (settings.parseOption(opt_name, value)) continue;
+
+            if (opt_name.compare("-name")     == 0) out_name=value;
             else if (opt_name.compare("-logf")     == 0) logfile =value;
             else if (opt_name.compare("--stdout")  == 0) stdout =true;
             else if (opt_name.compare("--newH")    == 0) oldh=false;
             else if (opt_name.compare("--noMerge") == 0) merge=false;
-            else if (opt_name.compare("-mergeStack")== 0) ins.setStackMerge(Interactions::parseStackMerge(value));
             else if (opt_name.compare("--solvent") == 0) sol=false;
             else if (opt_name.compare("--cofactor")== 0) cof=false;
             else if (opt_name.compare("--enf")     == 0) enf=true;
@@ -190,6 +175,7 @@ void IChemSwitch::ints() const
             }
             else throw MoleExcept(9010304,"IChem::runInts","Unrecognized option : "+opt_name);
         }
+        ins.applySettings(settings);
         if (verbose)
         {
             cout << "#  ||-->          H-Bond Distance threshold : "<< ins.getDist_H()         <<endl;
