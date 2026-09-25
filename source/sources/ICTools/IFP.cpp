@@ -42,7 +42,7 @@ void IChemSwitch::helpIFP() const {
         << "  -D_Hyd   N (4.5)   Hydrophobic\n"
         << "  -D_Io    N (4.0)   Ionic\n"
         << "  -D_Me    N (2.8)   Metal/Acceptor\n"
-        << "  -D_Ar    N (5.0)   Aromatic\n"
+        << "  -D_Ar    N (5.5)   Aromatic\n"
         << "  -D_Pic   N (5.0)   Pi-Cation\n"
         << "  -D_WHb   N (3.5)   Weak Hbond\n"
         << "\n"

@@ -16,7 +16,7 @@ namespace ICMole {
     double Dist_Hyd = 4.5; // Hydrophobic maximal distance
     double Dist_Ionic = 4.0; // Ionic maximal distance
     double Dist_Metal = 2.8; // Metal/Acceptor maximal distance
-    double Dist_Arom = 5.0; // Aromatic (pi-stacking) maximal distance
+    double Dist_Arom = 5.5; // Aromatic (pi-stacking) maximal distance
     double Dist_PiCation = 5.0; // PI-Cation maximal distance
     double Dist_WHBond = 3.5; // Weak H-Bond maximal distance
     

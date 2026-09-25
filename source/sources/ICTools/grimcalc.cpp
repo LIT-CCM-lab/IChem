@@ -37,7 +37,7 @@ void IChemSwitch::helpgrim() const {
         << "                 (Edge/Face: shortest). M = closest or noMerge" << endl
         << "  --noMerge      Don't merge overlapping hydrophobic interactions" << endl
         << "  --solvent      Remove water residues   --cofactor  Remove cofactors" << endl
-        << "  -D_Hb (3.5) -D_Hyd (4.5) -D_Io (4.0) -D_Me (2.8) -D_Ar (5.0) -D_Pic (5.0)" << endl
+        << "  -D_Hb (3.5) -D_Hyd (4.5) -D_Io (4.0) -D_Me (2.8) -D_Ar (5.5) -D_Pic (5.0)" << endl
         << "  -D_WHb (3.5)   Maximal lengths (Å); -d_* (same suffixes) minimal lengths" << endl
         << "  -a_H -at_H -a_ArFF -at_ArFF -a_ArEF -at_ArEF -a_Pic -at_Pic N" << endl
         << "                 Angles and tolerances (rad), see ints" << endl

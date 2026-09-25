@@ -48,7 +48,7 @@ void IChemSwitch::helpints() const {
         << "  -D_Hyd   N (4.5)  Hydrophobic length (Å)" << endl
         << "  -D_Io    N (4.0)  Ionic length (Å)" << endl
         << "  -D_Me    N (2.8)  Metal/Acceptor length (Å)" << endl
-        << "  -D_Ar    N (5.0)  Aromatic interaction length (Å)" << endl
+        << "  -D_Ar    N (5.5)  Aromatic interaction length (Å)" << endl
         << "  -D_Pic   N (5.0)  Pi-Cation interaction length (Å)" << endl
         << "  -D_WHb   N (3.5)  Weak H-bond length (Å)" << endl
         << "  -d_Hb -d_Hyd -d_Io -d_Me -d_Ar -d_Pic -d_WHb N  Minimal lengths (Å)" << endl
