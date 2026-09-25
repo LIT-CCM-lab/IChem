@@ -221,62 +221,78 @@ void saveM( Graph& graph, const unsigned int N)
  * Moreover, atomic properties will be set to tell whether the atom is within
  * a scaffold, a substituent or a linker.
  *
+ * Receptors (proteins, nucleic acids, cofactors) go through the same graph
+ * perception as ligands: rings are never deduced from residue or atom names,
+ * which are free text in the input file. (Previously the receptor rings were
+ * only built for residues named PHE TYR HIS TRP dA dG rA rG dC dT rC rU, so
+ * standard PDB nucleotide names, modified bases, HIS variants, the TRP
+ * 5-membered ring and cofactors were never perceived.)
+ *
  */
-void Molecule::ringPerception() 
+void Molecule::ringPerception()
 {
-    if (typemol == MoleType::PROTEIN)
+////////////////////////////////////////////////////////////
+////////// Step 1 : Keep the 2-core of the heavy-atom graph :
+////////////////////////////////////////////////////////////
+/// Atoms that cannot be in a ring are removed iteratively (a vertex with at
+/// most one edge, i.e. chain ends, layer after layer) and flagged substituent.
+/// This used to be done by deleting them from the full graph, one layer per
+/// pass, each deletion scanning the whole edge list: quadratic in the number of
+/// atoms (about 1 s on a 20k-atom receptor). The remaining 2-core does not
+/// depend on the removal order, so it is computed here in a single pass on the
+/// bond list, and only the 2-core is turned into a graph, with the same vertex
+/// and edge order as the full graph had after the deletions: same cycles.
+    std::vector<int> degree(maxNumAtom, -1);   // -1 : not in the graph (H, unused)
+    std::vector<std::vector<unsigned int> > neighbours(maxNumAtom);
+    for (const Atom* atm : Atoms)
+        if (atm->isUsed() && !atm->isHydrogen()) degree[atm->getNum()] = 0;
+    for (const Bond* bd : Bonds)
     {
-        const string AA_AROM =  " PHE TYR HIS TRP dA dG rA rG dC dT rC rU ";
-        AtomList alist;
-
-        for (ItCRes itR = Residues.begin(); itR != Residues.end(); itR++)
-            {
-            Residu *res = *itR;
-                const string resName = res->getName();
-                if (AA_AROM.find(resName.substr(0,3)) == string::npos){ continue;}
-
-                // One entry per aromatic ring to build for this residue. Purine
-                // bases (dA/dG/rA/rG) are two fused aromatic rings, so they add
-                // both a 6- and a 5-membered ring; everything else adds one ring.
-                // NB: the nucleic-acid cases previously used
-                // res->getName().find("dA dG rA rG"), which searched for that
-                // whole literal string and never matched, so nucleic-acid rings
-                // were never perceived as aromatic (no pi-stacking on RNA/DNA).
-                std::vector<std::string> rings;
-                if (resName.find("PHE") != string::npos) rings.push_back(" CD1 CE1 CZ CE2 CD2 CG ");
-                else if (resName.find("TYR") != string::npos) rings.push_back(" CD1 CE1 CZ CE2 CD2 CG ");
-                else if (resName.find("HIS") != string::npos) rings.push_back(" CG CD2 ND1 CE1 NE2 ");
-                else if (resName.find("TRP") != string::npos) rings.push_back(" CD2 CE2 CZ2 CE3 CH2 CZ3 ");
-                else if (string(" dA dG rA rG ").find(" "+resName+" ") != string::npos)
-                {
-                    rings.push_back(" N1 C2 N3 C4 C5 C6 ");   // 6-membered ring
-                    rings.push_back(" C4 C5 N7 C8 N9 ");       // 5-membered ring
-                }
-                else if (string(" dC dT rC rU ").find(" "+resName+" ") != string::npos)
-                    rings.push_back(" N1 C2 N3 C4 C5 C6 ");
-
-                for (const string& ring : rings)
-                {
-                    alist.clear();
-                    for (ItCAtom itA = res->firstAtom(); itA != res->lastAtom();itA++)
-                    {
-                        Atom *atm = *itA;
-                        if (ring.find(" "+atm->getName()+" ") == string::npos) continue;
-                        alist.push_back(atm);
-                    }
-                    if (alist.size() >= 3) addCycle(alist);
-                }
-            }
-        return;
+        const unsigned int n1 = bd->getAtom1().getNum(), n2 = bd->getAtom2().getNum();
+        if (degree[n1] < 0 || degree[n2] < 0) continue;
+        ++degree[n1]; ++degree[n2];
+        neighbours[n1].push_back(n2);
+        neighbours[n2].push_back(n1);
     }
 
+    std::vector<char> pruned(maxNumAtom, 0);
+    std::vector<unsigned int> toPrune;
+    for (const Atom* atm : Atoms)
+        if (degree[atm->getNum()] >= 0 && degree[atm->getNum()] <= 1) toPrune.push_back(atm->getNum());
+    while (!toPrune.empty())
+    {
+        const unsigned int n = toPrune.back();
+        toPrune.pop_back();
+        if (pruned[n]) continue;
+        pruned[n] = 1;
+        for (unsigned int m : neighbours[n])
+            if (!pruned[m] && --degree[m] == 1) toPrune.push_back(m);
+    }
 
-
-////////////////////////////////////////////////////////////
-//////////Step 1 : Create the graph without hydrogen :
-////////////////////////////////////////////////////////////
     Graph graph(Atoms.size(),Bonds.size());
-    createMoleGraph(graph,true,false);
+    std::vector<Vertex*> AtoV(maxNumAtom, (Vertex*)NULL);
+    for (Atom* atm : Atoms)
+    {
+        const unsigned int n = atm->getNum();
+        if (degree[n] < 0) continue;
+        if (pruned[n])
+        {
+#ifdef ICHEM_DEBUG
+            cout << "Delete : "<< atm->getIdentifier()<<endl;
+#endif
+            atm->props.setSubstituent(true);
+            continue;
+        }
+        Vertex &ve = graph.addVertex();
+        ve.setAtom(atm);
+        AtoV[n] = &ve;
+    }
+    for (Bond* bd : Bonds)
+    {
+        Vertex *ve1 = AtoV[bd->getAtom1().getNum()], *ve2 = AtoV[bd->getAtom2().getNum()];
+        if (ve1 == (Vertex*)NULL || ve2 == (Vertex*)NULL) continue;
+        graph.addEdge(*ve1, *ve2).setBond(bd);
+    }
 
 
     // STEP 2 : Create an atom to vertex mapping :
@@ -286,48 +302,6 @@ void Molecule::ringPerception()
         const Vertex &ve = graph.getVertex(i);
         VtoA.push_back(ve.getAtom());
     }
-
-
-////////////////////////////////////////////////////////////
-////////// Step 2 : Delete all vertex that have only one edge :
-////////////////////////////////////////////////////////////
-    bool changes=true;
-// List of vertex that will be deleted
-    VertexList toDel;
-
-    // While we find a vertex to delete, we continue
-    while(changes)
-    {
-        changes=false;
-        toDel.clear();
-        // Scanning each vertex of the graph:
-        for (ItVert it  = graph.firstVertex();
-             it != graph.lastVertex();
-             ++it)
-        {
-            Vertex &ve = **it;
-            // To check if they have 1 edge
-            if (ve.numEdges() > 1)continue;
-
-#ifdef ICHEM_DEBUG
-            cout << "Delete : "<< ve.getAtom()->getIdentifier()<<endl;
-#endif
-            // If so, it is a substituent and we delete the vertex:
-            ve.getAtom()->props.setSubstituent(true);
-            toDel.push_back(&ve);
-
-        }
-        // When no vertex can be found we stop:
-        if (toDel.empty())break;
-        changes=true;
-#ifdef ICHEM_DEBUG
-        cout << "Graph size before : "<< graph.numVertex()<<endl;
-#endif
-        graph.delVertexs(toDel);
-#ifdef ICHEM_DEBUG
-        cout << "Graph size after : "<< graph.numVertex()<<endl;
-#endif
-    }// END WHILE CHANGE
 
 
 ////////////////////////////////////////////////////////////
@@ -526,7 +500,7 @@ void Molecule::ringPerception()
   for (ItCAtom itA = Atoms.begin(); itA != Atoms.end(); itA++)
   {
       Atom &atmA = **itA;
-      if (!atmA.isHydrogen() || atmA.props.isDummy())continue;
+      if (!atmA.isHydrogen() || atmA.props.isDummy() || atmA.getNumBond() == 0)continue;
       const Atom &atmB = atmA.getAtomLinked(0);
       if (atmB.props.isScaffold()) atmA.props.setScaffold(true);
       else if (atmB.props.isLinker())atmA.props.setLinker(true);
