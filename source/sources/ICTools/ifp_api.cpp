@@ -30,6 +30,23 @@ static void pruneMergedInteractions(ICMole::InterResults& res) {
 
 namespace {
 
+// Ring aromaticity model for the duration of one API call. It is a process-wide
+// Molecule setting (the CLI sets it from --oldAro) applied when molecules are
+// loaded, so it is set before any file is read and restored afterwards.
+class AromaticityModeScope {
+public:
+    explicit AromaticityModeScope(const bool oldAromaticity)
+        : previous(Molecule::getAromaticityMode()) {
+        Molecule::setAromaticityMode(oldAromaticity ? AromaticityMode::BOND_COUNT
+                                                    : AromaticityMode::SP2_PLANAR);
+    }
+    ~AromaticityModeScope() { Molecule::setAromaticityMode(previous); }
+    AromaticityModeScope(const AromaticityModeScope&) = delete;
+    AromaticityModeScope& operator=(const AromaticityModeScope&) = delete;
+private:
+    AromaticityMode previous;
+};
+
 // Convert IFPConfig -> IFPOptions (via the same parser used by the CLI)
 IFPInternal::IFPOptions makeIFPOptionsFromConfig(const IFPAPI::IFPConfig& cfg) {
     using namespace IFPInternal;
@@ -66,6 +83,9 @@ IFPInternal::IFPOptions makeIFPOptionsFromConfig(const IFPAPI::IFPConfig& cfg) {
     }
     if (!cfg.oldHydrophobic) {
         optMap["--newH"] = {};
+    }
+    if (cfg.mergeStack) {
+        optMap["-mergeStack"] = {*cfg.mergeStack};
     }
 
     // Helper to add numeric options if set
@@ -332,6 +352,7 @@ static std::vector<IFPAPI::LigandFingerprint> buildLigandFingerprints(const std:
 namespace IFPAPI {
 
 std::vector<LigandInteractions> compute_ifp_interactions(const std::string& protein_file, const std::string& ligand_file, const IFPConfig& cfg) {
+    const AromaticityModeScope aromaticity(cfg.oldAromaticity);
     
     try {
         auto options = makeIFPOptionsFromConfig(cfg);
@@ -346,6 +367,7 @@ std::vector<LigandInteractions> compute_ifp_interactions(const std::string& prot
 }
 
 std::vector<LigandFingerprint> compute_ifp_fingerprints(const std::string& protein_file, const std::string& ligand_file, const IFPConfig& cfg) {
+    const AromaticityModeScope aromaticity(cfg.oldAromaticity);
     
     using namespace IFPInternal;
 
@@ -368,6 +390,7 @@ std::vector<LigandFingerprint> compute_ifp_fingerprints(const std::string& prote
 }
 
 std::vector<TanimotoScore> compute_ifp_tanimoto(const std::string& protein_file, const std::string& ligand_file, const std::string& reference_file, const IFPConfig& cfg) {
+    const AromaticityModeScope aromaticity(cfg.oldAromaticity);
     
     using namespace IFPInternal;
 
@@ -427,6 +450,7 @@ std::vector<TanimotoScore> compute_ifp_tanimoto(const std::string& protein_file,
 
 
 std::vector<TanimotoScore> compute_ifp_tanimoto_ensembles(const std::string& protein1_file, const std::string& ligand1_file, const std::string& protein2_file, const std::string& ligand2_file, const IFPConfig& cfg) {
+    const AromaticityModeScope aromaticity(cfg.oldAromaticity);
     
     using namespace IFPInternal;
 

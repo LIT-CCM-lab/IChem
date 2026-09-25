@@ -64,6 +64,13 @@ struct IFPConfig {
     bool includeCofactor = true;
     bool oldHydrophobic  = true; // --newH for false
 
+    // Aromaticity: legacy ring bond-count criterion (--oldAro)
+    bool oldAromaticity = false;
+
+    // Fused ring-system stackings (-mergeStack): unset = merged at the plane
+    // centres (default), "closest" = shortest stacking, "noMerge" = report all
+    std::optional<std::string> mergeStack;
+
     // Distances (optional)
     std::optional<double> D_Hb, D_Hyd, D_Io, D_Me, D_Ar, D_Pic, D_WHb;
     std::optional<double> d_Hb, d_Hyd, d_Io, d_Me, d_Ar, d_Pic, d_WHb;

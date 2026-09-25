@@ -44,6 +44,8 @@ Python bindings for IChem IFP module:
         .def_readwrite("includeSolvent",&IFPConfig::includeSolvent, "Remove water residues")
         .def_readwrite("includeCofactor",&IFPConfig::includeCofactor, "Remove cofactors")
         .def_readwrite("oldHydrophobic",&IFPConfig::oldHydrophobic, "Use legacy hydrophobic definition")
+        .def_readwrite("oldAro",&IFPConfig::oldAromaticity, "Use legacy aromaticity perception (ring bond count) instead of sp2 + planarity")
+        .def_readwrite("mergeStack",&IFPConfig::mergeStack, "Stackings between two fused ring systems: None (default, merged at the ring-system plane centres), 'closest' (shortest one) or 'noMerge' (report all)")
 
         // max distances (Å)
         .def_readwrite("D_Hb",&IFPConfig::D_Hb, "Max H-bond distance (Å)")
