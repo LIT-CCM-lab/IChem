@@ -1,5 +1,9 @@
 #include <iostream>
 #include <iomanip>
+#include <cmath>
+#include <numeric>
+#include <algorithm>
+#include <tuple>
 #include "headers/ICCalcs/interaction.h"
 #include "headers/ICMole/complex.h"
 #include "headers/ICMole/box.h"
@@ -16,6 +20,10 @@ unsigned int Interactions::path_dist_size;
 unsigned int Interactions::size_triplets;
 bool Interactions::Load_triplet=false;
 int Interactions::vect_list[1000][1000];
+
+const Coords& InterPoint::protPoint() const { return stackMerged ? protCentroid : Prot_Ref->fixpos; }
+const Coords& InterPoint::ligPoint()  const { return stackMerged ? ligCentroid  : Lig_Ref->fixpos; }
+
 
 Interactions::Interactions(ICMole::Complex &cp)
     :complex(cp) 
@@ -215,6 +223,10 @@ void Interactions::detectInteractions(Molecule& ligand, InterResults& interResul
     }
 
     processAromaticInteractions(ligand, neighborSearch, proteinAtoms, max_allowed_dist, interResult, wInterType, NInter, min_allowed_dist);
+
+    if (stackMerge != StackMerge::NONE) {
+        mergeStackings(ligand, interResult);
+    }
 
     if (wMerge) {
         mergeInteractions(interResult);
@@ -675,6 +687,222 @@ void Interactions::processHydrophobicInteraction(Atom& atomL, Atom& atomP, doubl
 }
 
 
+namespace {
+
+// Group rings into fused systems: rings sharing a bond (two atoms) belong to
+// the same system, transitively. Returns one system id per ring.
+std::vector<size_t> fusedSystems(const std::vector<Cycle*>& rings)
+{
+    std::vector<size_t> parent(rings.size());
+    std::iota(parent.begin(), parent.end(), 0);
+    auto find = [&](size_t i) {
+        while (parent[i] != i) i = parent[i] = parent[parent[i]];
+        return i;
+    };
+
+    for (size_t i = 0; i < rings.size(); ++i)
+        for (size_t j = i + 1; j < rings.size(); ++j)
+        {
+            size_t shared = 0;
+            for (ItCAtom itA = rings[i]->first(); itA != rings[i]->end(); ++itA)
+                if (rings[j]->hasAtom(**itA)) ++shared;
+            if (shared >= 2) parent[find(i)] = find(j);
+        }
+
+    std::vector<size_t> system(rings.size());
+    for (size_t i = 0; i < rings.size(); ++i) system[i] = find(i);
+    return system;
+}
+
+// Least-squares plane through the atoms: centroid, and unit normal taken as the
+// eigenvector of the smallest eigenvalue of the coordinate covariance matrix
+// (cyclic Jacobi on the symmetric 3x3 matrix).
+void fitPlane(const AtomList& atoms, Coords& centroid, Coords& normal)
+{
+    double cx = 0, cy = 0, cz = 0;
+    for (const Atom* a : atoms) { cx += a->fixpos.x; cy += a->fixpos.y; cz += a->fixpos.z; }
+    const double n = static_cast<double>(atoms.size());
+    cx /= n; cy /= n; cz /= n;
+    centroid.setCoords(cx, cy, cz);
+
+    double m[3][3] = {{0,0,0},{0,0,0},{0,0,0}};
+    for (const Atom* a : atoms)
+    {
+        const double d[3] = {a->fixpos.x - cx, a->fixpos.y - cy, a->fixpos.z - cz};
+        for (int r = 0; r < 3; ++r)
+            for (int c = 0; c < 3; ++c) m[r][c] += d[r] * d[c];
+    }
+
+    double v[3][3] = {{1,0,0},{0,1,0},{0,0,1}};
+    for (int sweep = 0; sweep < 50; ++sweep)
+    {
+        if (m[0][1]*m[0][1] + m[0][2]*m[0][2] + m[1][2]*m[1][2] < 1e-24) break;
+        for (int p = 0; p < 2; ++p)
+            for (int q = p + 1; q < 3; ++q)
+            {
+                if (std::fabs(m[p][q]) < 1e-30) continue;
+                const double theta = (m[q][q] - m[p][p]) / (2.0 * m[p][q]);
+                const double t = (theta >= 0 ? 1.0 : -1.0) / (std::fabs(theta) + std::sqrt(theta*theta + 1.0));
+                const double c = 1.0 / std::sqrt(t*t + 1.0), s = t * c;
+                for (int k = 0; k < 3; ++k)
+                {
+                    const double mkp = m[k][p], mkq = m[k][q];
+                    m[k][p] = c*mkp - s*mkq; m[k][q] = s*mkp + c*mkq;
+                }
+                for (int k = 0; k < 3; ++k)
+                {
+                    const double mpk = m[p][k], mqk = m[q][k];
+                    m[p][k] = c*mpk - s*mqk; m[q][k] = s*mpk + c*mqk;
+                }
+                for (int k = 0; k < 3; ++k)
+                {
+                    const double vkp = v[k][p], vkq = v[k][q];
+                    v[k][p] = c*vkp - s*vkq; v[k][q] = s*vkp + c*vkq;
+                }
+            }
+    }
+
+    int low = 0;
+    for (int k = 1; k < 3; ++k) if (m[k][k] < m[low][low]) low = k;
+    normal.setCoords(v[0][low], v[1][low], v[2][low]);
+}
+
+} // namespace
+
+
+StackMerge Interactions::parseStackMerge(const std::string& value)
+{
+    if (value == "closest") return StackMerge::CLOSEST;
+    if (value == "center")  return StackMerge::CENTER;
+    throw MoleExcept(3020102, "Interactions::parseStackMerge",
+                     "-mergeStack value must be 'closest' or 'center', got '" + value + "'");
+}
+
+
+/*
+    Merge the aromatic stackings formed between the same two fused ring systems.
+    A fused ligand ring system (e.g. a naphthalene) facing a fused receptor ring
+    system (e.g. TRP, guanine) gives one stacking per ring pair; they are grouped
+    per (ligand ring system, receptor residue ring system, interaction type):
+    - CLOSEST, and Edge/Face in any mode: keep the shortest centre-centre stacking.
+    - CENTER (Face/Face): replace the group by one stacking between the planes
+      fitted on all the rings of the group on each side (rings that individually
+      passed the stacking distance/angle criteria only).
+*/
+void Interactions::mergeStackings(Molecule& ligand, InterResults& interResult) const
+{
+    std::vector<InterPoint>& inters = interResult.listInters;
+
+    // Ligand fused aromatic ring systems, over all ligand aromatic rings so that
+    // two stacking rings fused through a third one still share a system.
+    std::vector<Cycle*> ligRings;
+    for (ItCCycle itC = ligand.firstCycle(); itC != ligand.lastCycle(); ++itC)
+        if ((*itC)->isAromatic()) ligRings.push_back(*itC);
+    const std::vector<size_t> ligSysIds = fusedSystems(ligRings);
+    std::map<const Cycle*, size_t> ligSystem;
+    for (size_t i = 0; i < ligRings.size(); ++i) ligSystem[ligRings[i]] = ligSysIds[i];
+
+    // Group stackings per (ligand system, receptor residue, type), groups kept in
+    // detection order (not residue address order) for a reproducible output
+    std::map<std::tuple<size_t, const Residu*, unsigned int>, size_t> groupIndex;
+    std::vector<std::vector<size_t>> groups;
+    for (size_t i = 0; i < inters.size(); ++i)
+    {
+        const InterPoint& ip = inters[i];
+        if (ip.merged_to != -1) continue;
+        if (ip.interaction != InterType::ARFACEFACE && ip.interaction != InterType::AREDGEFACE) continue;
+
+        const Cycle* cycL = ligand.getCycleFromCenter(ip.Lig_Ref);
+        const Cycle* cycP = ip.Prot_Ref->getParent().getCycleFromCenter(ip.Prot_Ref);
+        if (cycL == nullptr || cycP == nullptr || ligSystem.count(cycL) == 0) continue;
+
+        const auto key = std::make_tuple(ligSystem[cycL], static_cast<const Residu*>(cycP->getAtom(0)->getResidu()), ip.interaction);
+        const auto found = groupIndex.emplace(key, groups.size());
+        if (found.second) groups.emplace_back();
+        groups[found.first->second].push_back(i);
+    }
+
+    for (const std::vector<size_t>& members : groups)
+    {
+        if (members.size() < 2) continue;
+
+        // Split the residue side into fused ring systems (standard residues have one)
+        std::vector<Cycle*> protRings;
+        for (size_t idx : members)
+        {
+            Cycle* cycP = inters[idx].Prot_Ref->getParent().getCycleFromCenter(inters[idx].Prot_Ref);
+            if (std::find(protRings.begin(), protRings.end(), cycP) == protRings.end()) protRings.push_back(cycP);
+        }
+        const std::vector<size_t> protSysIds = fusedSystems(protRings);
+        std::map<size_t, std::vector<size_t>> subGroups;
+        for (size_t idx : members)
+        {
+            Cycle* cycP = inters[idx].Prot_Ref->getParent().getCycleFromCenter(inters[idx].Prot_Ref);
+            const size_t pos = std::find(protRings.begin(), protRings.end(), cycP) - protRings.begin();
+            subGroups[protSysIds[pos]].push_back(idx);
+        }
+
+        for (const auto& sub : subGroups)
+        {
+            const std::vector<size_t>& stack = sub.second;
+            if (stack.size() < 2) continue;
+
+            // Closest ring pair (first one on ties, i.e. detection order)
+            size_t best = stack.front();
+            for (size_t idx : stack)
+                if (inters[idx].dist < inters[best].dist) best = idx;
+
+            if (stackMerge == StackMerge::CLOSEST || inters[best].interaction == InterType::AREDGEFACE)
+            {
+                for (size_t idx : stack)
+                    if (idx != best) inters[idx].merged_to = inters[best].point;
+                continue;
+            }
+
+            // CENTER, Face/Face: planes fitted on all the stacking rings of each side
+            std::vector<Cycle*> ringsL, ringsP;
+            for (size_t idx : stack)
+            {
+                Cycle* cycL = ligand.getCycleFromCenter(inters[idx].Lig_Ref);
+                Cycle* cycP = inters[idx].Prot_Ref->getParent().getCycleFromCenter(inters[idx].Prot_Ref);
+                if (std::find(ringsL.begin(), ringsL.end(), cycL) == ringsL.end()) ringsL.push_back(cycL);
+                if (std::find(ringsP.begin(), ringsP.end(), cycP) == ringsP.end()) ringsP.push_back(cycP);
+            }
+            AtomList atomsL, atomsP;
+            for (Cycle* cyc : ringsL)
+                for (ItCAtom itA = cyc->first(); itA != cyc->end(); ++itA)
+                    if (std::find(atomsL.begin(), atomsL.end(), *itA) == atomsL.end()) atomsL.push_back(*itA);
+            for (Cycle* cyc : ringsP)
+                for (ItCAtom itA = cyc->first(); itA != cyc->end(); ++itA)
+                    if (std::find(atomsP.begin(), atomsP.end(), *itA) == atomsP.end()) atomsP.push_back(*itA);
+
+            Coords centroidL, centroidP, normalL, normalP;
+            fitPlane(atomsL, centroidL, normalL);
+            fitPlane(atomsP, centroidP, normalP);
+
+            // Angle between the fitted planes. Normal signs are arbitrary (as for
+            // the per-ring angle, where parallel reads ~0 or ~180 degrees), so
+            // report it on the same side of 90 degrees as the closest pair's angle
+            const double cosAng = std::fabs(normalL.x*normalP.x + normalL.y*normalP.y + normalL.z*normalP.z);
+            double angle = std::acos(std::min(1.0, cosAng));
+            if (inters[best].angle > M_PI / 2) angle = M_PI - angle;
+            const double dist = centroidL.calcDist(centroidP);
+
+            InterPoint merged(static_cast<int>(inters.size()),
+                              inters[best].Prot_Ref, inters[best].Lig_Ref,
+                              (centroidL + centroidP) / 2, InterType::ARFACEFACE, dist, angle);
+            merged.stackMerged    = true;
+            merged.protCentroid   = centroidP;
+            merged.ligCentroid    = centroidL;
+            merged.mergedLigAtoms = atomsL;
+
+            for (size_t idx : stack) inters[idx].merged_to = merged.point;
+            inters.push_back(merged);
+        }
+    }
+}
+
+
 /*
     Merge close proximity interactions within a molecule for optimization purposes.
     It looks for hydrophobic interactions between atoms in the molecule and combine them if they are close
@@ -864,7 +1092,12 @@ std::string Interactions::toString(const InterResults& interResult) const {
         if (interpt.interaction == InterType::ARFACEFACE || interpt.interaction == InterType::AREDGEFACE)
         {
             Cycle* cyc = interpt.Lig_Ref->getParent().getCycleFromCenter(interpt.Lig_Ref);
-            if (cyc != nullptr)
+            if (interpt.stackMerged)
+            {
+                for (const Atom* atm : interpt.mergedLigAtoms)
+                    ligandCycleAtoms[interpt.point].push_back(atm->getName());
+            }
+            else if (cyc != nullptr)
             {
                 for (ItCAtom itA = cyc->first(); itA != cyc->end(); ++itA)
                 {
@@ -946,13 +1179,13 @@ void Interactions::interToMOL2(  InterResults& interResult,
             for (ItCAtom itC = mole.firstAtom();itC != mole.lastAtom();itC++)
             {
                 Atom &atm = **itC;
-                if (atm.fixpos.calcDist(interP.Lig_Ref->fixpos) > 0.005)continue;
+                if (atm.fixpos.calcDist(interP.ligPoint()) > 0.005)continue;
                 if (atm.getName()== AtmNames[interP.interaction]){ exists=true;break;}
             }
             if (exists)continue;
             if (listRes[interP.interaction] == (Residu*)NULL)continue;
             atml=&mole.addAtom(AtomicName[interP.interaction],
-                    interP.Lig_Ref->fixpos,
+                    interP.ligPoint(),
                     AtmNames[interP.interaction],
                     mol2Names[interP.interaction],
                     listRes[interP.interaction]);
@@ -987,13 +1220,13 @@ void Interactions::interToMOL2(  InterResults& interResult,
             for (ItCAtom itC = mole.firstAtom();itC != mole.lastAtom();itC++)
             {
                 Atom &atm = **itC;
-                if (atm.fixpos.calcDist(interP.Prot_Ref->fixpos) > 0.005)continue;
+                if (atm.fixpos.calcDist(interP.protPoint()) > 0.005)continue;
                 if (atm.getName()== AtmNames[interP.interaction]){ exists=true;break;}
             }
             if (exists)continue;
             if (listRes[interP.interaction] == (Residu*)NULL)continue;
             atml=&mole.addAtom(AtomicName[interP.interaction],
-                    interP.Prot_Ref->fixpos,
+                    interP.protPoint(),
                     AtmNames[interP.interaction],
                     mol2Names[interP.interaction],
                     listRes[interP.interaction]);

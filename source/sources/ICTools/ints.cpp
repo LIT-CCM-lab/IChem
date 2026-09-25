@@ -36,6 +36,9 @@ void IChemSwitch::helpints() const {
         << "  --newH         Stricter hydrophobic definition: only kept if >50% of nearby" << endl
         << "                 protein atoms are hydrophobic" << endl
         << "  --stdout       Write results to standard output" << endl
+        << "  -mergeStack M  Merge the stackings between two fused ring systems:" << endl
+        << "                 closest (shortest one) or center (Face/Face: one stacking" << endl
+        << "                 between the planes of all stacking rings; Edge/Face: closest)" << endl
         << "  --oldAro       Legacy ring aromaticity perception (ring bond count)" << endl
         << "                 Default: all ring atoms sp2 AND ring planar" << endl
         << endl
@@ -146,6 +149,7 @@ void IChemSwitch::ints() const
             else if (opt_name.compare("--stdout")  == 0) stdout =true;
             else if (opt_name.compare("--newH")    == 0) oldh=false;
             else if (opt_name.compare("--noMerge") == 0) merge=false;
+            else if (opt_name.compare("-mergeStack")== 0) ins.setStackMerge(Interactions::parseStackMerge(value));
             else if (opt_name.compare("--solvent") == 0) sol=false;
             else if (opt_name.compare("--cofactor")== 0) cof=false;
             else if (opt_name.compare("--enf")     == 0) enf=true;

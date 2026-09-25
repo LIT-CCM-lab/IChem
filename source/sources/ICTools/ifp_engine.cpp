@@ -153,6 +153,12 @@ IFPOptions parseIFPOptions(const OptionMap& optionsValues) {
         else if (key == "--newH") {
             options.oldHydrophobic  = false;
         }
+        else if (key == "-mergeStack") {
+            if (!hasValue) {
+                throw MoleExcept(9020101, "IChem::IFP", "Option -mergeStack requires a value: closest or center");
+            }
+            options.stackMerge = Interactions::parseStackMerge(value);
+        }
 
         // Profiles
         else if (key == "--all") {
@@ -274,7 +280,7 @@ IFPOptions parseIFPOptions(const OptionMap& optionsValues) {
             oss << "Unknown IFP option: " << key
                 << ". Allowed options include: "
                 << "--all, --basic, --weakh, --picat, --metal, --old, "
-                << "--solvent, --cofactor, --newH,"
+                << "--solvent, --cofactor, --newH, -mergeStack, "
                 << "-name, -D_*, -d_*, -a_*, -at_*";
             throw MoleExcept(9020101, "IChem::IFP", oss.str());
         }
@@ -389,6 +395,7 @@ void computeIFPForLigand(Interactions& interactions, Molecule& ligand, const IFP
         ligand.ringPerception();
     }
 
+    interactions.setStackMerge(options.stackMerge);
     interactions.detectInteractions(ligand, output, true, options.oldHydrophobic);
     interactions.genIFP(output, options.bitMask);
 }

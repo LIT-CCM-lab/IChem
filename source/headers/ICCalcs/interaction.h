@@ -43,6 +43,18 @@ namespace ICMole {
     double AngT_WHBond = M_PI / 6; // Possible deviation for Weak H-Bond interaction
   };
 
+  /**
+   * @brief How redundant aromatic stackings between two fused ring systems are
+   * reported (-mergeStack). Applies per (ligand fused ring system, receptor
+   * residue fused ring system, interaction type) group.
+   */
+  enum class StackMerge {
+    NONE,     /*!< Report every ring-ring stacking (default) */
+    CLOSEST,  /*!< Keep only the shortest centre-centre stacking */
+    CENTER    /*!< Face/Face: one stacking between the planes fitted on all the
+                   stacking rings of each system. Edge/Face: as CLOSEST */
+  };
+
   struct resbest {
     Atom *atmP = nullptr;
     Atom *atmL = nullptr;
@@ -61,7 +73,15 @@ namespace ICMole {
       double angle;
       int merged_to;
 
-      InterPoint(const InterPoint  &p): 
+      // Set on a stacking merged over several rings (-mergeStack center):
+      // Prot_Ref / Lig_Ref stay the ring centres of the closest ring pair (for
+      // residue lookup), while the interaction points are the fitted centroids.
+      bool stackMerged = false;
+      Coords protCentroid;      // protein ring-system centroid
+      Coords ligCentroid;       // ligand ring-system centroid
+      AtomList mergedLigAtoms;  // ligand atoms of all merged rings
+
+      InterPoint(const InterPoint  &p):
         point(p.point),
         Prot_Ref(p.Prot_Ref),
         Lig_Ref(p.Lig_Ref),
@@ -69,7 +89,15 @@ namespace ICMole {
         interaction(p.interaction),
         dist(p.dist),
         angle(p.angle),
-        merged_to(p.merged_to) {}
+        merged_to(p.merged_to),
+        stackMerged(p.stackMerged),
+        protCentroid(p.protCentroid),
+        ligCentroid(p.ligCentroid),
+        mergedLigAtoms(p.mergedLigAtoms) {}
+
+      // Protein / ligand side interaction points
+      const Coords& protPoint() const;
+      const Coords& ligPoint()  const;
 
 
       InterPoint(const int& p, Atom* const protein, Atom* const ligand, const Coords& center, const unsigned int& int_type, const double& dist, const double& angl= -100000) :
@@ -118,6 +146,20 @@ namespace ICMole {
      * @param interResult : interaction set to be merged
      */
     void mergeInteractions(InterResults& interResult)const;
+
+    /**
+     * @brief Redundant aromatic stacking handling, see StackMerge
+     */
+    StackMerge stackMerge = StackMerge::NONE;
+
+    /**
+     * @brief Merge the aromatic stackings formed between one ligand fused ring
+     * system and one receptor residue fused ring system (per interaction type),
+     * according to stackMerge. Merged interactions are hidden (merged_to).
+     * @param ligand : ligand molecule the interactions were detected on
+     * @param interResult : interaction set to be merged
+     */
+    void mergeStackings(Molecule& ligand, InterResults& interResult) const;
 
 
   public:
@@ -421,6 +463,16 @@ namespace ICMole {
 
 
       
+      // Redundant stacking merging (-mergeStack)
+      void setStackMerge(StackMerge mode) { stackMerge = mode; }
+      StackMerge getStackMerge() const    { return stackMerge; }
+
+      /**
+       * @brief Parse a -mergeStack value ("closest" or "center")
+       * @throw MoleExcept on any other value
+       */
+      static StackMerge parseStackMerge(const std::string& value);
+
        // Setters for maximal distances
       void setDist_H(double d)         { params.Dist_H        = d; }
       void setDist_Hyd(double d)       { params.Dist_Hyd      = d; }
