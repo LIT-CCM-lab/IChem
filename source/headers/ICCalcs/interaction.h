@@ -59,7 +59,8 @@ namespace ICMole {
   /**
    * @brief Interaction detection settings given on the command line of the ints
    * tool, also used by grim when it detects the interactions itself (structure
-   * inputs): distance thresholds (Angstrom), angles (radian), stacking merge.
+   * inputs): distance thresholds (Angstrom), angles (given in degrees on the
+   * command line, stored in radian like InteractionParameters), stacking merge.
    */
   struct InteractionSettings {
     InteractionParameters params;

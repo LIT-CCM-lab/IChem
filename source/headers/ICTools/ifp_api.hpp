@@ -75,7 +75,7 @@ struct IFPConfig {
     std::optional<double> D_Hb, D_Hyd, D_Io, D_Me, D_Ar, D_Pic, D_WHb;
     std::optional<double> d_Hb, d_Hyd, d_Io, d_Me, d_Ar, d_Pic, d_WHb;
 
-    // Angles (optional)
+    // Angles (optional), in degrees
     std::optional<double> a_H, at_H;
     std::optional<double> a_ArFF, at_ArFF;
     std::optional<double> a_ArEF, at_ArEF;

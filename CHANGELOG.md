@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Angle options (`-a_H -at_H -a_ArFF -at_ArFF -a_ArEF -at_ArEF -a_Pic
+  -at_Pic`) are now given in degrees in every tool. IFP (and the Python API)
+  documented degrees but passed the value unconverted to code expecting
+  radians (e.g. `-a_ArFF 180` meant 180 radians); ints and grim took radians.
+  Defaults are unchanged (e.g. Face/Face 180 +/- 30 degrees); ints / grim
+  users passing radians must now pass degrees. Help texts updated, and ints
+  `--verb` prints the angles in degrees.
+
 ## [IChem_5.3.11] - 2026-09-25
 
 **Behaviour change:** aromatic ring perception changed on both the ligand and

@@ -39,8 +39,8 @@ void IChemSwitch::helpgrim() const {
         << "  --solvent      Remove water residues   --cofactor  Remove cofactors" << endl
         << "  -D_Hb (3.5) -D_Hyd (4.5) -D_Io (4.0) -D_Me (2.8) -D_Ar (5.5) -D_Pic (5.0)" << endl
         << "  -D_WHb (3.5)   Maximal lengths (Å); -d_* (same suffixes) minimal lengths" << endl
-        << "  -a_H -at_H -a_ArFF -at_ArFF -a_ArEF -at_ArEF -a_Pic -at_Pic N" << endl
-        << "                 Angles and tolerances (rad), see ints" << endl
+        << "  -a_H (180) -at_H (60) -a_ArFF (180) -at_ArFF (30) -a_ArEF (90)" << endl
+        << "  -at_ArEF (60) -a_Pic (180) -at_Pic (30)  Angles and tolerances (degrees)" << endl
         << endl
         << "Alignment options:" << endl
         << "  -max N (1)     Maximum number of output cliques" << endl

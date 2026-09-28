@@ -52,14 +52,14 @@ void IChemSwitch::helpints() const {
         << "  -D_Pic   N (5.0)  Pi-Cation interaction length (Å)" << endl
         << "  -D_WHb   N (3.5)  Weak H-bond length (Å)" << endl
         << "  -d_Hb -d_Hyd -d_Io -d_Me -d_Ar -d_Pic -d_WHb N  Minimal lengths (Å)" << endl
-        << "  -a_H     N (Pi)   H-bond angle (rad)" << endl
-        << "  -at_H    N (Pi/3) H-bond tolerance (rad)" << endl
-        << "  -a_ArFF  N (Pi)   Aromatic Face-to-Face angle (rad)" << endl
-        << "  -at_ArFF N (Pi/6) Aromatic FF tolerance (rad)" << endl
-        << "  -a_ArEF  N (Pi/2) Aromatic Edge-to-Face angle (rad)" << endl
-        << "  -at_ArEF N (Pi/3) Aromatic EF tolerance (rad)" << endl
-        << "  -a_Pic   N (Pi)   Pi-Cation angle (rad)" << endl
-        << "  -at_Pic  N (Pi/6) Pi-Cation tolerance (rad)" << endl
+        << "  -a_H     N (180)  H-bond angle (degrees)" << endl
+        << "  -at_H    N (60)   H-bond tolerance (degrees)" << endl
+        << "  -a_ArFF  N (180)  Aromatic Face-to-Face angle (degrees)" << endl
+        << "  -at_ArFF N (30)   Aromatic FF tolerance (degrees)" << endl
+        << "  -a_ArEF  N (90)   Aromatic Edge-to-Face angle (degrees)" << endl
+        << "  -at_ArEF N (60)   Aromatic EF tolerance (degrees)" << endl
+        << "  -a_Pic   N (180)  Pi-Cation angle (degrees)" << endl
+        << "  -at_Pic  N (30)   Pi-Cation tolerance (degrees)" << endl
         << endl
         << "Example:" << endl
         << "  IChem -logf 2rh1_ints.txt -type CENT ints site.mol2 ligand.mol2" << endl
@@ -183,12 +183,13 @@ void IChemSwitch::ints() const
             cout << "#  ||-->           Ionic Distance threshold : "<< ins.getDist_Ionic()     <<endl;
             cout << "#  ||-->           Metal Distance threshold : "<< ins.getDist_Metal()     <<endl;
             cout << "#  ||--> Aromatic center Distance threshold : "<< ins.getDist_Arom()      <<endl;
-            cout << "#  ||-->             H-Bond Angle threshold : "<< ins.getAngl_H()         <<endl;
-            cout << "#  ||-->             H-Bond Angle tolerance : "<< ins.getAngl_Tol_H()     <<endl;
-            cout << "#  ||-->       Face-to-Face Angle threshold : "<< ins.getAngl_AromFF()    <<endl;
-            cout << "#  ||-->       Face-to-Face Angle tolerance : "<< ins.getAngl_Tol_AromFF()<<endl;
-            cout << "#  ||-->       Edge-to-Face Angle threshold : "<< ins.getAngl_AromEF()    <<endl;
-            cout << "#  ||-->       Edge-to-Face Angle tolerance : "<< ins.getAngl_Tol_AromEF()<<endl;
+            const double DEG = 180.0 / M_PI;   // angles shown in degrees, as given
+            cout << "#  ||-->             H-Bond Angle threshold : "<< ins.getAngl_H()         *DEG<<endl;
+            cout << "#  ||-->             H-Bond Angle tolerance : "<< ins.getAngl_Tol_H()     *DEG<<endl;
+            cout << "#  ||-->       Face-to-Face Angle threshold : "<< ins.getAngl_AromFF()    *DEG<<endl;
+            cout << "#  ||-->       Face-to-Face Angle tolerance : "<< ins.getAngl_Tol_AromFF()*DEG<<endl;
+            cout << "#  ||-->       Edge-to-Face Angle threshold : "<< ins.getAngl_AromEF()    *DEG<<endl;
+            cout << "#  ||-->       Edge-to-Face Angle tolerance : "<< ins.getAngl_Tol_AromEF()*DEG<<endl;
             cout << "# DETECTING INTERACTIONS"<<endl;
         }
         if (cof){

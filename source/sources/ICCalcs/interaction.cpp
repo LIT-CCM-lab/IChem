@@ -779,6 +779,7 @@ bool InteractionSettings::parseOption(const std::string& name, const std::string
         return true;
     }
 
+    // Distances in Angstrom; angles given in degrees, stored in radian
     static const std::map<std::string, double InteractionParameters::*> numeric = {
         {"-D_Hb",  &InteractionParameters::Dist_H},      {"-d_Hb",  &InteractionParameters::dist_H},
         {"-D_Hyd", &InteractionParameters::Dist_Hyd},    {"-d_Hyd", &InteractionParameters::dist_Hyd},
@@ -800,7 +801,8 @@ bool InteractionSettings::parseOption(const std::string& name, const std::string
     if (value.empty() || *end != '\0' || !std::isfinite(number))
         throw MoleExcept(3020103, "InteractionSettings::parseOption",
                          "Invalid numeric value for " + name + ": '" + value + "'");
-    params.*(it->second) = number;
+    const bool isAngle = name.compare(0, 3, "-a_") == 0 || name.compare(0, 4, "-at_") == 0;
+    params.*(it->second) = isAngle ? number * M_PI / 180.0 : number;
     return true;
 }
 

@@ -97,14 +97,17 @@ void applyOverrides(Interactions& interactions, const InteractionOverrides& over
     if (overrideInteractionParams.has_d_Pic)  interactions.setMinDist_PICation(overrideInteractionParams.d_Pic);
 
     // Angles
-    if (overrideInteractionParams.has_a_H)      interactions.setAngl_H(overrideInteractionParams.a_H);
-    if (overrideInteractionParams.has_at_H)     interactions.setAngl_Tol_H(overrideInteractionParams.at_H);
-    if (overrideInteractionParams.has_a_ArFF)   interactions.setAngl_AromFF(overrideInteractionParams.a_ArFF);
-    if (overrideInteractionParams.has_at_ArFF)  interactions.setAngl_Tol_AromFF(overrideInteractionParams.at_ArFF);
-    if (overrideInteractionParams.has_a_ArEF)   interactions.setAngl_AromEF(overrideInteractionParams.a_ArEF);
-    if (overrideInteractionParams.has_at_ArEF)  interactions.setAngl_Tol_AromEF(overrideInteractionParams.at_ArEF);
-    if (overrideInteractionParams.has_a_Pic)    interactions.setAngl_PICation(overrideInteractionParams.a_Pic);
-    if (overrideInteractionParams.has_at_Pic)   interactions.setAngl_Tol_PICation(overrideInteractionParams.at_Pic);
+    // Angles: given in degrees (CLI and Python API), the setters take radian
+    // (they were passed unconverted, so e.g. -a_ArFF 180 meant 180 radian)
+    constexpr double DEG = M_PI / 180.0;
+    if (overrideInteractionParams.has_a_H)      interactions.setAngl_H(overrideInteractionParams.a_H * DEG);
+    if (overrideInteractionParams.has_at_H)     interactions.setAngl_Tol_H(overrideInteractionParams.at_H * DEG);
+    if (overrideInteractionParams.has_a_ArFF)   interactions.setAngl_AromFF(overrideInteractionParams.a_ArFF * DEG);
+    if (overrideInteractionParams.has_at_ArFF)  interactions.setAngl_Tol_AromFF(overrideInteractionParams.at_ArFF * DEG);
+    if (overrideInteractionParams.has_a_ArEF)   interactions.setAngl_AromEF(overrideInteractionParams.a_ArEF * DEG);
+    if (overrideInteractionParams.has_at_ArEF)  interactions.setAngl_Tol_AromEF(overrideInteractionParams.at_ArEF * DEG);
+    if (overrideInteractionParams.has_a_Pic)    interactions.setAngl_PICation(overrideInteractionParams.a_Pic * DEG);
+    if (overrideInteractionParams.has_at_Pic)   interactions.setAngl_Tol_PICation(overrideInteractionParams.at_Pic * DEG);
 }
 
 // Parse options
