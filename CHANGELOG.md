@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [IChem_5.3.12] - 2026-09-28
+
 ### Fixed
 
 - Angle options (`-a_H -at_H -a_ArFF -at_ArFF -a_ArEF -at_ArEF -a_Pic
