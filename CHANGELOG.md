@@ -16,6 +16,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Defaults are unchanged (e.g. Face/Face 180 +/- 30 degrees); ints / grim
   users passing radians must now pass degrees. Help texts updated, and ints
   `--verb` prints the angles in degrees.
+- Interaction output no longer depends on the memory layout. The hydrophobic
+  contacts (best one per residue) and the receptor rings around each ligand
+  ring were processed in object address order, which varies with the heap
+  layout (e.g. with the number of command-line options or the allocator): the
+  order and numbering of IFP / ints interactions could change between runs,
+  and so could grim results (e.g. an alignment RMSD). They are now processed in
+  load order; interactions and fingerprints themselves are unchanged.
 
 ## [IChem_5.3.11] - 2026-09-25
 

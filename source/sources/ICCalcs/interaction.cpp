@@ -16,6 +16,38 @@
 using namespace std;
 using namespace ICMole;
 
+namespace {
+
+// Stable ordering keys (load order) used instead of object addresses: the
+// address order of separately allocated residues / cycles depends on the heap
+// layout, which made the interaction order and numbering change with e.g. the
+// number of command-line options.
+size_t moleculeRank(const Complex& complex, const Molecule* mol)
+{
+    size_t rank = 0;
+    for (ItCMole it = complex.firstMole(); it != complex.lastMole(); ++it, ++rank)
+        if (*it == mol) break;
+    return rank;
+}
+
+// (molecule load order, residue creation index in its molecule)
+std::pair<size_t, int> residueRank(const Complex& complex, const Residu* res)
+{
+    return {moleculeRank(complex, res->getParent()), res->getNum()};
+}
+
+// (molecule load order, position in the molecule cycle list)
+std::pair<size_t, size_t> cycleRank(const Complex& complex, Cycle* cycle)
+{
+    const Molecule& mol = cycle->getCenter().getParent();
+    size_t pos = 0;
+    for (ItCCycle it = mol.firstCycle(); it != mol.lastCycle(); ++it, ++pos)
+        if (*it == cycle) break;
+    return {moleculeRank(complex, &mol), pos};
+}
+
+} // namespace
+
 
 double *Interactions::path_dist;
 unsigned int Interactions::path_dist_size;
@@ -155,9 +187,18 @@ void Interactions::detectInteractions(Molecule& ligand, InterResults& interResul
         return a.ligand_idx < b.ligand_idx;
     });
 
-    // Helper to clear hydrophobic list
+    // Helper to clear hydrophobic list, in residue load order (hydlist is keyed
+    // and thus iterated by residue address)
     auto flushHydList = [&](std::map<Residu*,resbest>& hydlist) {
-        for (auto& [res, rb] : hydlist) {
+        std::vector<std::pair<std::pair<size_t, int>, const resbest*> > ordered;
+        ordered.reserve(hydlist.size());
+        for (const auto& [res, rb] : hydlist)
+            ordered.emplace_back(residueRank(complex, res), &rb);
+        std::sort(ordered.begin(), ordered.end(),
+                  [](const auto& a, const auto& b) { return a.first < b.first; });
+
+        for (const auto& entry : ordered) {
+            const resbest& rb = *entry.second;
             if (!rb.atmP || !rb.atmL) 
                 continue;
             if (rb.atmL->getResidu()->getIdentifier() == rb.atmP->getResidu()->getIdentifier())
@@ -549,8 +590,10 @@ void Interactions::processAromaticInteractions(Molecule& ligand, NeighborSearch&
             }
         }
 
-        // Filter to unique protein cycles
-        std::sort(protCycles.begin(), protCycles.end());
+        // Filter to unique protein cycles, in cycle load order (not address order)
+        std::sort(protCycles.begin(), protCycles.end(), [&](Cycle* a, Cycle* b) {
+            return cycleRank(complex, a) < cycleRank(complex, b);
+        });
         protCycles.erase(std::unique(protCycles.begin(), protCycles.end()), protCycles.end());
 
         // Check for interactions with ligand/protein ring pair
