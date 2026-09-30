@@ -544,20 +544,15 @@ void Molecule::delAtom( Atom *const atom, const bool& with_maxnum)
         links.clear();
         const unsigned int numatm= atom->getNum();
 
-// Deleting cycle in which it can be involved with:
+// Deleting cycles in which it is involved (collected first: delCycle
+// erases from the cycle list)
         if (atom->inCycle)
         {
+            CycleList withAtom;
             for (ItCycle it =Cycles.begin(); it != Cycles.end(); it++)
-            {
-                Cycle* cycle=*it;
-
-                for (ItCAtom itA = cycle->first();itA != cycle->end();itA++)
-                {
-                    if (*itA != atom)continue;
-                    Cycles.erase(it);
-                    it=Cycles.begin();break;
-                }
-            }
+                if ((*it)->hasAtom(*atom)) withAtom.push_back(*it);
+            for (ItCycle it =withAtom.begin(); it != withAtom.end(); it++)
+                delCycle(*it);
         }
 // Delete residu when no atoms in it:
         if (atom->getResidu() != (Residu*)NULL)
@@ -1327,8 +1322,11 @@ void Molecule::delCycle(Cycle*const cy)
   if (cy == (Cycle*)NULL) throw MoleExcept(1071201,"Molecule::delCycle","No cycle given");
   ItCycle itt = std::find(Cycles.begin(),Cycles.end(),cy);
   if (itt == Cycles.end()) throw MoleExcept(1071202,"Molecule::delCycle","No cycle in this molecule");
-    delete cy;
+  // The ring centre is listed in the aromatic or cyclic pseudo-residue
+  aromaticRes.delAtom(cy->getCenter());
+  cyclicRes.delAtom(cy->getCenter());
   Cycles.erase(itt);
+  delete cy;
 
 }
 
