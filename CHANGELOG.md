@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [IChem_5.3.14] - 2026-09-30
+
+### Fixed
+
+- Pi-cation with a receptor aromatic ring: only cations on one side of the
+  ring were accepted (angle to the ring normal around 180 degrees), although
+  the sign of a ring normal is arbitrary. Both sides are now accepted, as for
+  ligand rings: 14 interactions added on the 374 test pairs (pi-cation bit set
+  on 10 of them with `--all` / `--picat`), one in the ints test set (3GBB).
+  The ligand-ring test now also uses the supplement of the angle instead of a
+  shift by 180 degrees (identical for the default `-a_Pic 180`).
+- Angles: the cosine is clamped before `acos`. Rounding could put it slightly
+  outside [-1, 1] for exactly collinear or parallel geometries, giving a NaN
+  angle that failed every test (no change on the test sets).
+- Hydrophobic contacts between aromatic ring atoms were only searched in the
+  last molecule of a receptor file with several MOL2 records; every receptor
+  molecule is now used (single-record receptors are unchanged).
+- Interaction detection no longer modifies the ligand atoms (a metal-acceptor
+  property was set as a side effect; no result change).
+
+### Changed
+
+- IFP (command line and Python API) now detects only the interaction types of
+  the chosen profile (`--basic`, `--weakh`, `--picat`, `--metal`, `--old`):
+  listings no longer show the other types (e.g. `--basic` no longer lists
+  metal, pi-cation and weak H-bond interactions). Fingerprints are unchanged.
+- The aromatic ring pairs of the hydrophobic rule are skipped when their
+  centres are too far apart for any atom pair to qualify (faster, same
+  results).
+
 ## [IChem_5.3.13] - 2026-09-30
 
 ### Fixed
