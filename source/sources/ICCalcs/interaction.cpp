@@ -258,10 +258,11 @@ void Interactions::detectInteractions(Molecule& ligand, InterResults& interResul
     // flush the last ligand atom’s hydrophobics
     flushHydList(hydlist);
 
+    // Aromatic ring atom pairs, with the rings of every receptor molecule (in
+    // load order; only the last one was used)
     if (wInterType[InterType::HYDROPHOBIC]) {
-        auto* protein = complex.getMole(MoleType::PROTEIN);
-        if (protein) {
-            checkAromaticHydrophobicInteractions(ligand, *protein, interResult, NInter, params.dist_Hyd, params.Dist_Hyd);
+        for (auto m = complex.firstMole(MoleType::PROTEIN); m != complex.lastMole(MoleType::PROTEIN); ++m) {
+            checkAromaticHydrophobicInteractions(ligand, **m, interResult, NInter, params.dist_Hyd, params.Dist_Hyd);
         }
     }
 
