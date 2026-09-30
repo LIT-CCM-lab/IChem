@@ -214,6 +214,8 @@ void runIFP(const std::vector<std::string> &Input_Values, const OptionMap &Opt_V
 
         Interactions interactions(complex);
         applyOverrides(interactions, options.overrides);
+    // Only the interaction types of the fingerprint profile
+    interactions.detectIFPTypes(options.bitMask);
 
         if (withReference) {
             const std::string& refLigandFile = Input_Values[2];

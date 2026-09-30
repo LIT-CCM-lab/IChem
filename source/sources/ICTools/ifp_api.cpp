@@ -287,6 +287,8 @@ static std::vector<IFPAPI::LigandInteractions> computeInteractionsForLigandFile(
 
     Interactions interactions(complex);
     applyOverrides(interactions, options.overrides);
+    // Only the interaction types of the fingerprint profile
+    interactions.detectIFPTypes(options.bitMask);
 
     MoleReader ligandReader;
     ligandReader.loadNewFile(ligandFile);

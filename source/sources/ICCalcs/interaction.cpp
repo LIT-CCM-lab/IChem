@@ -1730,13 +1730,51 @@ Fingerprint& Interactions::generateTriplets(InterResults& interResult,const bool
 }
 
 
-void Interactions::genIFP(InterResults& interResult, const unsigned int& activeBits) const {
-    
-    // 11 bits per residue
-    static constexpr short BITS_PER_RESIDUE_NEW = 11;
+namespace {
 
-    // Must match the FLAG_OLD_LAYOUT used in parseIFPOptions
-    static constexpr unsigned FLAG_OLD_LAYOUT = 1u << 31;
+// 11 bits per residue
+constexpr short BITS_PER_RESIDUE_NEW = 11;
+
+// Must match the FLAG_OLD_LAYOUT used in parseIFPOptions
+constexpr unsigned FLAG_OLD_LAYOUT = 1u << 31;
+
+// Map interaction type value: base bit index (0..10), or -1 if not encoded
+int mapInterTypeToBit(unsigned int inter) {
+    switch (inter) {
+        case InterType::HYDROPHOBIC:   return 0;  // [0] hydrophobic
+        case InterType::ARFACEFACE:    return 1;  // [1] aromatic F-F
+        case InterType::AREDGEFACE:    return 2;  // [2] aromatic E-F
+        case InterType::HBOND_PROT:    return 3;  // [3] HBond protein
+        case InterType::HBOND_LIG:     return 4;  // [4] HBond ligand
+        case InterType::IONIC_PROT:    return 5;  // [5] Ionic protein
+        case InterType::IONIC_LIG:     return 6;  // [6] Ionic ligand
+        case InterType::PICATION:      return 7;  // [7] Pi-cation
+        case InterType::METAL:         return 8;  // [8] Metal
+        case InterType::WHBOND_PROT:   return 9;  // [9] Weak HBond protein
+        case InterType::WHBOND_LIG:    return 10; // [10] Weak HBond ligand
+
+        default:
+            return -1;
+    }
+}
+
+} // namespace
+
+
+void Interactions::detectIFPTypes(const unsigned int& activeBits) {
+
+    const bool isOldLayout = (activeBits & FLAG_OLD_LAYOUT) != 0u;
+    const unsigned coreBits = activeBits & ~FLAG_OLD_LAYOUT;
+    const short bitsPerResidue = isOldLayout ? 7 : BITS_PER_RESIDUE_NEW;
+
+    for (unsigned int type = 0; type < NB_INTTYPE; ++type) {
+        const int bit = mapInterTypeToBit(type);
+        wInterType[type] = bit >= 0 && bit < bitsPerResidue && (coreBits & (1u << bit)) != 0u;
+    }
+}
+
+
+void Interactions::genIFP(InterResults& interResult, const unsigned int& activeBits) const {
 
     // Is this an "old" 7-bit fingerprint?
     const bool isOldLayout = (activeBits & FLAG_OLD_LAYOUT) != 0u;
@@ -1746,26 +1784,6 @@ void Interactions::genIFP(InterResults& interResult, const unsigned int& activeB
 
     // Number of bits per residue actually used
     const short bitsPerResidue = isOldLayout ? 7 : BITS_PER_RESIDUE_NEW;
-
-    // Map interaction type value: base bit index (0..10), or -1 if not encoded
-    auto mapInterTypeToBit = [](unsigned int inter) -> int {
-        switch (inter) {
-            case InterType::HYDROPHOBIC:   return 0;  // [0] hydrophobic
-            case InterType::ARFACEFACE:    return 1;  // [1] aromatic F-F
-            case InterType::AREDGEFACE:    return 2;  // [2] aromatic E-F
-            case InterType::HBOND_PROT:    return 3;  // [3] HBond protein
-            case InterType::HBOND_LIG:     return 4;  // [4] HBond ligand
-            case InterType::IONIC_PROT:    return 5;  // [5] Ionic protein
-            case InterType::IONIC_LIG:     return 6;  // [6] Ionic ligand
-            case InterType::PICATION:      return 7;  // [7] Pi-cation
-            case InterType::METAL:         return 8;  // [8] Metal
-            case InterType::WHBOND_PROT:   return 9;  // [9] Weak HBond protein
-            case InterType::WHBOND_LIG:    return 10; // [10] Weak HBond ligand
-
-            default:
-                return -1;
-        }
-    };
 
     std::map<int,Residu*> NumtoRes;
     for (ItCRes itR = complex.firstResidu(); itR != complex.lastResidu(); ++itR) {

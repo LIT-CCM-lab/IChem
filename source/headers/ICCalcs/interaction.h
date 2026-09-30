@@ -477,6 +477,13 @@ namespace ICMole {
       */
       void genIFP(InterResults& interResult, const unsigned int& fgpType=0) const;
 
+      /**
+      * @brief Detect only the interaction types encoded by an IFP profile
+      * mask (as built for --all, --basic..., see genIFP); all types are
+      * detected otherwise
+      */
+      void detectIFPTypes(const unsigned int& activeBits);
+
 
       bool comparaisoninterface (InterResults* i,InterResults* j) {
           return (i->Ints.getMaxNumAtom() >j->Ints.getMaxNumAtom());
