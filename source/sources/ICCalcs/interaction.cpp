@@ -508,15 +508,29 @@ void Interactions::checkPiCationInteraction(Atom& atomL, Atom& atomP, double dis
 }
 
 void Interactions::checkAromaticHydrophobicInteractions(Molecule& ligand, Molecule& protein, InterResults& interResult, int& NInter, double dist_H, double Dist_H) const {
-    
+
+    // Largest distance between the centre of a ring and its atoms
+    auto ringRadius = [](Cycle& cycle) {
+        double radius = 0.0;
+        for (size_t i = 0; i < cycle.getNumAtom(); ++i)
+            radius = std::max(radius, cycle.getFixpos().calcDist(cycle.getAtom(i)->fixpos));
+        return radius;
+    };
+
     for (ItCCycle ligandCycle = ligand.firstCycle(); ligandCycle != ligand.lastCycle(); ++ligandCycle) {
         Cycle& ligCycle = **ligandCycle;
         if (!ligCycle.isAromatic()) 
             continue;
+        const double ligRadius = ringRadius(ligCycle);
 
         for (ItCCycle proteinCycle = protein.firstCycle(); proteinCycle != protein.lastCycle(); ++proteinCycle) {
             Cycle& protCycle = **proteinCycle;
             if (!protCycle.isAromatic())
+                continue;
+
+            // No atom pair can be within Dist_H when the ring centres are
+            // farther apart than Dist_H plus both ring radii
+            if (ligCycle.getFixpos().calcDist(protCycle.getFixpos()) > Dist_H + ligRadius + ringRadius(protCycle))
                 continue;
 
             for (size_t i = 0; i < ligCycle.getNumAtom(); ++i) {
