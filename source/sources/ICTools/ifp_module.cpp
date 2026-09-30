@@ -89,8 +89,9 @@ void processLigandMode(const std::string& ligandFile, Complex& complex, Interact
             throw MoleExcept(9020102, "IChem::IFP", "No ligand found in " + ligandFile);
         }
 
+        // Already typed and perceived by loadInComplex: checking the MOL2 types
+        // again would reset the ring perception flags (ring, aromatic...)
         Molecule& ligand = *complex.getMole(MoleType::LIGAND);
-        ligand.checkMOL2();
 
         InterResults interRes;
         computeIFPForLigand(interactions, ligand, options, interRes);

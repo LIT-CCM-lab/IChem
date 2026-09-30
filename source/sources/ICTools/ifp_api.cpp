@@ -300,7 +300,8 @@ static std::vector<IFPAPI::LigandInteractions> computeInteractionsForLigandFile(
         if (!ligPtr) {
             throw MoleExcept(9020102, "IChem::IFP", "No ligand found in " + ligandFile);
         }
-        ligPtr->checkMOL2();
+        // Already typed and perceived by loadInComplex: checking the MOL2 types
+        // again would reset the ring perception flags (ring, aromatic...)
 
         InterResults interRes;
         computeIFPForLigand(interactions, *ligPtr, options, interRes);
