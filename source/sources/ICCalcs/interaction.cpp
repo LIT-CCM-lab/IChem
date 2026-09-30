@@ -318,14 +318,6 @@ void Interactions::checkMetalInteractions(Atom& atomL, Atom& atomP, double dist,
     // Normal case
     if (dist <= params.Dist_Metal && dist >= params.dist_Metal) {
         addInteraction(interResult, atomP, atomL, dist, NInter, nullptr, InterType::METAL);
-        return;
-    }
-
-    if(  dist < 3.4  && ( atomL.props.isMetal() && (atomP.props.isAcceptor() || atomP.props.isAnion())
-        || (atomL.props.isAnion() || atomL.props.isAcceptor() ) && atomP.props.isMetal()
-        || (atomP.isMetallic() && atomL.getAtomicName() == "N"))) {
-
-        atomL.props.setMetalA(true);
     }
 }
 
