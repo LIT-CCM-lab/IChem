@@ -285,7 +285,11 @@ void Interactions::detectInteractions(Molecule& ligand, InterResults& interResul
 // ╚══════════════════════════════════════════════════════════════════════════╝
 
 void Interactions::checkMetalNitrogenSulfonamideCase(Atom& atomL, Atom& atomP, double dist, InterResults& interResult, int& NInter) const {
-    
+
+    // Sulfonamide nitrogen coordinating a receptor metal (was: any receptor atom)
+    if (!wInterType[InterType::METAL] || !atomP.props.isMetal())
+        return;
+
     if (atomL.isNitrogen() && dist < params.Dist_Metal) {
         bool linkedToSulfur = false;
 
