@@ -36,6 +36,18 @@ std::pair<size_t, int> residueRank(const Complex& complex, const Residu* res)
     return {moleculeRank(complex, res->getParent()), res->getNum()};
 }
 
+// Angle between a ring normal and a direction: the sign of a ring normal is
+// arbitrary, so an angle and its supplement (pi - angle) describe the same
+// geometry and both are tested against the window median +/- tolerance
+bool normalAngleWithin(double angle, double median, double tolerance, bool inclusive)
+{
+    const auto within = [&](double a) {
+        return inclusive ? (a >= median - tolerance && a <= median + tolerance)
+                         : (a >  median - tolerance && a <  median + tolerance);
+    };
+    return within(angle) || within(M_PI - angle);
+}
+
 // (molecule load order, position in the molecule cycle list)
 std::pair<size_t, size_t> cycleRank(const Complex& complex, Cycle* cycle)
 {
@@ -501,8 +513,9 @@ void Interactions::checkPiCationInteraction(Atom& atomL, Atom& atomP, double dis
 
     cycleP->calcVector();
 
+    // Cation on either side of the receptor ring (only one side was accepted)
     double angle = cycleP->getCenter().fixpos.calcAngle(cycleP->getNormVector(), atomL.fixpos);
-    if (angle <= params.Angl_PiCation - params.AngT_PiCation || angle >= params.Angl_PiCation + params.AngT_PiCation)
+    if (!normalAngleWithin(angle, params.Angl_PiCation, params.AngT_PiCation, false))
         return;
 
     addInteraction(interResult, cycleP->getCenter(), atomL, dist, NInter, &angle, InterType::PICATION);
@@ -588,9 +601,7 @@ void Interactions::processAromaticInteractions(Molecule& ligand, NeighborSearch&
             if (wInterType[InterType::PICATION] && prot.props.isCation() && dist <= params.Dist_PiCation && dist >= min_allowed_dist) {
                 double ang = ligCtr.fixpos.calcAngle(ligCycle.getNormVector(), prot.fixpos);
 
-                bool ok = (ang >= params.Angl_PiCation - params.AngT_PiCation && ang <= params.Angl_PiCation + params.AngT_PiCation) || (ang >= params.Angl_PiCation - params.AngT_PiCation - M_PI && ang <= params.Angl_PiCation + params.AngT_PiCation - M_PI);
-
-                if (ok)
+                if (normalAngleWithin(ang, params.Angl_PiCation, params.AngT_PiCation, true))
                     addInteraction(interResult, prot, ligCtr, dist, NInter, &ang, InterType::PICATION);
             }
 
