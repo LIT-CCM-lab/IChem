@@ -1767,11 +1767,12 @@ void Interactions::genIFP(InterResults& interResult, const unsigned int& activeB
         InterPoint& interP = interResult.listInters.at(i);
         if (interP.merged_to != -1) continue;
 
+        // A receptor ring centre (stackings, pi-cation) belongs to the
+        // placeholder residue of ring centres: credit the ring's residue
         Residu *res = interP.Prot_Ref->getResidu();
-        if (interP.interaction == InterType::AREDGEFACE ||
-            interP.interaction == InterType::ARFACEFACE)
+        const Cycle* cyc = interP.Prot_Ref->getParent().getCycleFromCenter(interP.Prot_Ref);
+        if (cyc != nullptr)
         {
-            Cycle* cyc = interP.Prot_Ref->getParent().getCycleFromCenter(interP.Prot_Ref);
             res = cyc->getAtom(0)->getResidu();
         }
         listRes.insert(std::pair<Residu*,InterPoint*>(res, &interP));
