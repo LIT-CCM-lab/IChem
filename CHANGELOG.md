@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [IChem_5.3.13] - 2026-09-30
+
+### Fixed
+
+- IFP: the pi-cation bit was never set for a pi-cation interaction with a
+  receptor aromatic ring (ligand cation): the interaction was credited to the
+  placeholder residue of ring centres, which is not in the fingerprint. It is
+  now credited to the ring's residue, as the stackings are. Fingerprints with
+  the pi-cation bit (`--all`, `--picat`) gain it where such interactions
+  exist (13 of the 374 test pairs).
+- Interactions: the sulfonamide nitrogen rule recorded a Metal_Acceptor
+  interaction with any receptor atom closer than the metal distance (e.g. the
+  threonine hydroxyl H-bonded to the sulfonamide in 1EOU, or histidine carbons
+  and aromatic ring centres in clashing poses) and ignored the metal
+  interaction switch. It now requires a receptor metal, like the general metal
+  rule. Affects IFP (metal bit cleared in 6 of the 374 test pairs), ints and
+  grim.
+- IFP and the Python API with a single-ligand file: the ligand MOL2 types were
+  checked a second time after ring perception, which reset the ring flags of
+  its atoms (ring, scaffold / substituent / linker, sp2 + planar
+  aromaticity); multi-ligand files were not affected. Interaction listings
+  change in 21 of the 374 test pairs (hydrophobic contacts); fingerprints are
+  unchanged on the test set.
+- IChem exited with status 0 after an error. It now exits with a failure
+  status; with `-F`, the remaining commands still run and the status reports a
+  failure if any of them failed. A missing `-F` command file is reported
+  instead of making IChem loop forever.
+- Python API: the `all` profile (`IFPConfig.all`) was not exposed.
+- `Molecule::delAtom` (structure cleaning): deleting an atom shared by fused
+  rings could leave a ring holding the deleted atom and freed ring centres in
+  the ring pseudo-residues. Covered by a new unit test (`molecule_unit_tests`).
+- `Residu::getDistMatrix` threw a pointer that no handler caught, aborting
+  IChem instead of reporting the error.
+
 ## [IChem_5.3.12] - 2026-09-28
 
 ### Fixed
