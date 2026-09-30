@@ -562,9 +562,9 @@ void Residu::getDistMatrix(std::vector<unsigned short>& matrix,
 
                 itOrderComp=order.find(&atomLink);
                 if (itOrderComp == order.end())
-                    throw new MoleExcept(000000,
-                                         "Residu::getDistMatrix",
-                                         "Unexpected behavior");
+                    throw MoleExcept(1081001,
+                                     "Residu::getDistMatrix",
+                                     "Linked atom missing from the atom order");
 
                 const unsigned short &posComp=(*itOrderComp).second;
 #ifdef ICHEM_DEBUG
@@ -599,9 +599,9 @@ void Residu::getDistMatrix(std::vector<unsigned short>& matrix,
                     if (!wHydrogen && atomComp.isHydrogen())continue;
                     itOrderComp=order.find(&atomComp);
                     if (itOrderComp == order.end())
-                        throw new MoleExcept(000000,
-                                             "Residu::getDistMatrix",
-                                             "Unexpected behavior");
+                        throw MoleExcept(1081002,
+                                         "Residu::getDistMatrix",
+                                         "Atom missing from the atom order");
                     const unsigned short &posComp=(*itOrderComp).second;
 #ifdef ICHEM_DEBUG
                     cout << " |-> Position COMP : "<< posComp<<endl;
