@@ -34,6 +34,7 @@ Python bindings for IChem IFP module:
         .def(py::init<>())
 
         // profiles (pick exactly one)
+        .def_readwrite("all",&IFPConfig::all, "All interactions (11 bits per residue)")
         .def_readwrite("basic",&IFPConfig::basic, "Basic profile: hydrophobic + H-bond + ionic + aromatic")
         .def_readwrite("weakh",&IFPConfig::weakh, "Weak H-bonds only")
         .def_readwrite("picat",&IFPConfig::picat, "Pi-cation only")
