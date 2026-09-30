@@ -640,9 +640,12 @@ void Interactions::processAromaticInteractions(Molecule& ligand, NeighborSearch&
                     }
 
                     const Coords& nP = cycleP.getNormVector(j);
-                    double ang = acos((aL.fixpos.x - nL.x) * (aP.fixpos.x - nP.x) +
-                                      (aL.fixpos.y - nL.y) * (aP.fixpos.y - nP.y) +
-                                      (aL.fixpos.z - nL.z) * (aP.fixpos.z - nP.z));
+                    // Unit normals: clamp the rounding of (anti)parallel ones,
+                    // acos would return NaN and the pair would be ignored
+                    const double cosine = (aL.fixpos.x - nL.x) * (aP.fixpos.x - nP.x) +
+                                          (aL.fixpos.y - nL.y) * (aP.fixpos.y - nP.y) +
+                                          (aL.fixpos.z - nL.z) * (aP.fixpos.z - nP.z);
+                    double ang = acos(std::clamp(cosine, -1.0, 1.0));
 
                     if (d < params.Dist_Arom && d > params.dist_Arom) {
                         // face-face

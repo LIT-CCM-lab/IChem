@@ -1,4 +1,5 @@
 #include "headers/ICMole/coords.h"
+#include <algorithm>
 
 
 using namespace ICMole;
@@ -236,9 +237,12 @@ double Coords::calcAngle(const Coords &_coords1, const Coords &_coords2) const
                   sqrt((this->x- _coords2.x)*(this->x- _coords2.x)
                       +(this->y- _coords2.y)*(this->y- _coords2.y)
                       +(this->z- _coords2.z)*(this->z- _coords2.z));
-    return      acos(((_coords1.x-this->x)*(_coords2.x-this->x)+
-                      (_coords1.y-this->y)*(_coords2.y-this->y)+
-                      (_coords1.z-this->z)*(_coords2.z-this->z))/A1);
+    // Rounding can put the cosine of (anti)collinear vectors slightly
+    // outside [-1, 1], where acos returns NaN (and every test on it fails)
+    const double cosine=((_coords1.x-this->x)*(_coords2.x-this->x)+
+                         (_coords1.y-this->y)*(_coords2.y-this->y)+
+                         (_coords1.z-this->z)*(_coords2.z-this->z))/A1;
+    return      acos(std::clamp(cosine,-1.0,1.0));
 }
 
 
