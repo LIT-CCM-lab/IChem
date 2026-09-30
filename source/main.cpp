@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <iostream>
 #include "headers/ICTools/switch.h"
 #include "headers/ICMole/box.h"
@@ -24,6 +25,9 @@ using namespace ICMole;
 */
 int main(int argc, char *argv[])
 {
+// Exit status: non-zero when a command failed (in batch mode -F, when at
+// least one of its commands failed; the following ones still run)
+int status = EXIT_SUCCESS;
 try{
     if (argc == 3)
       {
@@ -31,11 +35,15 @@ try{
         if (i1 == "-F")
           {
             ifstream ifs(argv[2]);
+            if (!ifs)
+              {
+                cerr << "Cannot read the command file "<<argv[2]<<endl;
+                return EXIT_FAILURE;
+              }
             string params;
             vector<string> tokens;
-            while (!ifs.eof())
+            while (std::getline(ifs,params))
               {
-                std::getline(ifs,params);
                 if (params.length()==0)continue;
                 tokens.clear();
                 tokenStr(params,tokens," ");
@@ -46,7 +54,7 @@ try{
                 catch(MoleExcept &e)
                 {
                   cerr << e.getCode()<<"\t"<<e.getSource()<<"\t"<< e.getData()<<endl;
-
+                  status = EXIT_FAILURE;
                 }
 
               }
@@ -71,12 +79,14 @@ try{
         return 1;}
         cerr << e.getCode()<<"\t"<<e.getSource()<<"\t"<< e.getData()<<endl;
         cerr << "TRACE : "<< endl << e.getTrace()<<endl;
-
+        return EXIT_FAILURE;
     }
     catch(std::exception &e)
     {
         cerr << e.what()<<endl;
+        return EXIT_FAILURE;
     }
+return status;
 }
 
 void runTest()
